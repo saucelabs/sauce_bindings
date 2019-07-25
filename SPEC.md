@@ -12,8 +12,9 @@ Goal is to make it simpler to interact and do the right thing with regards to ca
 
 ## Sauce Options 
 	- capabilities
-	- browser options
-		- sauce options
+		- browser
+		- sauce
+		- w3c
 	- datacenter & url
 	- validate sane capabilities (e.g. IE on Mac)
 	- w3c specific
@@ -26,12 +27,12 @@ Goal is to make it simpler to interact and do the right thing with regards to ca
 	- stops a session
 	- uses sauce API when possible
 	- js executor out of scope for now
-	- 
+	- W3C protocol specific 
 
 ## Out of scope
  - appium 
  - js executor
  - complete API (only methods for dealing with jobs)
 
- 
+
  

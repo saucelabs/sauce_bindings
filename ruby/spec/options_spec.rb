@@ -5,12 +5,6 @@ require 'spec_helper'
 module SimpleSauce
   describe Options do
     describe '#new' do
-      it 'uses username and access key if ENV variables are defined'
-      it 'accepts provided username and access key'
-
-      it 'raises exception if no username discoverable'
-      it 'raises exception if no access key discoverable'
-
       it 'uses latest Chrome version on Windows 10 by default'
       it 'accepts provided values for browser, version and platform name'
 

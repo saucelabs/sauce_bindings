@@ -1,4 +1,6 @@
-require "simple_sauce/version"
+# frozen_string_literal: true
+
+require 'simple_sauce/version'
 
 module SimpleSauce
   class Error < StandardError; end

@@ -67,3 +67,6 @@ test-output/
 
 ## Spring Related ##
 **/application-OVERRIDES.properties
+
+## Other IDE ##
+.vscode

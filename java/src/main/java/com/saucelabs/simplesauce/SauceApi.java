@@ -15,8 +15,8 @@ public class SauceApi {
 
     public void setTestStatus(String testResult) {
         //TODO finish implementation
-        //testResult = testResult.toLowerCase();
-        //isValidTestStatus(testResult);
+        // testResult = testResult.toLowerCase();
+        // isValidTestStatus(testResult);
         new JavaScriptInvoker(webDriver).
             executeScript(SauceJavaScriptStrings.testStatusPrefix + testResult);
     }

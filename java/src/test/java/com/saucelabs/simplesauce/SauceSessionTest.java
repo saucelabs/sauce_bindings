@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.MutableCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 
@@ -14,6 +15,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.text.IsEmptyString.isEmptyOrNullString;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class SauceSessionTest {
 
@@ -24,13 +26,6 @@ public class SauceSessionTest {
     {
         sauceSession = new SauceSession();
     }
-    @Test
-    public void seleniumServer_notSet_returnsNull()
-    {
-        //TODO is this okay to be like a property,
-        //or should it be a getSeleniumServer()
-        assertNull(sauceSession.sauceSeleniumServer);
-    }
 
     @Test
     public void defaultConstructor_instantiated_setsConcreteDriverManager()
@@ -39,21 +34,13 @@ public class SauceSessionTest {
     }
 
     @Test
-    public void getInstance_serverNotSet_setsSauceSeleniumServer() throws MalformedURLException {
-        RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
-        sauceSession = new SauceSession(fakeRemoteDriver);
-        sauceSession.start();
-        String expectedServer = "https://ondemand.saucelabs.com/wd/hub";
-        assertEquals(expectedServer, sauceSession.sauceSeleniumServer);
-    }
-    @Test
     //TODO rename and refactor into logic similar to here: setCapability_platformName_returnsCorrectOs
     public void browserNameCapability_isSetToCorrectKey() throws MalformedURLException {
         RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
         sauceSession = new SauceSession(fakeRemoteDriver);
         sauceSession.start();
         String expectedBrowserCapabilityKey = "browserName";
-        String actualBrowser = sauceSession.capabilities.getCapability(expectedBrowserCapabilityKey).toString();
+        String actualBrowser = sauceSession.getCapabilities().getCapability(expectedBrowserCapabilityKey).toString();
         assertThat(actualBrowser, CoreMatchers.not(isEmptyOrNullString()));
     }
     @Test
@@ -64,7 +51,7 @@ public class SauceSessionTest {
     public void getCapabilities_browserNameCapSet_validKeyExists2() {
         sauceSession.getCapabilities();
         String expectedBrowserCapabilityKey = "browserName";
-        String actualBrowser = sauceSession.capabilities.getCapability(expectedBrowserCapabilityKey).toString();
+        String actualBrowser = sauceSession.getCapabilities().getCapability(expectedBrowserCapabilityKey).toString();
         assertThat(actualBrowser, IsNot.not(""));
     }
     @Test
@@ -73,16 +60,19 @@ public class SauceSessionTest {
         sauceSession = new SauceSession(fakeRemoteDriver);
         sauceSession.start();
         String correctPlatformKey = "platformName";
-        String actualBrowser = sauceSession.capabilities.getCapability(correctPlatformKey).toString();
+        String actualBrowser = sauceSession.getCapabilities().getCapability(correctPlatformKey).toString();
         assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("Windows 10"));
     }
     @Test
     public void setCapability_browserVersion_returnsCorrectVersion() throws MalformedURLException {
         RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
+        RemoteWebDriver driver = mock(RemoteWebDriver.class);
         sauceSession = new SauceSession(fakeRemoteDriver);
+        when(fakeRemoteDriver.getRemoteWebDriver("abcd", sauceSession.getCapabilities())).thenReturn(driver);
+
         sauceSession.start();
         String correctKey = "browserVersion";
-        String actualBrowser = sauceSession.capabilities.getCapability(correctKey).toString();
+        String actualBrowser = sauceSession.getCapabilities().getCapability(correctKey).toString();
         assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("latest"));
     }
     @Test
@@ -108,7 +98,7 @@ public class SauceSessionTest {
     {
         sauceSession.getCapabilities();
         boolean hasAccessKey = sauceSession.getSauceOptionsCapability().asMap().containsKey("accessKey");
-        assertTrue(hasAccessKey);
+        assertTrue("You need to have Sauce Credentials set (SAUCE_USERNAME, SAUCE_ACCESSKEY) before this unit test will pass", hasAccessKey);
     }
 
     @Test

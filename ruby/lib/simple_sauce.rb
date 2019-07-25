@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
 require 'simple_sauce/version'
-
-module SimpleSauce
-  class Error < StandardError; end
-  # Your code goes here...
-end
+require 'simple_sauce/options'
+require 'simple_sauce/session'

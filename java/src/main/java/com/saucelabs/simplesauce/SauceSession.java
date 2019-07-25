@@ -1,6 +1,8 @@
 package com.saucelabs.simplesauce;
 
 import com.saucelabs.saucerest.SauceREST;
+import lombok.Getter;
+import lombok.Setter;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -14,28 +16,28 @@ import org.openqa.selenium.safari.SafariOptions;
 import java.net.MalformedURLException;
 
 public class SauceSession {
-	private static final String sauceSeleniumServer = "https://ondemand.saucelabs.com:443/wd/hub";
+    public static final String SAUCE_URL = "https://ondemand.saucelabs.com:443/wd/hub";
 
-	static String SAUCE_USERNAME = System.getenv("SAUCE_USERNAME");
-	static String SAUCE_ACCESS_KEY = System.getenv("SAUCE_ACCESS_KEY");
+	@Setter private static String SAUCE_USERNAME = System.getenv("SAUCE_USERNAME");
+	@Setter private static String SAUCE_ACCESS_KEY = System.getenv("SAUCE_ACCESS_KEY");
 
-	String BUILD_TAG = System.getenv("BUILD_TAG");
+	private String BUILD_TAG = System.getenv("BUILD_TAG");
 
     public SauceApi test;
 
     //todo there is some weird bug when this is set to Linux, the session can't be started
-	String operatingSystem = "Windows 10";
-	String browserName = "Chrome";
-	String testName;
-	Boolean useSauce = true;
-    String sauceOptionsTag = "sauce:options";
+	private String operatingSystem = "Windows 10";
+	private String browserName = "Chrome";
+	private String testName;
+	private Boolean useSauce = true;
+    private String sauceOptionsTag = "sauce:options";
 
-	ChromeOptions chromeOptions;
-	FirefoxOptions firefoxOptions;
-	MutableCapabilities sauceOptions;
-	String browserVersion = "latest";
+    private ChromeOptions chromeOptions;
+    private FirefoxOptions firefoxOptions;
+    private MutableCapabilities sauceOptions;
+    private String browserVersion = "latest";
 
-	public MutableCapabilities capabilities;
+    private MutableCapabilities capabilities;
     private RemoteDriverInterface remoteDriverManager;
     private WebDriver webDriver;
     private SafariOptions safariOptions;
@@ -55,16 +57,14 @@ public class SauceSession {
         capabilities = new MutableCapabilities();
     }
 
-    public SauceSession start() throws MalformedURLException
+    public WebDriver start() throws MalformedURLException
 	{
         capabilities = getCapabilities();
-        webDriver = remoteDriverManager.getRemoteWebDriver(sauceSeleniumServer, capabilities);
-        sessionId = ((RemoteWebDriver) webDriver).getSessionId().toString();
-        test = new SauceApi(webDriver);
-        api = new SauceREST(SAUCE_USERNAME, SAUCE_ACCESS_KEY);
+        webDriver = remoteDriverManager.getRemoteWebDriver(SAUCE_URL, capabilities);
 
-        return this;
+        return this.webDriver;
 	}
+
     public MutableCapabilities getCapabilities() {
         sauceOptions = getSauceOptions();
         setBrowserOptions(browserName);

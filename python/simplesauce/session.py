@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.remote.remote_connection import RemoteConnection
-from options import SauceOptions
+from simplesauce.options import SauceOptions
 
 
 class SauceSession():

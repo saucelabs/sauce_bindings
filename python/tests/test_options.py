@@ -4,7 +4,11 @@ from simplesauce.options import SauceOptions
 class TestInit(object):
 
     def test_defaults_to_win10_chrome_latest(self):
-        pass
+        sauce = SauceOptions()
+
+        assert sauce.browserName == 'Chrome'
+        assert sauce.browserVersion == 'latest'
+        assert sauce.platformName == 'Windows 10'
 
     def test_accepts_browser_version_platform_name(self):
         pass
@@ -47,11 +51,7 @@ class TestAsJSON(object):
 """
 
 def test_defaults():
-    sauce = SauceOptions()
-
-    assert sauce.browserName == 'Chrome'
-    assert sauce.browserVersion == 'latest'
-    assert sauce.platformName == 'Windows 10'
+    
 
 
 def test_only_browserName():

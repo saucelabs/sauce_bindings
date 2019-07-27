@@ -1,22 +1,6 @@
-import os
-
-
-SAUCE_USERNAME = os.getenv('SAUCE_USERNAME', None)
-SAUCE_ACCCESS_KEY = os.getenv('SAUCE_ACCESS_KEY', None)
-
-us_ondemand = 'ondemand.saucelabs.com'
-eu_ondemand = 'ondemand.eu-central-1.saucelabs.com'
-
-US_SAUCE_DC_URL = 'https://{}:{}@{}/wd/hub'.format(SAUCE_USERNAME, SAUCE_ACCCESS_KEY, us_ondemand)
-EU_SAUCE_DC_URL = 'https://{}:{}@o{}/wd/hub'.format(SAUCE_USERNAME, SAUCE_ACCCESS_KEY, eu_ondemand)
-
-
 class SauceOptions():
 
     def __init__(self, browserName=None, **kwargs):
-
-        self._driver = {}
-        self._remote_url = US_SAUCE_DC_URL
 
         if not browserName:
             self.browserName = 'Chrome'

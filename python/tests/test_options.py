@@ -18,7 +18,17 @@ class TestInit(object):
         assert sauce.platformName == 'Windows 10'
 
     def test_accepts_w3c_values(self):
-        pass
+        options = {
+            "browserName": "Chrome",
+            "browserVersion": "75.0",
+            "platformName": "Windows 10"
+        }
+
+        sauce = SauceOptions(options=options)
+
+        assert sauce.browserName == 'Chrome'
+        assert sauce.browserVersion == '75.0'
+        assert sauce.platformName == 'Windows 10'
 
     def test_accepts_Sauce_values(self):
         pass

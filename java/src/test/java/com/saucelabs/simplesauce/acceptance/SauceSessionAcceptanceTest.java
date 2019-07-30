@@ -32,7 +32,7 @@ public class SauceSessionAcceptanceTest {
     }
 
     @Test
-    public void getInstance_nonDefaultCapabilities_returnsCorrectDriver() throws MalformedURLException {
+    public void startSession_nonDefaultCapabilities_returnsCorrectDriver() throws MalformedURLException {
         webDriver = new SauceSession().withFirefox().start();
         String actualBrowser = getBrowserNameFromCapabilities();
         assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("firefox"));

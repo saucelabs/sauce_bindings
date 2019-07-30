@@ -34,7 +34,10 @@ public class SauceSessionTest {
         RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
         sauceSession = new SauceSession(fakeRemoteDriver);
         sauceSession.start();
-        assertThat(sauceSession.sauceSessionCapabilities, instanceOf(ConcreteRemoteDriver.class));
+
+        String expectedDataCenterUrl = "https://ondemand.saucelabs.com/wd/hub";
+        assertThat(sauceSession.sauceDataCenter,
+                IsEqualIgnoringCase.equalToIgnoringCase(expectedDataCenterUrl));
     }
 
     @Test

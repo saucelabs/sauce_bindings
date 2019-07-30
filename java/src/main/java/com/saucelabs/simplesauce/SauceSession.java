@@ -1,5 +1,6 @@
 package com.saucelabs.simplesauce;
 
+import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
@@ -17,8 +18,10 @@ public class SauceSession {
 
 	@Setter private static String SAUCE_USERNAME = System.getenv("SAUCE_USERNAME");
 	@Setter private static String SAUCE_ACCESS_KEY = System.getenv("SAUCE_ACCESS_KEY");
+    @Getter @Setter public final String sauceDataCenter = DataCenter.USWest;
 
-	private String BUILD_TAG = System.getenv("BUILD_TAG");
+
+    private String BUILD_TAG = System.getenv("BUILD_TAG");
 
     //todo there is some weird bug when this is set to Linux, the session can't be started
 	private String operatingSystem = "Windows 10";
@@ -38,6 +41,7 @@ public class SauceSession {
     private SafariOptions safariOptions;
     private EdgeOptions edgeOptions;
     private InternetExplorerOptions ieOptions;
+    @Getter @Setter String sauceLabsUrl;
 
     public SauceSession() {
         sauceSessionCapabilities = new MutableCapabilities();
@@ -52,7 +56,8 @@ public class SauceSession {
     public WebDriver start() throws MalformedURLException
 	{
         sauceSessionCapabilities = setSauceOptions();
-        webDriver = remoteDriverImplementation.createRemoteWebDriver(SAUCE_URL, sauceSessionCapabilities);
+        sauceLabsUrl = sauceDataCenter;
+        webDriver = remoteDriverImplementation.createRemoteWebDriver(sauceLabsUrl, sauceSessionCapabilities);
 
         return this.webDriver;
 	}

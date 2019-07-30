@@ -1,4 +1,4 @@
-package com.saucelabs.simple_sauce;
+package com.saucelabs.simplesauce;
 
 public class Platforms
 {

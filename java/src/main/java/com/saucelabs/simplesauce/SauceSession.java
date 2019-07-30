@@ -20,8 +20,6 @@ public class SauceSession {
 
 	private String BUILD_TAG = System.getenv("BUILD_TAG");
 
-    public SauceApi test;
-
     //todo there is some weird bug when this is set to Linux, the session can't be started
 	private String operatingSystem = "Windows 10";
 	private String browserName = "Chrome";

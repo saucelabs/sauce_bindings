@@ -44,18 +44,7 @@ public class SauceSessionAcceptanceTest {
         String actualBrowser = getBrowserNameFromCapabilities();
         assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("safari"));
     }
-    @Test
-    @Ignore("Temporary ignore to get the build working")
-    public void newSession_default_canUseSauceApi() throws MalformedURLException {
-        SauceSession sauceLabs = new SauceSession();
-        sauceLabs.start();
 
-        sauceLabs.test.comment("sample test comment");
-        sauceLabs.test.setTestStatus("true");
-        sauceLabs.test.setTestName("MyTestName");
-
-        sauceLabs.stop();
-    }
     @Test
     @Ignore("Temporary ignore to get the build working")
     public void withSafari_differentVersion_returnsValidSession() throws MalformedURLException {

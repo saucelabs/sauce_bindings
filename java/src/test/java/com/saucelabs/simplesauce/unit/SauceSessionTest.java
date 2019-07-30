@@ -1,5 +1,9 @@
-package com.saucelabs.simplesauce;
+package com.saucelabs.simplesauce.unit;
 
+import com.saucelabs.simplesauce.ConcreteRemoteDriver;
+import com.saucelabs.simplesauce.RemoteDriverInterface;
+import com.saucelabs.simplesauce.SafariVersion;
+import com.saucelabs.simplesauce.SauceSession;
 import org.hamcrest.core.IsNot;
 import org.hamcrest.text.IsEqualIgnoringCase;
 import org.junit.Before;

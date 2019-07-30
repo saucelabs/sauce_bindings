@@ -29,6 +29,15 @@ public class SauceSessionTest {
     }
 
     @Test
+    public void startSession_defaultConfig_usWestDataCenter() throws MalformedURLException
+    {
+        RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
+        sauceSession = new SauceSession(fakeRemoteDriver);
+        sauceSession.start();
+        assertThat(sauceSession.sauceSessionCapabilities, instanceOf(ConcreteRemoteDriver.class));
+    }
+
+    @Test
     public void defaultConstructor_instantiated_setsConcreteDriverManager()
     {
         assertThat(sauceSession.getDriverManager(), instanceOf(ConcreteRemoteDriver.class));
@@ -68,7 +77,7 @@ public class SauceSessionTest {
         RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
         RemoteWebDriver driver = mock(RemoteWebDriver.class);
         sauceSession = new SauceSession(fakeRemoteDriver);
-        when(fakeRemoteDriver.getRemoteWebDriver("abcd", sauceSession.setSauceOptions())).thenReturn(driver);
+        when(fakeRemoteDriver.createRemoteWebDriver("abcd", sauceSession.setSauceOptions())).thenReturn(driver);
 
         sauceSession.start();
         String correctKey = "browserVersion";

@@ -33,7 +33,7 @@ public class SauceSession {
     private String browserVersion = "latest";
 
     public MutableCapabilities sauceSessionCapabilities;
-    private RemoteDriverInterface remoteDriverManager;
+    private RemoteDriverInterface remoteDriverImplementation;
     private WebDriver webDriver;
     private SafariOptions safariOptions;
     private EdgeOptions edgeOptions;
@@ -41,18 +41,18 @@ public class SauceSession {
 
     public SauceSession() {
         sauceSessionCapabilities = new MutableCapabilities();
-        remoteDriverManager = new ConcreteRemoteDriver();
+        remoteDriverImplementation = new ConcreteRemoteDriver();
     }
 
     public SauceSession(RemoteDriverInterface remoteManager) {
-        remoteDriverManager = remoteManager;
+        remoteDriverImplementation = remoteManager;
         sauceSessionCapabilities = new MutableCapabilities();
     }
 
     public WebDriver start() throws MalformedURLException
 	{
         sauceSessionCapabilities = setSauceOptions();
-        webDriver = remoteDriverManager.getRemoteWebDriver(SAUCE_URL, sauceSessionCapabilities);
+        webDriver = remoteDriverImplementation.createRemoteWebDriver(SAUCE_URL, sauceSessionCapabilities);
 
         return this.webDriver;
 	}
@@ -145,7 +145,7 @@ public class SauceSession {
 	}
 
     public RemoteDriverInterface getDriverManager() {
-        return remoteDriverManager;
+        return remoteDriverImplementation;
     }
 
 

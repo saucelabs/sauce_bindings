@@ -2,7 +2,6 @@ package com.saucelabs.simplesauce.unit;
 
 import com.saucelabs.simplesauce.ConcreteRemoteDriver;
 import com.saucelabs.simplesauce.RemoteDriverInterface;
-import com.saucelabs.simplesauce.SafariVersion;
 import com.saucelabs.simplesauce.SauceSession;
 import org.hamcrest.core.IsNot;
 import org.hamcrest.text.IsEqualIgnoringCase;
@@ -36,13 +35,12 @@ public class SauceSessionTest {
     }
 
     @Test
-    //TODO rename and refactor into logic similar to here: setCapability_platformName_returnsCorrectOs
-    public void browserNameCapability_isSetToCorrectKey() throws MalformedURLException {
+    public void startSession_setsBrowserKey() throws MalformedURLException {
         RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
         sauceSession = new SauceSession(fakeRemoteDriver);
         sauceSession.start();
         String expectedBrowserCapabilityKey = "browserName";
-        String actualBrowser = sauceSession.setSauceOptions().getCapability(expectedBrowserCapabilityKey).toString();
+        String actualBrowser = sauceSession.sauceSessionCapabilities.getCapability(expectedBrowserCapabilityKey).toString();
         assertThat(actualBrowser, IsNot.not(""));
     }
     @Test
@@ -124,7 +122,7 @@ public class SauceSessionTest {
     @Test
     public void withSafari_versionChangedFromDefault_returnsCorrectVersion()
     {
-        sauceSession.withSafari().withBrowserVersion(SafariVersion.elevenDotOne);
+        sauceSession.withSafari().withBrowserVersion("11.1");
         String safariVersion = sauceSession.setSauceOptions().getVersion();
         assertThat(safariVersion, IsEqualIgnoringCase.equalToIgnoringCase("11.1"));
     }

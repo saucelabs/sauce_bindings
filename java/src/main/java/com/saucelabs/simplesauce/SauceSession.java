@@ -32,7 +32,7 @@ public class SauceSession {
     private MutableCapabilities sauceOptions;
     private String browserVersion = "latest";
 
-    private MutableCapabilities capabilities;
+    public MutableCapabilities sauceSessionCapabilities;
     private RemoteDriverInterface remoteDriverManager;
     private WebDriver webDriver;
     private SafariOptions safariOptions;
@@ -40,19 +40,19 @@ public class SauceSession {
     private InternetExplorerOptions ieOptions;
 
     public SauceSession() {
-        capabilities = new MutableCapabilities();
+        sauceSessionCapabilities = new MutableCapabilities();
         remoteDriverManager = new ConcreteRemoteDriver();
     }
 
     public SauceSession(RemoteDriverInterface remoteManager) {
         remoteDriverManager = remoteManager;
-        capabilities = new MutableCapabilities();
+        sauceSessionCapabilities = new MutableCapabilities();
     }
 
     public WebDriver start() throws MalformedURLException
 	{
-        capabilities = setSauceOptions();
-        webDriver = remoteDriverManager.getRemoteWebDriver(SAUCE_URL, capabilities);
+        sauceSessionCapabilities = setSauceOptions();
+        webDriver = remoteDriverManager.getRemoteWebDriver(SAUCE_URL, sauceSessionCapabilities);
 
         return this.webDriver;
 	}
@@ -61,12 +61,12 @@ public class SauceSession {
         sauceOptions = getSauceOptions();
         setBrowserOptions(browserName);
 
-        capabilities.setCapability(sauceOptionsTag, sauceOptions);
-        capabilities.setCapability(CapabilityType.BROWSER_NAME, browserName);
-        capabilities.setCapability(CapabilityType.PLATFORM_NAME, operatingSystem);
-        capabilities.setCapability(CapabilityType.BROWSER_VERSION, browserVersion);
+        sauceSessionCapabilities.setCapability(sauceOptionsTag, sauceOptions);
+        sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_NAME, browserName);
+        sauceSessionCapabilities.setCapability(CapabilityType.PLATFORM_NAME, operatingSystem);
+        sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_VERSION, browserVersion);
 
-        return capabilities;
+        return sauceSessionCapabilities;
     }
 
     public MutableCapabilities getSauceOptions()
@@ -96,24 +96,24 @@ public class SauceSession {
     {
         if (browserName.equalsIgnoreCase("Chrome"))
         {
-            capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+            sauceSessionCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         }
         else if (browserName.equalsIgnoreCase("Firefox"))
         {
-            capabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
+            sauceSessionCapabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
         }
         else if(browserName.equalsIgnoreCase("Safari"))
         {
             safariOptions = new SafariOptions();
-            capabilities.setCapability(SafariOptions.CAPABILITY, safariOptions);
+            sauceSessionCapabilities.setCapability(SafariOptions.CAPABILITY, safariOptions);
         }
         else if(browserName.equalsIgnoreCase("Edge"))
         {
-            capabilities.setCapability("Edge", edgeOptions);
+            sauceSessionCapabilities.setCapability("Edge", edgeOptions);
         }
         else if(browserName.equalsIgnoreCase("IE"))
         {
-            capabilities.setCapability("se:ieOptions", ieOptions);
+            sauceSessionCapabilities.setCapability("se:ieOptions", ieOptions);
         }
         else {
             //TODO why is this so annoying??
@@ -150,7 +150,7 @@ public class SauceSession {
 
 
     public MutableCapabilities getSauceOptionsCapability(){
-        return ((MutableCapabilities) capabilities.getCapability(sauceOptionsTag));
+        return ((MutableCapabilities) sauceSessionCapabilities.getCapability(sauceOptionsTag));
     }
 
 

@@ -1,6 +1,5 @@
 package com.saucelabs.simplesauce.acceptance;
 
-import com.saucelabs.simplesauce.SafariVersion;
 import com.saucelabs.simplesauce.SauceSession;
 import org.hamcrest.text.IsEqualIgnoringCase;
 import org.junit.After;
@@ -46,10 +45,10 @@ public class SauceSessionAcceptanceTest {
     }
 
     @Test
-    @Ignore("Temporary ignore to get the build working")
+    @Ignore("Temporary ignore until the requirements are sorted out")
     public void withSafari_differentVersion_returnsValidSession() throws MalformedURLException {
         webDriver = new SauceSession().
-            withBrowserVersion(SafariVersion.elevenDotOne).
+            withBrowserVersion("11.1").
             withMacOsHighSierra().
             start();
 

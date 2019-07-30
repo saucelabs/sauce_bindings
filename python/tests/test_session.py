@@ -1,22 +1,42 @@
+import pytest
+from simplesauce.options import SauceOptions
 from simplesauce.session import SauceSession
 
 
 class TestInit(object):
 
     def test_defaults_to_US_West_data_center(self):
-        pass
+        session = SauceSession()
+
+        assert "us-west-1" in session.remote_url
 
     def test_overrides_default_value_for_data_center(self):
-        pass
+        session = SauceSession(data_center='eu')
+
+        assert "eu-central-1" in session.remote_url
 
     def test_raises_exception_if_data_center_is_invalid(self):
-        pass
+        with pytest.raises(KeyError):
+            session = SauceSession(data_center='uu')
+
+        with pytest.raises(KeyError):
+            session = SauceSession(data_center='')
 
     def test_accepts_provided_Options_instance(self):
-        pass
+        options = SauceOptions()
+
+        session = SauceSession(options)
+
+        session.options.browserName == 'chrome'
+        session.options.browserVersion == 'latest'
+        session.options.platformName == 'Windows 10'
 
     def test_generates_default_Options_instance_if_not_provided(self):
-        pass
+        session = SauceSession()
+
+        session.options.browserName == 'chrome'
+        session.options.browserVersion == 'latest'
+        session.options.platformName == 'Windows 10'
 
     def test_uses_username_and_access_key_if_ENV_variables_are_defined(self):
         pass

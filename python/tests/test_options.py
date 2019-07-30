@@ -6,32 +6,48 @@ class TestInit(object):
     def test_defaults_to_win10_chrome_latest(self):
         sauce = SauceOptions()
 
-        assert sauce.browserName == 'Chrome'
+        assert sauce.browserName == 'chrome'
         assert sauce.browserVersion == 'latest'
-        assert sauce.platformName == 'Windows 10'
+        assert sauce.platformName == 'windows 10'
 
     def test_accepts_browser_version_platform_name(self):
-        sauce = SauceOptions('Firefox', '67.0', 'Windows 10')
+        sauce = SauceOptions('Firefox', '67.0', 'windows 10')
 
         assert sauce.browserName == 'Firefox'
         assert sauce.browserVersion == '67.0'
-        assert sauce.platformName == 'Windows 10'
+        assert sauce.platformName == 'windows 10'
 
     def test_accepts_w3c_values(self):
         options = {
-            "browserName": "Chrome",
+            "browserName": "chrome",
             "browserVersion": "75.0",
-            "platformName": "Windows 10"
+            "platformName": "windows 10",
+            "sauce:options": {
+                "browserName": "chrome",
+                "browserVersion": "latest",
+                "platformName": "windows 10"
+            }
         }
 
         sauce = SauceOptions(options=options)
 
-        assert sauce.browserName == 'Chrome'
-        assert sauce.browserVersion == '75.0'
-        assert sauce.platformName == 'Windows 10'
+        assert sauce.browserName == 'chrome'
+        assert sauce.browserVersion == 'latest'
+        assert sauce.platformName == 'windows 10'
 
     def test_accepts_Sauce_values(self):
-        pass
+        options = {
+            "browserName": "chrome",
+            "browserVersion": "75.0",
+            "platformName": "windows 10",
+            "name": "sample test",
+            "build": "sample build"
+        }
+
+        sauce = SauceOptions(options=options)
+
+        assert sauce.name == 'sample test'
+        assert sauce.build == 'sample build'
 
     def test_accepts_browser_option_values(self):
         pass

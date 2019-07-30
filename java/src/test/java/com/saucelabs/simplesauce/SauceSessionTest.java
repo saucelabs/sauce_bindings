@@ -1,6 +1,5 @@
 package com.saucelabs.simplesauce;
 
-import org.hamcrest.CoreMatchers;
 import org.hamcrest.core.IsNot;
 import org.hamcrest.text.IsEqualIgnoringCase;
 import org.junit.Before;
@@ -12,7 +11,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.net.MalformedURLException;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.text.IsEmptyString.isEmptyOrNullString;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -30,7 +28,7 @@ public class SauceSessionTest {
     @Test
     public void defaultConstructor_instantiated_setsConcreteDriverManager()
     {
-        assertThat(sauceSession.getDriverManager(), instanceOf(ConcreteRemoteDriverManager.class));
+        assertThat(sauceSession.getDriverManager(), instanceOf(ConcreteRemoteDriver.class));
     }
 
     @Test
@@ -40,18 +38,18 @@ public class SauceSessionTest {
         sauceSession = new SauceSession(fakeRemoteDriver);
         sauceSession.start();
         String expectedBrowserCapabilityKey = "browserName";
-        String actualBrowser = sauceSession.getCapabilities().getCapability(expectedBrowserCapabilityKey).toString();
-        assertThat(actualBrowser, CoreMatchers.not(isEmptyOrNullString()));
+        String actualBrowser = sauceSession.setSauceOptions().getCapability(expectedBrowserCapabilityKey).toString();
+        assertThat(actualBrowser, IsNot.not(""));
     }
     @Test
     @Ignore("The problem with this approach is that you need to know which method" +
         "to call to get the desired behavior. However, if we move the logic out from" +
-        "the getCapabilities() method into another method, this test will no longer work." +
+        "the setSauceOptions() method into another method, this test will no longer work." +
         "So this test is implementation specific. The test above is not.")
     public void getCapabilities_browserNameCapSet_validKeyExists2() {
-        sauceSession.getCapabilities();
+        sauceSession.setSauceOptions();
         String expectedBrowserCapabilityKey = "browserName";
-        String actualBrowser = sauceSession.getCapabilities().getCapability(expectedBrowserCapabilityKey).toString();
+        String actualBrowser = sauceSession.setSauceOptions().getCapability(expectedBrowserCapabilityKey).toString();
         assertThat(actualBrowser, IsNot.not(""));
     }
     @Test
@@ -60,7 +58,7 @@ public class SauceSessionTest {
         sauceSession = new SauceSession(fakeRemoteDriver);
         sauceSession.start();
         String correctPlatformKey = "platformName";
-        String actualBrowser = sauceSession.getCapabilities().getCapability(correctPlatformKey).toString();
+        String actualBrowser = sauceSession.setSauceOptions().getCapability(correctPlatformKey).toString();
         assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("Windows 10"));
     }
     @Test
@@ -68,35 +66,35 @@ public class SauceSessionTest {
         RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
         RemoteWebDriver driver = mock(RemoteWebDriver.class);
         sauceSession = new SauceSession(fakeRemoteDriver);
-        when(fakeRemoteDriver.getRemoteWebDriver("abcd", sauceSession.getCapabilities())).thenReturn(driver);
+        when(fakeRemoteDriver.getRemoteWebDriver("abcd", sauceSession.setSauceOptions())).thenReturn(driver);
 
         sauceSession.start();
         String correctKey = "browserVersion";
-        String actualBrowser = sauceSession.getCapabilities().getCapability(correctKey).toString();
+        String actualBrowser = sauceSession.setSauceOptions().getCapability(correctKey).toString();
         assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("latest"));
     }
     @Test
     public void noSauceOptionsSet_whenCreated_defaultIsChrome()
     {
-        String actualBrowser = sauceSession.getCapabilities().getBrowserName();
+        String actualBrowser = sauceSession.setSauceOptions().getBrowserName();
         assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("Chrome"));
     }
     @Test
     public void noSauceOptionsSet_whenCreated_defaultIsWindows10() {
-        String actualOs = sauceSession.getCapabilities().getPlatform().name();
+        String actualOs = sauceSession.setSauceOptions().getPlatform().name();
         assertThat(actualOs, IsEqualIgnoringCase.equalToIgnoringCase("win10"));
     }
     @Test
     public void noSauceOptionsSet_whenCreated_latestBrowserVersion()
     {
-        MutableCapabilities caps = new SauceSession().getCapabilities();
+        MutableCapabilities caps = new SauceSession().setSauceOptions();
         String actualOperatingSystem = caps.getCapability("browserVersion").toString();
         assertThat(actualOperatingSystem, IsEqualIgnoringCase.equalToIgnoringCase("latest"));
     }
     @Test
     public void sauceOptions_defaultConfiguration_setsSauceOptions()
     {
-        sauceSession.getCapabilities();
+        sauceSession.setSauceOptions();
         boolean hasAccessKey = sauceSession.getSauceOptionsCapability().asMap().containsKey("accessKey");
         assertTrue("You need to have Sauce Credentials set (SAUCE_USERNAME, SAUCE_ACCESSKEY) before this unit test will pass", hasAccessKey);
     }
@@ -108,7 +106,7 @@ public class SauceSessionTest {
         sauceSession = new SauceSession(fakeRemoteDriver);
         sauceSession.withSafari();
 
-        String safariVersion = sauceSession.getCapabilities().getVersion();
+        String safariVersion = sauceSession.setSauceOptions().getVersion();
 
         assertThat(safariVersion, IsEqualIgnoringCase.equalToIgnoringCase("latest"));
     }
@@ -116,14 +114,14 @@ public class SauceSessionTest {
     public void withSafari_browserName_setToSafari()
     {
         sauceSession.withSafari();
-        String actualBrowserName = sauceSession.getCapabilities().getBrowserName();
+        String actualBrowserName = sauceSession.setSauceOptions().getBrowserName();
         assertThat(actualBrowserName, IsEqualIgnoringCase.equalToIgnoringCase("safari"));
     }
     @Test
     public void withSafari_versionChangedFromDefault_returnsCorrectVersion()
     {
         sauceSession.withSafari().withBrowserVersion(SafariVersion.elevenDotOne);
-        String safariVersion = sauceSession.getCapabilities().getVersion();
+        String safariVersion = sauceSession.setSauceOptions().getVersion();
         assertThat(safariVersion, IsEqualIgnoringCase.equalToIgnoringCase("11.1"));
     }
     @Test
@@ -131,7 +129,7 @@ public class SauceSessionTest {
     public void withOs_changedFromDefault_returnsCorrectOs()
     {
         sauceSession.withPlatform("Windows 10");
-        String actualOs = sauceSession.getCapabilities().getPlatform().toString();
+        String actualOs = sauceSession.setSauceOptions().getPlatform().toString();
         assertThat(actualOs, IsEqualIgnoringCase.equalToIgnoringCase("WIN10"));
     }
     @Test

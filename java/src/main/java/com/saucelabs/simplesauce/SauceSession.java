@@ -14,8 +14,6 @@ import org.openqa.selenium.safari.SafariOptions;
 import java.net.MalformedURLException;
 
 public class SauceSession {
-    public static final String SAUCE_URL = "https://ondemand.saucelabs.com:443/wd/hub";
-
 	@Setter private static String SAUCE_USERNAME = System.getenv("SAUCE_USERNAME");
 	@Setter private static String SAUCE_ACCESS_KEY = System.getenv("SAUCE_ACCESS_KEY");
     @Getter @Setter public final String sauceDataCenter = DataCenter.USWest;

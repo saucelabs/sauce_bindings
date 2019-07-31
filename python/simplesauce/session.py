@@ -11,15 +11,18 @@ us_ondemand = 'ondemand.us-west-1.saucelabs.com'
 eu_ondemand = 'ondemand.eu-central-1.saucelabs.com'
 
 US_SAUCE_DC_URL = 'https://{}:{}@{}/wd/hub'.format(SAUCE_USERNAME, SAUCE_ACCCESS_KEY, us_ondemand)
-EU_SAUCE_DC_URL = 'https://{}:{}@o{}/wd/hub'.format(SAUCE_USERNAME, SAUCE_ACCCESS_KEY, eu_ondemand)
+EU_SAUCE_DC_URL = 'https://{}:{}@{}/wd/hub'.format(SAUCE_USERNAME, SAUCE_ACCCESS_KEY, eu_ondemand)
 
 
 class SauceSession():
 
-    def __init__(self, data_center='us', options=None):
+    def __init__(self, data_center='us', username=None, access_key=None, options=None):
 
         # TODO: flesh this out
         self.options = options if options else SauceOptions()
+
+        self.username = username if username else SAUCE_USERNAME
+        self.access_key = access_key if access_key else SAUCE_ACCCESS_KEY
         
         if data_center.lower() == 'eu':
             self.remote_url = EU_SAUCE_DC_URL

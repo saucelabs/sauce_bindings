@@ -1,4 +1,5 @@
 import pytest
+import os
 from simplesauce.options import SauceOptions
 from simplesauce.session import SauceSession
 
@@ -39,13 +40,20 @@ class TestInit(object):
         session.options.platformName == 'Windows 10'
 
     def test_uses_username_and_access_key_if_ENV_variables_are_defined(self):
-        pass
-        
-    def test_accepts_provided_username_and_access_key(self):
-        pass
+        session = SauceSession()
+
+        session.username == os.environ['SAUCE_USERNAME']
+        session.access_key == os.environ['SAUCE_ACCESS_KEY']
 
     def test_accepts_provided_username_and_access_key(self):
-        pass
+        user = 'alice.smith'
+        access_key = 'abce-defg-hijk'
+
+        session = SauceSession(username=user, access_key=access_key)
+
+        session.username == os.environ['SAUCE_USERNAME']
+        session.access_key == os.environ['SAUCE_ACCESS_KEY']
+
 
 class TestDataCenter(object):
 

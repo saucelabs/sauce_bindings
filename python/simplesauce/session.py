@@ -21,9 +21,10 @@ class SauceSession():
         # TODO: flesh this out
         self.options = options if options else SauceOptions()
 
-        self.username = username if username else SAUCE_USERNAME
-        self.access_key = access_key if access_key else SAUCE_ACCCESS_KEY
-        
+        self._username = username if username else SAUCE_USERNAME
+        self._access_key = access_key if access_key else SAUCE_ACCCESS_KEY
+        self._data_center = data_center
+
         if data_center.lower() == 'eu':
             self.remote_url = EU_SAUCE_DC_URL
         elif data_center.lower() == 'us':
@@ -32,6 +33,37 @@ class SauceSession():
             raise KeyError("Invalid Data Center value, please select from 'us' or 'eu'")
         
         self.driver = {}
+
+    @property
+    def username(self):
+        return self._username
+
+    @username.setter
+    def username(self, username):
+        self._username = username
+
+    @property
+    def access_key(self):
+        return self._access_key
+
+    @access_key.setter
+    def access_key(self, access_key):
+        self._access_key = access_key
+
+    @property
+    def data_center(self):
+        return self._data_center
+
+    @data_center.setter
+    def data_center(self, data_center):
+        if data_center.lower() == 'eu':
+            self._data_center = data_center
+            self.remote_url = EU_SAUCE_DC_URL
+        elif data_center.lower() == 'us':
+            self._data_center = data_center
+            self.remote_url = US_SAUCE_DC_URL
+        else:
+            raise KeyError("Invalid Data Center value, please select from 'us' or 'eu'")
 
     def start(self):
         caps = self.options

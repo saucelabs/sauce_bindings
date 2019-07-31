@@ -58,19 +58,33 @@ class TestInit(object):
 class TestDataCenter(object):
 
     def test_overrides_default_value_for_data_center(self):
-        pass
+        session = SauceSession()
+
+        session.data_center = 'eu'
+
+        assert "eu-central-1" in session.remote_url
 
 
 class TestUsername(object):
 
     def test_accepts_provided_username(self):
-        pass
+        user = 'bob.smith'
+        session = SauceSession()
+
+        session.username = user
+
+        assert session.username == user
 
 
 class TestAccessKey(object):
 
     def test_accepts_provided_access_key(self):
-        pass
+        key = 'abcd-1234-5678'
+        session = SauceSession()
+
+        session.access_key = key
+
+        assert session.access_key == key
 
 
 class TestStart(object):

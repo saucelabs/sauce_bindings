@@ -66,12 +66,17 @@ class SauceSession():
             raise KeyError("Invalid Data Center value, please select from 'us' or 'eu'")
 
     def start(self):
+        if not self._username:
+            raise KeyError("Cannot start session, Sauce Username is not set.")
+        elif not self._access_key:
+            raise KeyError("Cannot start session, Sauce Access Key is not set.")
+
         caps = self.options
 
         executor = RemoteConnection(self.remote_url, resolve_ip=False)
         self.driver = webdriver.Remote(
             command_executor=executor,
-            desired_capabilities=caps,
+            desired_capabilities=caps.__dict__,
             keep_alive=True
         )
         return self.driver

@@ -90,33 +90,33 @@ class TestAccessKey(object):
 class TestStart(object):
 
     def test_creates_a_session_on_Sauce_labs(self):
-        pass
+        session = SauceSession()
+
+        session.start()
+
+        assert session.driver.session_id
 
     def test_raises_exception_if_no_username_set(self):
-        pass
+        session = SauceSession()
+
+        session.username = None
+        
+        with pytest.raises(KeyError):
+            session.start()
 
     def test_raises_exception_if_no_access_key_set(self):
-        pass
+        session = SauceSession()
+
+        session.access_key = None
+
+        with pytest.raises(KeyError):
+            session.start()
 
 class TestStop(object):
 
     def test_it_quits_the_driver(self):
-        pass
+        session = SauceSession()
 
+        session.start()
 
-"""
-def test_start_default_session():
-    sauce = SauceSession()
-
-    driver = sauce.start()
-
-    driver.close()
-
-
-def test_start_session_by_browserName():
-    sauce = SauceSession('Chrome')
-
-    driver = sauce.start()
-
-    driver.close()
-"""
+        session.stop()

@@ -1,14 +1,14 @@
 run_all_tests:
-	make -j java_tests python_tests csharp_tests ruby_tests
+	make -j java_tests python_tests dotnet_tests ruby_tests
 
-csharp_tests:
-	echo "run csharp tests"
+dotnet_tests:
+	echo "run dotnet tests"
 
 java_tests:
 	cd java && mvn clean test;
 
 python_tests:
-	echo "run python tests"
+	cd python && pip install tox && tox;
 
 ruby_tests:
-	echo "run ruby tests"
+	cd ruby && gem install rake && rake spec;

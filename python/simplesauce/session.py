@@ -16,10 +16,10 @@ EU_SAUCE_DC_URL = 'https://{}:{}@o{}/wd/hub'.format(SAUCE_USERNAME, SAUCE_ACCCES
 
 class SauceSession():
 
-    def __init__(self, data_center='us'):
+    def __init__(self, data_center='us', options=None):
 
         # TODO: flesh this out
-        self.options = SauceOptions()
+        self.options = options if options else SauceOptions()
         
         if data_center.lower() == 'eu':
             self.remote_url = EU_SAUCE_DC_URL

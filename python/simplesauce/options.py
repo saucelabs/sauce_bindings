@@ -19,14 +19,14 @@ class SauceOptions():
 
         if 'sauce:options' in options:
             w3cSauceOptions = options['sauce:options']
-            self.browserName = w3cSauceOptions['browserName']
-            self.browserVersion = w3cSauceOptions['browserVersion']
-            self.platformName = w3cSauceOptions['platformName']
-            self.name = w3cSauceOptions['name']
-            self.build = w3cSauceOptions['build']
+            self.browserName = w3cSauceOptions.get('browserName')
+            self.browserVersion = w3cSauceOptions.get('browserVersion')
+            self.platformName = w3cSauceOptions.get('platformName')
+            self.name = w3cSauceOptions.get('name')
+            self.build = w3cSauceOptions.get('build')
         else:
-            self.browserName = options['browserName']
-            self.browserVersion = options['browserVersion']
-            self.platformName = options['platformName']
-            self.name = options['name']
-            self.build = options['build']
+            self.browserName = options.get('browserName')
+            self.browserVersion = options.get('browserVersion')
+            self.platformName = options.get('platformName')
+            self.name = options.get('name')
+            self.build = options.get('build')

@@ -25,7 +25,7 @@ class TestInit(object):
     def test_accepts_provided_Options_instance(self):
         options = SauceOptions()
 
-        session = SauceSession(options)
+        session = SauceSession(options=options)
 
         session.options.browserName == 'chrome'
         session.options.browserVersion == 'latest'

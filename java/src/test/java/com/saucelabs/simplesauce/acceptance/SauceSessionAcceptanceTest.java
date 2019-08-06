@@ -44,8 +44,7 @@ public class SauceSessionAcceptanceTest {
         assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("safari"));
     }
 
-    @Test
-    @Ignore("Temporary ignore until the requirements are sorted out")
+    @Ignore("Temporary ignore to get the build working")
     public void withSafari_differentVersion_returnsValidSession() throws MalformedURLException {
         webDriver = new SauceSession().
             withBrowserVersion("11.1").

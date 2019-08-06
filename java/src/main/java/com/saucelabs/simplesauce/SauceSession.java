@@ -27,14 +27,13 @@ public class SauceSession {
 	private String testName;
 	private Boolean useSauce = true;
     private String sauceOptionsTag = "sauce:options";
-
     private ChromeOptions chromeOptions;
     private FirefoxOptions firefoxOptions;
     private MutableCapabilities sauceOptions;
     private String browserVersion = "latest";
-
     public MutableCapabilities sauceSessionCapabilities;
     private RemoteDriverInterface remoteDriverImplementation;
+
     private WebDriver webDriver;
     private SafariOptions safariOptions;
     private EdgeOptions edgeOptions;
@@ -56,7 +55,6 @@ public class SauceSession {
         sauceSessionCapabilities = setSauceOptions();
         sauceLabsUrl = sauceDataCenter;
         webDriver = remoteDriverImplementation.createRemoteWebDriver(sauceLabsUrl, sauceSessionCapabilities);
-
         return this.webDriver;
 	}
 

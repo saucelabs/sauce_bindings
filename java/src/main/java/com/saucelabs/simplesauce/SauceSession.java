@@ -17,6 +17,9 @@ public class SauceSession {
 	@Setter private static String SAUCE_USERNAME = System.getenv("SAUCE_USERNAME");
 	@Setter private static String SAUCE_ACCESS_KEY = System.getenv("SAUCE_ACCESS_KEY");
     @Getter @Setter public final String sauceDataCenter = DataCenter.USWest;
+    @Getter @Setter public String accessKey;
+    @Getter @Setter public String userName;
+
 
 
     private String BUILD_TAG = System.getenv("BUILD_TAG");
@@ -57,9 +60,9 @@ public class SauceSession {
         webDriver = remoteDriverImplementation.createRemoteWebDriver(sauceLabsUrl, sauceSessionCapabilities);
         return this.webDriver;
 	}
-
+    //TODO this and setSauceCapabilities can probably be combined
     public MutableCapabilities setSauceOptions() {
-        sauceOptions = getSauceOptions();
+        sauceOptions = setSauceCapabilities();
         setBrowserOptions(browserName);
 
         sauceSessionCapabilities.setCapability(sauceOptionsTag, sauceOptions);
@@ -70,28 +73,31 @@ public class SauceSession {
         return sauceSessionCapabilities;
     }
 
-    public MutableCapabilities getSauceOptions()
+    public MutableCapabilities setSauceCapabilities()
     {
-        //TODO no longer required
-        if (useSauce)
+        sauceOptions = new MutableCapabilities();
+        sauceOptions.setCapability("username", readUserNameFromEnvVariable());
+        sauceOptions.setCapability("accessKey", SAUCE_ACCESS_KEY);
+
+        if (testName != null)
         {
-            sauceOptions = new MutableCapabilities();
-            sauceOptions.setCapability("username", SAUCE_USERNAME);
-            sauceOptions.setCapability("accessKey", SAUCE_ACCESS_KEY);
+            sauceOptions.setCapability("name", testName);
+        }
 
-            if (testName != null)
-            {
-                sauceOptions.setCapability("name", testName);
-            }
-
-            if (BUILD_TAG != null)
-            {
-                sauceOptions.setCapability("build", BUILD_TAG);
-            }
+        if (BUILD_TAG != null)
+        {
+            sauceOptions.setCapability("build", BUILD_TAG);
         }
 
         return sauceOptions;
     }
+
+    private String readUserNameFromEnvVariable() {
+        if(userName == "")
+            userName = System.getenv("SAUCE_USERNAME");
+        return userName;
+    }
+
     //TODO this needs to be moved to it's own class because it keeps changing
     public void setBrowserOptions(String browserName)
     {

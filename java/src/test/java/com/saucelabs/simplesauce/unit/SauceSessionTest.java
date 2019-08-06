@@ -1,6 +1,8 @@
 package com.saucelabs.simplesauce.unit;
 
 import com.saucelabs.simplesauce.*;
+import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
+import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
 import org.hamcrest.core.IsNot;
 import org.hamcrest.text.IsEqualIgnoringCase;
 import org.junit.Before;

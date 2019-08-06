@@ -1,5 +1,8 @@
-package com.saucelabs.simplesauce;
+package com.saucelabs.simplesauce.unit;
 
+import com.saucelabs.simplesauce.ConcreteRemoteDriver;
+import com.saucelabs.simplesauce.RemoteDriverInterface;
+import com.saucelabs.simplesauce.SauceSession;
 import org.hamcrest.core.IsNot;
 import org.hamcrest.text.IsEqualIgnoringCase;
 import org.junit.Before;
@@ -26,19 +29,30 @@ public class SauceSessionTest {
     }
 
     @Test
+    public void startSession_defaultConfig_usWestDataCenter() throws MalformedURLException
+    {
+        RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
+        sauceSession = new SauceSession(fakeRemoteDriver);
+        sauceSession.start();
+
+        String expectedDataCenterUrl = "https://ondemand.saucelabs.com/wd/hub";
+        assertThat(sauceSession.sauceDataCenter,
+                IsEqualIgnoringCase.equalToIgnoringCase(expectedDataCenterUrl));
+    }
+
+    @Test
     public void defaultConstructor_instantiated_setsConcreteDriverManager()
     {
         assertThat(sauceSession.getDriverManager(), instanceOf(ConcreteRemoteDriver.class));
     }
 
     @Test
-    //TODO rename and refactor into logic similar to here: setCapability_platformName_returnsCorrectOs
-    public void browserNameCapability_isSetToCorrectKey() throws MalformedURLException {
+    public void startSession_setsBrowserKey() throws MalformedURLException {
         RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
         sauceSession = new SauceSession(fakeRemoteDriver);
         sauceSession.start();
         String expectedBrowserCapabilityKey = "browserName";
-        String actualBrowser = sauceSession.setSauceOptions().getCapability(expectedBrowserCapabilityKey).toString();
+        String actualBrowser = sauceSession.sauceSessionCapabilities.getCapability(expectedBrowserCapabilityKey).toString();
         assertThat(actualBrowser, IsNot.not(""));
     }
     @Test
@@ -66,7 +80,7 @@ public class SauceSessionTest {
         RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
         RemoteWebDriver driver = mock(RemoteWebDriver.class);
         sauceSession = new SauceSession(fakeRemoteDriver);
-        when(fakeRemoteDriver.getRemoteWebDriver("abcd", sauceSession.setSauceOptions())).thenReturn(driver);
+        when(fakeRemoteDriver.createRemoteWebDriver("abcd", sauceSession.setSauceOptions())).thenReturn(driver);
 
         sauceSession.start();
         String correctKey = "browserVersion";
@@ -120,7 +134,7 @@ public class SauceSessionTest {
     @Test
     public void withSafari_versionChangedFromDefault_returnsCorrectVersion()
     {
-        sauceSession.withSafari().withBrowserVersion(SafariVersion.elevenDotOne);
+        sauceSession.withSafari().withBrowserVersion("11.1");
         String safariVersion = sauceSession.setSauceOptions().getVersion();
         assertThat(safariVersion, IsEqualIgnoringCase.equalToIgnoringCase("11.1"));
     }

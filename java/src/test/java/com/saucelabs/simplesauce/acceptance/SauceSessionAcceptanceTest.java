@@ -1,6 +1,5 @@
 package com.saucelabs.simplesauce.acceptance;
 
-import com.saucelabs.simplesauce.SafariVersion;
 import com.saucelabs.simplesauce.SauceSession;
 import org.hamcrest.text.IsEqualIgnoringCase;
 import org.junit.After;
@@ -33,7 +32,7 @@ public class SauceSessionAcceptanceTest {
     }
 
     @Test
-    public void getInstance_nonDefaultCapabilities_returnsCorrectDriver() throws MalformedURLException {
+    public void startSession_nonDefaultCapabilities_returnsCorrectDriver() throws MalformedURLException {
         webDriver = new SauceSession().withFirefox().start();
         String actualBrowser = getBrowserNameFromCapabilities();
         assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("firefox"));
@@ -44,23 +43,11 @@ public class SauceSessionAcceptanceTest {
         String actualBrowser = getBrowserNameFromCapabilities();
         assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("safari"));
     }
-    @Test
-    @Ignore("Temporary ignore to get the build working")
-    public void newSession_default_canUseSauceApi() throws MalformedURLException {
-        SauceSession sauceLabs = new SauceSession();
-        sauceLabs.start();
 
-        sauceLabs.test.comment("sample test comment");
-        sauceLabs.test.setTestStatus("true");
-        sauceLabs.test.setTestName("MyTestName");
-
-        sauceLabs.stop();
-    }
-    @Test
     @Ignore("Temporary ignore to get the build working")
     public void withSafari_differentVersion_returnsValidSession() throws MalformedURLException {
         webDriver = new SauceSession().
-            withBrowserVersion(SafariVersion.elevenDotOne).
+            withBrowserVersion("11.1").
             withMacOsHighSierra().
             start();
 

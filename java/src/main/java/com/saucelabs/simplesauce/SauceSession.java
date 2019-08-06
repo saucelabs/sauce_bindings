@@ -1,5 +1,6 @@
 package com.saucelabs.simplesauce;
 
+import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
@@ -13,14 +14,12 @@ import org.openqa.selenium.safari.SafariOptions;
 import java.net.MalformedURLException;
 
 public class SauceSession {
-    public static final String SAUCE_URL = "https://ondemand.saucelabs.com:443/wd/hub";
-
 	@Setter private static String SAUCE_USERNAME = System.getenv("SAUCE_USERNAME");
 	@Setter private static String SAUCE_ACCESS_KEY = System.getenv("SAUCE_ACCESS_KEY");
+    @Getter @Setter public final String sauceDataCenter = DataCenter.USWest;
 
-	private String BUILD_TAG = System.getenv("BUILD_TAG");
 
-    public SauceApi test;
+    private String BUILD_TAG = System.getenv("BUILD_TAG");
 
     //todo there is some weird bug when this is set to Linux, the session can't be started
 	private String operatingSystem = "Windows 10";
@@ -28,34 +27,34 @@ public class SauceSession {
 	private String testName;
 	private Boolean useSauce = true;
     private String sauceOptionsTag = "sauce:options";
-
     private ChromeOptions chromeOptions;
     private FirefoxOptions firefoxOptions;
     private MutableCapabilities sauceOptions;
     private String browserVersion = "latest";
+    public MutableCapabilities sauceSessionCapabilities;
+    private RemoteDriverInterface remoteDriverImplementation;
 
-    private MutableCapabilities capabilities;
-    private RemoteDriverInterface remoteDriverManager;
     private WebDriver webDriver;
     private SafariOptions safariOptions;
     private EdgeOptions edgeOptions;
     private InternetExplorerOptions ieOptions;
+    @Getter @Setter public String sauceLabsUrl;
 
     public SauceSession() {
-        capabilities = new MutableCapabilities();
-        remoteDriverManager = new ConcreteRemoteDriver();
+        sauceSessionCapabilities = new MutableCapabilities();
+        remoteDriverImplementation = new ConcreteRemoteDriver();
     }
 
     public SauceSession(RemoteDriverInterface remoteManager) {
-        remoteDriverManager = remoteManager;
-        capabilities = new MutableCapabilities();
+        remoteDriverImplementation = remoteManager;
+        sauceSessionCapabilities = new MutableCapabilities();
     }
 
     public WebDriver start() throws MalformedURLException
 	{
-        capabilities = setSauceOptions();
-        webDriver = remoteDriverManager.getRemoteWebDriver(SAUCE_URL, capabilities);
-
+        sauceSessionCapabilities = setSauceOptions();
+        sauceLabsUrl = sauceDataCenter;
+        webDriver = remoteDriverImplementation.createRemoteWebDriver(sauceLabsUrl, sauceSessionCapabilities);
         return this.webDriver;
 	}
 
@@ -63,12 +62,12 @@ public class SauceSession {
         sauceOptions = getSauceOptions();
         setBrowserOptions(browserName);
 
-        capabilities.setCapability(sauceOptionsTag, sauceOptions);
-        capabilities.setCapability(CapabilityType.BROWSER_NAME, browserName);
-        capabilities.setCapability(CapabilityType.PLATFORM_NAME, operatingSystem);
-        capabilities.setCapability(CapabilityType.BROWSER_VERSION, browserVersion);
+        sauceSessionCapabilities.setCapability(sauceOptionsTag, sauceOptions);
+        sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_NAME, browserName);
+        sauceSessionCapabilities.setCapability(CapabilityType.PLATFORM_NAME, operatingSystem);
+        sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_VERSION, browserVersion);
 
-        return capabilities;
+        return sauceSessionCapabilities;
     }
 
     public MutableCapabilities getSauceOptions()
@@ -98,24 +97,24 @@ public class SauceSession {
     {
         if (browserName.equalsIgnoreCase("Chrome"))
         {
-            capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+            sauceSessionCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         }
         else if (browserName.equalsIgnoreCase("Firefox"))
         {
-            capabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
+            sauceSessionCapabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
         }
         else if(browserName.equalsIgnoreCase("Safari"))
         {
             safariOptions = new SafariOptions();
-            capabilities.setCapability(SafariOptions.CAPABILITY, safariOptions);
+            sauceSessionCapabilities.setCapability(SafariOptions.CAPABILITY, safariOptions);
         }
         else if(browserName.equalsIgnoreCase("Edge"))
         {
-            capabilities.setCapability("Edge", edgeOptions);
+            sauceSessionCapabilities.setCapability("Edge", edgeOptions);
         }
         else if(browserName.equalsIgnoreCase("IE"))
         {
-            capabilities.setCapability("se:ieOptions", ieOptions);
+            sauceSessionCapabilities.setCapability("se:ieOptions", ieOptions);
         }
         else {
             //TODO why is this so annoying??
@@ -147,12 +146,12 @@ public class SauceSession {
 	}
 
     public RemoteDriverInterface getDriverManager() {
-        return remoteDriverManager;
+        return remoteDriverImplementation;
     }
 
 
     public MutableCapabilities getSauceOptionsCapability(){
-        return ((MutableCapabilities) capabilities.getCapability(sauceOptionsTag));
+        return ((MutableCapabilities) sauceSessionCapabilities.getCapability(sauceOptionsTag));
     }
 
 

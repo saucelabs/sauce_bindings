@@ -5,9 +5,7 @@ jdk:
 - oraclejdk8
 before_install:
 - export | grep SAUCE_
-script: mvn clean test
-env:
-  global:
-  - BUILD_TAG=$TRAVIS_REPO_SLUG+$TRAVIS_BUILD_NUMBER
-  - SAUCE_USERNAME=sauce_examples
+- cd java
+script: mvn test
+
 

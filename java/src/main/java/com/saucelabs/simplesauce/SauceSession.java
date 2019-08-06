@@ -1,5 +1,7 @@
 package com.saucelabs.simplesauce;
 
+import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
+import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
 import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.MutableCapabilities;
@@ -158,14 +160,9 @@ public class SauceSession {
     public RemoteDriverInterface getDriverManager() {
         return remoteDriverImplementation;
     }
-
-
     public MutableCapabilities getSauceOptionsCapability(){
         return ((MutableCapabilities) sauceSessionCapabilities.getCapability(sauceOptionsTag));
     }
-
-
-
     public WebDriver getDriver() {
         return webDriver;
     }

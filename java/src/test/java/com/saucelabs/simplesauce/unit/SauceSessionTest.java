@@ -1,6 +1,7 @@
 package com.saucelabs.simplesauce.unit;
 
 import com.saucelabs.simplesauce.ConcreteRemoteDriver;
+import com.saucelabs.simplesauce.DataCenter;
 import com.saucelabs.simplesauce.RemoteDriverInterface;
 import com.saucelabs.simplesauce.SauceSession;
 import org.hamcrest.core.IsNot;
@@ -20,39 +21,44 @@ import static org.mockito.Mockito.when;
 
 public class SauceSessionTest {
 
-    private SauceSession sauceSession;
+    private SauceSession concreteSauceSession;
+    private SauceSession fakeSauceSession;
+    private RemoteDriverInterface fakeRemoteDriver;
 
     @Before
     public void setUp()
     {
-        sauceSession = new SauceSession();
+        concreteSauceSession = new SauceSession();
+        fakeRemoteDriver = mock(RemoteDriverInterface.class);
+        fakeSauceSession = new SauceSession(fakeRemoteDriver);
     }
 
     @Test
     public void startSession_defaultConfig_usWestDataCenter() throws MalformedURLException
     {
-        RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
-        sauceSession = new SauceSession(fakeRemoteDriver);
-        sauceSession.start();
+        fakeSauceSession.start();
 
-        String expectedDataCenterUrl = "https://ondemand.saucelabs.com/wd/hub";
-        assertThat(sauceSession.sauceDataCenter,
+        String expectedDataCenterUrl = DataCenter.USWest;
+        assertThat(fakeSauceSession.sauceDataCenter,
                 IsEqualIgnoringCase.equalToIgnoringCase(expectedDataCenterUrl));
     }
-
+    @Test(expected = SauceEnvironmentVariablesNotSetException.class)
+    public void setSauceCapabilities_usernameNotSet_throwsException()
+    {
+        fakeSauceSession.accessKey = "test";
+        fakeSauceSession.setSauceCapabilities();
+    }
     @Test
     public void defaultConstructor_instantiated_setsConcreteDriverManager()
     {
-        assertThat(sauceSession.getDriverManager(), instanceOf(ConcreteRemoteDriver.class));
+        assertThat(concreteSauceSession.getDriverManager(), instanceOf(ConcreteRemoteDriver.class));
     }
 
     @Test
     public void startSession_setsBrowserKey() throws MalformedURLException {
-        RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
-        sauceSession = new SauceSession(fakeRemoteDriver);
-        sauceSession.start();
+        fakeSauceSession.start();
         String expectedBrowserCapabilityKey = "browserName";
-        String actualBrowser = sauceSession.sauceSessionCapabilities.getCapability(expectedBrowserCapabilityKey).toString();
+        String actualBrowser = fakeSauceSession.sauceSessionCapabilities.getCapability(expectedBrowserCapabilityKey).toString();
         assertThat(actualBrowser, IsNot.not(""));
     }
     @Test
@@ -61,41 +67,34 @@ public class SauceSessionTest {
         "the setSauceOptions() method into another method, this test will no longer work." +
         "So this test is implementation specific. The test above is not.")
     public void getCapabilities_browserNameCapSet_validKeyExists2() {
-        sauceSession.setSauceOptions();
+        concreteSauceSession.setSauceOptions();
         String expectedBrowserCapabilityKey = "browserName";
-        String actualBrowser = sauceSession.setSauceOptions().getCapability(expectedBrowserCapabilityKey).toString();
+        String actualBrowser = concreteSauceSession.setSauceOptions().getCapability(expectedBrowserCapabilityKey).toString();
         assertThat(actualBrowser, IsNot.not(""));
     }
     @Test
     public void setCapability_platformName_returnsCorrectOs() throws MalformedURLException {
-        RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
-        sauceSession = new SauceSession(fakeRemoteDriver);
-        sauceSession.start();
+        fakeSauceSession.start();
         String correctPlatformKey = "platformName";
-        String actualBrowser = sauceSession.setSauceOptions().getCapability(correctPlatformKey).toString();
+        String actualBrowser = fakeSauceSession.setSauceOptions().getCapability(correctPlatformKey).toString();
         assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("Windows 10"));
     }
     @Test
     public void setCapability_browserVersion_returnsCorrectVersion() throws MalformedURLException {
-        RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
-        RemoteWebDriver driver = mock(RemoteWebDriver.class);
-        sauceSession = new SauceSession(fakeRemoteDriver);
-        when(fakeRemoteDriver.createRemoteWebDriver("abcd", sauceSession.setSauceOptions())).thenReturn(driver);
-
-        sauceSession.start();
+        fakeSauceSession.start();
         String correctKey = "browserVersion";
-        String actualBrowser = sauceSession.setSauceOptions().getCapability(correctKey).toString();
+        String actualBrowser = fakeSauceSession.setSauceOptions().getCapability(correctKey).toString();
         assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("latest"));
     }
     @Test
     public void noSauceOptionsSet_whenCreated_defaultIsChrome()
     {
-        String actualBrowser = sauceSession.setSauceOptions().getBrowserName();
+        String actualBrowser = concreteSauceSession.setSauceOptions().getBrowserName();
         assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("Chrome"));
     }
     @Test
     public void noSauceOptionsSet_whenCreated_defaultIsWindows10() {
-        String actualOs = sauceSession.setSauceOptions().getPlatform().name();
+        String actualOs = concreteSauceSession.setSauceOptions().getPlatform().name();
         assertThat(actualOs, IsEqualIgnoringCase.equalToIgnoringCase("win10"));
     }
     @Test
@@ -108,78 +107,76 @@ public class SauceSessionTest {
     @Test
     public void sauceOptions_defaultConfiguration_setsSauceOptions()
     {
-        sauceSession.setSauceOptions();
-        boolean hasAccessKey = sauceSession.getSauceOptionsCapability().asMap().containsKey("accessKey");
+        concreteSauceSession.setSauceOptions();
+        boolean hasAccessKey = concreteSauceSession.getSauceOptionsCapability().asMap().containsKey("accessKey");
         assertTrue("You need to have Sauce Credentials set (SAUCE_USERNAME, SAUCE_ACCESSKEY) before this unit test will pass", hasAccessKey);
     }
 
     @Test
     public void defaultSafari_notSet_returnsLatestVersion()
     {
-        RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
-        sauceSession = new SauceSession(fakeRemoteDriver);
-        sauceSession.withSafari();
+        fakeSauceSession.withSafari();
 
-        String safariVersion = sauceSession.setSauceOptions().getVersion();
+        String safariVersion = fakeSauceSession.setSauceOptions().getVersion();
 
         assertThat(safariVersion, IsEqualIgnoringCase.equalToIgnoringCase("latest"));
     }
     @Test
     public void withSafari_browserName_setToSafari()
     {
-        sauceSession.withSafari();
-        String actualBrowserName = sauceSession.setSauceOptions().getBrowserName();
+        fakeSauceSession.withSafari();
+        String actualBrowserName = fakeSauceSession.setSauceOptions().getBrowserName();
         assertThat(actualBrowserName, IsEqualIgnoringCase.equalToIgnoringCase("safari"));
     }
     @Test
     public void withSafari_versionChangedFromDefault_returnsCorrectVersion()
     {
-        sauceSession.withSafari().withBrowserVersion("11.1");
-        String safariVersion = sauceSession.setSauceOptions().getVersion();
+        fakeSauceSession.withSafari().withBrowserVersion("11.1");
+        String safariVersion = fakeSauceSession.setSauceOptions().getVersion();
         assertThat(safariVersion, IsEqualIgnoringCase.equalToIgnoringCase("11.1"));
     }
     @Test
     //TODO How to parameterize this?
     public void withOs_changedFromDefault_returnsCorrectOs()
     {
-        sauceSession.withPlatform("Windows 10");
-        String actualOs = sauceSession.setSauceOptions().getPlatform().toString();
+        fakeSauceSession.withPlatform("Windows 10");
+        String actualOs = fakeSauceSession.setSauceOptions().getPlatform().toString();
         assertThat(actualOs, IsEqualIgnoringCase.equalToIgnoringCase("WIN10"));
     }
     @Test
     @Ignore("Future enhancement")
     public void withOs_linux_allowsOnlyChromeOrFirefox()
     {
-        sauceSession.withPlatform("Linux");
+        fakeSauceSession.withPlatform("Linux");
     }
     @Test
     @Ignore("Future enhancement")
     public void withOs_windows10_doesntAllowSafari() throws MalformedURLException {
-        sauceSession.withPlatform("Windows 10");
+        fakeSauceSession.withPlatform("Windows 10");
     }
     @Test
     @Ignore("Future enhancement")
     public void withOs_windows8_1_allowsOnlyChromeOrFfOrIe()
     {
-        sauceSession.withPlatform("Windows 8.1");
+        fakeSauceSession.withPlatform("Windows 8.1");
     }
     @Test
     @Ignore("Future enhancement")
     public void withOs_windows8_allowsOnlyChromeOrFfOrIe()
     {
-        sauceSession.withPlatform("Windows 8");
+        fakeSauceSession.withPlatform("Windows 8");
     }
     @Test
     @Ignore("Future enhancement")
     public void withOs_mac_allowsOnlyChromeOrFfOrSafari()
     {
-        sauceSession.withPlatform("Windows 8");
+        fakeSauceSession.withPlatform("Windows 8");
     }
     @Test
     @Ignore("Future enhancement")
     public void withSafari_versionChangedToInvalid_shouldNotBePossible()
     {
         //TODO it should not be possible to set an invalid version
-        sauceSession.withSafari().withBrowserVersion("1234");
+        fakeSauceSession.withSafari().withBrowserVersion("1234");
     }
 }

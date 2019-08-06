@@ -39,7 +39,7 @@ public class SauceSession {
     private SafariOptions safariOptions;
     private EdgeOptions edgeOptions;
     private InternetExplorerOptions ieOptions;
-    @Getter @Setter String sauceLabsUrl;
+    @Getter @Setter public String sauceLabsUrl;
 
     public SauceSession() {
         sauceSessionCapabilities = new MutableCapabilities();

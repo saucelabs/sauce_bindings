@@ -80,6 +80,8 @@ public class SauceSession {
     {
         sauceOptions = new MutableCapabilities();
 
+        //TODO need help handling these exceptions that keep bubbling up in my methods.
+        //How do I stop this??
         try
         {
             sauceOptions.setCapability("username", getUserName());
@@ -223,5 +225,10 @@ public class SauceSession {
         if (variableToCheck == null)
             throw new SauceEnvironmentVariablesNotSetException();
         return variableToCheck;
+    }
+
+    public String getAccessKey() throws SauceEnvironmentVariablesNotSetException {
+        String accessKey = environmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY");
+        return checkIfEmpty(accessKey);
     }
 }

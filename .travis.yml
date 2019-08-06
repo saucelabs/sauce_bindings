@@ -6,7 +6,7 @@ env:
 
 jobs:
   include:
-    - stage: "Java Tests"
+    - stage: "All Tests"
       language: java
       jdk: openjdk8
       before_install:
@@ -14,7 +14,6 @@ jobs:
       - cd java
       install: mvn install
       script: mvn test
-    - stage: "Python Tests"
       language: python
       python: "3.6"
       before_install:
@@ -22,7 +21,6 @@ jobs:
       - cd python
       install: pip install -r requirements.txt
       script: pytest
-    - stage: "Ruby Tests"
       language: ruby
       rvm: 2.5.3
       before_script: cd ruby

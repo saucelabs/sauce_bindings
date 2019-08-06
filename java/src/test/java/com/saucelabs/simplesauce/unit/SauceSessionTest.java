@@ -1,36 +1,33 @@
 package com.saucelabs.simplesauce.unit;
 
-import com.saucelabs.simplesauce.ConcreteRemoteDriver;
-import com.saucelabs.simplesauce.DataCenter;
-import com.saucelabs.simplesauce.RemoteDriverInterface;
-import com.saucelabs.simplesauce.SauceSession;
+import com.saucelabs.simplesauce.*;
 import org.hamcrest.core.IsNot;
 import org.hamcrest.text.IsEqualIgnoringCase;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class SauceSessionTest {
 
     private SauceSession concreteSauceSession;
     private SauceSession fakeSauceSession;
     private RemoteDriverInterface fakeRemoteDriver;
+    private EnvironmentManager fakeEnvironmentManager;
 
     @Before
     public void setUp()
     {
         concreteSauceSession = new SauceSession();
         fakeRemoteDriver = mock(RemoteDriverInterface.class);
-        fakeSauceSession = new SauceSession(fakeRemoteDriver);
+        fakeEnvironmentManager = mock(EnvironmentManager.class);
+        fakeSauceSession = new SauceSession(fakeRemoteDriver, fakeEnvironmentManager);
     }
 
     @Test
@@ -43,11 +40,15 @@ public class SauceSessionTest {
                 IsEqualIgnoringCase.equalToIgnoringCase(expectedDataCenterUrl));
     }
     @Test(expected = SauceEnvironmentVariablesNotSetException.class)
-    public void setSauceCapabilities_usernameNotSet_throwsException()
-    {
-        fakeSauceSession.accessKey = "test";
-        fakeSauceSession.setSauceCapabilities();
+    public void getUserName_usernameNotSetInEnvironmentVariable_throwsException() throws SauceEnvironmentVariablesNotSetException {
+        fakeSauceSession.getUserName();
     }
+    @Test
+    public void getUserName_usernameSetInEnvironmentVariable_returnsValue() throws SauceEnvironmentVariablesNotSetException {
+        when(fakeEnvironmentManager.getEnvironmentVariable(anyString())).thenReturn(anyString());
+        fakeSauceSession.getUserName();
+    }
+
     @Test
     public void defaultConstructor_instantiated_setsConcreteDriverManager()
     {

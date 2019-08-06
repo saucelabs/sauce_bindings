@@ -17,6 +17,7 @@ public class SauceSession {
 	@Setter private static String SAUCE_USERNAME = System.getenv("SAUCE_USERNAME");
 	@Setter private static String SAUCE_ACCESS_KEY = System.getenv("SAUCE_ACCESS_KEY");
     @Getter @Setter public final String sauceDataCenter = DataCenter.USWest;
+    private EnvironmentManager environmentManager;
     @Getter @Setter public String accessKey;
     @Getter @Setter public String userName;
 
@@ -46,11 +47,13 @@ public class SauceSession {
     public SauceSession() {
         sauceSessionCapabilities = new MutableCapabilities();
         remoteDriverImplementation = new ConcreteRemoteDriver();
+        environmentManager = new ConcreteSystemManager();
     }
 
-    public SauceSession(RemoteDriverInterface remoteManager) {
+    public SauceSession(RemoteDriverInterface remoteManager, EnvironmentManager environmentManager) {
         remoteDriverImplementation = remoteManager;
         sauceSessionCapabilities = new MutableCapabilities();
+        this.environmentManager = environmentManager;
     }
 
     public WebDriver start() throws MalformedURLException
@@ -76,7 +79,14 @@ public class SauceSession {
     public MutableCapabilities setSauceCapabilities()
     {
         sauceOptions = new MutableCapabilities();
-        sauceOptions.setCapability("username", readUserNameFromEnvVariable());
+
+        try
+        {
+            sauceOptions.setCapability("username", getUserName());
+        }
+        catch(SauceEnvironmentVariablesNotSetException e)
+        {}
+
         sauceOptions.setCapability("accessKey", SAUCE_ACCESS_KEY);
 
         if (testName != null)
@@ -90,12 +100,6 @@ public class SauceSession {
         }
 
         return sauceOptions;
-    }
-
-    private String readUserNameFromEnvVariable() {
-        if(userName == "")
-            userName = System.getenv("SAUCE_USERNAME");
-        return userName;
     }
 
     //TODO this needs to be moved to it's own class because it keeps changing
@@ -208,5 +212,16 @@ public class SauceSession {
     {
         if(webDriver != null)
             webDriver.quit();
+    }
+
+    public String getUserName() throws SauceEnvironmentVariablesNotSetException {
+        String userName = environmentManager.getEnvironmentVariable("SAUCE_USERNAME");
+        return checkIfEmpty(userName);
+    }
+
+    private String checkIfEmpty(String variableToCheck) throws SauceEnvironmentVariablesNotSetException {
+        if (variableToCheck == null)
+            throw new SauceEnvironmentVariablesNotSetException();
+        return variableToCheck;
     }
 }

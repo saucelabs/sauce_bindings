@@ -14,8 +14,6 @@ import org.openqa.selenium.safari.SafariOptions;
 import java.net.MalformedURLException;
 
 public class SauceSession {
-	@Setter private static String SAUCE_USERNAME = System.getenv("SAUCE_USERNAME");
-	@Setter private static String SAUCE_ACCESS_KEY = System.getenv("SAUCE_ACCESS_KEY");
     @Getter @Setter public final String sauceDataCenter = DataCenter.USWest;
     private EnvironmentManager environmentManager;
     @Getter @Setter public String accessKey;
@@ -89,7 +87,13 @@ public class SauceSession {
         catch(SauceEnvironmentVariablesNotSetException e)
         {}
 
-        sauceOptions.setCapability("accessKey", SAUCE_ACCESS_KEY);
+        try
+        {
+            sauceOptions.setCapability("accessKey", getAccessKey());
+        }
+        catch(SauceEnvironmentVariablesNotSetException e)
+        {}
+
 
         if (testName != null)
         {

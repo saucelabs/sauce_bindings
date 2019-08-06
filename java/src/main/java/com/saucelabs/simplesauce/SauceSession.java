@@ -16,18 +16,12 @@ import java.net.MalformedURLException;
 public class SauceSession {
     @Getter @Setter public final String sauceDataCenter = DataCenter.USWest;
     private EnvironmentManager environmentManager;
-    @Getter @Setter public String accessKey;
-    @Getter @Setter public String userName;
-
-
-
     private String BUILD_TAG = System.getenv("BUILD_TAG");
 
     //todo there is some weird bug when this is set to Linux, the session can't be started
 	private String operatingSystem = "Windows 10";
 	private String browserName = "Chrome";
 	private String testName;
-	private Boolean useSauce = true;
     private String sauceOptionsTag = "sauce:options";
     private ChromeOptions chromeOptions;
     private FirefoxOptions firefoxOptions;

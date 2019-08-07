@@ -5,10 +5,10 @@ dotnet_tests:
 	echo "run dotnet tests"
 
 java_tests:
-	cd java && mvn clean test;
+	cd java && mvn install test;
 
 python_tests:
-	cd python && pip install tox && tox;
+	cd python && pip install -r requirements.txt && pytest;
 
 ruby_tests:
 	cd ruby && gem install rake && rake spec;

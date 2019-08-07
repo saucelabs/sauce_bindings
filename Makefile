@@ -11,4 +11,4 @@ python_tests:
 	cd python && pip install -r requirements.txt && pytest;
 
 ruby_tests:
-	cd ruby && gem install rake && rake spec;
+	cd ruby && rake spec;

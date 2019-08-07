@@ -6,26 +6,6 @@ env:
 
 jobs:
   include:
-    - stage: "Java Tests"
-      language: java
-      jdk: openjdk8
-      before_install:
-      - export | grep SAUCE_
-      - cd java
-      install: mvn install
-      script: mvn test
-  include:
-    - stage: "Python Tests"
-      language: python
-      python: "3.6"
-      before_install:
-      - export | grep SAUCE_
-      - cd python
-      install: pip install -r requirements.txt
-      script: pytest
-  include:
-    - stage: "Ruby Tests"
-      language: ruby
-      rvm: 2.5.3
-      before_script: cd ruby
-      script: bundle exec rake sauce_demo
+    - stage: "Run All Tests"
+      before_install: export | grep SAUCE_
+      script: make run_all_tests

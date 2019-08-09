@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
   name = 'simplesauce',
   packages = ['simplesauce'],
-  version = '0.1',
+  version = '0.0.1',
   license='MIT',
   description = 'Python bindings of the simple_sauce library',
   author = 'josh.grant',

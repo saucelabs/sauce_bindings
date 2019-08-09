@@ -4,9 +4,14 @@ Hello, welcome to the Simple Sauce Python bindings! Let's make using Sauce Labs 
 
 ## Installation
 
-Clone this project:
+Clone this project to build from source
 ```
 git clone https://github.com/saucelabs/simple_sauce
+python setup.py install
+```
+or install from `pip`:
+```
+pip install simplesauce
 ```
 
 ## Development

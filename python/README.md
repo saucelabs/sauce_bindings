@@ -2,6 +2,20 @@
 
 Hello, welcome to the Simple Sauce Python bindings! Let's make using Sauce Labs Simple!
 
+## Simplest Example Usage
+
+The goal of Simple Sauce is to provide a straightforward approach to connecting your automated scripts to Sauce. Here's a barebones example. First, set your Sauce username and Sauce access key [as environment variables](https://wiki.saucelabs.com/display/DOCS/Best+Practice%3A+Use+Environment+Variables+for+Authentication+Credentials), then Simple Sauce can be used like this:
+```
+from simplesauce.session import SauceSession
+
+session = SauceSession()
+
+session.driver.get("www.saucedemo.com")
+
+session.driver.quit()
+```
+
+
 ## Installation
 
 Clone this project to build from source

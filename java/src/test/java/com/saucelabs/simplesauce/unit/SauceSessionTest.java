@@ -184,7 +184,19 @@ public class SauceSessionTest {
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
 
         String actualOs = fakeSauceSession.setSauceOptions().getPlatform().toString();
-        assertThat(actualOs, IsEqualIgnoringCase.equalToIgnoringCase("WIN10"));
+        assertEquals("WIN10", actualOs);
+    }
+
+    //Mac OS Platform Tests
+    @Test
+    public void withMacOsMojave_returnsMacPlatformStringFromSelenium()
+    {
+        when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
+        when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
+
+        fakeSauceSession.withMacOsMojave();
+        String actualOs = fakeSauceSession.setSauceOptions().getPlatform().toString();
+        assertEquals("macOS 10.14", actualOs);
     }
     @Test
     @Ignore("Future enhancement")

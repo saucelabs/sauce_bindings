@@ -57,8 +57,9 @@ public class SauceSessionTest {
     }
     @Test
     public void getAccessKey_keySetInEnvironmentVariable_returnsValue() throws SauceEnvironmentVariablesNotSetException {
-        when(fakeEnvironmentManager.getEnvironmentVariable(anyString())).thenReturn(anyString());
-        fakeSauceSession.getUserName();
+        when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
+        String actualAccessKey = fakeSauceSession.getAccessKey();
+        assertThat(actualAccessKey, IsNot.not(""));
     }
     @Test
     public void defaultConstructor_instantiated_setsConcreteDriverManager()

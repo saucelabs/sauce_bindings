@@ -209,4 +209,19 @@ public class SauceSession {
         String accessKey = environmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY");
         return checkIfEmpty(accessKey);
     }
+
+    public void withMacOsSierra() {
+        this.operatingSystem = "macOS 10.12";
+        browserName = "Safari";
+    }
+
+    public void withMacOsXElCapitan() {
+        this.operatingSystem = "OS X 10.11";
+        browserName = "Safari";
+    }
+
+    public void withMacOsXYosemite() {
+        this.operatingSystem = "OS X 10.10";
+        browserName = "Safari";
+    }
 }

@@ -12,14 +12,12 @@ import static org.mockito.Mockito.when;
 
 public class MacOsTests {
 
-    private SauceSession concreteSauceSession;
     private SauceSession fakeSauceSession;
     private EnvironmentManager fakeEnvironmentManager;
 
     @Before
     public void setUp()
     {
-        concreteSauceSession = new SauceSession();
         RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
         fakeEnvironmentManager = mock(EnvironmentManager.class);
         fakeSauceSession = new SauceSession(fakeRemoteDriver, fakeEnvironmentManager);
@@ -28,10 +26,38 @@ public class MacOsTests {
     }
 
     @Test
-    public void withMacOsMojave_returnsMacPlatformStringFromSelenium()
+    public void withMacOsMojave_returnsMacOs1014()
     {
         fakeSauceSession.withMacOsMojave();
         String actualOsThatWasSet = fakeSauceSession.setSauceOptions().getPlatform().toString();
         assertEquals("macOS 10.14", actualOsThatWasSet);
+    }
+    @Test
+    public void withMacOsHighSierra_returnsMacOs1013()
+    {
+        fakeSauceSession.withMacOsHighSierra();
+        String actualOsThatWasSet = fakeSauceSession.setSauceOptions().getPlatform().toString();
+        assertEquals("macOS 10.13", actualOsThatWasSet);
+    }
+    @Test
+    public void withMacOsSierra_returnsMacOs1012()
+    {
+        fakeSauceSession.withMacOsSierra();
+        String actualOsThatWasSet = fakeSauceSession.setSauceOptions().getPlatform().toString();
+        assertEquals("macOS 10.12", actualOsThatWasSet);
+    }
+    @Test
+    public void withMacOsElCapitan_returnsMacOs1011()
+    {
+        fakeSauceSession.withMacOsXElCapitan();
+        String actualOsThatWasSet = fakeSauceSession.setSauceOptions().getPlatform().toString();
+        assertEquals("OS X 10.11", actualOsThatWasSet);
+    }
+    @Test
+    public void withMacOsYosemite_returnsMacOsX1010()
+    {
+        fakeSauceSession.withMacOsXYosemite();
+        String actualOsThatWasSet = fakeSauceSession.setSauceOptions().getPlatform().toString();
+        assertEquals("OS X 10.10", actualOsThatWasSet);
     }
 }

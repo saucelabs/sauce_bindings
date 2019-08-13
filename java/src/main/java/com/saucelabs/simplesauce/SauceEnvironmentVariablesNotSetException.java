@@ -1,4 +1,4 @@
 package com.saucelabs.simplesauce;
 
-public class SauceEnvironmentVariablesNotSetException extends Throwable {
+public class SauceEnvironmentVariablesNotSetException extends RuntimeException {
 }

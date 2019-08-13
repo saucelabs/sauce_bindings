@@ -73,24 +73,8 @@ public class SauceSession {
     public MutableCapabilities setSauceCapabilities()
     {
         sauceOptions = new MutableCapabilities();
-
-        //TODO need help handling these exceptions that keep bubbling up in my methods.
-        //How do I stop this??
-        try
-        {
-            sauceOptions.setCapability("username", getUserName());
-        }
-        catch(SauceEnvironmentVariablesNotSetException e)
-        {}
-
-        try
-        {
-            sauceOptions.setCapability("accessKey", getAccessKey());
-        }
-        catch(SauceEnvironmentVariablesNotSetException e)
-        {}
-
-
+        sauceOptions.setCapability("username", getUserName());
+        sauceOptions.setCapability("accessKey", getAccessKey());
         if (testName != null)
         {
             sauceOptions.setCapability("name", testName);
@@ -210,18 +194,18 @@ public class SauceSession {
             webDriver.quit();
     }
 
-    public String getUserName() throws SauceEnvironmentVariablesNotSetException {
+    public String getUserName() {
         String userName = environmentManager.getEnvironmentVariable("SAUCE_USERNAME");
         return checkIfEmpty(userName);
     }
 
-    private String checkIfEmpty(String variableToCheck) throws SauceEnvironmentVariablesNotSetException {
+    private String checkIfEmpty(String variableToCheck) {
         if (variableToCheck == null)
             throw new SauceEnvironmentVariablesNotSetException();
         return variableToCheck;
     }
 
-    public String getAccessKey() throws SauceEnvironmentVariablesNotSetException {
+    public String getAccessKey() {
         String accessKey = environmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY");
         return checkIfEmpty(accessKey);
     }

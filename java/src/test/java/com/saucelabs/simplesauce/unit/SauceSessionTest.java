@@ -1,6 +1,9 @@
 package com.saucelabs.simplesauce.unit;
 
-import com.saucelabs.simplesauce.*;
+import com.saucelabs.simplesauce.ConcreteRemoteDriver;
+import com.saucelabs.simplesauce.DataCenter;
+import com.saucelabs.simplesauce.SauceEnvironmentVariablesNotSetException;
+import com.saucelabs.simplesauce.SauceSession;
 import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
 import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
 import org.hamcrest.core.IsNot;
@@ -13,8 +16,10 @@ import org.openqa.selenium.MutableCapabilities;
 import java.net.MalformedURLException;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class SauceSessionTest {
 

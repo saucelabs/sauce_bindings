@@ -152,8 +152,8 @@ public class SauceSessionTest {
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
 
-        String safariVersion = fakeSauceSession.setSauceOptions().getVersion();
-        assertThat(safariVersion, IsEqualIgnoringCase.equalToIgnoringCase("latest"));
+        String safariVersionSetThroughSauceSession = fakeSauceSession.setSauceOptions().getVersion();
+        assertEquals("latest", safariVersionSetThroughSauceSession);
     }
     @Test
     public void withSafari_browserName_setToSafari()
@@ -162,8 +162,8 @@ public class SauceSessionTest {
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
 
-        String actualBrowserName = fakeSauceSession.setSauceOptions().getBrowserName();
-        assertThat(actualBrowserName, IsEqualIgnoringCase.equalToIgnoringCase("safari"));
+        String actualBrowserNameSetThroughSauceSession = fakeSauceSession.setSauceOptions().getBrowserName();
+        assertEquals("safari", actualBrowserNameSetThroughSauceSession);
     }
     @Test
     public void withSafari_versionChangedFromDefault_returnsCorrectVersion()
@@ -172,8 +172,8 @@ public class SauceSessionTest {
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
 
-        String safariVersion = fakeSauceSession.setSauceOptions().getVersion();
-        assertThat(safariVersion, IsEqualIgnoringCase.equalToIgnoringCase("11.1"));
+        String actualBrowserVersionSetThroughSauceSession = fakeSauceSession.setSauceOptions().getVersion();
+        assertEquals("11.1", actualBrowserVersionSetThroughSauceSession);
     }
     @Test
     //TODO How to parameterize this?
@@ -183,20 +183,8 @@ public class SauceSessionTest {
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
 
-        String actualOs = fakeSauceSession.setSauceOptions().getPlatform().toString();
-        assertEquals("WIN10", actualOs);
-    }
-
-    //Mac OS Platform Tests
-    @Test
-    public void withMacOsMojave_returnsMacPlatformStringFromSelenium()
-    {
-        when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
-        when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
-
-        fakeSauceSession.withMacOsMojave();
-        String actualOs = fakeSauceSession.setSauceOptions().getPlatform().toString();
-        assertEquals("macOS 10.14", actualOs);
+        String actualOsSetThroughSauceSession = fakeSauceSession.setSauceOptions().getPlatform().toString();
+        assertEquals("WIN10", actualOsSetThroughSauceSession);
     }
     @Test
     @Ignore("Future enhancement")

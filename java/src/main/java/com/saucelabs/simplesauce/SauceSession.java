@@ -129,8 +129,7 @@ public class SauceSession {
             sauceSessionCapabilities.setCapability("se:ieOptions", ieOptions);
         }
         else {
-            //TODO why is this so annoying??
-            //throw new NoSuchBrowserExistsException();
+            throw new IllegalArgumentException("The browser=>" + browserName + " that you passed in is not a valid option.");
         }
     }
 

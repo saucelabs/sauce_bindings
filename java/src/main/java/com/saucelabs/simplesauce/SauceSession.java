@@ -194,7 +194,7 @@ public class SauceSession {
             webDriver.quit();
     }
 
-    public String getUserName() {
+    public String getUserName() throws SauceEnvironmentVariablesNotSetException{
         String userName = environmentManager.getEnvironmentVariable("SAUCE_USERNAME");
         return checkIfEmpty(userName);
     }
@@ -205,7 +205,7 @@ public class SauceSession {
         return variableToCheck;
     }
 
-    public String getAccessKey() {
+    public String getAccessKey() throws SauceEnvironmentVariablesNotSetException {
         String accessKey = environmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY");
         return checkIfEmpty(accessKey);
     }

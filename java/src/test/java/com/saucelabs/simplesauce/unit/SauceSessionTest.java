@@ -16,8 +16,7 @@ import org.openqa.selenium.MutableCapabilities;
 import java.net.MalformedURLException;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -166,29 +165,34 @@ public class SauceSessionTest {
     public void withOs_linux_allowsOnlyChromeOrFirefox()
     {
         fakeSauceSession.withPlatform("Linux");
+        fail();
     }
     @Test
     @Ignore("Future enhancement")
-    public void withOs_windows10_doesntAllowSafari() throws MalformedURLException {
+    public void withOs_windows10_doesntAllowSafari() {
         fakeSauceSession.withPlatform("Windows 10");
+        fail();
     }
     @Test
     @Ignore("Future enhancement")
     public void withOs_windows8_1_allowsOnlyChromeOrFfOrIe()
     {
         fakeSauceSession.withPlatform("Windows 8.1");
+        fail();
     }
     @Test
     @Ignore("Future enhancement")
     public void withOs_windows8_allowsOnlyChromeOrFfOrIe()
     {
         fakeSauceSession.withPlatform("Windows 8");
+        fail();
     }
     @Test
     @Ignore("Future enhancement")
     public void withOs_mac_allowsOnlyChromeOrFfOrSafari()
     {
         fakeSauceSession.withPlatform("Windows 8");
+        fail();
     }
     @Test
     @Ignore("Future enhancement")
@@ -196,5 +200,6 @@ public class SauceSessionTest {
     {
         //TODO it should not be possible to set an invalid version
         fakeSauceSession.withSafari().withBrowserVersion("1234");
+        fail();
     }
 }

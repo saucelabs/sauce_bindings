@@ -94,7 +94,7 @@ public class SauceSessionTest {
         assertEquals("Windows 10", browserSetInSauceSession);
     }
     @Test
-    public void startSession_default_returnsLatestBrowser() throws MalformedURLException {
+    public void defaultBrowserIsLatest() throws MalformedURLException {
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
 

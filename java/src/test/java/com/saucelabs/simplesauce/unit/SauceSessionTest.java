@@ -33,6 +33,10 @@ public class SauceSessionTest {
         RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
         fakeEnvironmentManager = mock(EnvironmentManager.class);
         fakeSauceSession = new SauceSession(fakeRemoteDriver, fakeEnvironmentManager);
+        //TODO move the 2 lines below to the tests that are relevant. This isn't relevant to all of the tests.
+        //However, I did this so that I can leave the code cleaner by removing checked exceptions
+        when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
+        when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
     }
 
     @Test
@@ -45,22 +49,22 @@ public class SauceSessionTest {
                 IsEqualIgnoringCase.equalToIgnoringCase(expectedDataCenterUrl));
     }
     @Test(expected = SauceEnvironmentVariablesNotSetException.class)
-    public void getUserName_usernameNotSetInEnvironmentVariable_throwsException() throws SauceEnvironmentVariablesNotSetException {
+    public void getUserName_usernameNotSetInEnvironmentVariable_throwsException() {
         fakeSauceSession.getUserName();
     }
     @Test
-    public void getUserName_usernameSetInEnvironmentVariable_returnsValue() throws SauceEnvironmentVariablesNotSetException {
+    public void getUserName_usernameSetInEnvironmentVariable_returnsValue()  {
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
         String actualUserName = fakeSauceSession.getUserName();
         assertThat(actualUserName, IsNot.not(""));
 
     }
     @Test(expected = SauceEnvironmentVariablesNotSetException.class)
-    public void getAccessKey_keyNotSetInEnvironmentVariable_throwsException() throws SauceEnvironmentVariablesNotSetException {
+    public void getAccessKey_keyNotSetInEnvironmentVariable_throwsException()  {
         fakeSauceSession.getAccessKey();
     }
     @Test
-    public void getAccessKey_keySetInEnvironmentVariable_returnsValue() throws SauceEnvironmentVariablesNotSetException {
+    public void getAccessKey_keySetInEnvironmentVariable_returnsValue() {
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
         String actualAccessKey = fakeSauceSession.getAccessKey();
         assertThat(actualAccessKey, IsNot.not(""));

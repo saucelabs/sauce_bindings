@@ -1,0 +1,15 @@
+sudo: true
+
+env:
+  global:
+  - SAUCE_USERNAME=sauce_examples
+
+jobs:
+  include:
+    - stage: "Run All Tests"
+      language: python
+      python: "3.6"
+      jdk: "openjdk8"
+      rvm: "2.5.3"
+      before_install: export | grep SAUCE_
+      script: make run_all_tests

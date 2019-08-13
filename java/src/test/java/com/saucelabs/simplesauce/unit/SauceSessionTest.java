@@ -20,14 +20,13 @@ public class SauceSessionTest {
 
     private SauceSession concreteSauceSession;
     private SauceSession fakeSauceSession;
-    private RemoteDriverInterface fakeRemoteDriver;
     private EnvironmentManager fakeEnvironmentManager;
 
     @Before
     public void setUp()
     {
         concreteSauceSession = new SauceSession();
-        fakeRemoteDriver = mock(RemoteDriverInterface.class);
+        RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
         fakeEnvironmentManager = mock(EnvironmentManager.class);
         fakeSauceSession = new SauceSession(fakeRemoteDriver, fakeEnvironmentManager);
     }
@@ -47,8 +46,10 @@ public class SauceSessionTest {
     }
     @Test
     public void getUserName_usernameSetInEnvironmentVariable_returnsValue() throws SauceEnvironmentVariablesNotSetException {
-        when(fakeEnvironmentManager.getEnvironmentVariable(anyString())).thenReturn(anyString());
-        fakeSauceSession.getUserName();
+        when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
+        String actualUserName = fakeSauceSession.getUserName();
+        assertThat(actualUserName, IsNot.not(""));
+
     }
     @Test(expected = SauceEnvironmentVariablesNotSetException.class)
     public void getAccessKey_keyNotSetInEnvironmentVariable_throwsException() throws SauceEnvironmentVariablesNotSetException {

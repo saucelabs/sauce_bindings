@@ -11,7 +11,6 @@ import org.hamcrest.text.IsEqualIgnoringCase;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openqa.selenium.MutableCapabilities;
 
 import java.net.MalformedURLException;
 
@@ -48,7 +47,7 @@ public class SauceSessionTest {
         fakeSauceSession.start();
 
         String expectedDataCenterUrl = DataCenter.USWest;
-        assertThat(fakeSauceSession.sauceDataCenter,
+        assertEquals(fakeSauceSession.sauceDataCenter,
                 IsEqualIgnoringCase.equalToIgnoringCase(expectedDataCenterUrl));
     }
     @Test(expected = SauceEnvironmentVariablesNotSetException.class)
@@ -59,7 +58,7 @@ public class SauceSessionTest {
     public void getUserName_usernameSetInEnvironmentVariable_returnsValue()  {
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
         String actualUserName = fakeSauceSession.getUserName();
-        assertThat(actualUserName, IsNot.not(""));
+        assertEquals(actualUserName, IsNot.not(""));
 
     }
     @Test(expected = SauceEnvironmentVariablesNotSetException.class)
@@ -70,12 +69,12 @@ public class SauceSessionTest {
     public void getAccessKey_keySetInEnvironmentVariable_returnsValue() {
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
         String actualAccessKey = fakeSauceSession.getAccessKey();
-        assertThat(actualAccessKey, IsNot.not(""));
+        assertEquals(actualAccessKey, IsNot.not(""));
     }
     @Test
     public void defaultConstructor_instantiated_setsConcreteDriverManager()
     {
-        assertThat(concreteSauceSession.getDriverManager(), instanceOf(ConcreteRemoteDriver.class));
+        assertEquals(concreteSauceSession.getDriverManager(), instanceOf(ConcreteRemoteDriver.class));
     }
 
     @Test
@@ -86,7 +85,7 @@ public class SauceSessionTest {
         fakeSauceSession.start();
         String expectedBrowserCapabilityKey = "browserName";
         String actualBrowser = fakeSauceSession.sauceSessionCapabilities.getCapability(expectedBrowserCapabilityKey).toString();
-        assertThat(actualBrowser, IsNot.not(""));
+        assertNotEquals("", actualBrowser);
     }
     @Test
     @Ignore("The problem with this approach is that you need to know which method" +
@@ -97,7 +96,7 @@ public class SauceSessionTest {
         concreteSauceSession.setSauceOptions();
         String expectedBrowserCapabilityKey = "browserName";
         String actualBrowser = concreteSauceSession.setSauceOptions().getCapability(expectedBrowserCapabilityKey).toString();
-        assertThat(actualBrowser, IsNot.not(""));
+        assertEquals(actualBrowser, IsNot.not(""));
     }
     @Test
     public void setCapability_platformName_returnsCorrectOs() throws MalformedURLException {
@@ -107,35 +106,28 @@ public class SauceSessionTest {
         fakeSauceSession.start();
         String correctPlatformKey = "platformName";
         String actualBrowser = fakeSauceSession.setSauceOptions().getCapability(correctPlatformKey).toString();
-        assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("Windows 10"));
+        assertEquals(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("Windows 10"));
     }
     @Test
-    public void setCapability_browserVersion_returnsCorrectVersion() throws MalformedURLException {
+    public void startSession_default_returnsLatestBrowser() throws MalformedURLException {
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
 
         fakeSauceSession.start();
         String correctKey = "browserVersion";
-        String actualBrowser = fakeSauceSession.setSauceOptions().getCapability(correctKey).toString();
-        assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("latest"));
+        String browserSetThroughSauceSession = fakeSauceSession.setSauceOptions().getCapability(correctKey).toString();
+        assertEquals("latest", browserSetThroughSauceSession);
     }
     @Test
     public void noSauceOptionsSet_whenCreated_defaultIsChrome()
     {
         String actualBrowser = concreteSauceSession.setSauceOptions().getBrowserName();
-        assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("Chrome"));
+        assertEquals(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("Chrome"));
     }
     @Test
     public void noSauceOptionsSet_whenCreated_defaultIsWindows10() {
         String actualOs = concreteSauceSession.setSauceOptions().getPlatform().name();
-        assertThat(actualOs, IsEqualIgnoringCase.equalToIgnoringCase("win10"));
-    }
-    @Test
-    public void noSauceOptionsSet_whenCreated_latestBrowserVersion()
-    {
-        MutableCapabilities caps = new SauceSession().setSauceOptions();
-        String actualOperatingSystem = caps.getCapability("browserVersion").toString();
-        assertThat(actualOperatingSystem, IsEqualIgnoringCase.equalToIgnoringCase("latest"));
+        assertEquals(actualOs, IsEqualIgnoringCase.equalToIgnoringCase("win10"));
     }
     @Test
     public void sauceOptions_defaultConfiguration_setsSauceOptions()

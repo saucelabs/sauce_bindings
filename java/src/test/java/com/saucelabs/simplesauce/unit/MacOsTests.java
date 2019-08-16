@@ -6,6 +6,8 @@ import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.net.MalformedURLException;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -26,38 +28,38 @@ public class MacOsTests {
     }
 
     @Test
-    public void withMacOsMojave_returnsMacOs1014()
-    {
+    public void withMacOsMojave_returnsMacOs1014() throws MalformedURLException {
         fakeSauceSession.withMacOsMojave();
-        String actualOsThatWasSet = fakeSauceSession.setSauceOptions().getPlatform().toString();
+        fakeSauceSession.start();
+        String actualOsThatWasSet = fakeSauceSession.sauceSessionCapabilities.getPlatform().toString();
         assertEquals("macOS 10.14", actualOsThatWasSet);
     }
     @Test
-    public void withMacOsHighSierra_returnsMacOs1013()
-    {
+    public void withMacOsHighSierra_returnsMacOs1013() throws MalformedURLException {
         fakeSauceSession.withMacOsHighSierra();
-        String actualOsThatWasSet = fakeSauceSession.setSauceOptions().getPlatform().toString();
+        fakeSauceSession.start();
+        String actualOsThatWasSet = fakeSauceSession.sauceSessionCapabilities.getPlatform().toString();
         assertEquals("macOS 10.13", actualOsThatWasSet);
     }
     @Test
-    public void withMacOsSierra_returnsMacOs1012()
-    {
+    public void withMacOsSierra_returnsMacOs1012() throws MalformedURLException {
         fakeSauceSession.withMacOsSierra();
-        String actualOsThatWasSet = fakeSauceSession.setSauceOptions().getPlatform().toString();
+        fakeSauceSession.start();
+        String actualOsThatWasSet = fakeSauceSession.sauceSessionCapabilities.getPlatform().toString();
         assertEquals("macOS 10.12", actualOsThatWasSet);
     }
     @Test
-    public void withMacOsElCapitan_returnsMacOs1011()
-    {
+    public void withMacOsElCapitan_returnsMacOs1011() throws MalformedURLException {
         fakeSauceSession.withMacOsXElCapitan();
-        String actualOsThatWasSet = fakeSauceSession.setSauceOptions().getPlatform().toString();
+        fakeSauceSession.start();
+        String actualOsThatWasSet = fakeSauceSession.sauceSessionCapabilities.getPlatform().toString();
         assertEquals("OS X 10.11", actualOsThatWasSet);
     }
     @Test
-    public void withMacOsYosemite_returnsMacOsX1010()
-    {
+    public void withMacOsYosemite_returnsMacOsX1010() throws MalformedURLException {
         fakeSauceSession.withMacOsXYosemite();
-        String actualOsThatWasSet = fakeSauceSession.setSauceOptions().getPlatform().toString();
+        fakeSauceSession.start();
+        String actualOsThatWasSet = fakeSauceSession.sauceSessionCapabilities.getPlatform().toString();
         assertEquals("OS X 10.10", actualOsThatWasSet);
     }
 }

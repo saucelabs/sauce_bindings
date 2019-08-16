@@ -23,8 +23,7 @@ public class SauceSessionTest {
     private EnvironmentManager fakeEnvironmentManager;
 
     @Before
-    public void setUp()
-    {
+    public void setUp() throws MalformedURLException {
         concreteSauceSession = new SauceSession();
         RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
         fakeEnvironmentManager = mock(EnvironmentManager.class);
@@ -33,6 +32,10 @@ public class SauceSessionTest {
         //However, I did this so that I can leave the code cleaner by removing checked exceptions
         //when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
         //when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
+        when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
+        when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
+
+        fakeSauceSession.start();
     }
 
     @Test
@@ -46,20 +49,12 @@ public class SauceSessionTest {
         String expectedDataCenterUrl = DataCenter.USWest;
         assertEquals(expectedDataCenterUrl, fakeSauceSession.sauceDataCenter);
     }
-    @Test(expected = SauceEnvironmentVariablesNotSetException.class)
-    public void getUserName_usernameNotSetInEnvironmentVariable_throwsException() {
-        fakeSauceSession.getUserName();
-    }
     @Test
     public void getUserName_usernameSetInEnvironmentVariable_returnsValue()  {
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
         String actualUserName = fakeSauceSession.getUserName();
         assertNotEquals("",actualUserName);
 
-    }
-    @Test(expected = SauceEnvironmentVariablesNotSetException.class)
-    public void getAccessKey_keyNotSetInEnvironmentVariable_throwsException()  {
-        fakeSauceSession.getAccessKey();
     }
     @Test
     public void getAccessKey_keySetInEnvironmentVariable_returnsValue() {
@@ -90,7 +85,7 @@ public class SauceSessionTest {
 
         fakeSauceSession.start();
         String correctPlatformKey = "platformName";
-        String browserSetInSauceSession = fakeSauceSession.setSauceOptions().getCapability(correctPlatformKey).toString();
+        String browserSetInSauceSession = fakeSauceSession.sauceSessionCapabilities.getCapability(correctPlatformKey).toString();
         assertEquals("Windows 10", browserSetInSauceSession);
     }
     @Test
@@ -100,56 +95,60 @@ public class SauceSessionTest {
 
         fakeSauceSession.start();
         String correctKey = "browserVersion";
-        String browserSetThroughSauceSession = fakeSauceSession.setSauceOptions().getCapability(correctKey).toString();
+        String browserSetThroughSauceSession = fakeSauceSession.sauceSessionCapabilities.getCapability(correctKey).toString();
         assertEquals("latest", browserSetThroughSauceSession);
     }
     @Test
     public void defaultIsChrome()
     {
-        String actualBrowser = concreteSauceSession.setSauceOptions().getBrowserName();
+        String actualBrowser = fakeSauceSession.sauceSessionCapabilities.getBrowserName();
         assertEquals("Chrome", actualBrowser);
     }
     @Test
     public void defaultIsWindows10() {
-        String actualOs = concreteSauceSession.setSauceOptions().getPlatform().name();
+        String actualOs = fakeSauceSession.sauceSessionCapabilities.getPlatform().name();
         assertEquals("WIN10", actualOs);
     }
     @Test
-    public void sauceOptions_defaultConfiguration_setsSauceOptions()
-    {
-        concreteSauceSession.setSauceOptions();
-        boolean hasAccessKey = concreteSauceSession.getSauceOptionsCapability().asMap().containsKey("accessKey");
+    public void sauceOptions_defaultConfiguration_setsSauceOptions() throws MalformedURLException {
+        when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
+        when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
+        fakeSauceSession.start();
+        boolean hasAccessKey = fakeSauceSession.getSauceOptionsCapability().asMap().containsKey("accessKey");
         assertTrue("You need to have Sauce Credentials set (SAUCE_USERNAME, SAUCE_ACCESSKEY) before this unit test will pass", hasAccessKey);
     }
 
     @Test
-    public void defaultSafari_notSet_returnsLatestVersion()
-    {
+    public void defaultSafari_notSet_returnsLatestVersion() throws MalformedURLException {
         fakeSauceSession.withSafari();
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
 
-        String safariVersionSetThroughSauceSession = fakeSauceSession.setSauceOptions().getVersion();
+        fakeSauceSession.start();
+
+        String safariVersionSetThroughSauceSession = fakeSauceSession.sauceSessionCapabilities.getVersion();
         assertEquals("latest", safariVersionSetThroughSauceSession);
     }
     @Test
-    public void withSafari_browserName_setToSafari()
-    {
+    public void withSafari_browserName_setToSafari() throws MalformedURLException {
         fakeSauceSession.withSafari();
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
 
-        String actualBrowserNameSetThroughSauceSession = fakeSauceSession.setSauceOptions().getBrowserName();
+        fakeSauceSession.start();
+
+        String actualBrowserNameSetThroughSauceSession = fakeSauceSession.sauceSessionCapabilities.getBrowserName();
         assertEquals("safari", actualBrowserNameSetThroughSauceSession);
     }
     @Test
-    public void withSafari_versionChangedFromDefault_returnsCorrectVersion()
-    {
+    public void withSafari_versionChangedFromDefault_returnsCorrectVersion() throws MalformedURLException {
         fakeSauceSession.withSafari().withBrowserVersion("11.1");
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
 
-        String actualBrowserVersionSetThroughSauceSession = fakeSauceSession.setSauceOptions().getVersion();
+        fakeSauceSession.start();
+
+        String actualBrowserVersionSetThroughSauceSession = fakeSauceSession.sauceSessionCapabilities.getVersion();
         assertEquals("11.1", actualBrowserVersionSetThroughSauceSession);
     }
     @Test
@@ -160,7 +159,7 @@ public class SauceSessionTest {
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
 
-        String actualOsSetThroughSauceSession = fakeSauceSession.setSauceOptions().getPlatform().toString();
+        String actualOsSetThroughSauceSession = fakeSauceSession.sauceSessionCapabilities.getPlatform().toString();
         assertEquals("WIN10", actualOsSetThroughSauceSession);
     }
     @Test

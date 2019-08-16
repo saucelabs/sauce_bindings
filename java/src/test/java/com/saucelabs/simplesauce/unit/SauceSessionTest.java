@@ -2,7 +2,6 @@ package com.saucelabs.simplesauce.unit;
 
 import com.saucelabs.simplesauce.ConcreteRemoteDriver;
 import com.saucelabs.simplesauce.DataCenter;
-import com.saucelabs.simplesauce.SauceEnvironmentVariablesNotSetException;
 import com.saucelabs.simplesauce.SauceSession;
 import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
 import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
@@ -35,8 +34,7 @@ public class SauceSessionTest {
     }
 
     @Test
-    public void startSession_defaultConfig_usWestDataCenter() throws MalformedURLException
-    {
+    public void startSession_defaultConfig_usWestDataCenter() {
         String expectedDataCenterUrl = DataCenter.USWest;
         assertEquals(expectedDataCenterUrl, fakeSauceSession.sauceDataCenter);
     }
@@ -60,19 +58,19 @@ public class SauceSessionTest {
     }
 
     @Test
-    public void startSession_setsBrowserKey() throws MalformedURLException {
+    public void startSession_setsBrowserKey() {
         String expectedBrowserCapabilityKey = "browserName";
         String actualBrowser = fakeSauceSession.sauceSessionCapabilities.getCapability(expectedBrowserCapabilityKey).toString();
         assertNotEquals("", actualBrowser);
     }
     @Test
-    public void start_setsPlatformNameKey() throws MalformedURLException {
+    public void start_setsPlatformNameKey() {
         String correctPlatformKey = "platformName";
         String browserSetInSauceSession = fakeSauceSession.sauceSessionCapabilities.getCapability(correctPlatformKey).toString();
         assertEquals("Windows 10", browserSetInSauceSession);
     }
     @Test
-    public void defaultBrowserIsLatest() throws MalformedURLException {
+    public void defaultBrowserIsLatest() {
         String correctKey = "browserVersion";
         String browserSetThroughSauceSession = fakeSauceSession.sauceSessionCapabilities.getCapability(correctKey).toString();
         assertEquals("latest", browserSetThroughSauceSession);
@@ -89,7 +87,7 @@ public class SauceSessionTest {
         assertEquals("WIN10", actualOs);
     }
     @Test
-    public void sauceOptions_defaultConfiguration_setsSauceOptions() throws MalformedURLException {
+    public void sauceOptions_defaultConfiguration_setsSauceOptions() {
         boolean hasAccessKey = fakeSauceSession.getSauceOptionsCapability().asMap().containsKey("accessKey");
         assertTrue("You need to have Sauce Credentials set (SAUCE_USERNAME, SAUCE_ACCESSKEY) before this unit test will pass", hasAccessKey);
     }

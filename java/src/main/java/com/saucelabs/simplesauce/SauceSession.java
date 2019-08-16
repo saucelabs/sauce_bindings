@@ -67,7 +67,7 @@ public class SauceSession {
         return sauceSessionCapabilities;
     }
 
-    public MutableCapabilities setSauceOptions() {
+    private MutableCapabilities setSauceOptions() {
         sauceOptions = new MutableCapabilities();
         sauceOptions.setCapability("username", getUserName());
         sauceOptions.setCapability("accessKey", getAccessKey());
@@ -75,7 +75,7 @@ public class SauceSession {
     }
 
     //TODO this needs to be moved to it's own class because it keeps changing
-    public void setBrowserSpecificCapabilities(String browserName)
+    private void setBrowserSpecificCapabilities(String browserName)
     {
         if (browserName.equalsIgnoreCase("Chrome"))
         {

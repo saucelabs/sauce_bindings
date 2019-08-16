@@ -7,19 +7,15 @@ import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.net.MalformedURLException;
-
 import static org.mockito.Mockito.mock;
 
 public class SauceEnvironmentVariableNotSetExceptionTest {
 
-    private SauceSession concreteSauceSession;
     private SauceSession fakeSauceSession;
     private EnvironmentManager fakeEnvironmentManager;
 
     @Before
-    public void setUp() throws MalformedURLException {
-        concreteSauceSession = new SauceSession();
+    public void setUp() {
         RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
         fakeEnvironmentManager = mock(EnvironmentManager.class);
         fakeSauceSession = new SauceSession(fakeRemoteDriver, fakeEnvironmentManager);

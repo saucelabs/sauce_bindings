@@ -18,7 +18,6 @@ import java.net.MalformedURLException;
 public class SauceSession {
     @Getter @Setter public final String sauceDataCenter = DataCenter.USWest;
     private EnvironmentManager environmentManager;
-    private String BUILD_TAG = System.getenv("BUILD_TAG");
 
     //todo there is some weird bug when this is set to Linux, the session can't be started
 	private String operatingSystem = "Windows 10";
@@ -52,44 +51,31 @@ public class SauceSession {
 
     public WebDriver start() throws MalformedURLException
 	{
-        sauceSessionCapabilities = setSauceOptions();
+        sauceOptions = setSauceOptions();
+        setBrowserSpecificCapabilities(browserName);
+        sauceSessionCapabilities = setRemoteDriverCapabilities(sauceOptions);
         sauceLabsUrl = sauceDataCenter;
         webDriver = remoteDriverImplementation.createRemoteWebDriver(sauceLabsUrl, sauceSessionCapabilities);
         return this.webDriver;
 	}
-    //TODO this and setSauceCapabilities can probably be combined
-    public MutableCapabilities setSauceOptions() {
-        sauceOptions = setSauceCapabilities();
-        setBrowserOptions(browserName);
 
+    private MutableCapabilities setRemoteDriverCapabilities(MutableCapabilities sauceOptions) {
         sauceSessionCapabilities.setCapability(sauceOptionsTag, sauceOptions);
         sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_NAME, browserName);
         sauceSessionCapabilities.setCapability(CapabilityType.PLATFORM_NAME, operatingSystem);
         sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_VERSION, browserVersion);
-
         return sauceSessionCapabilities;
     }
 
-    public MutableCapabilities setSauceCapabilities()
-    {
+    public MutableCapabilities setSauceOptions() {
         sauceOptions = new MutableCapabilities();
         sauceOptions.setCapability("username", getUserName());
         sauceOptions.setCapability("accessKey", getAccessKey());
-        if (testName != null)
-        {
-            sauceOptions.setCapability("name", testName);
-        }
-
-        if (BUILD_TAG != null)
-        {
-            sauceOptions.setCapability("build", BUILD_TAG);
-        }
-
         return sauceOptions;
     }
 
     //TODO this needs to be moved to it's own class because it keeps changing
-    public void setBrowserOptions(String browserName)
+    public void setBrowserSpecificCapabilities(String browserName)
     {
         if (browserName.equalsIgnoreCase("Chrome"))
         {

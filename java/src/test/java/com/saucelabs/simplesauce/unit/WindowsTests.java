@@ -1,33 +1,12 @@
 package com.saucelabs.simplesauce.unit;
 
-import com.saucelabs.simplesauce.SauceSession;
-import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
-import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.net.MalformedURLException;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
-public class WindowsTests {
-
-    //TODO duplication in multiple classes, excluding DataCenterTest
-    private SauceSession fakeSauceSession;
-
-    //TODO definite duplciation here and the MacOSTests
-    //Potential duplication with SauceSessionTest as well
-    @Before
-    public void setUp()
-    {
-        RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
-        EnvironmentManager fakeEnvironmentManager = mock(EnvironmentManager.class);
-        fakeSauceSession = new SauceSession(fakeRemoteDriver, fakeEnvironmentManager);
-        when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
-        when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
-    }
+public class WindowsTests extends BaseConfigurationTest {
     @Test
     public void withWindows10_setsWindows10Platform() throws MalformedURLException {
         fakeSauceSession.withWindows10();

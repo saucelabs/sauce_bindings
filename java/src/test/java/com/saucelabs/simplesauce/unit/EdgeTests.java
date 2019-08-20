@@ -12,22 +12,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class EdgeTests {
-
-    //TODO duplication in multiple classes, excluding DataCenterTest
-    private SauceSession fakeSauceSession;
-
-    //TODO definite duplciation here and the MacOSTests
-    //Potential duplication with SauceSessionTest as well
-    @Before
-    public void setUp()
-    {
-        RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
-        EnvironmentManager fakeEnvironmentManager = mock(EnvironmentManager.class);
-        fakeSauceSession = new SauceSession(fakeRemoteDriver, fakeEnvironmentManager);
-        when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
-        when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
-    }
+public class EdgeTests extends BaseConfigurationTest{
     @Test
     public void withEdge18_17763_returnsBrowserVersion18_17763() throws MalformedURLException {
         fakeSauceSession.withEdge18_17763();

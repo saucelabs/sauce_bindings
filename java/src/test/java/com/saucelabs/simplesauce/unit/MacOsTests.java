@@ -1,6 +1,7 @@
 package com.saucelabs.simplesauce.unit;
 
 import com.saucelabs.simplesauce.Platforms;
+import com.saucelabs.simplesauce.SafariVersion;
 import com.saucelabs.simplesauce.SauceSession;
 import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
 import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
@@ -80,5 +81,21 @@ public class MacOsTests {
 
         String safariVersionSetThroughSauceSession = fakeSauceSession.sauceSessionCapabilities.getPlatform().toString();
         assertThat(Platforms.MAC_OS_MOJAVE, equalToIgnoringCase(safariVersionSetThroughSauceSession));
+    }
+    @Test
+    public void withSafari_browserName_setToSafari() throws MalformedURLException {
+        fakeSauceSession.withSafari(SafariVersion._8);
+        fakeSauceSession.start();
+
+        String actualBrowserNameSetThroughSauceSession = fakeSauceSession.sauceSessionCapabilities.getBrowserName();
+        assertEquals("safari", actualBrowserNameSetThroughSauceSession);
+    }
+    @Test
+    public void withSafari_versionChangedFromDefault_returnsCorrectVersion() throws MalformedURLException {
+        fakeSauceSession.withSafari(SafariVersion._8);
+        fakeSauceSession.start();
+
+        String actualBrowserVersionSetThroughSauceSession = fakeSauceSession.sauceSessionCapabilities.getVersion();
+        assertEquals("8.0", actualBrowserVersionSetThroughSauceSession);
     }
 }

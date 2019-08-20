@@ -10,8 +10,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 public class SauceSessionAcceptanceTest {
     private WebDriver webDriver;
@@ -22,7 +21,12 @@ public class SauceSessionAcceptanceTest {
         if(webDriver != null)
             webDriver.quit();
     }
-
+    @Test
+    public void withWindows10_default() throws MalformedURLException {
+        webDriver = new SauceSession().withWindows10().start();
+        String actualOs = (((RemoteWebDriver) webDriver).getCapabilities()).getPlatform().toString();
+        assertEquals("WIN10", actualOs);
+    }
     @Test
     public void startSession_noSauceOptionsSet_returnsDriver() throws MalformedURLException {
         SauceSession session = new SauceSession();

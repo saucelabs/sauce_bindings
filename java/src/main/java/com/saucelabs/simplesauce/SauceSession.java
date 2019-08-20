@@ -242,4 +242,9 @@ public class SauceSession {
         browserName = "Edge";
         browserVersion = "18.17763";
     }
+
+    public SauceSession withWindows10() {
+        operatingSystem = "Windows 10";
+        return this;
+    }
 }

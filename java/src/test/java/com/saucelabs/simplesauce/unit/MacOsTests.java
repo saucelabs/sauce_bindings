@@ -14,14 +14,14 @@ import static org.mockito.Mockito.when;
 
 public class MacOsTests {
 
+    //TODO duplication in 3 classes, excluding DataCenterTest
     private SauceSession fakeSauceSession;
-    private EnvironmentManager fakeEnvironmentManager;
 
     @Before
     public void setUp()
     {
         RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
-        fakeEnvironmentManager = mock(EnvironmentManager.class);
+        EnvironmentManager fakeEnvironmentManager = mock(EnvironmentManager.class);
         fakeSauceSession = new SauceSession(fakeRemoteDriver, fakeEnvironmentManager);
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");

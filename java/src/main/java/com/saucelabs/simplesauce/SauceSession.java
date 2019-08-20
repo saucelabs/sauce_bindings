@@ -22,7 +22,6 @@ public class SauceSession {
     //todo there is some weird bug when this is set to Linux, the session can't be started
 	private String operatingSystem = "Windows 10";
 	private String browserName = "Chrome";
-	private String testName;
     private String sauceOptionsTag = "sauce:options";
     private ChromeOptions chromeOptions;
     private FirefoxOptions firefoxOptions;
@@ -196,51 +195,60 @@ public class SauceSession {
         return checkIfEmpty(accessKey);
     }
 
-    public void withMacOsSierra() {
+    public SauceSession withMacOsSierra() {
         this.operatingSystem = "macOS 10.12";
         browserName = "Safari";
+        return this;
     }
 
-    public void withMacOsXElCapitan() {
+    public SauceSession withMacOsXElCapitan() {
         this.operatingSystem = "OS X 10.11";
         browserName = "Safari";
+        return this;
     }
 
-    public void withMacOsXYosemite() {
+    public SauceSession withMacOsXYosemite() {
         this.operatingSystem = "OS X 10.10";
         browserName = "Safari";
+        return this;
     }
     //TODO notice the duplication below with edge.
     //Maybe could be moved to a separate class so we can do withEdge().16_16299();
     //Or withEdge().version(EdgeVersion.16_16299);
-    public void withEdge16_16299() {
+    public SauceSession withEdge16_16299() {
         browserName = "Edge";
         browserVersion = "16.16299";
+        return this;
     }
 
-    public void withEdge15_15063() {
+    public SauceSession withEdge15_15063() {
         browserName = "Edge";
         browserVersion = "15.15063";
+        return this;
     }
 
-    public void withEdge14_14393() {
+    public SauceSession withEdge14_14393() {
         browserName = "Edge";
         browserVersion = "14.14393";
+        return this;
     }
 
-    public void withEdge13_10586() {
+    public SauceSession withEdge13_10586() {
         browserName = "Edge";
         browserVersion = "13.10586";
+        return this;
     }
 
-    public void withEdge17_17134() {
+    public SauceSession withEdge17_17134() {
         browserName = "Edge";
         browserVersion = "17.17134";
+        return this;
     }
 
-    public void withEdge18_17763() {
+    public SauceSession withEdge18_17763() {
         browserName = "Edge";
         browserVersion = "18.17763";
+        return this;
     }
 
     public SauceSession withWindows10() {

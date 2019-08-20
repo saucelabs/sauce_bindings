@@ -25,6 +25,7 @@ public class SauceSessionAcceptanceTest {
     public void withWindows10_default() throws MalformedURLException {
         webDriver = new SauceSession().withWindows10().start();
         String actualOs = (((RemoteWebDriver) webDriver).getCapabilities()).getPlatform().toString();
+        //TODO why in the F is this returning XP even though in Sauce it shows Windows 10
         assertEquals("WIN10", actualOs);
     }
     @Test

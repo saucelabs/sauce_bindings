@@ -2,7 +2,6 @@ package com.saucelabs.simplesauce.unit;
 
 import com.saucelabs.simplesauce.ConcreteRemoteDriver;
 import com.saucelabs.simplesauce.DataCenter;
-import com.saucelabs.simplesauce.SafariVersion;
 import com.saucelabs.simplesauce.SauceSession;
 import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
 import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
@@ -43,7 +42,6 @@ public class SauceSessionTest {
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
         String actualUserName = fakeSauceSession.getUserName();
         assertNotEquals("",actualUserName);
-
     }
     @Test
     public void getAccessKey_keySetInEnvironmentVariable_returnsValue() {
@@ -91,24 +89,6 @@ public class SauceSessionTest {
     public void sauceOptions_defaultConfiguration_setsSauceOptions() {
         boolean hasAccessKey = fakeSauceSession.getSauceOptionsCapability().asMap().containsKey("accessKey");
         assertTrue("You need to have Sauce Credentials set (SAUCE_USERNAME, SAUCE_ACCESSKEY) before this unit test will pass", hasAccessKey);
-    }
-
-
-    @Test
-    public void withSafari_browserName_setToSafari() throws MalformedURLException {
-        fakeSauceSession.withSafari(SafariVersion._8);
-        fakeSauceSession.start();
-
-        String actualBrowserNameSetThroughSauceSession = fakeSauceSession.sauceSessionCapabilities.getBrowserName();
-        assertEquals("safari", actualBrowserNameSetThroughSauceSession);
-    }
-    @Test
-    public void withSafari_versionChangedFromDefault_returnsCorrectVersion() throws MalformedURLException {
-        fakeSauceSession.withSafari(SafariVersion._8);
-        fakeSauceSession.start();
-
-        String actualBrowserVersionSetThroughSauceSession = fakeSauceSession.sauceSessionCapabilities.getVersion();
-        assertEquals("8.0", actualBrowserVersionSetThroughSauceSession);
     }
     @Test
     @Ignore("Future enhancement")

@@ -1,16 +1,10 @@
 package com.saucelabs.simplesauce.unit;
 
-import com.saucelabs.simplesauce.SauceSession;
-import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
-import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.net.MalformedURLException;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class EdgeTests extends BaseConfigurationTest{
     @Test

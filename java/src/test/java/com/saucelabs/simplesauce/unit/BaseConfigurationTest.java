@@ -8,8 +8,8 @@ import org.junit.Before;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class BaseConfigurationTest {
-    public SauceSession fakeSauceSession;
+class BaseConfigurationTest {
+    SauceSession fakeSauceSession;
 
     @Before
     public void setUp()

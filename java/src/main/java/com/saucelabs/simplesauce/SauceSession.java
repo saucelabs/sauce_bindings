@@ -260,4 +260,14 @@ public class SauceSession {
         operatingSystem = "Windows 8.1";
         return this;
     }
+
+    public SauceSession withWindows8() {
+        operatingSystem = "Windows 8";
+        return this;
+    }
+
+    public SauceSession withWindows7() {
+        operatingSystem = "Windows 7";
+        return this;
+    }
 }

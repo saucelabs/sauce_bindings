@@ -222,4 +222,24 @@ public class SauceSession {
         browserName = "Edge";
         browserVersion = "15.15063";
     }
+
+    public void withEdge14_14393() {
+        browserName = "Edge";
+        browserVersion = "14.14393";
+    }
+
+    public void withEdge13_10586() {
+        browserName = "Edge";
+        browserVersion = "13.10586";
+    }
+
+    public void withEdge17_17134() {
+        browserName = "Edge";
+        browserVersion = "17.17134";
+    }
+
+    public void withEdge18_17763() {
+        browserName = "Edge";
+        browserVersion = "18.17763";
+    }
 }

@@ -210,4 +210,16 @@ public class SauceSession {
         this.operatingSystem = "OS X 10.10";
         browserName = "Safari";
     }
+    //TODO notice the duplication below with edge.
+    //Maybe could be moved to a separate class so we can do withEdge().16_16299();
+    //Or withEdge().version(EdgeVersion.16_16299);
+    public void withEdge16_16299() {
+        browserName = "Edge";
+        browserVersion = "16.16299";
+    }
+
+    public void withEdge15_15063() {
+        browserName = "Edge";
+        browserVersion = "15.15063";
+    }
 }

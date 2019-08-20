@@ -110,18 +110,24 @@ public class SauceSession {
 		return this;
 	}
 
+    public SauceSession withSafari(String version)
+    {
+        //TODO: I did this but I hate it :(
+        //I wish I could just have a default value set for the version param
+        if(version == "")
+            version = "latest";
+        browserName = "safari";
+        this.browserVersion = version;
+        return this;
+    }
     public SauceSession withSafari()
     {
-        safariOptions = new SafariOptions();
-        browserName = "safari";
-        return this;
+        return withMacOsMojave();
     }
 
     public SauceSession withFirefox()
 	{
-		firefoxOptions = new FirefoxOptions();
 		browserName = "Firefox";
-
 		return this;
 	}
 
@@ -142,16 +148,13 @@ public class SauceSession {
     public SauceSession withMacOsMojave() {
         operatingSystem = "macOS 10.14";
         browserName = "safari";
+        browserVersion = "12.0";
         return this;
     }
     public SauceSession withMacOsHighSierra()
     {
         this.operatingSystem = "macOS 10.13";
         browserName = "Safari";
-        return this;
-    }
-    public SauceSession withBrowserVersion(String browserVersion){
-        this.browserVersion = browserVersion;
         return this;
     }
 
@@ -161,8 +164,9 @@ public class SauceSession {
         return this;
     }
 
-    public SauceSession withIE() {
+    public SauceSession withIE(String version) {
         this.browserName = "IE";
+        this.browserVersion = version;
         ieOptions = new InternetExplorerOptions();
         return this;
     }

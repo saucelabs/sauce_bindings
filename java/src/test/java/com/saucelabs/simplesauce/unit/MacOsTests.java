@@ -1,5 +1,6 @@
 package com.saucelabs.simplesauce.unit;
 
+import com.saucelabs.simplesauce.Platforms;
 import com.saucelabs.simplesauce.SauceSession;
 import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
 import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
@@ -8,6 +9,8 @@ import org.junit.Test;
 
 import java.net.MalformedURLException;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -61,5 +64,21 @@ public class MacOsTests {
         fakeSauceSession.start();
         String actualOsThatWasSet = fakeSauceSession.sauceSessionCapabilities.getPlatform().toString();
         assertEquals("OS X 10.10", actualOsThatWasSet);
+    }
+    @Test
+    public void defaultSafari_browserVersionIs12_0() throws MalformedURLException {
+        fakeSauceSession.withSafari();
+        fakeSauceSession.start();
+
+        String safariVersionSetThroughSauceSession = fakeSauceSession.sauceSessionCapabilities.getVersion();
+        assertEquals("12.0", safariVersionSetThroughSauceSession);
+    }
+    @Test
+    public void defaultSafari_macOsVersionIsMojave() throws MalformedURLException {
+        fakeSauceSession.withSafari();
+        fakeSauceSession.start();
+
+        String safariVersionSetThroughSauceSession = fakeSauceSession.sauceSessionCapabilities.getPlatform().toString();
+        assertThat(Platforms.MAC_OS_MOJAVE, equalToIgnoringCase(safariVersionSetThroughSauceSession));
     }
 }

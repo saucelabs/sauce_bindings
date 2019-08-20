@@ -2,6 +2,7 @@ package com.saucelabs.simplesauce.unit;
 
 import com.saucelabs.simplesauce.ConcreteRemoteDriver;
 import com.saucelabs.simplesauce.DataCenter;
+import com.saucelabs.simplesauce.SafariVersion;
 import com.saucelabs.simplesauce.SauceSession;
 import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
 import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
@@ -92,17 +93,10 @@ public class SauceSessionTest {
         assertTrue("You need to have Sauce Credentials set (SAUCE_USERNAME, SAUCE_ACCESSKEY) before this unit test will pass", hasAccessKey);
     }
 
-    @Test
-    public void defaultSafari_notSet_returnsLatestVersion() throws MalformedURLException {
-        fakeSauceSession.withSafari();
-        fakeSauceSession.start();
 
-        String safariVersionSetThroughSauceSession = fakeSauceSession.sauceSessionCapabilities.getVersion();
-        assertEquals("latest", safariVersionSetThroughSauceSession);
-    }
     @Test
     public void withSafari_browserName_setToSafari() throws MalformedURLException {
-        fakeSauceSession.withSafari();
+        fakeSauceSession.withSafari(SafariVersion._8);
         fakeSauceSession.start();
 
         String actualBrowserNameSetThroughSauceSession = fakeSauceSession.sauceSessionCapabilities.getBrowserName();
@@ -110,60 +104,34 @@ public class SauceSessionTest {
     }
     @Test
     public void withSafari_versionChangedFromDefault_returnsCorrectVersion() throws MalformedURLException {
-        fakeSauceSession.withSafari().withBrowserVersion("11.1");
+        fakeSauceSession.withSafari(SafariVersion._8);
         fakeSauceSession.start();
 
         String actualBrowserVersionSetThroughSauceSession = fakeSauceSession.sauceSessionCapabilities.getVersion();
-        assertEquals("11.1", actualBrowserVersionSetThroughSauceSession);
-    }
-    @Test
-    //TODO How to parameterize this?
-    public void withOs_changedFromDefault_returnsCorrectOs()
-    {
-        fakeSauceSession.withPlatform("Windows 10");
-        String actualOsSetThroughSauceSession = fakeSauceSession.sauceSessionCapabilities.getPlatform().toString();
-        assertEquals("WIN10", actualOsSetThroughSauceSession);
+        assertEquals("8.0", actualBrowserVersionSetThroughSauceSession);
     }
     @Test
     @Ignore("Future enhancement")
     public void withOs_linux_allowsOnlyChromeOrFirefox()
     {
-        fakeSauceSession.withPlatform("Linux");
         fail();
     }
     @Test
     @Ignore("Future enhancement")
     public void withOs_windows10_doesntAllowSafari() {
-        fakeSauceSession.withPlatform("Windows 10");
         fail();
     }
     @Test
     @Ignore("Future enhancement")
     public void withOs_windows8_1_allowsOnlyChromeOrFfOrIe()
     {
-        fakeSauceSession.withPlatform("Windows 8.1");
         fail();
     }
     @Test
     @Ignore("Future enhancement")
     public void withOs_windows8_allowsOnlyChromeOrFfOrIe()
     {
-        fakeSauceSession.withPlatform("Windows 8");
         fail();
     }
-    @Test
-    @Ignore("Future enhancement")
-    public void withOs_mac_allowsOnlyChromeOrFfOrSafari()
-    {
-        fakeSauceSession.withPlatform("Windows 8");
-        fail();
-    }
-    @Test
-    @Ignore("Future enhancement")
-    public void withSafari_versionChangedToInvalid_shouldNotBePossible()
-    {
-        //TODO it should not be possible to set an invalid version
-        fakeSauceSession.withSafari().withBrowserVersion("1234");
-        fail();
-    }
+
 }

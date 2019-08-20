@@ -12,12 +12,11 @@ import static org.mockito.Mockito.mock;
 public class SauceEnvironmentVariableNotSetExceptionTest {
 
     private SauceSession fakeSauceSession;
-    private EnvironmentManager fakeEnvironmentManager;
 
     @Before
     public void setUp() {
         RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
-        fakeEnvironmentManager = mock(EnvironmentManager.class);
+        EnvironmentManager fakeEnvironmentManager = mock(EnvironmentManager.class);
         fakeSauceSession = new SauceSession(fakeRemoteDriver, fakeEnvironmentManager);
     }
 

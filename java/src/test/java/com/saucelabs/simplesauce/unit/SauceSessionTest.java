@@ -18,6 +18,7 @@ import static org.mockito.Mockito.when;
 public class SauceSessionTest {
 
     private SauceSession concreteSauceSession;
+    //TODO duplication in 3 classes, excluding DataCenterTest
     private SauceSession fakeSauceSession;
     private EnvironmentManager fakeEnvironmentManager;
 

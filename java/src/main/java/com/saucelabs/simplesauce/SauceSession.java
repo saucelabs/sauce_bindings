@@ -255,4 +255,9 @@ public class SauceSession {
         operatingSystem = "Windows 10";
         return this;
     }
+
+    public SauceSession withWindows8_1() {
+        operatingSystem = "Windows 8.1";
+        return this;
+    }
 }

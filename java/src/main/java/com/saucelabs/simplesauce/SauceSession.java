@@ -17,21 +17,20 @@ import java.net.MalformedURLException;
 
 public class SauceSession {
     @Getter @Setter public final String sauceDataCenter = DataCenter.USWest;
-    private EnvironmentManager environmentManager;
+    private final EnvironmentManager environmentManager;
 
     //todo there is some weird bug when this is set to Linux, the session can't be started
 	private String operatingSystem = "Windows 10";
 	private String browserName = "Chrome";
-    private String sauceOptionsTag = "sauce:options";
+    private final String sauceOptionsTag = "sauce:options";
     private ChromeOptions chromeOptions;
     private FirefoxOptions firefoxOptions;
     private MutableCapabilities sauceOptions;
     private String browserVersion = "latest";
     public MutableCapabilities sauceSessionCapabilities;
-    private RemoteDriverInterface remoteDriverImplementation;
+    private final RemoteDriverInterface remoteDriverImplementation;
 
     private WebDriver webDriver;
-    private SafariOptions safariOptions;
     private EdgeOptions edgeOptions;
     private InternetExplorerOptions ieOptions;
     @Getter @Setter public String sauceLabsUrl;
@@ -86,7 +85,7 @@ public class SauceSession {
         }
         else if(browserName.equalsIgnoreCase("Safari"))
         {
-            safariOptions = new SafariOptions();
+            SafariOptions safariOptions = new SafariOptions();
             sauceSessionCapabilities.setCapability(SafariOptions.CAPABILITY, safariOptions);
         }
         else if(browserName.equalsIgnoreCase("Edge"))

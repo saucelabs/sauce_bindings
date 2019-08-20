@@ -17,14 +17,12 @@ import static org.mockito.Mockito.when;
 
 public class SauceSessionTest {
 
-    private SauceSession concreteSauceSession;
     //TODO duplication in 3 classes, excluding DataCenterTest
     private SauceSession fakeSauceSession;
     private EnvironmentManager fakeEnvironmentManager;
 
     @Before
     public void setUp() throws MalformedURLException {
-        concreteSauceSession = new SauceSession();
         RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
         fakeEnvironmentManager = mock(EnvironmentManager.class);
         fakeSauceSession = new SauceSession(fakeRemoteDriver, fakeEnvironmentManager);
@@ -55,6 +53,7 @@ public class SauceSessionTest {
     @Test
     public void defaultConstructor_instantiated_setsConcreteDriverManager()
     {
+        SauceSession concreteSauceSession = new SauceSession();
         assertTrue(concreteSauceSession.getDriverManager() instanceof ConcreteRemoteDriver);
     }
 

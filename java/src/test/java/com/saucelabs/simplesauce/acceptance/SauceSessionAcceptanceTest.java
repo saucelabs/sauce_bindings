@@ -49,16 +49,10 @@ public class SauceSessionAcceptanceTest {
     }
 
     @Test
-    public void startSession_nonDefaultCapabilities_returnsCorrectDriver() throws MalformedURLException {
+    public void withFirefox_returnsCorrectDriver() throws MalformedURLException {
         webDriver = new SauceSession().withFirefox().start();
         String actualBrowser = getBrowserNameFromCapabilities();
-        assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("firefox"));
-    }
-    @Test
-    public void withSafari_osNotSet_returnsValidSafariSession() throws MalformedURLException {
-        webDriver = new SauceSession().withMacOsMojave().start();
-        String actualBrowser = getBrowserNameFromCapabilities();
-        assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("safari"));
+        assertEquals("firefox", actualBrowser);
     }
 
     private String getBrowserNameFromCapabilities() {

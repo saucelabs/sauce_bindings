@@ -2,6 +2,7 @@ package com.saucelabs.simplesauce.unit;
 
 import org.junit.Test;
 
+import java.net.MalformedURLException;
 import static org.junit.Assert.assertEquals;
 
 public class EdgeTests extends BaseConfigurationTest{

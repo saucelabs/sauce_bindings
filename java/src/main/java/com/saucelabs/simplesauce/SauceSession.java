@@ -120,7 +120,7 @@ public class SauceSession {
     {
         //TODO: I did this but I hate it :(
         //I wish I could just have a default value set for the version param
-        if(version == "")
+        if(version.equalsIgnoreCase(""))
             version = "latest";
         browserName = "safari";
         this.browserVersion = version;

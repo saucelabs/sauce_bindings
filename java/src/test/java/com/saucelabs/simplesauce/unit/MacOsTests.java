@@ -4,8 +4,6 @@ import com.saucelabs.simplesauce.Platforms;
 import com.saucelabs.simplesauce.SafariVersion;
 import org.junit.Test;
 
-import java.net.MalformedURLException;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.junit.Assert.assertEquals;

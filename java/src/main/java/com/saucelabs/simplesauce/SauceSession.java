@@ -4,6 +4,7 @@ import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
 import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
 import lombok.Getter;
 import lombok.Setter;
+import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -47,13 +48,19 @@ public class SauceSession {
         this.environmentManager = environmentManager;
     }
 
-    public WebDriver start() throws MalformedURLException
-	{
+    public WebDriver start() {
         sauceOptions = setSauceOptions();
         setBrowserSpecificCapabilities(browserName);
         sauceSessionCapabilities = setRemoteDriverCapabilities(sauceOptions);
         sauceLabsUrl = sauceDataCenter;
-        webDriver = remoteDriverImplementation.createRemoteWebDriver(sauceLabsUrl, sauceSessionCapabilities);
+        try
+        {
+            webDriver = remoteDriverImplementation.createRemoteWebDriver(sauceLabsUrl, sauceSessionCapabilities);
+        }
+        catch (MalformedURLException e)
+        {
+            throw new InvalidArgumentException("Invalid URL");
+        }
         return this.webDriver;
 	}
 
@@ -140,10 +147,6 @@ public class SauceSession {
         return webDriver;
     }
 
-    //TODO How do we want to handle this?
-    //1. withMacOsMojave(OperatingSystem.MacOs1014), aka, force the user to pass in a mac version
-    //2. throw an exception for withMacOsMojave() used without withMac();
-    //3. this is the method I chose below: withMacOsMojave(String browserVersion)
     public SauceSession withMacOsMojave() {
         operatingSystem = "macOS 10.14";
         browserName = "safari";

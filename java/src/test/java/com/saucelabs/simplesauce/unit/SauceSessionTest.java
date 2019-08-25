@@ -22,7 +22,7 @@ public class SauceSessionTest {
     private EnvironmentManager fakeEnvironmentManager;
 
     @Before
-    public void setUp() throws MalformedURLException {
+    public void setUp() {
         RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
         fakeEnvironmentManager = mock(EnvironmentManager.class);
         fakeSauceSession = new SauceSession(fakeRemoteDriver, fakeEnvironmentManager);

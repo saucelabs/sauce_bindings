@@ -276,4 +276,9 @@ public class SauceSession {
         operatingSystem = "Windows 7";
         return this;
     }
+
+    public SauceSession withLinux() {
+        operatingSystem = "Linux";
+        return this;
+    }
 }

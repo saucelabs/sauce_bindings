@@ -19,6 +19,7 @@ import java.net.MalformedURLException;
 public class SauceSession {
     @Getter @Setter public final String sauceDataCenter = DataCenter.USWest;
     private final EnvironmentManager environmentManager;
+    public SauceTimeout timeouts = new SauceTimeout();
 
     //todo there is some weird bug when this is set to Linux, the session can't be started
 	private String operatingSystem = "Windows 10";

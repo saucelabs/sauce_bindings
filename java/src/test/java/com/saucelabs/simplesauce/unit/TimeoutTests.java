@@ -6,11 +6,8 @@ import org.openqa.selenium.MutableCapabilities;
 import static org.junit.Assert.assertEquals;
 
 public class TimeoutTests extends BaseConfigurationTest {
-    @Test
-    public void maxTestDuration_defaultIs30Minutes() {
-        int maxDurationTimeout = fakeSauceSession.timeouts.getMaxTestDuration();
-        assertEquals(1800, maxDurationTimeout);
-    }
+    //maxDuration timeout should not even be settable. Default is 30 min and we will not
+    //allow our users to set a higher time than that
     @Test
     public void commandTimeout_canBeSet() {
         fakeSauceSession.timeouts.setCommandTimeout(100);

@@ -77,6 +77,8 @@ public class SauceSession {
         sauceOptions = new MutableCapabilities();
         sauceOptions.setCapability("username", getUserName());
         sauceOptions.setCapability("accessKey", getAccessKey());
+        if(timeouts.getCommandTimeout() != 0)
+            sauceOptions.setCapability("commandTimeout", timeouts.getCommandTimeout());
         return sauceOptions;
     }
 

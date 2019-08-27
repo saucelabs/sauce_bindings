@@ -79,6 +79,8 @@ public class SauceSession {
         sauceOptions.setCapability("accessKey", getAccessKey());
         if(timeouts.getCommandTimeout() != 0)
             sauceOptions.setCapability("commandTimeout", timeouts.getCommandTimeout());
+        if(timeouts.getIdleTimeout() != 0)
+            sauceOptions.setCapability("idleTimeout", timeouts.getIdleTimeout());
         return sauceOptions;
     }
 

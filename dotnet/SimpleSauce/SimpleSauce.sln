@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29215.179
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleSauce", "SimpleSauce\SimpleSauce.csproj", "{416A1239-B0CC-46CE-A6B0-D97B1312EE0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleSauce.Tests", "SimpleSauce.Tests\SimpleSauce.Tests.csproj", "{CC2C16B1-5C6C-4F5C-AE8D-13C46104EB64}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{416A1239-B0CC-46CE-A6B0-D97B1312EE0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{416A1239-B0CC-46CE-A6B0-D97B1312EE0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{416A1239-B0CC-46CE-A6B0-D97B1312EE0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{416A1239-B0CC-46CE-A6B0-D97B1312EE0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC2C16B1-5C6C-4F5C-AE8D-13C46104EB64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC2C16B1-5C6C-4F5C-AE8D-13C46104EB64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC2C16B1-5C6C-4F5C-AE8D-13C46104EB64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC2C16B1-5C6C-4F5C-AE8D-13C46104EB64}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {91CB9563-6FDF-4442-8276-F65350A49642}
+	EndGlobalSection
+EndGlobal

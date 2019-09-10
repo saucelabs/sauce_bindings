@@ -1,4 +1,4 @@
-﻿namespace SimpleSauce.Test
+﻿namespace SimpleSauce
 {
     public class SauceSession
     {

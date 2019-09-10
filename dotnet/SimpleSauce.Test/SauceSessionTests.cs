@@ -2,7 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
 using SimpleSauce;
 
-namespace SimpleSauce.Test
+namespace SimpleSauceTests
 {
     [TestClass]
     public class SauceSessionTests

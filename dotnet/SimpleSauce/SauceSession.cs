@@ -2,8 +2,5 @@
 {
     public class SauceSession
     {
-        public SauceSession()
-        {
-        }
     }
 }

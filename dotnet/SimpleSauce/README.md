@@ -1,4 +1,4 @@
 Simple Sauce .NET
-[![Build status](https://dev.azure.com/nikolayadvolodkin/SimpleSauce/_apis/build/status/SimpleSauce-ASP.NET%20Core-CI)](https://dev.azure.com/nikolayadvolodkin/SimpleSauce/_build/latest?definitionId=-1)
+[![Build Status For .NET Only](https://dev.azure.com/nikolayadvolodkin/SimpleSauce/_apis/build/status/saucelabs.simple_sauce?branchName=master)](https://dev.azure.com/nikolayadvolodkin/SimpleSauce/_build/latest?definitionId=18&branchName=master)
 
 Getting Started

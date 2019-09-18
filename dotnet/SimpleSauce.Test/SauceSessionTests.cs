@@ -13,5 +13,11 @@ namespace SimpleSauceTests
             var session = new SauceSession();
             session.Should().NotBeNull();
         }
+        [TestMethod]
+        public void GetDataCenter_Default_IsWest()
+        {
+            var session = new SauceSession();
+            session.DataCenter.Should().BeEquivalentTo(DataCenter.UsWest);
+        }
     }
 }

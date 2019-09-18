@@ -2,5 +2,6 @@
 {
     public class SauceSession
     {
+        public DataCenter DataCenter = DataCenter.UsWest;
     }
 }

@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29230.47
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleSauce", "SimpleSauce.csproj", "{781CF150-58BB-42CC-9FFF-6F8ED521BCDA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleSauceTests", "..\SimpleSauce.Test\SimpleSauceTests.csproj", "{DBD7C90F-9514-4EDD-AAB2-63F699CA0BED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleSauce.Test", "..\SimpleSauce.Test\SimpleSauce.Test.csproj", "{DBD7C90F-9514-4EDD-AAB2-63F699CA0BED}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D7946C31-90AC-4E17-B663-66C057BD0201}"
 	ProjectSection(SolutionItems) = preProject

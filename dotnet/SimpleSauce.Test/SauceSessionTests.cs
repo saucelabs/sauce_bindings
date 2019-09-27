@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
 using SimpleSauce;
+[assembly: Parallelize(Workers = 100, Scope = ExecutionScope.MethodLevel)]
 
 namespace SimpleSauceTests
 {

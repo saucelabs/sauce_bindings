@@ -19,6 +19,7 @@ import java.net.MalformedURLException;
 public class SauceSession {
     @Getter @Setter public final String sauceDataCenter = DataCenter.USWest;
     private final EnvironmentManager environmentManager;
+    public SauceTimeout timeouts = new SauceTimeout();
 
     //todo there is some weird bug when this is set to Linux, the session can't be started
 	private String operatingSystem = "Windows 10";
@@ -76,6 +77,10 @@ public class SauceSession {
         sauceOptions = new MutableCapabilities();
         sauceOptions.setCapability("username", getUserName());
         sauceOptions.setCapability("accessKey", getAccessKey());
+        if(timeouts.getCommandTimeout() != 0)
+            sauceOptions.setCapability("commandTimeout", timeouts.getCommandTimeout());
+        if(timeouts.getIdleTimeout() != 0)
+            sauceOptions.setCapability("idleTimeout", timeouts.getIdleTimeout());
         return sauceOptions;
     }
 
@@ -274,6 +279,11 @@ public class SauceSession {
 
     public SauceSession withWindows7() {
         operatingSystem = "Windows 7";
+        return this;
+    }
+
+    public SauceSession withLinux() {
+        operatingSystem = "Linux";
         return this;
     }
 }

@@ -55,6 +55,12 @@ public class SauceSession {
         remoteDriverImplementation = new ConcreteRemoteDriver();
     }
 
+    public SauceSession(SauceOptions options, RemoteDriverInterface remoteManager, EnvironmentManager environmentManager) {
+        remoteDriverImplementation = remoteManager;
+        sauceSessionCapabilities = new MutableCapabilities();
+        this.environmentManager = environmentManager;
+    }
+
     public WebDriver start() {
         sauceOptions = setSauceOptions();
         setBrowserSpecificCapabilities(browserName);

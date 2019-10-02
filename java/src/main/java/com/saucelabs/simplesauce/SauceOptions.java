@@ -9,4 +9,6 @@ public class SauceOptions {
     @Setter
     public String browser = "Chrome";
 
+    @Getter @Setter public String browserVersion = "latest";
+    public String operatingSystem = "Windows 10";
 }

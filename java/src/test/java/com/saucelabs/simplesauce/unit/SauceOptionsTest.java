@@ -44,4 +44,12 @@ public class SauceOptionsTest {
     public void sauceOptions_defaultBrowser_setToChrome() {
         assertEquals("Chrome", options.browser);
     }
+    @Test
+    public void sauceOptions_defaultBrowserVersion_setToLatest() {
+        assertEquals("latest", options.browserVersion);
+    }
+    @Test
+    public void sauceOptions_defaultOS_setToWindows() {
+        assertEquals("Windows 10", options.operatingSystem);
+    }
 }

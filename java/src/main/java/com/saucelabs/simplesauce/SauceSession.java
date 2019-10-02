@@ -22,13 +22,10 @@ public class SauceSession {
     private final SauceOptions sauceCapabilities;
     public SauceTimeout timeouts = new SauceTimeout();
 
-    //todo there is some weird bug when this is set to Linux, the session can't be started
-	private String operatingSystem = "Windows 10";
     private final String sauceOptionsTag = "sauce:options";
     private ChromeOptions chromeOptions;
     private FirefoxOptions firefoxOptions;
     private MutableCapabilities sauceOptions;
-    private String browserVersion = "latest";
     public MutableCapabilities sauceSessionCapabilities;
     private final RemoteDriverInterface remoteDriverImplementation;
 
@@ -111,8 +108,8 @@ public class SauceSession {
     private MutableCapabilities setRemoteDriverCapabilities(MutableCapabilities sauceOptions) {
         sauceSessionCapabilities.setCapability(sauceOptionsTag, sauceOptions);
         sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_NAME, sauceCapabilities.browser);
-        sauceSessionCapabilities.setCapability(CapabilityType.PLATFORM_NAME, operatingSystem);
-        sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_VERSION, browserVersion);
+        sauceSessionCapabilities.setCapability(CapabilityType.PLATFORM_NAME, sauceCapabilities.operatingSystem);
+        sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_VERSION, sauceCapabilities.browserVersion);
         return sauceSessionCapabilities;
     }
 
@@ -144,7 +141,7 @@ public class SauceSession {
         if(version.equalsIgnoreCase(""))
             version = "latest";
         sauceCapabilities.browser = "safari";
-        this.browserVersion = version;
+        sauceCapabilities.browserVersion = version;
         return this;
     }
     public SauceSession withSafari()
@@ -169,14 +166,14 @@ public class SauceSession {
     }
 
     public SauceSession withMacOsMojave() {
-        operatingSystem = "macOS 10.14";
+        sauceCapabilities.operatingSystem = "macOS 10.14";
         sauceCapabilities.browser = "safari";
-        browserVersion = "12.0";
+        sauceCapabilities.browserVersion = "12.0";
         return this;
     }
     public SauceSession withMacOsHighSierra()
     {
-        this.operatingSystem = "macOS 10.13";
+        sauceCapabilities.operatingSystem = "macOS 10.13";
         sauceCapabilities.browser = "Safari";
         return this;
     }
@@ -189,13 +186,13 @@ public class SauceSession {
 
     public SauceSession withIE(String version) {
         sauceCapabilities.browser = "IE";
-        this.browserVersion = version;
+        sauceCapabilities.browserVersion = version;
         ieOptions = new InternetExplorerOptions();
         return this;
     }
 
     public SauceSession withPlatform(String operatingSystem) {
-        this.operatingSystem = operatingSystem;
+        sauceCapabilities.operatingSystem = operatingSystem;
         return this;
     }
 
@@ -223,19 +220,19 @@ public class SauceSession {
     }
 
     public SauceSession withMacOsSierra() {
-        this.operatingSystem = "macOS 10.12";
+        sauceCapabilities.operatingSystem = "macOS 10.12";
         sauceCapabilities.browser = "Safari";
         return this;
     }
 
     public SauceSession withMacOsXElCapitan() {
-        this.operatingSystem = "OS X 10.11";
+        sauceCapabilities.operatingSystem = "OS X 10.11";
         sauceCapabilities.browser = "Safari";
         return this;
     }
 
     public SauceSession withMacOsXYosemite() {
-        this.operatingSystem = "OS X 10.10";
+        sauceCapabilities.operatingSystem = "OS X 10.10";
         sauceCapabilities.browser = "Safari";
         return this;
     }
@@ -244,62 +241,62 @@ public class SauceSession {
     //Or withEdge().version(EdgeVersion.16_16299);
     public SauceSession withEdge16_16299() {
         withEdge();
-        browserVersion = "16.16299";
+        sauceCapabilities.browserVersion = "16.16299";
         return this;
     }
 
     public SauceSession withEdge15_15063() {
         withEdge();
-        browserVersion = "15.15063";
+        sauceCapabilities.browserVersion = "15.15063";
         return this;
     }
 
     public SauceSession withEdge14_14393() {
         withEdge();
-        browserVersion = "14.14393";
+        sauceCapabilities.browserVersion = "14.14393";
         return this;
     }
 
     public SauceSession withEdge13_10586() {
         withEdge();
-        browserVersion = "13.10586";
+        sauceCapabilities.browserVersion = "13.10586";
         return this;
     }
 
     public SauceSession withEdge17_17134() {
         withEdge();
-        browserVersion = "17.17134";
+        sauceCapabilities.browserVersion = "17.17134";
         return this;
     }
 
     public SauceSession withEdge18_17763() {
         withEdge();
-        browserVersion = "18.17763";
+        sauceCapabilities.browserVersion = "18.17763";
         return this;
     }
 
     public SauceSession withWindows10() {
-        operatingSystem = "Windows 10";
+        sauceCapabilities.operatingSystem = "Windows 10";
         return this;
     }
 
     public SauceSession withWindows8_1() {
-        operatingSystem = "Windows 8.1";
+        sauceCapabilities.operatingSystem = "Windows 8.1";
         return this;
     }
 
     public SauceSession withWindows8() {
-        operatingSystem = "Windows 8";
+        sauceCapabilities.operatingSystem = "Windows 8";
         return this;
     }
 
     public SauceSession withWindows7() {
-        operatingSystem = "Windows 7";
+        sauceCapabilities.operatingSystem = "Windows 7";
         return this;
     }
 
     public SauceSession withLinux() {
-        operatingSystem = "Linux";
+        sauceCapabilities.operatingSystem = "Linux";
         return this;
     }
 }

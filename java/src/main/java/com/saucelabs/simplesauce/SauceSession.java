@@ -49,6 +49,12 @@ public class SauceSession {
         this.environmentManager = environmentManager;
     }
 
+    public SauceSession(SauceOptions options) {
+        sauceSessionCapabilities = new MutableCapabilities();
+        environmentManager = new ConcreteSystemManager();
+        remoteDriverImplementation = new ConcreteRemoteDriver();
+    }
+
     public WebDriver start() {
         sauceOptions = setSauceOptions();
         setBrowserSpecificCapabilities(browserName);
@@ -64,26 +70,6 @@ public class SauceSession {
         }
         return this.webDriver;
 	}
-
-    private MutableCapabilities setRemoteDriverCapabilities(MutableCapabilities sauceOptions) {
-        sauceSessionCapabilities.setCapability(sauceOptionsTag, sauceOptions);
-        sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_NAME, browserName);
-        sauceSessionCapabilities.setCapability(CapabilityType.PLATFORM_NAME, operatingSystem);
-        sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_VERSION, browserVersion);
-        return sauceSessionCapabilities;
-    }
-
-    private MutableCapabilities setSauceOptions() {
-        sauceOptions = new MutableCapabilities();
-        sauceOptions.setCapability("username", getUserName());
-        sauceOptions.setCapability("accessKey", getAccessKey());
-        if(timeouts.getCommandTimeout() != 0)
-            sauceOptions.setCapability("commandTimeout", timeouts.getCommandTimeout());
-        if(timeouts.getIdleTimeout() != 0)
-            sauceOptions.setCapability("idleTimeout", timeouts.getIdleTimeout());
-        return sauceOptions;
-    }
-
     //TODO this needs to be moved to it's own class because it keeps changing
     private void setBrowserSpecificCapabilities(String browserName)
     {
@@ -112,6 +98,26 @@ public class SauceSession {
             throw new IllegalArgumentException("The browser=>" + browserName + " that you passed in is not a valid option.");
         }
     }
+    private MutableCapabilities setRemoteDriverCapabilities(MutableCapabilities sauceOptions) {
+        sauceSessionCapabilities.setCapability(sauceOptionsTag, sauceOptions);
+        sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_NAME, browserName);
+        sauceSessionCapabilities.setCapability(CapabilityType.PLATFORM_NAME, operatingSystem);
+        sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_VERSION, browserVersion);
+        return sauceSessionCapabilities;
+    }
+
+    private MutableCapabilities setSauceOptions() {
+        sauceOptions = new MutableCapabilities();
+        sauceOptions.setCapability("username", getUserName());
+        sauceOptions.setCapability("accessKey", getAccessKey());
+        if(timeouts.getCommandTimeout() != 0)
+            sauceOptions.setCapability("commandTimeout", timeouts.getCommandTimeout());
+        if(timeouts.getIdleTimeout() != 0)
+            sauceOptions.setCapability("idleTimeout", timeouts.getIdleTimeout());
+        return sauceOptions;
+    }
+
+
 
 	public SauceSession withChrome()
 	{

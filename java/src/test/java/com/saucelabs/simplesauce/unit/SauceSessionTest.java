@@ -2,6 +2,7 @@ package com.saucelabs.simplesauce.unit;
 
 import com.saucelabs.simplesauce.ConcreteRemoteDriver;
 import com.saucelabs.simplesauce.DataCenter;
+import com.saucelabs.simplesauce.SauceOptions;
 import com.saucelabs.simplesauce.SauceSession;
 import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
 import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
@@ -29,7 +30,12 @@ public class SauceSessionTest {
 
         fakeSauceSession.start();
     }
-
+    @Test
+    public void sauceSession_takesSauceOptions() {
+        SauceOptions options = new SauceOptions();
+        SauceSession session = new SauceSession(options);
+        assertNotNull(session);
+    }
     @Test
     public void startSession_defaultConfig_usWestDataCenter() {
         String expectedDataCenterUrl = DataCenter.USWest;

@@ -36,4 +36,10 @@ public class SauceOptionsTest {
         String actualBrowser = sauceSession.sauceSessionCapabilities.getCapability("browserName").toString();
         assertEquals("Chrome", actualBrowser);
     }
+
+    @Test
+    public void sauceOptions_defaultBrowser_setToChrome() {
+        SauceOptions options = new SauceOptions();
+        assertEquals("Chrome", options.browser);
+    }
 }

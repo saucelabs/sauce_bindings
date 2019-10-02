@@ -1,5 +1,6 @@
 package com.saucelabs.simplesauce.acceptance;
 
+import com.saucelabs.simplesauce.SauceOptions;
 import com.saucelabs.simplesauce.SauceSession;
 import org.hamcrest.text.IsEqualIgnoringCase;
 import org.junit.After;
@@ -18,6 +19,14 @@ public class SauceSessionAcceptanceTest {
     {
         if(webDriver != null)
             webDriver.quit();
+    }
+    @Test
+    public void sauceSession_takesSauceOptions() {
+        SauceOptions options = new SauceOptions();
+        webDriver = new SauceSession(options).start();
+        String actualOs = (((RemoteWebDriver) webDriver).getCapabilities()).getPlatform().toString();
+        //TODO why in the F is this returning XP even though in Sauce it shows Windows 10
+        assertEquals("windows", actualOs);
     }
     @Test
     public void withWindows10_default() {

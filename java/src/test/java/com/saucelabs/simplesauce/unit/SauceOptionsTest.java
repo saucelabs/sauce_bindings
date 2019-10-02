@@ -4,6 +4,7 @@ import com.saucelabs.simplesauce.SauceOptions;
 import com.saucelabs.simplesauce.SauceSession;
 import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
 import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -12,20 +13,22 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class SauceOptionsTest {
-
-    //TODO duplication in 3 classes, excluding DataCenterTest
     private SauceSession sauceSession;
     private EnvironmentManager fakeEnvironmentManager;
+    private SauceOptions options;
 
+    @Before
+    public void setup()
+    {
+        options = new SauceOptions();
+    }
     @Test
     public void sauceSession_takesSauceOptions() {
-        SauceOptions options = new SauceOptions();
         SauceSession session = new SauceSession(options);
         assertNotNull(session);
     }
     @Test
     public void sauceSession_defaultSauceOptions_returnsChromeBrowser() {
-        SauceOptions options = new SauceOptions();
         RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
         fakeEnvironmentManager = mock(EnvironmentManager.class);
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
@@ -39,7 +42,6 @@ public class SauceOptionsTest {
 
     @Test
     public void sauceOptions_defaultBrowser_setToChrome() {
-        SauceOptions options = new SauceOptions();
         assertEquals("Chrome", options.browser);
     }
 }

@@ -19,11 +19,11 @@ import java.net.MalformedURLException;
 public class SauceSession {
     @Getter @Setter public final String sauceDataCenter = DataCenter.USWest;
     private final EnvironmentManager environmentManager;
+    private final SauceOptions sauceCapabilities;
     public SauceTimeout timeouts = new SauceTimeout();
 
     //todo there is some weird bug when this is set to Linux, the session can't be started
 	private String operatingSystem = "Windows 10";
-	private String browserName = "Chrome";
     private final String sauceOptionsTag = "sauce:options";
     private ChromeOptions chromeOptions;
     private FirefoxOptions firefoxOptions;
@@ -41,21 +41,25 @@ public class SauceSession {
         sauceSessionCapabilities = new MutableCapabilities();
         remoteDriverImplementation = new ConcreteRemoteDriver();
         environmentManager = new ConcreteSystemManager();
+        sauceCapabilities = new SauceOptions();
     }
 
     public SauceSession(RemoteDriverInterface remoteManager, EnvironmentManager environmentManager) {
         remoteDriverImplementation = remoteManager;
         sauceSessionCapabilities = new MutableCapabilities();
         this.environmentManager = environmentManager;
+        sauceCapabilities = new SauceOptions();
     }
 
     public SauceSession(SauceOptions options) {
+        sauceCapabilities = options;
         sauceSessionCapabilities = new MutableCapabilities();
         environmentManager = new ConcreteSystemManager();
         remoteDriverImplementation = new ConcreteRemoteDriver();
     }
 
     public SauceSession(SauceOptions options, RemoteDriverInterface remoteManager, EnvironmentManager environmentManager) {
+        sauceCapabilities = options;
         remoteDriverImplementation = remoteManager;
         sauceSessionCapabilities = new MutableCapabilities();
         this.environmentManager = environmentManager;
@@ -63,7 +67,7 @@ public class SauceSession {
 
     public WebDriver start() {
         sauceOptions = setSauceOptions();
-        setBrowserSpecificCapabilities(browserName);
+        setBrowserSpecificCapabilities(sauceCapabilities.browser);
         sauceSessionCapabilities = setRemoteDriverCapabilities(sauceOptions);
         sauceLabsUrl = sauceDataCenter;
         try
@@ -106,7 +110,7 @@ public class SauceSession {
     }
     private MutableCapabilities setRemoteDriverCapabilities(MutableCapabilities sauceOptions) {
         sauceSessionCapabilities.setCapability(sauceOptionsTag, sauceOptions);
-        sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_NAME, browserName);
+        sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_NAME, sauceCapabilities.browser);
         sauceSessionCapabilities.setCapability(CapabilityType.PLATFORM_NAME, operatingSystem);
         sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_VERSION, browserVersion);
         return sauceSessionCapabilities;
@@ -129,7 +133,7 @@ public class SauceSession {
 	{
 	    chromeOptions = new ChromeOptions();
 		chromeOptions.setExperimentalOption("w3c", true);
-		browserName = "Chrome";
+		sauceCapabilities.browser = "Chrome";
 		return this;
 	}
 
@@ -139,7 +143,7 @@ public class SauceSession {
         //I wish I could just have a default value set for the version param
         if(version.equalsIgnoreCase(""))
             version = "latest";
-        browserName = "safari";
+        sauceCapabilities.browser = "safari";
         this.browserVersion = version;
         return this;
     }
@@ -150,7 +154,7 @@ public class SauceSession {
 
     public SauceSession withFirefox()
 	{
-		browserName = "Firefox";
+        sauceCapabilities.browser = "Firefox";
 		return this;
 	}
 
@@ -166,25 +170,25 @@ public class SauceSession {
 
     public SauceSession withMacOsMojave() {
         operatingSystem = "macOS 10.14";
-        browserName = "safari";
+        sauceCapabilities.browser = "safari";
         browserVersion = "12.0";
         return this;
     }
     public SauceSession withMacOsHighSierra()
     {
         this.operatingSystem = "macOS 10.13";
-        browserName = "Safari";
+        sauceCapabilities.browser = "Safari";
         return this;
     }
 
     public SauceSession withEdge() {
-        this.browserName = "Edge";
+        sauceCapabilities.browser = "Edge";
         edgeOptions = new EdgeOptions();
         return this;
     }
 
     public SauceSession withIE(String version) {
-        this.browserName = "IE";
+        sauceCapabilities.browser = "IE";
         this.browserVersion = version;
         ieOptions = new InternetExplorerOptions();
         return this;
@@ -220,56 +224,56 @@ public class SauceSession {
 
     public SauceSession withMacOsSierra() {
         this.operatingSystem = "macOS 10.12";
-        browserName = "Safari";
+        sauceCapabilities.browser = "Safari";
         return this;
     }
 
     public SauceSession withMacOsXElCapitan() {
         this.operatingSystem = "OS X 10.11";
-        browserName = "Safari";
+        sauceCapabilities.browser = "Safari";
         return this;
     }
 
     public SauceSession withMacOsXYosemite() {
         this.operatingSystem = "OS X 10.10";
-        browserName = "Safari";
+        sauceCapabilities.browser = "Safari";
         return this;
     }
     //TODO notice the duplication below with edge.
     //Maybe could be moved to a separate class so we can do withEdge().16_16299();
     //Or withEdge().version(EdgeVersion.16_16299);
     public SauceSession withEdge16_16299() {
-        browserName = "Edge";
+        withEdge();
         browserVersion = "16.16299";
         return this;
     }
 
     public SauceSession withEdge15_15063() {
-        browserName = "Edge";
+        withEdge();
         browserVersion = "15.15063";
         return this;
     }
 
     public SauceSession withEdge14_14393() {
-        browserName = "Edge";
+        withEdge();
         browserVersion = "14.14393";
         return this;
     }
 
     public SauceSession withEdge13_10586() {
-        browserName = "Edge";
+        withEdge();
         browserVersion = "13.10586";
         return this;
     }
 
     public SauceSession withEdge17_17134() {
-        browserName = "Edge";
+        withEdge();
         browserVersion = "17.17134";
         return this;
     }
 
     public SauceSession withEdge18_17763() {
-        browserName = "Edge";
+        withEdge();
         browserVersion = "18.17763";
         return this;
     }

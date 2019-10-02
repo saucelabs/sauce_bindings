@@ -126,13 +126,7 @@ public class SauceSession {
 
 
 
-	public SauceSession withChrome()
-	{
-	    chromeOptions = new ChromeOptions();
-		chromeOptions.setExperimentalOption("w3c", true);
-		sauceCapabilities.browser = "Chrome";
-		return this;
-	}
+
 
     public SauceSession withSafari(String version)
     {

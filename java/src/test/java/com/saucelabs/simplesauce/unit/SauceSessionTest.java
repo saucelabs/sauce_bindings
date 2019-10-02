@@ -17,18 +17,18 @@ import static org.mockito.Mockito.when;
 public class SauceSessionTest {
 
     //TODO duplication in 3 classes, excluding DataCenterTest
-    private SauceSession fakeSauceSession;
+    private SauceSession mockSauceSession;
     private EnvironmentManager fakeEnvironmentManager;
 
     @Before
     public void setUp() {
         RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
         fakeEnvironmentManager = mock(EnvironmentManager.class);
-        fakeSauceSession = new SauceSession(fakeRemoteDriver, fakeEnvironmentManager);
+        mockSauceSession = new SauceSession(fakeRemoteDriver, fakeEnvironmentManager);
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
 
-        fakeSauceSession.start();
+        mockSauceSession.start();
     }
     @Test
     public void sauceSession_takesSauceOptions() {
@@ -49,18 +49,18 @@ public class SauceSessionTest {
     @Test
     public void startSession_defaultConfig_usWestDataCenter() {
         String expectedDataCenterUrl = DataCenter.USWest;
-        assertEquals(expectedDataCenterUrl, fakeSauceSession.sauceDataCenter);
+        assertEquals(expectedDataCenterUrl, mockSauceSession.sauceDataCenter);
     }
     @Test
     public void getUserName_usernameSetInEnvironmentVariable_returnsValue()  {
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
-        String actualUserName = fakeSauceSession.getUserName();
+        String actualUserName = mockSauceSession.getUserName();
         assertNotEquals("",actualUserName);
     }
     @Test
     public void getAccessKey_keySetInEnvironmentVariable_returnsValue() {
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
-        String actualAccessKey = fakeSauceSession.getAccessKey();
+        String actualAccessKey = mockSauceSession.getAccessKey();
         assertNotEquals("", actualAccessKey);
     }
     @Test
@@ -73,37 +73,48 @@ public class SauceSessionTest {
     @Test
     public void startSession_setsBrowserKey() {
         String expectedBrowserCapabilityKey = "browserName";
-        String actualBrowser = fakeSauceSession.sauceSessionCapabilities.getCapability(expectedBrowserCapabilityKey).toString();
+        String actualBrowser = mockSauceSession.sauceSessionCapabilities.getCapability(expectedBrowserCapabilityKey).toString();
         assertNotEquals("", actualBrowser);
     }
     @Test
     public void start_setsPlatformNameKey() {
         String correctPlatformKey = "platformName";
-        String browserSetInSauceSession = fakeSauceSession.sauceSessionCapabilities.getCapability(correctPlatformKey).toString();
+        String browserSetInSauceSession = mockSauceSession.sauceSessionCapabilities.getCapability(correctPlatformKey).toString();
         assertEquals("Windows 10", browserSetInSauceSession);
     }
     @Test
     public void defaultBrowserIsLatest() {
         String correctKey = "browserVersion";
-        String browserSetThroughSauceSession = fakeSauceSession.sauceSessionCapabilities.getCapability(correctKey).toString();
+        String browserSetThroughSauceSession = mockSauceSession.sauceSessionCapabilities.getCapability(correctKey).toString();
         assertEquals("latest", browserSetThroughSauceSession);
     }
     @Test
     public void defaultIsChrome()
     {
-        String actualBrowser = fakeSauceSession.sauceSessionCapabilities.getBrowserName();
+        String actualBrowser = mockSauceSession.sauceSessionCapabilities.getBrowserName();
         assertEquals("Chrome", actualBrowser);
     }
     @Test
     public void defaultIsWindows10() {
-        String actualOs = fakeSauceSession.sauceSessionCapabilities.getPlatform().name();
+        String actualOs = mockSauceSession.sauceSessionCapabilities.getPlatform().name();
         assertEquals("WIN10", actualOs);
     }
     @Test
     public void sauceOptions_defaultConfiguration_setsSauceOptions() {
-        boolean hasAccessKey = fakeSauceSession.getSauceOptionsCapability().asMap().containsKey("accessKey");
+        boolean hasAccessKey = mockSauceSession.getSauceOptionsCapability().asMap().containsKey("accessKey");
         assertTrue("You need to have Sauce Credentials set (SAUCE_USERNAME, SAUCE_ACCESSKEY) before this unit test will pass", hasAccessKey);
     }
+    @Test
+    public void sauceOptions_startWithChrome_startsChrome() {
+        RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
+        SauceOptions options = new SauceOptions();
+        options.withChrome();
+        mockSauceSession = new SauceSession(options, fakeRemoteDriver, fakeEnvironmentManager);
+        mockSauceSession.start();
+        String actualBrowser = mockSauceSession.sauceSessionCapabilities.getBrowserName();
+        assertEquals("Chrome", actualBrowser);
+    }
+
     @Test
     @Ignore("Future enhancement")
     public void withOs_linux_allowsOnlyChromeOrFirefox()

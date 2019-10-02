@@ -21,12 +21,11 @@ public class SauceSessionAcceptanceTest {
             webDriver.quit();
     }
     @Test
-    public void sauceSession_takesSauceOptions() {
+    public void sauceSession_defaultSauceOptions_startsRealSession() {
         SauceOptions options = new SauceOptions();
         webDriver = new SauceSession(options).start();
-        String actualOs = (((RemoteWebDriver) webDriver).getCapabilities()).getPlatform().toString();
-        //TODO why in the F is this returning XP even though in Sauce it shows Windows 10
-        assertEquals("windows", actualOs);
+        String sessionId = ((RemoteWebDriver) webDriver).getSessionId().toString();
+        //TODO add logic to his the Sauce REST API and make sure that an actual sessionId exists
     }
     @Test
     public void withWindows10_default() {

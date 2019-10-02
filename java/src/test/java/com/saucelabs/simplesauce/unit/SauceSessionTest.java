@@ -37,6 +37,16 @@ public class SauceSessionTest {
         assertNotNull(session);
     }
     @Test
+    public void sauceSession_defaultSauceOptions_returnsChromeBrowser() {
+        SauceOptions options = new SauceOptions();
+        RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
+
+        SauceSession session = new SauceSession(options,fakeRemoteDriver, fakeEnvironmentManager);
+        session.start();
+        String actualBrowser = session.sauceSessionCapabilities.getCapability("browserName").toString();
+        assertEquals("Chrome", actualBrowser);
+    }
+    @Test
     public void startSession_defaultConfig_usWestDataCenter() {
         String expectedDataCenterUrl = DataCenter.USWest;
         assertEquals(expectedDataCenterUrl, fakeSauceSession.sauceDataCenter);

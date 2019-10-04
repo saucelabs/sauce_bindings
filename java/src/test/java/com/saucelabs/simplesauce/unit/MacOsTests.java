@@ -2,7 +2,6 @@ package com.saucelabs.simplesauce.unit;
 
 import com.saucelabs.simplesauce.Platforms;
 import com.saucelabs.simplesauce.SafariVersion;
-import com.saucelabs.simplesauce.SauceOptions;
 import com.saucelabs.simplesauce.SauceSession;
 import org.junit.Test;
 
@@ -65,20 +64,20 @@ public class MacOsTests extends BaseConfigurationTest{
     }
     @Test
     public void defaultSafari_browserVersionIs12_0() {
-        SauceOptions sauceOptions = new SauceOptions();
         sauceOptions.withSafari();
-        mockSauceSession = new SauceSession(sauceOptions, fakeRemoteDriver, fakeEnvironmentManager);
+        mockSauceSession = instantiateSauceSession();
 
         mockSauceSession.start();
 
+        //TODO mockSauceSession.sauceSessionCapabilities can be turned into a method, maybe on the session
+        //class that allows easier access to the caps
         String safariVersionSetThroughSauceSession = mockSauceSession.sauceSessionCapabilities.getVersion();
         assertEquals("12.0", safariVersionSetThroughSauceSession);
     }
     @Test
     public void defaultSafari_macOsVersionIsMojave() {
-        SauceOptions sauceOptions = new SauceOptions();
         sauceOptions.withSafari();
-        mockSauceSession = new SauceSession(sauceOptions, fakeRemoteDriver, fakeEnvironmentManager);
+        mockSauceSession = instantiateSauceSession();
 
         mockSauceSession.start();
 
@@ -87,7 +86,9 @@ public class MacOsTests extends BaseConfigurationTest{
     }
     @Test
     public void withSafari_browserName_setToSafari() {
-        mockSauceSession.withSafari(SafariVersion._8);
+        sauceOptions.withSafari(SafariVersion._8);
+        mockSauceSession = instantiateSauceSession();
+
         mockSauceSession.start();
 
         String actualBrowserNameSetThroughSauceSession = mockSauceSession.sauceSessionCapabilities.getBrowserName();
@@ -95,7 +96,9 @@ public class MacOsTests extends BaseConfigurationTest{
     }
     @Test
     public void withSafari_versionChangedFromDefault_returnsCorrectVersion() {
-        mockSauceSession.withSafari(SafariVersion._8);
+        sauceOptions.withSafari(SafariVersion._8);
+        mockSauceSession = instantiateSauceSession();
+
         mockSauceSession.start();
 
         String actualBrowserVersionSetThroughSauceSession = mockSauceSession.sauceSessionCapabilities.getVersion();

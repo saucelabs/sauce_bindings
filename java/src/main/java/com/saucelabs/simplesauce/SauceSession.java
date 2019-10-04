@@ -128,16 +128,7 @@ public class SauceSession {
 
 
 
-    public SauceSession withSafari(String version)
-    {
-        //TODO: I did this but I hate it :(
-        //I wish I could just have a default value set for the version param
-        if(version.equalsIgnoreCase(""))
-            version = "latest";
-        sauceCapabilities.browser = "safari";
-        sauceCapabilities.browserVersion = version;
-        return this;
-    }
+
     public SauceSession withFirefox()
 	{
         sauceCapabilities.browser = "Firefox";

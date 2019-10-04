@@ -64,6 +64,9 @@ public class SauceOptions {
         browser = "Safari";
         return this;
     }
-
+    public SauceOptions withLinux() {
+        operatingSystem = "Linux";
+        return this;
+    }
 
 }

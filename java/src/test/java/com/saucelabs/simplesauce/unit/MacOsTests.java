@@ -2,7 +2,6 @@ package com.saucelabs.simplesauce.unit;
 
 import com.saucelabs.simplesauce.Platforms;
 import com.saucelabs.simplesauce.SafariVersion;
-import com.saucelabs.simplesauce.SauceSession;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -19,9 +18,7 @@ public class MacOsTests extends BaseConfigurationTest{
         String actualOsThatWasSet = getSessionPlatformString();
         assertEquals("macOS 10.14", actualOsThatWasSet);
     }
-    private SauceSession instantiateSauceSession() {
-        return new SauceSession(sauceOptions, fakeRemoteDriver, fakeEnvironmentManager);
-    }
+
     private String getSessionPlatformString() {
         return mockSauceSession.sauceSessionCapabilities.getPlatform().toString();
     }

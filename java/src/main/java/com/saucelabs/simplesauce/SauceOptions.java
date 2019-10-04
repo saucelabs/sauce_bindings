@@ -69,4 +69,22 @@ public class SauceOptions {
         return this;
     }
 
+    public SauceOptions withWindows10() {
+        operatingSystem = "Windows 10";
+        return this;
+    }
+    public SauceOptions withWindows8_1() {
+        operatingSystem = "Windows 8.1";
+        return this;
+    }
+    public SauceOptions withWindows8() {
+        operatingSystem = "Windows 8";
+        return this;
+    }
+
+    public SauceOptions withWindows7() {
+        operatingSystem = "Windows 7";
+        return this;
+    }
+
 }

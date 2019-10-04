@@ -21,14 +21,39 @@ public class SauceOptions {
         browser = "Chrome";
         return this;
     }
+    public SauceOptions withSafari()
+    {
+        return withMacOsMojave();
+    }
     public SauceOptions withMacOsMojave() {
         operatingSystem = "macOS 10.14";
         browser = "safari";
         browserVersion = "12.0";
         return this;
     }
-    public SauceOptions withSafari()
+    public SauceOptions withMacOsHighSierra()
     {
-        return withMacOsMojave();
+        operatingSystem = "macOS 10.13";
+        browser = "Safari";
+        return this;
     }
+    public SauceOptions withMacOsSierra() {
+        operatingSystem = "macOS 10.12";
+        browser = "Safari";
+        return this;
+    }
+
+    public SauceOptions withMacOsXElCapitan() {
+        operatingSystem = "OS X 10.11";
+        browser = "Safari";
+        return this;
+    }
+
+    public SauceOptions withMacOsXYosemite() {
+        operatingSystem = "OS X 10.10";
+        browser = "Safari";
+        return this;
+    }
+
+
 }

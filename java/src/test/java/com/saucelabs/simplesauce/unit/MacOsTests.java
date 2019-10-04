@@ -29,28 +29,36 @@ public class MacOsTests extends BaseConfigurationTest{
 
     @Test
     public void withMacOsHighSierra_returnsMacOs1013() {
-        mockSauceSession.withMacOsHighSierra();
+        sauceOptions.withMacOsHighSierra();
+        mockSauceSession = instantiateSauceSession();
+
         mockSauceSession.start();
         String actualOsThatWasSet = getSessionPlatformString();
         assertEquals("macOS 10.13", actualOsThatWasSet);
     }
     @Test
     public void withMacOsSierra_returnsMacOs1012() {
-        mockSauceSession.withMacOsSierra();
+        sauceOptions.withMacOsSierra();
+        mockSauceSession = instantiateSauceSession();
+
         mockSauceSession.start();
         String actualOsThatWasSet = getSessionPlatformString();
         assertEquals("macOS 10.12", actualOsThatWasSet);
     }
     @Test
     public void withMacOsElCapitan_returnsMacOs1011() {
-        mockSauceSession.withMacOsXElCapitan();
+        sauceOptions.withMacOsXElCapitan();
+        mockSauceSession = instantiateSauceSession();
+
         mockSauceSession.start();
         String actualOsThatWasSet = getSessionPlatformString();
         assertEquals("OS X 10.11", actualOsThatWasSet);
     }
     @Test
     public void withMacOsYosemite_returnsMacOsX1010() {
-        mockSauceSession.withMacOsXYosemite();
+        sauceOptions.withMacOsXYosemite();
+        mockSauceSession = instantiateSauceSession();
+
         mockSauceSession.start();
         String actualOsThatWasSet = getSessionPlatformString();
         assertEquals("OS X 10.10", actualOsThatWasSet);

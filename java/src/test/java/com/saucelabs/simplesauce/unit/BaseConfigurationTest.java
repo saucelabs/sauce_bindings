@@ -25,4 +25,8 @@ public class BaseConfigurationTest {
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
     }
+
+    public SauceSession instantiateSauceSession() {
+        return new SauceSession(sauceOptions, fakeRemoteDriver, fakeEnvironmentManager);
+    }
 }

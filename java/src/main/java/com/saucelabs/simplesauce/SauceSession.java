@@ -247,8 +247,5 @@ public class SauceSession {
         return this;
     }
 
-    public SauceSession withLinux() {
-        sauceCapabilities.operatingSystem = "Linux";
-        return this;
-    }
+
 }

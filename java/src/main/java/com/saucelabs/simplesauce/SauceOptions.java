@@ -21,4 +21,14 @@ public class SauceOptions {
         browser = "Chrome";
         return this;
     }
+    public SauceOptions withMacOsMojave() {
+        operatingSystem = "macOS 10.14";
+        browser = "safari";
+        browserVersion = "12.0";
+        return this;
+    }
+    public SauceOptions withSafari()
+    {
+        return withMacOsMojave();
+    }
 }

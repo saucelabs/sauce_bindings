@@ -36,13 +36,19 @@ public class SauceSessionAcceptanceTest {
     }
     @Test
     public void withSafari_default_isMojave() {
-        webDriver = new SauceSession().withSafari().start();
+        SauceOptions options = new SauceOptions();
+        options.withSafari();
+
+        webDriver = new SauceSession(options).start();
         String actualBrowserVersion = (((RemoteWebDriver) webDriver).getCapabilities()).getPlatform().toString();
         assertEquals("MAC", actualBrowserVersion);
     }
     @Test
     public void withSafari_default_isBrowserVersion12_0() {
-        webDriver = new SauceSession().withSafari().start();
+        SauceOptions options = new SauceOptions();
+        options.withSafari();
+
+        webDriver = new SauceSession(options).start();
         String actualBrowserVersion = (((RemoteWebDriver) webDriver).getCapabilities()).getVersion();
         assertEquals("12.0", actualBrowserVersion);
     }

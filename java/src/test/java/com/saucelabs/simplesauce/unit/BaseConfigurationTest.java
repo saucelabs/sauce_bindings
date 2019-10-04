@@ -9,14 +9,16 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class BaseConfigurationTest {
-    public SauceSession fakeSauceSession;
+    public SauceSession mockSauceSession;
+    RemoteDriverInterface fakeRemoteDriver;
+    EnvironmentManager fakeEnvironmentManager;
 
     @Before
     public void setUp()
     {
-        RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
-        EnvironmentManager fakeEnvironmentManager = mock(EnvironmentManager.class);
-        fakeSauceSession = new SauceSession(fakeRemoteDriver, fakeEnvironmentManager);
+        fakeRemoteDriver = mock(RemoteDriverInterface.class);
+        fakeEnvironmentManager = mock(EnvironmentManager.class);
+        mockSauceSession = new SauceSession(fakeRemoteDriver, fakeEnvironmentManager);
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
     }

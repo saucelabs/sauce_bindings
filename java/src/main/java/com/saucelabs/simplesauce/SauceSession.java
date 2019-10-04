@@ -155,12 +155,6 @@ public class SauceSession {
     }
 
 
-    public SauceSession withMacOsHighSierra()
-    {
-        sauceCapabilities.operatingSystem = "macOS 10.13";
-        sauceCapabilities.browser = "Safari";
-        return this;
-    }
 
     public SauceSession withEdge() {
         sauceCapabilities.browser = "Edge";
@@ -203,23 +197,6 @@ public class SauceSession {
         return checkIfEmpty(accessKey);
     }
 
-    public SauceSession withMacOsSierra() {
-        sauceCapabilities.operatingSystem = "macOS 10.12";
-        sauceCapabilities.browser = "Safari";
-        return this;
-    }
-
-    public SauceSession withMacOsXElCapitan() {
-        sauceCapabilities.operatingSystem = "OS X 10.11";
-        sauceCapabilities.browser = "Safari";
-        return this;
-    }
-
-    public SauceSession withMacOsXYosemite() {
-        sauceCapabilities.operatingSystem = "OS X 10.10";
-        sauceCapabilities.browser = "Safari";
-        return this;
-    }
     //TODO notice the duplication below with edge.
     //Maybe could be moved to a separate class so we can do withEdge().16_16299();
     //Or withEdge().version(EdgeVersion.16_16299);

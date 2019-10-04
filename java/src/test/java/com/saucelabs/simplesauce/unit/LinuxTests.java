@@ -7,9 +7,9 @@ import static org.junit.Assert.assertEquals;
 public class LinuxTests extends BaseConfigurationTest {
     @Test
     public void withLinux_setsPlatformToLinux() {
-        fakeSauceSession.withLinux();
-        fakeSauceSession.start();
-        String actualOsSetInConfig = fakeSauceSession.sauceSessionCapabilities.getPlatform().toString();
+        mockSauceSession.withLinux();
+        mockSauceSession.start();
+        String actualOsSetInConfig = mockSauceSession.sauceSessionCapabilities.getPlatform().toString();
         assertEquals("linux", actualOsSetInConfig.toLowerCase());
     }
 }

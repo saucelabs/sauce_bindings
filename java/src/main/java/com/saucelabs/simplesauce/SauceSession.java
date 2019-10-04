@@ -138,11 +138,6 @@ public class SauceSession {
         sauceCapabilities.browserVersion = version;
         return this;
     }
-    public SauceSession withSafari()
-    {
-        return withMacOsMojave();
-    }
-
     public SauceSession withFirefox()
 	{
         sauceCapabilities.browser = "Firefox";
@@ -159,12 +154,7 @@ public class SauceSession {
         return webDriver;
     }
 
-    public SauceSession withMacOsMojave() {
-        sauceCapabilities.operatingSystem = "macOS 10.14";
-        sauceCapabilities.browser = "safari";
-        sauceCapabilities.browserVersion = "12.0";
-        return this;
-    }
+
     public SauceSession withMacOsHighSierra()
     {
         sauceCapabilities.operatingSystem = "macOS 10.13";

@@ -227,25 +227,8 @@ public class SauceSession {
         return this;
     }
 
-    public SauceSession withWindows10() {
-        sauceCapabilities.operatingSystem = "Windows 10";
-        return this;
-    }
 
-    public SauceSession withWindows8_1() {
-        sauceCapabilities.operatingSystem = "Windows 8.1";
-        return this;
-    }
 
-    public SauceSession withWindows8() {
-        sauceCapabilities.operatingSystem = "Windows 8";
-        return this;
-    }
-
-    public SauceSession withWindows7() {
-        sauceCapabilities.operatingSystem = "Windows 7";
-        return this;
-    }
 
 
 }

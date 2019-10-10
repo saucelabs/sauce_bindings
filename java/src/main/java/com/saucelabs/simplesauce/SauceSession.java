@@ -33,6 +33,15 @@ public class SauceSession {
     private EdgeOptions edgeOptions;
     private InternetExplorerOptions ieOptions;
     @Getter @Setter public String sauceLabsUrl;
+    public RemoteDriverInterface getDriverManager() {
+        return remoteDriverImplementation;
+    }
+    public MutableCapabilities getSauceOptionsCapability(){
+        return ((MutableCapabilities) sauceSessionCapabilities.getCapability(sauceOptionsTag));
+    }
+    public WebDriver getDriver() {
+        return webDriver;
+    }
 
     public SauceSession() {
         sauceSessionCapabilities = new MutableCapabilities();
@@ -124,42 +133,6 @@ public class SauceSession {
         return sauceOptions;
     }
 
-
-
-
-
-
-    public SauceSession withFirefox()
-	{
-        sauceCapabilities.browser = "Firefox";
-		return this;
-	}
-
-    public RemoteDriverInterface getDriverManager() {
-        return remoteDriverImplementation;
-    }
-    public MutableCapabilities getSauceOptionsCapability(){
-        return ((MutableCapabilities) sauceSessionCapabilities.getCapability(sauceOptionsTag));
-    }
-    public WebDriver getDriver() {
-        return webDriver;
-    }
-
-
-
-
-
-    public SauceSession withIE(String version) {
-        sauceCapabilities.browser = "IE";
-        sauceCapabilities.browserVersion = version;
-        ieOptions = new InternetExplorerOptions();
-        return this;
-    }
-
-    public SauceSession withPlatform(String operatingSystem) {
-        sauceCapabilities.operatingSystem = operatingSystem;
-        return this;
-    }
 
 
     public void stop()

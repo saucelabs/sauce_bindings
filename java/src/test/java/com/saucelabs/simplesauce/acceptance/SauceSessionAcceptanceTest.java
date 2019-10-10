@@ -2,14 +2,13 @@ package com.saucelabs.simplesauce.acceptance;
 
 import com.saucelabs.simplesauce.SauceOptions;
 import com.saucelabs.simplesauce.SauceSession;
-import org.hamcrest.text.IsEqualIgnoringCase;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class SauceSessionAcceptanceTest {
     private WebDriver webDriver;
@@ -63,45 +62,16 @@ public class SauceSessionAcceptanceTest {
     }
 
     @Test
-    public void withFirefox_returnsCorrectDriver() {
-        webDriver = new SauceSession().withFirefox().start();
-        String actualBrowser = getBrowserNameFromCapabilities();
+    public void runTestOnFirefox() {
+        SauceOptions options = new SauceOptions();
+        options.withFirefox();
+
+        webDriver = new SauceSession(options).start();
+        String actualBrowser = getBrowserNameFromRemoteCapabilities();
         assertEquals("firefox", actualBrowser);
     }
 
-    private String getBrowserNameFromCapabilities() {
+    private String getBrowserNameFromRemoteCapabilities() {
         return (((RemoteWebDriver) webDriver).getCapabilities()).getBrowserName();
-    }
-
-    @Test
-    @Ignore("Not sure how to make it work")
-    public void withEdge_default_returnsValidEdgeSession() {
-        SauceOptions options = new SauceOptions();
-        options.withEdge();
-
-        webDriver = new SauceSession(options).start();
-        String actualBrowser = getBrowserNameFromCapabilities();
-        assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("edge"));
-    }
-    @Test
-    @Ignore("Not sure how to make it work")
-    public void withIE_default_returnsValidIESession() {
-        webDriver = new SauceSession().withIE("latest").start();
-        String actualBrowser = getBrowserNameFromCapabilities();
-        assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("IE"));
-    }
-    @Test
-    @Ignore("Invalid Use Case: I don't want the use to be able to do this")
-    public void withIE_nonDefaultOs_returnsValidIESession() {
-        webDriver = new SauceSession().withIE("latest").withPlatform("Linux").start();
-        String actualBrowser = getBrowserNameFromCapabilities();
-        assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("IE"));
-    }
-    @Test
-    @Ignore("No clue why this doesn't work")
-    public void withIE_nonDefaultVersion_returnsValidIESession() {
-        webDriver = new SauceSession().withIE("11").start();
-        String actualBrowser = getBrowserNameFromCapabilities();
-        assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("IE"));
     }
 }

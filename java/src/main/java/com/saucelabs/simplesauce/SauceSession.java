@@ -147,11 +147,7 @@ public class SauceSession {
 
 
 
-    public SauceSession withEdge() {
-        sauceCapabilities.browser = "Edge";
-        edgeOptions = new EdgeOptions();
-        return this;
-    }
+
 
     public SauceSession withIE(String version) {
         sauceCapabilities.browser = "IE";
@@ -187,48 +183,6 @@ public class SauceSession {
         String accessKey = environmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY");
         return checkIfEmpty(accessKey);
     }
-
-    //TODO notice the duplication below with edge.
-    //Maybe could be moved to a separate class so we can do withEdge().16_16299();
-    //Or withEdge().version(EdgeVersion.16_16299);
-    public SauceSession withEdge16_16299() {
-        withEdge();
-        sauceCapabilities.browserVersion = "16.16299";
-        return this;
-    }
-
-    public SauceSession withEdge15_15063() {
-        withEdge();
-        sauceCapabilities.browserVersion = "15.15063";
-        return this;
-    }
-
-    public SauceSession withEdge14_14393() {
-        withEdge();
-        sauceCapabilities.browserVersion = "14.14393";
-        return this;
-    }
-
-    public SauceSession withEdge13_10586() {
-        withEdge();
-        sauceCapabilities.browserVersion = "13.10586";
-        return this;
-    }
-
-    public SauceSession withEdge17_17134() {
-        withEdge();
-        sauceCapabilities.browserVersion = "17.17134";
-        return this;
-    }
-
-    public SauceSession withEdge18_17763() {
-        withEdge();
-        sauceCapabilities.browserVersion = "18.17763";
-        return this;
-    }
-
-
-
 
 
 }

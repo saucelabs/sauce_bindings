@@ -76,7 +76,10 @@ public class SauceSessionAcceptanceTest {
     @Test
     @Ignore("Not sure how to make it work")
     public void withEdge_default_returnsValidEdgeSession() {
-        webDriver = new SauceSession().withEdge().start();
+        SauceOptions options = new SauceOptions();
+        options.withEdge();
+
+        webDriver = new SauceSession(options).start();
         String actualBrowser = getBrowserNameFromCapabilities();
         assertThat(actualBrowser, IsEqualIgnoringCase.equalToIgnoringCase("edge"));
     }

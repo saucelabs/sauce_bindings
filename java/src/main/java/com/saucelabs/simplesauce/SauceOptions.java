@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.ie.InternetExplorerOptions;
 
 public class SauceOptions {
     //TODO can probably use BrowserType enum from Selenium to do BrowserType.CHROME
@@ -15,6 +16,7 @@ public class SauceOptions {
     @Getter @Setter public String operatingSystem = "Windows 10";
     @Getter public  ChromeOptions chromeOptions;
     private EdgeOptions edgeOptions;
+    private InternetExplorerOptions ieOptions;
 
     public SauceOptions withChrome()
     {
@@ -131,5 +133,21 @@ public class SauceOptions {
         return this;
     }
 
+    public SauceOptions withFirefox()
+    {
+        browser = "Firefox";
+        return this;
+    }
 
+    public SauceOptions withIE(String version) {
+        browser = "IE";
+        browserVersion = version;
+        ieOptions = new InternetExplorerOptions();
+        return this;
+    }
+
+    public SauceOptions withPlatform(String operatingSystem) {
+        this.operatingSystem = operatingSystem;
+        return this;
+    }
 }

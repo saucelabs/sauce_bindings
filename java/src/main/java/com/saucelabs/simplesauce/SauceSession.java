@@ -86,6 +86,16 @@ public class SauceSession {
         }
         return this.webDriver;
 	}
+    private MutableCapabilities setSauceOptions() {
+        sauceOptions = new MutableCapabilities();
+        sauceOptions.setCapability("username", getUserName());
+        sauceOptions.setCapability("accessKey", getAccessKey());
+        if(timeouts.getCommandTimeout() != 0)
+            sauceOptions.setCapability("commandTimeout", timeouts.getCommandTimeout());
+        if(timeouts.getIdleTimeout() != 0)
+            sauceOptions.setCapability("idleTimeout", timeouts.getIdleTimeout());
+        return sauceOptions;
+    }
     //TODO this needs to be moved to it's own class because it keeps changing
     private void setBrowserSpecificCapabilities(String browserName)
     {
@@ -122,16 +132,7 @@ public class SauceSession {
         return sauceSessionCapabilities;
     }
 
-    private MutableCapabilities setSauceOptions() {
-        sauceOptions = new MutableCapabilities();
-        sauceOptions.setCapability("username", getUserName());
-        sauceOptions.setCapability("accessKey", getAccessKey());
-        if(timeouts.getCommandTimeout() != 0)
-            sauceOptions.setCapability("commandTimeout", timeouts.getCommandTimeout());
-        if(timeouts.getIdleTimeout() != 0)
-            sauceOptions.setCapability("idleTimeout", timeouts.getIdleTimeout());
-        return sauceOptions;
-    }
+
 
 
 
@@ -156,6 +157,4 @@ public class SauceSession {
         String accessKey = environmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY");
         return checkIfEmpty(accessKey);
     }
-
-
 }

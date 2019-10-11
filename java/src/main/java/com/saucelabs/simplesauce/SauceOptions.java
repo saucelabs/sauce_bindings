@@ -145,9 +145,4 @@ public class SauceOptions {
         ieOptions = new InternetExplorerOptions();
         return this;
     }
-
-    public SauceOptions withPlatform(String operatingSystem) {
-        this.operatingSystem = operatingSystem;
-        return this;
-    }
 }

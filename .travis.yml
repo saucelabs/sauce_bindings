@@ -6,11 +6,13 @@ env:
 
 jobs:
   include:
-    - stage: "Run All Tests"
-      python: "3.6"
+    - stage: "Java tests"
       jdk: "openjdk8"
-      rvm: "2.5.3"
       before_install: export | grep SAUCE_
       script: make java_tests
+    - stage "Python tests"
+      python: "3.6"
       script: make python_tests
+    - stage "Ruby tests"
+      rvm: "2.5.3"
       script: make ruby_tests

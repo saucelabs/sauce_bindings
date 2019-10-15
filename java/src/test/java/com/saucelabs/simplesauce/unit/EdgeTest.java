@@ -4,7 +4,17 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class EdgeTests extends BaseConfigurationTest{
+public class EdgeTest extends BaseConfigurationTest{
+    @Test
+    public void withEdge_default() {
+        sauceOptions.withEdge();
+        mockSauceSession = instantiateSauceSession();
+
+        mockSauceSession.start();
+        String actualBrowserSetInConfig = mockSauceSession.sauceSessionCapabilities.getVersion();
+        assertEquals("18.17763", actualBrowserSetInConfig);
+    }
+
     @Test
     public void withEdge18_17763_returnsBrowserVersion18_17763() {
         sauceOptions.withEdge18_17763();

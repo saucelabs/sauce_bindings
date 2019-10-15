@@ -93,9 +93,11 @@ public class SauceOptions {
 
     public SauceOptions withEdge() {
         browser = "Edge";
+        browserVersion = "18.17763";
         edgeOptions = new EdgeOptions();
         return this;
     }
+
     //TODO notice the duplication below with edge.
     //Maybe could be moved to a separate class so we can do withEdge().16_16299();
     //Or withEdge().version(EdgeVersion.16_16299);
@@ -142,6 +144,13 @@ public class SauceOptions {
     public SauceOptions withIE(String version) {
         browser = "IE";
         browserVersion = version;
+        ieOptions = new InternetExplorerOptions();
+        return this;
+    }
+
+    public SauceOptions withIE() {
+        browser = "IE";
+        browserVersion = "latest";
         ieOptions = new InternetExplorerOptions();
         return this;
     }

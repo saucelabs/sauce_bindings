@@ -3,15 +3,21 @@ sudo: true
 env:
   global:
   - SAUCE_USERNAME=sauce_examples
-  - TEST_SUITE=java_tests
-  - TEST_SUITE=python_tests
-  - TEST_SUITE=ruby_tests
 
-jobs:
+matrix:
+  before_install: export | grep SAUCE_
   include:
-    - stage: "Run tests"
-      jdk: "openjdk8"
-      python: "3.6"
-      rvm: "2.5.3"
-      before_install: export | grep SAUCE_
-      script: "make $TEST_SUITE"
+    - language: python
+      python: 3.6
+      script:
+      - "make python_tests"
+
+    - language: ruby
+      rvm: 2.5.3
+      script:
+      - "make ruby_tests"
+
+    - language: java
+      jdk: openjdk8
+      script:
+      - "make java_tests"

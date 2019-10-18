@@ -23,6 +23,8 @@ public class SauceSession {
     public SauceTimeout timeouts = new SauceTimeout();
 
     private final String sauceOptionsTag = "sauce:options";
+    //TODO 2 same variables being used differently
+    //definitely should be fixed
     private MutableCapabilities mutableCapabilities;
     public MutableCapabilities sauceSessionCapabilities;
     private final RemoteDriverInterface remoteDriverImplementation;
@@ -132,11 +134,6 @@ public class SauceSession {
         sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_VERSION, this.sauceOptions.browserVersion);
         return sauceSessionCapabilities;
     }
-
-
-
-
-
     public void stop()
     {
         if(webDriver != null)

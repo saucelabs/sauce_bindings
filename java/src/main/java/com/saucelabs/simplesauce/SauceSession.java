@@ -29,7 +29,7 @@ public class SauceSession {
     public MutableCapabilities sauceSessionCapabilities;
     private final RemoteDriverInterface remoteDriverImplementation;
 
-    private WebDriver webDriver;
+    public WebDriver webDriver;
     private EdgeOptions edgeOptions;
     private InternetExplorerOptions ieOptions;
     @Getter @Setter public String sauceLabsUrl;

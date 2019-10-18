@@ -31,7 +31,7 @@ public class SauceSessionAcceptanceTest {
         String url = "https://" + systemAccess.getEnvironmentVariable("SAUCE_USERNAME") +
                 ":" + systemAccess.getEnvironmentVariable("SAUCE_ACCESS_KEY") +
                 "@saucelabs.com/rest/v1/users/" + systemAccess.getEnvironmentVariable("SAUCE_USERNAME") +
-                "/jobs" + sessionId;
+                "/jobs/" + sessionId;
         given().
                 when().
                 get(url).

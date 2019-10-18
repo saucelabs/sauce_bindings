@@ -1,4 +1,4 @@
-package com.saucelabs.simplesauce.unit;
+package com.saucelabs.simplesauce;
 
 import com.saucelabs.simplesauce.SauceOptions;
 import com.saucelabs.simplesauce.SauceSession;

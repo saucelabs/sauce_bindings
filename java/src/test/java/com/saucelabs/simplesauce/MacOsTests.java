@@ -1,7 +1,5 @@
-package com.saucelabs.simplesauce.unit;
+package com.saucelabs.simplesauce;
 
-import com.saucelabs.simplesauce.Platforms;
-import com.saucelabs.simplesauce.SafariVersion;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;

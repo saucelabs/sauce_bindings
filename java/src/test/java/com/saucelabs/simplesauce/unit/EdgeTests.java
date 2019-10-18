@@ -52,6 +52,7 @@ public class EdgeTests extends BaseConfigurationTest{
     }
     @Test
     public void withEdge13_10586_returnsBrowserVersion13_10586() {
+        //TODO refactor these Edge names
         sauceOptions.withEdge13_10586();
         mockSauceSession = instantiateSauceSession();
 

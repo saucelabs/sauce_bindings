@@ -99,35 +99,35 @@ public class SauceOptions {
     //TODO notice the duplication below with edge.
     //Maybe could be moved to a separate class so we can do withEdge().16_16299();
     //Or withEdge().version(EdgeVersion.16_16299);
-    public SauceOptions withEdge18_17763() {
+    public SauceOptions withEdge18() {
         withEdge();
         browserVersion = "18.17763";
         return this;
     }
-    public SauceOptions withEdge17_17134() {
+    public SauceOptions withEdge17() {
         withEdge();
         browserVersion = "17.17134";
         return this;
     }
-    public SauceOptions withEdge16_16299() {
+    public SauceOptions withEdge16() {
         withEdge();
         browserVersion = "16.16299";
         return this;
     }
 
-    public SauceOptions withEdge15_15063() {
+    public SauceOptions withEdge15() {
         withEdge();
         browserVersion = "15.15063";
         return this;
     }
 
-    public SauceOptions withEdge14_14393() {
+    public SauceOptions withEdge14() {
         withEdge();
         browserVersion = "14.14393";
         return this;
     }
 
-    public SauceOptions withEdge13_10586() {
+    public SauceOptions withEdge13() {
         withEdge();
         browserVersion = "13.10586";
         return this;

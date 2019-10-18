@@ -7,7 +7,7 @@ import static org.junit.Assert.assertEquals;
 public class EdgeTests extends BaseConfigurationTest{
     @Test
     public void withEdge18_17763_returnsBrowserVersion18_17763() {
-        sauceOptions.withEdge18_17763();
+        sauceOptions.withEdge18();
         mockSauceSession = instantiateSauceSession();
 
         mockSauceSession.start();
@@ -16,7 +16,7 @@ public class EdgeTests extends BaseConfigurationTest{
     }
     @Test
     public void withEdge17_17134_returnsBrowserVersion17_17134() {
-        sauceOptions.withEdge17_17134();
+        sauceOptions.withEdge17();
         mockSauceSession = instantiateSauceSession();
 
         mockSauceSession.start();
@@ -25,7 +25,7 @@ public class EdgeTests extends BaseConfigurationTest{
     }
     @Test
     public void withEdge16_16299_returnsBrowserVersion16_16299() {
-        sauceOptions.withEdge16_16299();
+        sauceOptions.withEdge16();
         mockSauceSession = instantiateSauceSession();
 
         mockSauceSession.start();
@@ -34,7 +34,7 @@ public class EdgeTests extends BaseConfigurationTest{
     }
     @Test
     public void withEdge15_15063_returnsBrowserVersion15_15063() {
-        sauceOptions.withEdge15_15063();
+        sauceOptions.withEdge15();
         mockSauceSession = instantiateSauceSession();
 
         mockSauceSession.start();
@@ -43,7 +43,7 @@ public class EdgeTests extends BaseConfigurationTest{
     }
     @Test
     public void withEdge14_14393_returnsBrowserVersion14_14393() {
-        sauceOptions.withEdge14_14393();
+        sauceOptions.withEdge14();
         mockSauceSession = instantiateSauceSession();
 
         mockSauceSession.start();
@@ -53,7 +53,7 @@ public class EdgeTests extends BaseConfigurationTest{
     @Test
     public void withEdge13_10586_returnsBrowserVersion13_10586() {
         //TODO refactor these Edge names
-        sauceOptions.withEdge13_10586();
+        sauceOptions.withEdge13();
         mockSauceSession = instantiateSauceSession();
 
         mockSauceSession.start();

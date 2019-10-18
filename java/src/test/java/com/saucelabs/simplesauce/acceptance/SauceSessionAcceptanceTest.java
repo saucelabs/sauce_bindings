@@ -1,5 +1,6 @@
 package com.saucelabs.simplesauce.acceptance;
 
+import com.saucelabs.simplesauce.ConcreteSystemManager;
 import com.saucelabs.simplesauce.SauceOptions;
 import com.saucelabs.simplesauce.SauceSession;
 import org.junit.After;
@@ -7,8 +8,10 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
 
 public class SauceSessionAcceptanceTest {
     private WebDriver webDriver;
@@ -24,7 +27,17 @@ public class SauceSessionAcceptanceTest {
         SauceOptions options = new SauceOptions();
         webDriver = new SauceSession(options).start();
         String sessionId = ((RemoteWebDriver) webDriver).getSessionId().toString();
-        //TODO add logic to his the Sauce REST API and make sure that an actual sessionId exists
+        ConcreteSystemManager systemAccess = new ConcreteSystemManager();
+        String url = "https://" + systemAccess.getEnvironmentVariable("SAUCE_USERNAME") +
+                ":" + systemAccess.getEnvironmentVariable("SAUCE_ACCESS_KEY") +
+                "@saucelabs.com/rest/v1/users/" + systemAccess.getEnvironmentVariable("SAUCE_USERNAME") +
+                "/jobs" + sessionId;
+        given().
+                when().
+                get(url).
+                then().
+                assertThat().
+                statusCode(200);
     }
     @Test
     public void withWindows10_default() {

@@ -15,8 +15,6 @@ public class SauceOptions {
     @Getter @Setter public String browserVersion = "latest";
     @Getter @Setter public String operatingSystem = "Windows 10";
     @Getter public  ChromeOptions chromeOptions;
-    private EdgeOptions edgeOptions;
-    private InternetExplorerOptions ieOptions;
 
     public SauceOptions withChrome()
     {
@@ -94,7 +92,7 @@ public class SauceOptions {
 
     public SauceOptions withEdge() {
         browser = "Edge";
-        edgeOptions = new EdgeOptions();
+        EdgeOptions edgeOptions = new EdgeOptions();
         return this;
     }
     //TODO notice the duplication below with edge.
@@ -143,7 +141,7 @@ public class SauceOptions {
     public SauceOptions withIE(String version) {
         browser = "IE";
         browserVersion = version;
-        ieOptions = new InternetExplorerOptions();
+        InternetExplorerOptions ieOptions = new InternetExplorerOptions();
         return this;
     }
 }

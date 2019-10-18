@@ -72,6 +72,7 @@ public class SauceSession {
     }
 
     public WebDriver start() {
+        //TODO this might be the same as sauceCapabilities
         sauceOptions = setSauceOptions();
         setBrowserSpecificCapabilities(sauceCapabilities.browser);
         sauceSessionCapabilities = setRemoteDriverCapabilities(sauceOptions);

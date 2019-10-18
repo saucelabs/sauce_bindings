@@ -1,6 +1,5 @@
-package com.saucelabs.simplesauce.unit;
+package com.saucelabs.simplesauce;
 
-import com.saucelabs.simplesauce.IEVersion;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

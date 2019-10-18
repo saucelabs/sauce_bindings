@@ -25,7 +25,7 @@ public class SauceSession {
     private final String sauceOptionsTag = "sauce:options";
     private ChromeOptions chromeOptions;
     private FirefoxOptions firefoxOptions;
-    private MutableCapabilities sauceOptions;
+    private MutableCapabilities mutableCapabilities;
     public MutableCapabilities sauceSessionCapabilities;
     private final RemoteDriverInterface remoteDriverImplementation;
 
@@ -73,9 +73,9 @@ public class SauceSession {
 
     public WebDriver start() {
         //TODO this might be the same as sauceCapabilities
-        sauceOptions = setSauceOptions();
+        mutableCapabilities = appendSauceCapabilities();
         setBrowserSpecificCapabilities(sauceCapabilities.browser);
-        sauceSessionCapabilities = setRemoteDriverCapabilities(sauceOptions);
+        sauceSessionCapabilities = setRemoteDriverCapabilities(mutableCapabilities);
         sauceLabsUrl = sauceDataCenter;
         try
         {
@@ -87,15 +87,15 @@ public class SauceSession {
         }
         return this.webDriver;
 	}
-    private MutableCapabilities setSauceOptions() {
-        sauceOptions = new MutableCapabilities();
-        sauceOptions.setCapability("username", getUserName());
-        sauceOptions.setCapability("accessKey", getAccessKey());
+    private MutableCapabilities appendSauceCapabilities() {
+        mutableCapabilities = new MutableCapabilities();
+        mutableCapabilities.setCapability("username", getUserName());
+        mutableCapabilities.setCapability("accessKey", getAccessKey());
         if(timeouts.getCommandTimeout() != 0)
-            sauceOptions.setCapability("commandTimeout", timeouts.getCommandTimeout());
+            mutableCapabilities.setCapability("commandTimeout", timeouts.getCommandTimeout());
         if(timeouts.getIdleTimeout() != 0)
-            sauceOptions.setCapability("idleTimeout", timeouts.getIdleTimeout());
-        return sauceOptions;
+            mutableCapabilities.setCapability("idleTimeout", timeouts.getIdleTimeout());
+        return mutableCapabilities;
     }
     //TODO this needs to be moved to it's own class because it keeps changing
     private void setBrowserSpecificCapabilities(String browserName)

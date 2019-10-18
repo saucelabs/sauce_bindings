@@ -1,6 +1,5 @@
 package com.saucelabs.simplesauce;
 
-import com.saucelabs.simplesauce.DataCenter;
 import org.hamcrest.text.IsEqualIgnoringCase;
 import org.junit.Test;
 
@@ -13,5 +12,17 @@ public class DataCenterTest
     {
         assertThat(DataCenter.USWest,
                 IsEqualIgnoringCase.equalToIgnoringCase("https://ondemand.saucelabs.com/wd/hub"));
+    }
+    @Test
+    public void usEastDataCenterUrl_isCorrect()
+    {
+        assertThat(DataCenter.US_EAST,
+                IsEqualIgnoringCase.equalToIgnoringCase("https://ondemand.us-east-1.saucelabs.com/wd/hub"));
+    }
+    @Test
+    public void euCentralDataCenterUrl_isCorrect()
+    {
+        assertThat(DataCenter.EU_CENTRAL,
+                IsEqualIgnoringCase.equalToIgnoringCase("https://ondemand.eu-central-1.saucelabs.com/wd/hub"));
     }
 }

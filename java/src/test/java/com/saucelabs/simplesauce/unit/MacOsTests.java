@@ -101,4 +101,15 @@ public class MacOsTests extends BaseConfigurationTest{
         String actualBrowserVersionSetThroughSauceSession = mockSauceSession.sauceSessionCapabilities.getVersion();
         assertEquals("8.0", actualBrowserVersionSetThroughSauceSession);
     }
+    @Test
+    public void withSafari_versionNotSet_returnsLatest() {
+        sauceOptions.withSafari("");
+        mockSauceSession = instantiateSauceSession();
+
+        mockSauceSession.start();
+
+        String actualBrowserVersionSetThroughSauceSession =
+                mockSauceSession.sauceSessionCapabilities.getVersion();
+        assertEquals("latest", actualBrowserVersionSetThroughSauceSession);
+    }
 }

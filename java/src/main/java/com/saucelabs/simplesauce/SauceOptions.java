@@ -144,4 +144,5 @@ public class SauceOptions {
         InternetExplorerOptions ieOptions = new InternetExplorerOptions();
         return this;
     }
+
 }

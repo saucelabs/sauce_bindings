@@ -6,7 +6,7 @@ import static org.junit.Assert.assertEquals;
 
 public class EdgeTests extends BaseConfigurationTest{
     @Test
-    public void withEdge18_17763_returnsBrowserVersion18_17763() {
+    public void withEdge18_returnsBrowserVersion18_17763() {
         sauceOptions.withEdge18();
         mockSauceSession = instantiateSauceSession();
 
@@ -15,7 +15,7 @@ public class EdgeTests extends BaseConfigurationTest{
         assertEquals("18.17763", actualBrowserSetInConfig);
     }
     @Test
-    public void withEdge17_17134_returnsBrowserVersion17_17134() {
+    public void withEdge17_returnsBrowserVersion17_17134() {
         sauceOptions.withEdge17();
         mockSauceSession = instantiateSauceSession();
 
@@ -24,7 +24,7 @@ public class EdgeTests extends BaseConfigurationTest{
         assertEquals("17.17134", actualBrowserSetInConfig);
     }
     @Test
-    public void withEdge16_16299_returnsBrowserVersion16_16299() {
+    public void withEdge16_returnsBrowserVersion16_16299() {
         sauceOptions.withEdge16();
         mockSauceSession = instantiateSauceSession();
 
@@ -33,7 +33,7 @@ public class EdgeTests extends BaseConfigurationTest{
         assertEquals("16.16299", actualBrowserSetInConfig);
     }
     @Test
-    public void withEdge15_15063_returnsBrowserVersion15_15063() {
+    public void withEdge15_returnsBrowserVersion15_15063() {
         sauceOptions.withEdge15();
         mockSauceSession = instantiateSauceSession();
 
@@ -42,7 +42,7 @@ public class EdgeTests extends BaseConfigurationTest{
         assertEquals("15.15063", actualBrowserSetInConfig);
     }
     @Test
-    public void withEdge14_14393_returnsBrowserVersion14_14393() {
+    public void withEdge14_returnsBrowserVersion14_14393() {
         sauceOptions.withEdge14();
         mockSauceSession = instantiateSauceSession();
 
@@ -51,8 +51,7 @@ public class EdgeTests extends BaseConfigurationTest{
         assertEquals("14.14393", actualBrowserSetInConfig);
     }
     @Test
-    public void withEdge13_10586_returnsBrowserVersion13_10586() {
-        //TODO refactor these Edge names
+    public void withEdge13_returnsBrowserVersion13_10586() {
         sauceOptions.withEdge13();
         mockSauceSession = instantiateSauceSession();
 

@@ -28,7 +28,7 @@ public class SauceSession {
     private MutableCapabilities mutableCapabilities;
     public MutableCapabilities sauceSessionCapabilities;
     private final RemoteDriverInterface remoteDriverImplementation;
-
+    //TODO turn into a @Getter and then I can get rid of getDriver() below
     public WebDriver webDriver;
     @Getter @Setter public String sauceLabsUrl;
     public RemoteDriverInterface getDriverManager() {
@@ -75,6 +75,7 @@ public class SauceSession {
         setBrowserSpecificCapabilities(sauceOptions.browser);
         sauceSessionCapabilities = setRemoteDriverCapabilities(mutableCapabilities);
         sauceLabsUrl = sauceDataCenter;
+        //TODO move to a separate method
         try
         {
             webDriver = remoteDriverImplementation.createRemoteWebDriver(sauceLabsUrl, sauceSessionCapabilities);
@@ -95,7 +96,6 @@ public class SauceSession {
             mutableCapabilities.setCapability("idleTimeout", timeouts.getIdleTimeout());
         return mutableCapabilities;
     }
-    //TODO this needs to be moved to it's own class because it keeps changing
     private void setBrowserSpecificCapabilities(String browserName)
     {
         if (browserName.equalsIgnoreCase("Chrome"))

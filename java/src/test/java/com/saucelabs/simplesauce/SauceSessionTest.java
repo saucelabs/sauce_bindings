@@ -1,18 +1,14 @@
 package com.saucelabs.simplesauce;
 
-import com.saucelabs.simplesauce.ConcreteRemoteDriver;
-import com.saucelabs.simplesauce.DataCenter;
-import com.saucelabs.simplesauce.SauceOptions;
-import com.saucelabs.simplesauce.SauceSession;
 import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
 import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.openqa.selenium.WebDriver;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class SauceSessionTest {
 
@@ -109,6 +105,7 @@ public class SauceSessionTest {
         RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
         SauceOptions options = new SauceOptions();
         options.withChrome();
+        //TODO rename, not a mock here
         mockSauceSession = new SauceSession(options, fakeRemoteDriver, fakeEnvironmentManager);
         mockSauceSession.start();
         String actualBrowser = mockSauceSession.sauceSessionCapabilities.getBrowserName();
@@ -116,27 +113,13 @@ public class SauceSessionTest {
     }
 
     @Test
-    @Ignore("Future enhancement")
-    public void withOs_linux_allowsOnlyChromeOrFirefox()
-    {
-        fail();
+    @Ignore("Need to implement, not quiet sure how to do this with Mockito")
+    public void stop_callsDriverQuit() {
+        WebDriver dummyDriver = mock(WebDriver.class);
+        mockSauceSession = mock(SauceSession.class);
+        when(mockSauceSession.start()).thenReturn(dummyDriver);
+        mockSauceSession.start();
+        mockSauceSession.stop();
+        verify(dummyDriver, times(1)).quit();
     }
-    @Test
-    @Ignore("Future enhancement")
-    public void withOs_windows10_doesntAllowSafari() {
-        fail();
-    }
-    @Test
-    @Ignore("Future enhancement")
-    public void withOs_windows8_1_allowsOnlyChromeOrFfOrIe()
-    {
-        fail();
-    }
-    @Test
-    @Ignore("Future enhancement")
-    public void withOs_windows8_allowsOnlyChromeOrFfOrIe()
-    {
-        fail();
-    }
-
 }

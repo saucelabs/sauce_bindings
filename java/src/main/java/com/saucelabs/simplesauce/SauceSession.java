@@ -19,19 +19,15 @@ import java.net.MalformedURLException;
 public class SauceSession {
     @Getter @Setter public final String sauceDataCenter = DataCenter.USWest;
     private final EnvironmentManager environmentManager;
-    private final SauceOptions sauceCapabilities;
+    private final SauceOptions sauceOptions;
     public SauceTimeout timeouts = new SauceTimeout();
 
     private final String sauceOptionsTag = "sauce:options";
-    private ChromeOptions chromeOptions;
-    private FirefoxOptions firefoxOptions;
     private MutableCapabilities mutableCapabilities;
     public MutableCapabilities sauceSessionCapabilities;
     private final RemoteDriverInterface remoteDriverImplementation;
 
     public WebDriver webDriver;
-    private EdgeOptions edgeOptions;
-    private InternetExplorerOptions ieOptions;
     @Getter @Setter public String sauceLabsUrl;
     public RemoteDriverInterface getDriverManager() {
         return remoteDriverImplementation;
@@ -47,25 +43,25 @@ public class SauceSession {
         sauceSessionCapabilities = new MutableCapabilities();
         remoteDriverImplementation = new ConcreteRemoteDriver();
         environmentManager = new ConcreteSystemManager();
-        sauceCapabilities = new SauceOptions();
+        sauceOptions = new SauceOptions();
     }
 
     public SauceSession(RemoteDriverInterface remoteManager, EnvironmentManager environmentManager) {
         remoteDriverImplementation = remoteManager;
         sauceSessionCapabilities = new MutableCapabilities();
         this.environmentManager = environmentManager;
-        sauceCapabilities = new SauceOptions();
+        sauceOptions = new SauceOptions();
     }
 
     public SauceSession(SauceOptions options) {
-        sauceCapabilities = options;
+        sauceOptions = options;
         sauceSessionCapabilities = new MutableCapabilities();
         environmentManager = new ConcreteSystemManager();
         remoteDriverImplementation = new ConcreteRemoteDriver();
     }
 
     public SauceSession(SauceOptions options, RemoteDriverInterface remoteManager, EnvironmentManager environmentManager) {
-        sauceCapabilities = options;
+        sauceOptions = options;
         remoteDriverImplementation = remoteManager;
         sauceSessionCapabilities = new MutableCapabilities();
         this.environmentManager = environmentManager;
@@ -74,7 +70,7 @@ public class SauceSession {
     public WebDriver start() {
         //TODO this might be the same as sauceCapabilities
         mutableCapabilities = appendSauceCapabilities();
-        setBrowserSpecificCapabilities(sauceCapabilities.browser);
+        setBrowserSpecificCapabilities(sauceOptions.browser);
         sauceSessionCapabilities = setRemoteDriverCapabilities(mutableCapabilities);
         sauceLabsUrl = sauceDataCenter;
         try
@@ -102,10 +98,12 @@ public class SauceSession {
     {
         if (browserName.equalsIgnoreCase("Chrome"))
         {
+            ChromeOptions chromeOptions = new ChromeOptions();
             sauceSessionCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         }
         else if (browserName.equalsIgnoreCase("Firefox"))
         {
+            FirefoxOptions firefoxOptions = new FirefoxOptions();
             sauceSessionCapabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
         }
         else if(browserName.equalsIgnoreCase("Safari"))
@@ -115,10 +113,12 @@ public class SauceSession {
         }
         else if(browserName.equalsIgnoreCase("Edge"))
         {
+            EdgeOptions edgeOptions = new EdgeOptions();
             sauceSessionCapabilities.setCapability("Edge", edgeOptions);
         }
         else if(browserName.equalsIgnoreCase("IE"))
         {
+            InternetExplorerOptions ieOptions = new InternetExplorerOptions();
             sauceSessionCapabilities.setCapability("se:ieOptions", ieOptions);
         }
         else {
@@ -127,9 +127,9 @@ public class SauceSession {
     }
     private MutableCapabilities setRemoteDriverCapabilities(MutableCapabilities sauceOptions) {
         sauceSessionCapabilities.setCapability(sauceOptionsTag, sauceOptions);
-        sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_NAME, sauceCapabilities.browser);
-        sauceSessionCapabilities.setCapability(CapabilityType.PLATFORM_NAME, sauceCapabilities.operatingSystem);
-        sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_VERSION, sauceCapabilities.browserVersion);
+        sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_NAME, this.sauceOptions.browser);
+        sauceSessionCapabilities.setCapability(CapabilityType.PLATFORM_NAME, this.sauceOptions.operatingSystem);
+        sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_VERSION, this.sauceOptions.browserVersion);
         return sauceSessionCapabilities;
     }
 

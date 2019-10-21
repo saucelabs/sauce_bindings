@@ -223,42 +223,12 @@ public class SauceSession {
         browserName = "Safari";
         return this;
     }
-    //TODO notice the duplication below with edge.
+    //FIXED notice the duplication below with edge. Used enumeration
     //Maybe could be moved to a separate class so we can do withEdge().16_16299();
     //Or withEdge().version(EdgeVersion.16_16299);
-    public SauceSession withEdge16_16299() {
+    public SauceSession withEdge(EdgeVersion version) {
         browserName = "Edge";
-        browserVersion = "16.16299";
-        return this;
-    }
-
-    public SauceSession withEdge15_15063() {
-        browserName = "Edge";
-        browserVersion = "15.15063";
-        return this;
-    }
-
-    public SauceSession withEdge14_14393() {
-        browserName = "Edge";
-        browserVersion = "14.14393";
-        return this;
-    }
-
-    public SauceSession withEdge13_10586() {
-        browserName = "Edge";
-        browserVersion = "13.10586";
-        return this;
-    }
-
-    public SauceSession withEdge17_17134() {
-        browserName = "Edge";
-        browserVersion = "17.17134";
-        return this;
-    }
-
-    public SauceSession withEdge18_17763() {
-        browserName = "Edge";
-        browserVersion = "18.17763";
+        browserVersion = version.name().substring(1);
         return this;
     }
 
@@ -285,5 +255,15 @@ public class SauceSession {
     public SauceSession withLinux() {
         operatingSystem = "Linux";
         return this;
+    }
+
+    public enum EdgeVersion {
+        E16_16299,
+        E15_15063,
+        E14_14393,
+        E13_10586,
+        E17_17134,
+        E18_17763,
+
     }
 }

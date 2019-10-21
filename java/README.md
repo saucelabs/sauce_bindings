@@ -6,7 +6,7 @@ You no longer need to read extensive docs, just let your IDE guide you 😉
 ##Quick Start: a test on all defaults:
 
 ```WebDriver driver = new SauceSession().start();```
-```driver.findElement("id").click()```
+```driver.get("https://www.saucedemo.com");```
 
 * Defaults are Windows 10 for non-Safari
 * latest Mac for Safari

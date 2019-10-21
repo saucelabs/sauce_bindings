@@ -24,7 +24,7 @@ public class SauceSessionAcceptanceTest {
         webDriver = new SauceSession(options).start();
         String sessionId = ((RemoteWebDriver) webDriver).getSessionId().toString();
 
-        assertTrue(!sessionId.isEmpty());
+        assertFalse(sessionId.isEmpty());
     }
     @Test
     public void withWindows10_default() {

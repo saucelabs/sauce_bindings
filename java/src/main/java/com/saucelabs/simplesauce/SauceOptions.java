@@ -3,8 +3,6 @@ package com.saucelabs.simplesauce;
 import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeOptions;
-import org.openqa.selenium.ie.InternetExplorerOptions;
 
 public class SauceOptions {
     //TODO can probably use BrowserType enum from Selenium to do BrowserType.CHROME
@@ -27,13 +25,13 @@ public class SauceOptions {
     {
         return withMacOsMojave();
     }
-    public SauceOptions withSafari(String version)
+    public SauceOptions withSafari(final String version)
     {
-
-        if (version.isEmpty()) { version = "latest"; }
+        String _version = version;
+        if (_version.isEmpty()) { _version = "latest"; }
 
         browser = "safari";
-        browserVersion = version;
+        browserVersion = _version;
         return this;
     }
     public SauceOptions withMacOsMojave() {

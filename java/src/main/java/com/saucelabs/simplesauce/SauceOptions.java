@@ -15,8 +15,6 @@ public class SauceOptions {
     @Getter @Setter public String browserVersion = "latest";
     @Getter @Setter public String operatingSystem = "Windows 10";
     @Getter public  ChromeOptions chromeOptions;
-    private EdgeOptions edgeOptions;
-    private InternetExplorerOptions ieOptions;
 
     public SauceOptions withChrome()
     {
@@ -31,10 +29,9 @@ public class SauceOptions {
     }
     public SauceOptions withSafari(String version)
     {
-        //TODO: I did this but I hate it :(
-        //I wish I could just have a default value set for the version param
-        if(version.equalsIgnoreCase(""))
-            version = "latest";
+
+        if (version.isEmpty()) { version = "latest"; }
+
         browser = "safari";
         browserVersion = version;
         return this;
@@ -94,7 +91,6 @@ public class SauceOptions {
     public SauceOptions withEdge() {
         browser = "Edge";
         browserVersion = "18.17763";
-        edgeOptions = new EdgeOptions();
         return this;
     }
 
@@ -144,14 +140,12 @@ public class SauceOptions {
     public SauceOptions withIE(String version) {
         browser = "IE";
         browserVersion = version;
-        ieOptions = new InternetExplorerOptions();
         return this;
     }
 
     public SauceOptions withIE() {
         browser = "IE";
         browserVersion = "latest";
-        ieOptions = new InternetExplorerOptions();
         return this;
     }
 }

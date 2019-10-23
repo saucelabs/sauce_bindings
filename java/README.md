@@ -3,57 +3,57 @@ The goal of Simple Sauce is to make your test automation and integration in Sauc
 Our fluent API helps you to understand all of the possible browser/OS combinations at design time.
 You no longer need to read extensive docs, just let your IDE guide you 😉
 
-##Quick Start: a test on all defaults:
+## Quick Start: a test on all defaults:
 
 ```WebDriver driver = new SauceSession().start();```
 ```driver.findElement("id").click()```
 
 * Defaults are Windows 10 for non-Safari
 * latest Mac for Safari
-##Run a test on:
+## Run a test on:
 
-###Latest Chrome
+### Latest Chrome
 ```        
 SauceOptions options = new SauceOptions();
 options.withSafari();
 webDriver = new SauceSession(options).start();
 ```
-###Latest Edge
+### Latest Edge
 ```        
 SauceOptions options = new SauceOptions();
 options.withEdge();
 webDriver = new SauceSession(options).start();
 ```
-###Latest Firefox
+### Latest Firefox
 ```        
 SauceOptions options = new SauceOptions();
 options.withFirefox();
 webDriver = new SauceSession(options).start();
 ```
 
-###Latest Safari
+### Latest Safari
 ```        
 SauceOptions options = new SauceOptions();
 options.withSafari();
 webDriver = new SauceSession(options).start();
 ```
 
-##If it's possible in Sauce, it's possible here:
-###Run test on Linux with Firefox:
+## If it's possible in Sauce, it's possible here:
+### Run test on Linux with Firefox:
 ```        
 SauceOptions options = new SauceOptions().
 withLinux().
 withFirefox();
 webDriver = new SauceSession(options).start();
 ```
-###Setting Browser versions:
+### Setting Browser versions:
 ```        
 SauceOptions options = new SauceOptions().
 withLinux().
 withChrome("72");
 webDriver = new SauceSession(options).start();
 ```
-####Edge and Safari browser versions are easy to know:
+#### Edge and Safari browser versions are easy to know:
 Mac OS Mojave
 ```        
 SauceOptions options = new SauceOptions().withMacOsMojave();

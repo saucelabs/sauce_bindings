@@ -4,10 +4,11 @@ Our fluent API helps you to understand all of the possible browser/OS combinatio
 You no longer need to read extensive docs, just let your IDE guide you 😉
 
 ## Quick Start with a single line of code
-
-```WebDriver driver = new SauceSession().start();```
-
-```driver.findElement("id").click()```
+```
+WebDriver driver = new SauceSession().start();
+//now use the driver to interact with your test in Sauce Labs
+driver.findElement("id").click();
+```
 
 * Defaults are Windows 10 for non-Safari
 * latest Mac for Safari

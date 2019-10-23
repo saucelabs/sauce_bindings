@@ -30,6 +30,7 @@ public class SauceSession {
     private final RemoteDriverInterface remoteDriverImplementation;
     //TODO turn into a @Getter and then I can get rid of getDriver() below
     public WebDriver webDriver;
+
     @Getter @Setter public String sauceLabsUrl;
     public RemoteDriverInterface getDriverManager() {
         return remoteDriverImplementation;

@@ -17,13 +17,15 @@ import org.openqa.selenium.safari.SafariOptions;
 import java.net.MalformedURLException;
 
 public class SauceSession {
-    @Getter @Setter public final String sauceDataCenter = DataCenter.USWest;
+    @Getter
+    @Setter
+    public final String sauceDataCenter = DataCenter.USWest;
     private final EnvironmentManager environmentManager;
     public SauceTimeout timeouts = new SauceTimeout();
 
     //todo there is some weird bug when this is set to Linux, the session can't be started
-	private String operatingSystem = "Windows 10";
-	private String browserName = "Chrome";
+    private String operatingSystem = "Windows 10";
+    private String browserName = "Chrome";
     private final String sauceOptionsTag = "sauce:options";
     private ChromeOptions chromeOptions;
     private FirefoxOptions firefoxOptions;
@@ -35,7 +37,9 @@ public class SauceSession {
     private WebDriver webDriver;
     private EdgeOptions edgeOptions;
     private InternetExplorerOptions ieOptions;
-    @Getter @Setter public String sauceLabsUrl;
+    @Getter
+    @Setter
+    public String sauceLabsUrl;
 
     public SauceSession() {
         sauceSessionCapabilities = new MutableCapabilities();
@@ -54,16 +58,13 @@ public class SauceSession {
         setBrowserSpecificCapabilities(browserName);
         sauceSessionCapabilities = setRemoteDriverCapabilities(sauceOptions);
         sauceLabsUrl = sauceDataCenter;
-        try
-        {
+        try {
             webDriver = remoteDriverImplementation.createRemoteWebDriver(sauceLabsUrl, sauceSessionCapabilities);
-        }
-        catch (MalformedURLException e)
-        {
+        } catch (MalformedURLException e) {
             throw new InvalidArgumentException("Invalid URL");
         }
         return this.webDriver;
-	}
+    }
 
     private MutableCapabilities setRemoteDriverCapabilities(MutableCapabilities sauceOptions) {
         sauceSessionCapabilities.setCapability(sauceOptionsTag, sauceOptions);
@@ -77,77 +78,65 @@ public class SauceSession {
         sauceOptions = new MutableCapabilities();
         sauceOptions.setCapability("username", getUserName());
         sauceOptions.setCapability("accessKey", getAccessKey());
-        if(timeouts.getCommandTimeout() != 0)
+        if (timeouts.getCommandTimeout() != 0)
             sauceOptions.setCapability("commandTimeout", timeouts.getCommandTimeout());
-        if(timeouts.getIdleTimeout() != 0)
+        if (timeouts.getIdleTimeout() != 0)
             sauceOptions.setCapability("idleTimeout", timeouts.getIdleTimeout());
         return sauceOptions;
     }
 
     //TODO this needs to be moved to it's own class because it keeps changing
-    private void setBrowserSpecificCapabilities(String browserName)
-    {
-        if (browserName.equalsIgnoreCase("Chrome"))
-        {
+    private void setBrowserSpecificCapabilities(String browserName) {
+        if (browserName.equalsIgnoreCase("Chrome")) {
             sauceSessionCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-        }
-        else if (browserName.equalsIgnoreCase("Firefox"))
-        {
+        } else if (browserName.equalsIgnoreCase("Firefox")) {
             sauceSessionCapabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
-        }
-        else if(browserName.equalsIgnoreCase("Safari"))
-        {
+        } else if (browserName.equalsIgnoreCase("Safari")) {
             SafariOptions safariOptions = new SafariOptions();
             sauceSessionCapabilities.setCapability(SafariOptions.CAPABILITY, safariOptions);
-        }
-        else if(browserName.equalsIgnoreCase("Edge"))
-        {
+        } else if (browserName.equalsIgnoreCase("Edge")) {
             sauceSessionCapabilities.setCapability("Edge", edgeOptions);
-        }
-        else if(browserName.equalsIgnoreCase("IE"))
-        {
+        } else if (browserName.equalsIgnoreCase("IE")) {
             sauceSessionCapabilities.setCapability("se:ieOptions", ieOptions);
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("The browser=>" + browserName + " that you passed in is not a valid option.");
         }
     }
 
-	public SauceSession withChrome()
-	{
-	    chromeOptions = new ChromeOptions();
-		chromeOptions.setExperimentalOption("w3c", true);
-		browserName = "Chrome";
-		return this;
-	}
+    public SauceSession withChrome() {
+        chromeOptions = new ChromeOptions();
+        chromeOptions.setExperimentalOption("w3c", true);
+        browserName = "Chrome";
+        return this;
+    }
 
-    public SauceSession withSafari(String version)
-    {
+    public SauceSession withSafari(String version) {
         //TODO: I did this but I hate it :(
         //I wish I could just have a default value set for the version param
-        if(version.equalsIgnoreCase(""))
+        if (version.equalsIgnoreCase(""))
             version = "latest";
         browserName = "safari";
         this.browserVersion = version;
         return this;
     }
-    public SauceSession withSafari()
-    {
+
+    public SauceSession withSafari() {
         return withMacOsMojave();
     }
 
-    public SauceSession withFirefox()
-	{
-		browserName = "Firefox";
-		return this;
-	}
+    public SauceSession withFirefox() {
+        browserName = "Firefox";
+        return this;
+    }
 
     public RemoteDriverInterface getDriverManager() {
         return remoteDriverImplementation;
     }
-    public MutableCapabilities getSauceOptionsCapability(){
+
+    public MutableCapabilities getSauceOptionsCapability() {
         return ((MutableCapabilities) sauceSessionCapabilities.getCapability(sauceOptionsTag));
     }
+
     public WebDriver getDriver() {
         return webDriver;
     }
@@ -158,8 +147,8 @@ public class SauceSession {
         browserVersion = "12.0";
         return this;
     }
-    public SauceSession withMacOsHighSierra()
-    {
+
+    public SauceSession withMacOsHighSierra() {
         this.operatingSystem = "macOS 10.13";
         browserName = "Safari";
         return this;
@@ -184,13 +173,12 @@ public class SauceSession {
     }
 
 
-    public void stop()
-    {
-        if(webDriver != null)
+    public void stop() {
+        if (webDriver != null)
             webDriver.quit();
     }
 
-    public String getUserName() throws SauceEnvironmentVariablesNotSetException{
+    public String getUserName() throws SauceEnvironmentVariablesNotSetException {
         String userName = environmentManager.getEnvironmentVariable("SAUCE_USERNAME");
         return checkIfEmpty(userName);
     }
@@ -223,12 +211,13 @@ public class SauceSession {
         browserName = "Safari";
         return this;
     }
+
     //FIXED notice the duplication below with edge. Used enumeration
     //Maybe could be moved to a separate class so we can do withEdge().16_16299();
     //Or withEdge().version(EdgeVersion.16_16299);
     public SauceSession withEdge(EdgeVersion version) {
         browserName = "Edge";
-        browserVersion = version.name().substring(1);
+        browserVersion = version.label;
         return this;
     }
 
@@ -255,15 +244,5 @@ public class SauceSession {
     public SauceSession withLinux() {
         operatingSystem = "Linux";
         return this;
-    }
-
-    public enum EdgeVersion {
-        E16_16299,
-        E15_15063,
-        E14_14393,
-        E13_10586,
-        E17_17134,
-        E18_17763,
-
     }
 }

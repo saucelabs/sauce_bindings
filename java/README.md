@@ -3,9 +3,10 @@ The goal of Simple Sauce is to make your test automation and integration in Sauc
 Our fluent API helps you to understand all of the possible browser/OS combinations at design time.
 You no longer need to read extensive docs, just let your IDE guide you 😉
 
-## Quick Start: a test on all defaults:
+## Quick Start with a single line of code
 
 ```WebDriver driver = new SauceSession().start();```
+
 ```driver.findElement("id").click()```
 
 * Defaults are Windows 10 for non-Safari

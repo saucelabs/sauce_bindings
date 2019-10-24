@@ -120,3 +120,42 @@ class TestStop(object):
         session.start()
 
         session.stop()
+
+class TestStatus(object):
+
+    def test_setting_pass_status(self):
+
+        session = SauceSession()
+        session.start()
+
+        assert session.set_test_status('passed')
+
+        session.stop()
+
+    def test_setting_fail_status(self):
+
+        session = SauceSession()
+        session.start()
+
+        assert not session.set_test_status('fail')
+
+        session.stop()
+
+    def test_setting_pass_boolean(self):
+
+        session = SauceSession()
+        session.start()
+
+        assert session.set_test_status(True)
+
+        session.stop()
+
+    def test_setting_fail_boolean(self):
+
+        session = SauceSession()
+        session.start()
+
+        assert not session.set_test_status(False)
+
+        session.stop()
+

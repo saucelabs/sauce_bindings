@@ -83,3 +83,20 @@ class SauceSession():
 
     def stop(self):
         self.driver.quit()
+
+    def set_test_status(self, passed):
+        result = ''
+        if type(passed) == str:
+            if passed.lower() == 'passed' or  passed.lower() == 'pass':
+                result = True
+            elif passed.lower() == 'failed' or passed.lower() == 'fail':
+                result = False
+            else:
+                raise KeyError("Invalid input, please pass string value of 'passed', 'failed' or boolean value")
+        elif type(passed) == bool:
+             result = passed
+        else:
+             raise KeyError("Invalid input, please pass string value of 'passed', 'failed' or boolean value")
+    
+        self.driver.execute_script('sauce:job-result={}'.format(result))
+        return result

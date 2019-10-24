@@ -12,4 +12,5 @@ session.driver.get("https://www.saucedemo.com")
 
 assert "Swag" in session.driver.title
 
+session.set_test_status('passed')
 session.stop()

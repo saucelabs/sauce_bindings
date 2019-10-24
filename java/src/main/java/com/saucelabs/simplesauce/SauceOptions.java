@@ -5,12 +5,13 @@ import lombok.Setter;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.remote.BrowserType;
 
 public class SauceOptions {
     //TODO can probably use BrowserType enum from Selenium to do BrowserType.CHROME
     @Getter
     @Setter
-    public String browser = "Chrome";
+    public String browser = BrowserType.CHROME;
 
     @Getter @Setter public String browserVersion = "latest";
     @Getter @Setter public String operatingSystem = "Windows 10";

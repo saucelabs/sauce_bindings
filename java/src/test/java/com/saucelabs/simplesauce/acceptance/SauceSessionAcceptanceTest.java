@@ -56,8 +56,7 @@ public class SauceSessionAcceptanceTest {
     public void startSession_noSauceOptionsSet_returnsDriver() {
         SauceSession session = new SauceSession();
         session.start();
-        webDriver = session.getDriver();
-        assertNotNull(webDriver);
+        assertNotNull(session.getDriver());
     }
 
     @Test

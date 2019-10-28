@@ -17,6 +17,7 @@ public class SauceOptions {
     public SauceOptions withChrome()
     {
         chromeOptions = new ChromeOptions();
+        //TODO no longer needed with Chrome 75+
         chromeOptions.setExperimentalOption("w3c", true);
         browser = "Chrome";
         return this;
@@ -145,4 +146,5 @@ public class SauceOptions {
         browserVersion = "latest";
         return this;
     }
+
 }

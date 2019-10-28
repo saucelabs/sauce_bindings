@@ -40,8 +40,8 @@ public class SauceSessionAcceptanceTest {
         options.withSafari();
 
         webDriver = new SauceSession(options).start();
-        String actualBrowserVersion = (((RemoteWebDriver) webDriver).getCapabilities()).getPlatform().toString();
-        assertEquals("MAC", actualBrowserVersion);
+        String actualPlatform = (((RemoteWebDriver) webDriver).getCapabilities()).getPlatform().toString();
+        assertEquals("MAC", actualPlatform);
     }
     @Test
     public void withSafari_default_isBrowserVersion12_0() {
@@ -62,6 +62,7 @@ public class SauceSessionAcceptanceTest {
     @Test
     public void runTestOnFirefox() {
         SauceOptions options = new SauceOptions();
+        //options.withFirefox();
         options.withFirefox();
 
         webDriver = new SauceSession(options).start();

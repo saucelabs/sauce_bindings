@@ -34,6 +34,7 @@ public class SauceSession {
     public RemoteDriverInterface getDriverManager() {
         return remoteDriverImplementation;
     }
+
     public MutableCapabilities getSauceOptionsCapability(){
         return ((MutableCapabilities) sauceSessionCapabilities.getCapability(sauceOptionsTag));
     }

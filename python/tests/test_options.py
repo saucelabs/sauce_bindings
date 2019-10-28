@@ -1,4 +1,7 @@
 from simplesauce.options import SauceOptions
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver import DesiredCapabilities
 
 
 class TestInit(object):
@@ -53,11 +56,22 @@ class TestInit(object):
         pass
 
     def test_accepts_selenium_browser_options_instance(self):
-        pass
+        options = ChromeOptions()
+
+        sauce = SauceOptions(options=options)
+
+        assert sauce.browserName == 'chrome'
+        assert sauce.browserVersion == 'latest'
+        assert sauce.platformName == 'windows 10'
 
     def test_accepts_selenium_browser_capabilities_instance(self):
-        pass
+        options = DesiredCapabilities.CHROME.copy()
 
+        sauce = SauceOptions(options=options)
+
+        assert sauce.browserName == 'chrome'
+        assert sauce.platformName == 'windows 10'
+        assert sauce.browserVersion == 'latest'
 
 class TestAccessorVariables(object):
 

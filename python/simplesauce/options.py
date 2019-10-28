@@ -12,16 +12,23 @@ class SauceOptions():
 
     def __init__(self, browserName=None, browserVersion=None, platformName=None, options={}):
 
+        self._set_defaults()
         if not any([browserName, browserVersion, platformName, options]):
-            self._set_defaults()
             return
         elif not any([browserName, browserVersion, platformName]):
             self.parseOptions(options)
             return
+    
+        if browserName:
+            self.browserName = browserName
+        if browserVersion:
+            self.browserVersion = browserVersion
+        if platformName:
+            self.platformName = platformName
 
-        self.browserName = browserName
-        self.browserVersion = browserVersion
-        self.platformName = platformName
+        # self.browserName = browserName
+        # self.browserVersion = browserVersion
+        # self.platformName = platformName
 
     def parseOptions(self, options):
 

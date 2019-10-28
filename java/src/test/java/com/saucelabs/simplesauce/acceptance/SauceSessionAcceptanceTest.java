@@ -62,7 +62,6 @@ public class SauceSessionAcceptanceTest {
     @Test
     public void runTestOnFirefox() {
         SauceOptions options = new SauceOptions();
-        //options.withFirefox();
         options.withFirefox();
 
         webDriver = new SauceSession(options).start();

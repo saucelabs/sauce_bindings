@@ -9,7 +9,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import static org.junit.Assert.*;
 
-
 public class SauceSessionAcceptanceTest {
     private WebDriver webDriver;
 

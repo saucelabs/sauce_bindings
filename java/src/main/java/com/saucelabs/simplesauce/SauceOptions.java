@@ -27,15 +27,12 @@ public class SauceOptions {
     {
         return withMacOsMojave();
     }
-    public SauceOptions withSafari(String version)
+    public SauceOptions withSafari(final String version)
     {
+        String _version = version;
+        if (_version.isEmpty()) { _version = "latest"; }
         browser = "safari";
-        //TODO: I did this but I hate it :(
-        //I wish I could just have a default value set for the version param
-        if(!version.equalsIgnoreCase(""))
-        {
-            browserVersion = version;
-        }
+        browserVersion = _version;
         return this;
     }
     public SauceOptions withMacOsMojave() {

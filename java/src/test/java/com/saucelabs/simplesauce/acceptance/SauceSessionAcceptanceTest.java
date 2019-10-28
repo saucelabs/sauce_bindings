@@ -1,17 +1,13 @@
 package com.saucelabs.simplesauce.acceptance;
 
-import com.saucelabs.simplesauce.ConcreteSystemManager;
 import com.saucelabs.simplesauce.SauceOptions;
 import com.saucelabs.simplesauce.SauceSession;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import static io.restassured.RestAssured.given;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 
 public class SauceSessionAcceptanceTest {
@@ -24,22 +20,11 @@ public class SauceSessionAcceptanceTest {
             webDriver.quit();
     }
     @Test
-    @Ignore("Need to figure out how to hit the Sauce API, but plane Wifi sucks")
     public void sauceSession_defaultSauceOptions_startsRealSession() {
         SauceOptions options = new SauceOptions();
         webDriver = new SauceSession(options).start();
         String sessionId = ((RemoteWebDriver) webDriver).getSessionId().toString();
-        ConcreteSystemManager systemAccess = new ConcreteSystemManager();
-        String url = "https://" + systemAccess.getEnvironmentVariable("SAUCE_USERNAME") +
-                ":" + systemAccess.getEnvironmentVariable("SAUCE_ACCESS_KEY") +
-                "@saucelabs.com/rest/v1/users/" + systemAccess.getEnvironmentVariable("SAUCE_USERNAME") +
-                "/jobs/" + sessionId;
-        given().
-                when().
-                get(url).
-                then().
-                assertThat().
-                statusCode(200);
+        assertFalse(sessionId.isEmpty());
     }
     @Test
     public void withWindows10_default() {

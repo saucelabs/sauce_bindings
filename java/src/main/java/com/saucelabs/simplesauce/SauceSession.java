@@ -17,7 +17,7 @@ import org.openqa.selenium.safari.SafariOptions;
 import java.net.MalformedURLException;
 
 public class SauceSession {
-    @Getter @Setter public final String sauceDataCenter = DataCenter.USWest;
+    @Getter @Setter public String sauceDataCenter = DataCenter.USWest;
     private final EnvironmentManager environmentManager;
     private final SauceOptions sauceOptions;
     public SauceTimeout timeouts = new SauceTimeout();
@@ -30,11 +30,11 @@ public class SauceSession {
     private final RemoteDriverInterface remoteDriverImplementation;
     //TODO turn into a @Getter and then I can get rid of getDriver() below
     public WebDriver webDriver;
-
-    @Getter @Setter public String sauceLabsUrl;
+    @Getter @Setter private String sauceLabsUrl;
     public RemoteDriverInterface getDriverManager() {
         return remoteDriverImplementation;
     }
+
     public MutableCapabilities getSauceOptionsCapability(){
         return ((MutableCapabilities) sauceSessionCapabilities.getCapability(sauceOptionsTag));
     }

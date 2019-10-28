@@ -6,7 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.junit.Assert.assertEquals;
 
-public class MacOsTests extends BaseConfigurationTest{
+public class MacOsTest extends BaseConfigurationTest{
     @Test
     public void withMacOsMojave_returnsMacOs1014() {
         sauceOptions.withMacOsMojave();

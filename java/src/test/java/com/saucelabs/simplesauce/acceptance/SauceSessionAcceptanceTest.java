@@ -9,10 +9,7 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import static io.restassured.RestAssured.given;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
+import static org.junit.Assert.*;
 
 public class SauceSessionAcceptanceTest {
     private WebDriver webDriver;
@@ -29,17 +26,8 @@ public class SauceSessionAcceptanceTest {
         SauceOptions options = new SauceOptions();
         webDriver = new SauceSession(options).start();
         String sessionId = ((RemoteWebDriver) webDriver).getSessionId().toString();
-        ConcreteSystemManager systemAccess = new ConcreteSystemManager();
-        String url = "https://" + systemAccess.getEnvironmentVariable("SAUCE_USERNAME") +
-                ":" + systemAccess.getEnvironmentVariable("SAUCE_ACCESS_KEY") +
-                "@saucelabs.com/rest/v1/users/" + systemAccess.getEnvironmentVariable("SAUCE_USERNAME") +
-                "/jobs/" + sessionId;
-        given().
-                when().
-                get(url).
-                then().
-                assertThat().
-                statusCode(200);
+
+        assertFalse(sessionId.isEmpty());
     }
     @Test
     public void withWindows10_default() {

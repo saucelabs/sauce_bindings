@@ -3,8 +3,6 @@ package com.saucelabs.simplesauce;
 import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeOptions;
-import org.openqa.selenium.ie.InternetExplorerOptions;
 
 public class SauceOptions {
     //TODO can probably use BrowserType enum from Selenium to do BrowserType.CHROME
@@ -27,15 +25,13 @@ public class SauceOptions {
     {
         return withMacOsMojave();
     }
-    public SauceOptions withSafari(String version)
+    public SauceOptions withSafari(final String version)
     {
+        String _version = version;
+        if (_version.isEmpty()) { _version = "latest"; }
+
         browser = "safari";
-        //TODO: I did this but I hate it :(
-        //I wish I could just have a default value set for the version param
-        if(!version.equalsIgnoreCase(""))
-        {
-            browserVersion = version;
-        }
+        browserVersion = _version;
         return this;
     }
     public SauceOptions withMacOsMojave() {
@@ -92,9 +88,10 @@ public class SauceOptions {
 
     public SauceOptions withEdge() {
         browser = "Edge";
-        EdgeOptions edgeOptions = new EdgeOptions();
+        browserVersion = "18.17763";
         return this;
     }
+
     //TODO notice the duplication below with edge.
     //Maybe could be moved to a separate class so we can do withEdge().16_16299();
     //Or withEdge().version(EdgeVersion.16_16299);
@@ -141,7 +138,12 @@ public class SauceOptions {
     public SauceOptions withIE(String version) {
         browser = "IE";
         browserVersion = version;
-        InternetExplorerOptions ieOptions = new InternetExplorerOptions();
+        return this;
+    }
+
+    public SauceOptions withIE() {
+        browser = "IE";
+        browserVersion = "latest";
         return this;
     }
 }

@@ -8,4 +8,5 @@ import java.net.MalformedURLException;
 public interface RemoteDriverInterface {
     RemoteWebDriver createRemoteWebDriver(String seleniumServer, MutableCapabilities capabilities)
         throws MalformedURLException;
+    void quit();
 }

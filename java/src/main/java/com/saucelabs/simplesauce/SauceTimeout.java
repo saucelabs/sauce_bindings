@@ -13,10 +13,10 @@ public class SauceTimeout {
     @Getter
     private int maxTestDurationTimeout;
 
-    public void setMaxTestDurationTimeout(int maxTestDurationInSec) throws MaxTestDurationTimeoutExceeded {
+    public void setMaxTestDurationTimeout(int maxTestDurationInSec) throws MaxTestDurationTimeoutExceededException {
         if(maxTestDurationInSec > 1800)
         {
-            throw new MaxTestDurationTimeoutExceeded();
+            throw new MaxTestDurationTimeoutExceededException();
         }
         maxTestDurationTimeout = maxTestDurationInSec;
     }

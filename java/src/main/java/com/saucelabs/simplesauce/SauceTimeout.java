@@ -1,5 +1,8 @@
 package com.saucelabs.simplesauce;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class SauceTimeout {
     private int commandTimeout;
     private int idleTimeout;
@@ -19,4 +22,8 @@ public class SauceTimeout {
     public int getIdleTimeout() {
         return idleTimeout;
     }
+
+    @Getter
+    @Setter
+    private int maxTestDuration;
 }

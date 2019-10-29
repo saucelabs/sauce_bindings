@@ -5,7 +5,7 @@ import org.openqa.selenium.MutableCapabilities;
 
 import static org.junit.Assert.assertEquals;
 
-public class TimeoutTests extends BaseConfigurationTest {
+public class TimeoutTest extends BaseConfigurationTest {
     //maxDuration timeout should not even be settable. Default is 30 min and we will not
     //allow our users to set a higher time than that
     @Test
@@ -19,6 +19,14 @@ public class TimeoutTests extends BaseConfigurationTest {
     @Test
     public void idleTimeout_canBeSet() {
         mockSauceSession.timeouts.setIdleTimeout(100);
+        mockSauceSession.start();
+        Object sauceOptions = mockSauceSession.sauceSessionCapabilities.asMap().get("sauce:options");
+        Object commandTimeoutSetInCaps = ((MutableCapabilities) sauceOptions).getCapability("idleTimeout");
+        assertEquals(100, commandTimeoutSetInCaps);
+    }
+    @Test
+    public void maxDuration_canBeSet() {
+        //mockSauceSession.timeouts
         mockSauceSession.start();
         Object sauceOptions = mockSauceSession.sauceSessionCapabilities.asMap().get("sauce:options");
         Object commandTimeoutSetInCaps = ((MutableCapabilities) sauceOptions).getCapability("idleTimeout");

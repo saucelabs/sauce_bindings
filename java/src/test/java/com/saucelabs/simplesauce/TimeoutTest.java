@@ -25,8 +25,22 @@ public class TimeoutTest extends BaseConfigurationTest {
         assertEquals(100, commandTimeoutSetInCaps);
     }
     @Test
-    public void maxDuration_canBeSet() {
+    public void maxDuration_canBeSet() throws MaxTestDurationTimeoutExceeded {
         int maxTestDurationInSec = 1800;
+        mockSauceSession.timeouts.setMaxTestDuration(maxTestDurationInSec);
+        mockSauceSession.start();
+        Object sauceOptions = mockSauceSession.sauceSessionCapabilities.asMap().get("sauce:options");
+        Object commandTimeoutSetInCaps = ((MutableCapabilities) sauceOptions).getCapability("maxDuration");
+        assertEquals(maxTestDurationInSec, commandTimeoutSetInCaps);
+    }
+    @Test(expected = MaxTestDurationTimeoutExceeded.class)
+    public void maxDuration_setTo1HigherThanMax_throwsException() throws MaxTestDurationTimeoutExceeded {
+        int maxTestDurationInSec = 1801;
+        mockSauceSession.timeouts.setMaxTestDuration(maxTestDurationInSec);
+    }
+    @Test()
+    public void maxDuration_setTo1LowerThanMax_noException() throws MaxTestDurationTimeoutExceeded {
+        int maxTestDurationInSec = 1799;
         mockSauceSession.timeouts.setMaxTestDuration(maxTestDurationInSec);
         mockSauceSession.start();
         Object sauceOptions = mockSauceSession.sauceSessionCapabilities.asMap().get("sauce:options");

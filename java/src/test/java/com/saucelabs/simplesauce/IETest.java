@@ -12,7 +12,7 @@ public class IETest extends BaseConfigurationTest{
         mockSauceSession = instantiateSauceSession();
 
         mockSauceSession.start();
-        String actualBrowserSetInConfig = mockSauceSession.sauceSessionCapabilities.getVersion();
+        String actualBrowserSetInConfig = mockSauceSession.currentSessionCapabilities.getVersion();
         assertEquals("11.285", actualBrowserSetInConfig);
     }
 
@@ -22,7 +22,7 @@ public class IETest extends BaseConfigurationTest{
         mockSauceSession = instantiateSauceSession();
 
         mockSauceSession.start();
-        String actualBrowserSetInConfig = mockSauceSession.sauceSessionCapabilities.getVersion();
+        String actualBrowserSetInConfig = mockSauceSession.currentSessionCapabilities.getVersion();
         assertEquals("latest", actualBrowserSetInConfig);
     }
 }

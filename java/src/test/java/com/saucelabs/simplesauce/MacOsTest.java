@@ -16,7 +16,7 @@ public class MacOsTest extends BaseConfigurationTest{
     }
 
     private String getSessionPlatformString() {
-        return mockSauceSession.sauceSessionCapabilities.getPlatform().toString();
+        return mockSauceSession.currentSessionCapabilities.getPlatform().toString();
     }
 
     @Test
@@ -65,7 +65,7 @@ public class MacOsTest extends BaseConfigurationTest{
 
         //TODO mockSauceSession.sauceSessionCapabilities can be turned into a method, maybe on the session
         //class that allows easier access to the caps
-        String safariVersionSetThroughSauceSession = mockSauceSession.sauceSessionCapabilities.getVersion();
+        String safariVersionSetThroughSauceSession = mockSauceSession.currentSessionCapabilities.getVersion();
         assertEquals("12.0", safariVersionSetThroughSauceSession);
     }
     @Test
@@ -85,7 +85,7 @@ public class MacOsTest extends BaseConfigurationTest{
 
         mockSauceSession.start();
 
-        String actualBrowserNameSetThroughSauceSession = mockSauceSession.sauceSessionCapabilities.getBrowserName();
+        String actualBrowserNameSetThroughSauceSession = mockSauceSession.currentSessionCapabilities.getBrowserName();
         assertEquals("safari", actualBrowserNameSetThroughSauceSession);
     }
     @Test
@@ -95,7 +95,7 @@ public class MacOsTest extends BaseConfigurationTest{
 
         mockSauceSession.start();
 
-        String actualBrowserVersionSetThroughSauceSession = mockSauceSession.sauceSessionCapabilities.getVersion();
+        String actualBrowserVersionSetThroughSauceSession = mockSauceSession.currentSessionCapabilities.getVersion();
         assertEquals("8.0", actualBrowserVersionSetThroughSauceSession);
     }
     @Test
@@ -106,7 +106,7 @@ public class MacOsTest extends BaseConfigurationTest{
         mockSauceSession.start();
 
         String actualBrowserVersionSetThroughSauceSession =
-                mockSauceSession.sauceSessionCapabilities.getVersion();
+                mockSauceSession.currentSessionCapabilities.getVersion();
         assertEquals("latest", actualBrowserVersionSetThroughSauceSession);
     }
 }

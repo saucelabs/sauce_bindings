@@ -11,7 +11,7 @@ public class EdgeTest extends BaseConfigurationTest{
         mockSauceSession = instantiateSauceSession();
 
         mockSauceSession.start();
-        String actualBrowserSetInConfig = mockSauceSession.sauceSessionCapabilities.getVersion();
+        String actualBrowserSetInConfig = mockSauceSession.currentSessionCapabilities.getVersion();
         assertEquals("18.17763", actualBrowserSetInConfig);
     }
 
@@ -21,7 +21,7 @@ public class EdgeTest extends BaseConfigurationTest{
         mockSauceSession = instantiateSauceSession();
 
         mockSauceSession.start();
-        String actualBrowserSetInConfig = mockSauceSession.sauceSessionCapabilities.getVersion();
+        String actualBrowserSetInConfig = mockSauceSession.currentSessionCapabilities.getVersion();
         assertEquals("18.17763", actualBrowserSetInConfig);
     }
     @Test
@@ -30,7 +30,7 @@ public class EdgeTest extends BaseConfigurationTest{
         mockSauceSession = instantiateSauceSession();
 
         mockSauceSession.start();
-        String actualBrowserSetInConfig = mockSauceSession.sauceSessionCapabilities.getVersion();
+        String actualBrowserSetInConfig = mockSauceSession.currentSessionCapabilities.getVersion();
         assertEquals("17.17134", actualBrowserSetInConfig);
     }
     @Test
@@ -39,7 +39,7 @@ public class EdgeTest extends BaseConfigurationTest{
         mockSauceSession = instantiateSauceSession();
 
         mockSauceSession.start();
-        String actualBrowserSetInConfig = mockSauceSession.sauceSessionCapabilities.getVersion();
+        String actualBrowserSetInConfig = mockSauceSession.currentSessionCapabilities.getVersion();
         assertEquals("16.16299", actualBrowserSetInConfig);
     }
     @Test
@@ -48,7 +48,7 @@ public class EdgeTest extends BaseConfigurationTest{
         mockSauceSession = instantiateSauceSession();
 
         mockSauceSession.start();
-        String actualBrowserSetInConfig = mockSauceSession.sauceSessionCapabilities.getVersion();
+        String actualBrowserSetInConfig = mockSauceSession.currentSessionCapabilities.getVersion();
         assertEquals("15.15063", actualBrowserSetInConfig);
     }
     @Test
@@ -57,7 +57,7 @@ public class EdgeTest extends BaseConfigurationTest{
         mockSauceSession = instantiateSauceSession();
 
         mockSauceSession.start();
-        String actualBrowserSetInConfig = mockSauceSession.sauceSessionCapabilities.getVersion();
+        String actualBrowserSetInConfig = mockSauceSession.currentSessionCapabilities.getVersion();
         assertEquals("14.14393", actualBrowserSetInConfig);
     }
     @Test
@@ -66,7 +66,7 @@ public class EdgeTest extends BaseConfigurationTest{
         mockSauceSession = instantiateSauceSession();
 
         mockSauceSession.start();
-        String actualBrowserSetInConfig = mockSauceSession.sauceSessionCapabilities.getVersion();
+        String actualBrowserSetInConfig = mockSauceSession.currentSessionCapabilities.getVersion();
         assertEquals("13.10586", actualBrowserSetInConfig);
     }
 }

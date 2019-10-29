@@ -11,7 +11,7 @@ public class LinuxTest extends BaseConfigurationTest {
         mockSauceSession = instantiateSauceSession();
 
         mockSauceSession.start();
-        String actualOsSetInConfig = mockSauceSession.sauceSessionCapabilities.getPlatform().toString();
+        String actualOsSetInConfig = mockSauceSession.currentSessionCapabilities.getPlatform().toString();
         assertEquals("linux", actualOsSetInConfig.toLowerCase());
     }
 }

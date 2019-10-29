@@ -34,7 +34,7 @@ public class SauceSessionTest {
 
         sauce = new SauceSession(options, dummyRemoteDriver, dummyEnvironmentManager);
         sauce.start();
-        String actualBrowser = sauce.sauceSessionCapabilities.getCapability("browserName").toString();
+        String actualBrowser = sauce.currentSessionCapabilities.getCapability("browserName").toString();
         assertEquals("Chrome", actualBrowser);
     }
     @Test
@@ -64,30 +64,30 @@ public class SauceSessionTest {
     @Test
     public void startSession_setsBrowserKey() {
         String expectedBrowserCapabilityKey = "browserName";
-        String actualBrowser = sauce.sauceSessionCapabilities.getCapability(expectedBrowserCapabilityKey).toString();
+        String actualBrowser = sauce.currentSessionCapabilities.getCapability(expectedBrowserCapabilityKey).toString();
         assertNotEquals("", actualBrowser);
     }
     @Test
     public void start_setsPlatformNameKey() {
         String correctPlatformKey = "platformName";
-        String browserSetInSauceSession = sauce.sauceSessionCapabilities.getCapability(correctPlatformKey).toString();
+        String browserSetInSauceSession = sauce.currentSessionCapabilities.getCapability(correctPlatformKey).toString();
         assertEquals("Windows 10", browserSetInSauceSession);
     }
     @Test
     public void defaultBrowserIsLatest() {
         String correctKey = "browserVersion";
-        String browserSetThroughSauceSession = sauce.sauceSessionCapabilities.getCapability(correctKey).toString();
+        String browserSetThroughSauceSession = sauce.currentSessionCapabilities.getCapability(correctKey).toString();
         assertEquals("latest", browserSetThroughSauceSession);
     }
     @Test
     public void defaultIsChrome()
     {
-        String actualBrowser = sauce.sauceSessionCapabilities.getBrowserName();
+        String actualBrowser = sauce.currentSessionCapabilities.getBrowserName();
         assertEquals("Chrome", actualBrowser);
     }
     @Test
     public void defaultIsWindows10() {
-        String actualOs = sauce.sauceSessionCapabilities.getPlatform().name();
+        String actualOs = sauce.currentSessionCapabilities.getPlatform().name();
         assertEquals("WIN10", actualOs);
     }
     @Test
@@ -104,7 +104,7 @@ public class SauceSessionTest {
         sauce = new SauceSession(options, dummyRemoteDriver, dummyEnvironmentManager);
         sauce.start();
 
-        String actualBrowser = sauce.sauceSessionCapabilities.getBrowserName();
+        String actualBrowser = sauce.currentSessionCapabilities.getBrowserName();
         assertEquals("Chrome", actualBrowser);
     }
     //TODO make this test work

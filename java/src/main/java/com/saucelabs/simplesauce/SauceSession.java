@@ -95,8 +95,8 @@ public class SauceSession {
             mutableCapabilities.setCapability("commandTimeout", timeouts.getCommandTimeout());
         if(timeouts.getIdleTimeout() != 0)
             mutableCapabilities.setCapability("idleTimeout", timeouts.getIdleTimeout());
-        if(timeouts.getMaxTestDuration() != 0)
-            mutableCapabilities.setCapability("maxDuration", timeouts.getMaxTestDuration());
+        if(timeouts.getMaxTestDurationTimeout() != 0)
+            mutableCapabilities.setCapability("maxDuration", timeouts.getMaxTestDurationTimeout());
         return mutableCapabilities;
     }
     private void setBrowserSpecificCapabilities(String browserName)

@@ -28,7 +28,6 @@ public class SauceSession {
     private MutableCapabilities mutableCapabilities;
     public MutableCapabilities sauceSessionCapabilities;
     private final RemoteDriverInterface remoteDriverImplementation;
-    //TODO turn into a @Getter and then I can get rid of getDriver() below
     private WebDriver webDriver;
 
     public RemoteDriverInterface getDriverManager() {
@@ -38,10 +37,6 @@ public class SauceSession {
     public MutableCapabilities getSauceOptionsCapability(){
         return ((MutableCapabilities) sauceSessionCapabilities.getCapability(sauceOptionsTag));
     }
-    public WebDriver getDriver() {
-        return webDriver;
-    }
-
     public SauceSession() {
         sauceSessionCapabilities = new MutableCapabilities();
         remoteDriverImplementation = new ConcreteRemoteDriver();
@@ -85,7 +80,7 @@ public class SauceSession {
         {
             throw new InvalidArgumentException("Invalid URL");
         }
-        return this.webDriver;
+        return webDriver;
 	}
     private MutableCapabilities appendSauceCapabilities() {
         mutableCapabilities = new MutableCapabilities();

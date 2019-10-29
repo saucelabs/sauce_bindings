@@ -2,8 +2,6 @@ package com.saucelabs.simplesauce;
 
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.junit.Assert.assertEquals;
 
 public class MacOsTest extends BaseConfigurationTest{
@@ -78,7 +76,7 @@ public class MacOsTest extends BaseConfigurationTest{
         mockSauceSession.start();
 
         String safariVersionSetThroughSauceSession = getSessionPlatformString();
-        assertThat(Platforms.MAC_OS_MOJAVE, equalToIgnoringCase(safariVersionSetThroughSauceSession));
+        assertEquals(Platforms.MAC_OS_MOJAVE, safariVersionSetThroughSauceSession);
     }
     @Test
     public void withSafari_browserName_setToSafari() {

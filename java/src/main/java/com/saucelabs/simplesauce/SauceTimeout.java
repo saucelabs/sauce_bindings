@@ -1,7 +1,6 @@
 package com.saucelabs.simplesauce;
 
 import lombok.Getter;
-import lombok.Setter;
 
 public class SauceTimeout {
     private int commandTimeout;
@@ -24,7 +23,14 @@ public class SauceTimeout {
     }
 
     @Getter
-    @Setter
     private int maxTestDuration;
+
+    public void setMaxTestDuration(int maxTestDurationInSec) throws MaxTestDurationTimeoutExceeded {
+        if(maxTestDurationInSec > 1800)
+        {
+            throw new MaxTestDurationTimeoutExceeded();
+        }
+        maxTestDuration = maxTestDurationInSec;
+    }
 }
 

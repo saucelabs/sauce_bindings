@@ -14,7 +14,7 @@ public class TimeoutTest extends BaseConfigurationTest {
     }
 
     private void assertCorrectCommandSetOnRemoteSession(String commandTimeout, int expectedTimeout) {
-        Object sauceOptions = mockSauceSession.sauceSessionCapabilities.asMap().get("sauce:options");
+        Object sauceOptions = mockSauceSession.currentSessionCapabilities.asMap().get("sauce:options");
         Object commandTimeoutSetInCaps = ((MutableCapabilities) sauceOptions).getCapability(commandTimeout);
         assertEquals(expectedTimeout, commandTimeoutSetInCaps);
     }

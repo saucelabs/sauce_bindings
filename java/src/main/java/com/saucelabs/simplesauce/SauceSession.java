@@ -26,7 +26,7 @@ public class SauceSession {
     //TODO 2 same variables being used differently
     //definitely should be fixed
     private MutableCapabilities mutableCapabilities;
-    public MutableCapabilities sauceSessionCapabilities;
+    public MutableCapabilities currentSessionCapabilities;
     private final RemoteDriverInterface remoteDriverImplementation;
     private WebDriver webDriver;
 
@@ -35,10 +35,10 @@ public class SauceSession {
     }
 
     public MutableCapabilities getSauceOptionsCapability(){
-        return ((MutableCapabilities) sauceSessionCapabilities.getCapability(sauceOptionsTag));
+        return ((MutableCapabilities) currentSessionCapabilities.getCapability(sauceOptionsTag));
     }
     public SauceSession() {
-        sauceSessionCapabilities = new MutableCapabilities();
+        currentSessionCapabilities = new MutableCapabilities();
         remoteDriverImplementation = new ConcreteRemoteDriver();
         environmentManager = new ConcreteSystemManager();
         sauceOptions = new SauceOptions();
@@ -46,14 +46,14 @@ public class SauceSession {
 
     public SauceSession(RemoteDriverInterface remoteManager, EnvironmentManager environmentManager) {
         remoteDriverImplementation = remoteManager;
-        sauceSessionCapabilities = new MutableCapabilities();
+        currentSessionCapabilities = new MutableCapabilities();
         this.environmentManager = environmentManager;
         sauceOptions = new SauceOptions();
     }
 
     public SauceSession(SauceOptions options) {
         sauceOptions = options;
-        sauceSessionCapabilities = new MutableCapabilities();
+        currentSessionCapabilities = new MutableCapabilities();
         environmentManager = new ConcreteSystemManager();
         remoteDriverImplementation = new ConcreteRemoteDriver();
     }
@@ -61,7 +61,7 @@ public class SauceSession {
     public SauceSession(SauceOptions options, RemoteDriverInterface remoteManager, EnvironmentManager environmentManager) {
         sauceOptions = options;
         remoteDriverImplementation = remoteManager;
-        sauceSessionCapabilities = new MutableCapabilities();
+        currentSessionCapabilities = new MutableCapabilities();
         this.environmentManager = environmentManager;
     }
 
@@ -69,12 +69,12 @@ public class SauceSession {
         //TODO this might be the same as sauceCapabilities
         mutableCapabilities = appendSauceCapabilities();
         setBrowserSpecificCapabilities(sauceOptions.browser);
-        sauceSessionCapabilities = setRemoteDriverCapabilities(mutableCapabilities);
+        currentSessionCapabilities = setRemoteDriverCapabilities(mutableCapabilities);
         String sauceLabsUrl = sauceDataCenter;
         //TODO move to a separate method
         try
         {
-            webDriver = remoteDriverImplementation.createRemoteWebDriver(sauceLabsUrl, sauceSessionCapabilities);
+            webDriver = remoteDriverImplementation.createRemoteWebDriver(sauceLabsUrl, currentSessionCapabilities);
         }
         catch (MalformedURLException e)
         {
@@ -99,38 +99,38 @@ public class SauceSession {
         if (browserName.equalsIgnoreCase("Chrome"))
         {
             ChromeOptions chromeOptions = new ChromeOptions();
-            sauceSessionCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+            currentSessionCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         }
         else if (browserName.equalsIgnoreCase("Firefox"))
         {
             FirefoxOptions firefoxOptions = new FirefoxOptions();
-            sauceSessionCapabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
+            currentSessionCapabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
         }
         else if(browserName.equalsIgnoreCase("Safari"))
         {
             SafariOptions safariOptions = new SafariOptions();
-            sauceSessionCapabilities.setCapability(SafariOptions.CAPABILITY, safariOptions);
+            currentSessionCapabilities.setCapability(SafariOptions.CAPABILITY, safariOptions);
         }
         else if(browserName.equalsIgnoreCase("Edge"))
         {
             EdgeOptions edgeOptions = new EdgeOptions();
-            sauceSessionCapabilities.setCapability("Edge", edgeOptions);
+            currentSessionCapabilities.setCapability("Edge", edgeOptions);
         }
         else if(browserName.equalsIgnoreCase("IE"))
         {
             InternetExplorerOptions ieOptions = new InternetExplorerOptions();
-            sauceSessionCapabilities.setCapability("se:ieOptions", ieOptions);
+            currentSessionCapabilities.setCapability("se:ieOptions", ieOptions);
         }
         else {
             throw new IllegalArgumentException("The browser=>" + browserName + " that you passed in is not a valid option.");
         }
     }
     private MutableCapabilities setRemoteDriverCapabilities(MutableCapabilities sauceOptions) {
-        sauceSessionCapabilities.setCapability(sauceOptionsTag, sauceOptions);
-        sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_NAME, this.sauceOptions.browser);
-        sauceSessionCapabilities.setCapability(CapabilityType.PLATFORM_NAME, this.sauceOptions.operatingSystem);
-        sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_VERSION, this.sauceOptions.browserVersion);
-        return sauceSessionCapabilities;
+        currentSessionCapabilities.setCapability(sauceOptionsTag, sauceOptions);
+        currentSessionCapabilities.setCapability(CapabilityType.BROWSER_NAME, this.sauceOptions.browser);
+        currentSessionCapabilities.setCapability(CapabilityType.PLATFORM_NAME, this.sauceOptions.operatingSystem);
+        currentSessionCapabilities.setCapability(CapabilityType.BROWSER_VERSION, this.sauceOptions.browserVersion);
+        return currentSessionCapabilities;
     }
     public void stop()
     {

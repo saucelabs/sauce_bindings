@@ -39,6 +39,7 @@ public class MacOsTest extends BaseConfigurationTest{
         String actualOsThatWasSet = getSessionPlatformString();
         assertEquals("macOS 10.12", actualOsThatWasSet);
     }
+    @SuppressWarnings("SpellCheckingInspection")
     @Test
     public void withMacOsElCapitan_returnsMacOs1011() {
         sauceOptions.withMacOsXElCapitan();

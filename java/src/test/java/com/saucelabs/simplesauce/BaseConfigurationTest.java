@@ -9,7 +9,7 @@ import org.junit.Before;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class BaseConfigurationTest {
+class BaseConfigurationTest {
     public SauceSession mockSauceSession;
     protected RemoteDriverInterface fakeRemoteDriver;
     protected EnvironmentManager fakeEnvironmentManager;

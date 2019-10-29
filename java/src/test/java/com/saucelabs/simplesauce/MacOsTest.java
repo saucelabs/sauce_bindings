@@ -12,7 +12,7 @@ public class MacOsTest extends BaseConfigurationTest{
 
         mockSauceSession.start();
         String actualOsThatWasSet = getSessionPlatformString();
-        assertEquals("macOS 10.14", actualOsThatWasSet);
+        assertEquals(Platforms.MAC_OS.MOJAVE, actualOsThatWasSet);
     }
 
     private String getSessionPlatformString() {
@@ -26,7 +26,7 @@ public class MacOsTest extends BaseConfigurationTest{
 
         mockSauceSession.start();
         String actualOsThatWasSet = getSessionPlatformString();
-        assertEquals("macOS 10.13", actualOsThatWasSet);
+        assertEquals(Platforms.MAC_OS.HIGH_SIERRA, actualOsThatWasSet);
     }
     @Test
     public void withMacOsSierra_returnsMacOs1012() {
@@ -35,7 +35,7 @@ public class MacOsTest extends BaseConfigurationTest{
 
         mockSauceSession.start();
         String actualOsThatWasSet = getSessionPlatformString();
-        assertEquals("macOS 10.12", actualOsThatWasSet);
+        assertEquals(Platforms.MAC_OS.SIERRA, actualOsThatWasSet);
     }
     @SuppressWarnings("SpellCheckingInspection")
     @Test
@@ -45,7 +45,7 @@ public class MacOsTest extends BaseConfigurationTest{
 
         mockSauceSession.start();
         String actualOsThatWasSet = getSessionPlatformString();
-        assertEquals("OS X 10.11", actualOsThatWasSet);
+        assertEquals(Platforms.MAC_OS.EL_CAPITAN, actualOsThatWasSet);
     }
     @Test
     public void withMacOsYosemite_returnsMacOsX1010() {
@@ -54,7 +54,7 @@ public class MacOsTest extends BaseConfigurationTest{
 
         mockSauceSession.start();
         String actualOsThatWasSet = getSessionPlatformString();
-        assertEquals("OS X 10.10", actualOsThatWasSet);
+        assertEquals(Platforms.MAC_OS.YOSEMITE, actualOsThatWasSet);
     }
     @Test
     public void defaultSafari_browserVersionIs12_0() {
@@ -76,7 +76,7 @@ public class MacOsTest extends BaseConfigurationTest{
         mockSauceSession.start();
 
         String safariVersionSetThroughSauceSession = getSessionPlatformString();
-        assertEquals(Platforms.MAC_OS_MOJAVE, safariVersionSetThroughSauceSession);
+        assertEquals(Platforms.MAC_OS.MOJAVE, safariVersionSetThroughSauceSession);
     }
     @Test
     public void withSafari_browserName_setToSafari() {

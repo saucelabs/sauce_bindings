@@ -1,4 +1,4 @@
-package com.saucelabs.simplesauce.unit;
+package com.saucelabs.simplesauce;
 
 import com.saucelabs.simplesauce.SauceOptions;
 import com.saucelabs.simplesauce.SauceSession;
@@ -11,9 +11,9 @@ import static org.mockito.Mockito.when;
 
 public class BaseConfigurationTest {
     public SauceSession mockSauceSession;
-    RemoteDriverInterface fakeRemoteDriver;
-    EnvironmentManager fakeEnvironmentManager;
-    SauceOptions sauceOptions;
+    protected RemoteDriverInterface fakeRemoteDriver;
+    protected EnvironmentManager fakeEnvironmentManager;
+    protected SauceOptions sauceOptions;
 
     @Before
     public void setUp()

@@ -7,8 +7,7 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class SauceSessionAcceptanceTest {
     private WebDriver webDriver;
@@ -24,7 +23,7 @@ public class SauceSessionAcceptanceTest {
         SauceOptions options = new SauceOptions();
         webDriver = new SauceSession(options).start();
         String sessionId = ((RemoteWebDriver) webDriver).getSessionId().toString();
-        //TODO add logic to his the Sauce REST API and make sure that an actual sessionId exists
+        assertFalse(sessionId.isEmpty());
     }
     @Test
     public void withWindows10_default() {
@@ -41,8 +40,8 @@ public class SauceSessionAcceptanceTest {
         options.withSafari();
 
         webDriver = new SauceSession(options).start();
-        String actualBrowserVersion = (((RemoteWebDriver) webDriver).getCapabilities()).getPlatform().toString();
-        assertEquals("MAC", actualBrowserVersion);
+        String actualPlatform = (((RemoteWebDriver) webDriver).getCapabilities()).getPlatform().toString();
+        assertEquals("MAC", actualPlatform);
     }
     @Test
     public void withSafari_default_isBrowserVersion12_0() {
@@ -57,13 +56,13 @@ public class SauceSessionAcceptanceTest {
     public void startSession_noSauceOptionsSet_returnsDriver() {
         SauceSession session = new SauceSession();
         session.start();
-        webDriver = session.getDriver();
-        assertNotNull(webDriver);
+        assertNotNull(session.getDriver());
     }
 
     @Test
     public void runTestOnFirefox() {
         SauceOptions options = new SauceOptions();
+        //options.withFirefox();
         options.withFirefox();
 
         webDriver = new SauceSession(options).start();

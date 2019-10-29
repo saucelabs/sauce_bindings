@@ -3,8 +3,6 @@ package com.saucelabs.simplesauce;
 import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeOptions;
-import org.openqa.selenium.ie.InternetExplorerOptions;
 
 public class SauceOptions {
     //TODO can probably use BrowserType enum from Selenium to do BrowserType.CHROME
@@ -15,12 +13,11 @@ public class SauceOptions {
     @Getter @Setter public String browserVersion = "latest";
     @Getter @Setter public String operatingSystem = "Windows 10";
     @Getter public  ChromeOptions chromeOptions;
-    private EdgeOptions edgeOptions;
-    private InternetExplorerOptions ieOptions;
 
     public SauceOptions withChrome()
     {
         chromeOptions = new ChromeOptions();
+        //TODO no longer needed with Chrome 75+
         chromeOptions.setExperimentalOption("w3c", true);
         browser = "Chrome";
         return this;
@@ -29,14 +26,12 @@ public class SauceOptions {
     {
         return withMacOsMojave();
     }
-    public SauceOptions withSafari(String version)
+    public SauceOptions withSafari(final String version)
     {
-        //TODO: I did this but I hate it :(
-        //I wish I could just have a default value set for the version param
-        if(version.equalsIgnoreCase(""))
-            version = "latest";
+        String _version = version;
+        if (_version.isEmpty()) { _version = "latest"; }
         browser = "safari";
-        browserVersion = version;
+        browserVersion = _version;
         return this;
     }
     public SauceOptions withMacOsMojave() {
@@ -93,41 +88,42 @@ public class SauceOptions {
 
     public SauceOptions withEdge() {
         browser = "Edge";
-        edgeOptions = new EdgeOptions();
+        browserVersion = "18.17763";
         return this;
     }
+
     //TODO notice the duplication below with edge.
     //Maybe could be moved to a separate class so we can do withEdge().16_16299();
     //Or withEdge().version(EdgeVersion.16_16299);
-    public SauceOptions withEdge18_17763() {
+    public SauceOptions withEdge18() {
         withEdge();
         browserVersion = "18.17763";
         return this;
     }
-    public SauceOptions withEdge17_17134() {
+    public SauceOptions withEdge17() {
         withEdge();
         browserVersion = "17.17134";
         return this;
     }
-    public SauceOptions withEdge16_16299() {
+    public SauceOptions withEdge16() {
         withEdge();
         browserVersion = "16.16299";
         return this;
     }
 
-    public SauceOptions withEdge15_15063() {
+    public SauceOptions withEdge15() {
         withEdge();
         browserVersion = "15.15063";
         return this;
     }
 
-    public SauceOptions withEdge14_14393() {
+    public SauceOptions withEdge14() {
         withEdge();
         browserVersion = "14.14393";
         return this;
     }
 
-    public SauceOptions withEdge13_10586() {
+    public SauceOptions withEdge13() {
         withEdge();
         browserVersion = "13.10586";
         return this;
@@ -142,7 +138,13 @@ public class SauceOptions {
     public SauceOptions withIE(String version) {
         browser = "IE";
         browserVersion = version;
-        ieOptions = new InternetExplorerOptions();
         return this;
     }
+
+    public SauceOptions withIE() {
+        browser = "IE";
+        browserVersion = "latest";
+        return this;
+    }
+
 }

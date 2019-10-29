@@ -1,4 +1,4 @@
-package com.saucelabs.simplesauce.unit;
+package com.saucelabs.simplesauce;
 
 import org.junit.Test;
 import org.openqa.selenium.MutableCapabilities;

@@ -1,14 +1,12 @@
-package com.saucelabs.simplesauce.unit;
+package com.saucelabs.simplesauce;
 
-import com.saucelabs.simplesauce.Platforms;
-import com.saucelabs.simplesauce.SafariVersion;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.junit.Assert.assertEquals;
 
-public class MacOsTests extends BaseConfigurationTest{
+public class MacOsTest extends BaseConfigurationTest{
     @Test
     public void withMacOsMojave_returnsMacOs1014() {
         sauceOptions.withMacOsMojave();
@@ -100,5 +98,16 @@ public class MacOsTests extends BaseConfigurationTest{
 
         String actualBrowserVersionSetThroughSauceSession = mockSauceSession.sauceSessionCapabilities.getVersion();
         assertEquals("8.0", actualBrowserVersionSetThroughSauceSession);
+    }
+    @Test
+    public void withSafari_versionNotSet_returnsLatest() {
+        sauceOptions.withSafari("");
+        mockSauceSession = instantiateSauceSession();
+
+        mockSauceSession.start();
+
+        String actualBrowserVersionSetThroughSauceSession =
+                mockSauceSession.sauceSessionCapabilities.getVersion();
+        assertEquals("latest", actualBrowserVersionSetThroughSauceSession);
     }
 }

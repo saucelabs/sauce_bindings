@@ -26,19 +26,19 @@ public class TimeoutTest extends BaseConfigurationTest {
         assertCorrectCommandSetOnRemoteSession("idleTimeout", 100);
     }
     @Test
-    public void maxDuration_canBeSet() throws MaxTestDurationTimeoutExceeded {
+    public void maxDuration_canBeSet() throws MaxTestDurationTimeoutExceededException {
         int maxTestDurationInSec = 1800;
         sauce.timeouts.setMaxTestDurationTimeout(maxTestDurationInSec);
         sauce.start();
         assertCorrectCommandSetOnRemoteSession("maxDuration", maxTestDurationInSec);
     }
-    @Test(expected = MaxTestDurationTimeoutExceeded.class)
-    public void maxDuration_setTo1HigherThanMax_throwsException() throws MaxTestDurationTimeoutExceeded {
+    @Test(expected = MaxTestDurationTimeoutExceededException.class)
+    public void maxDuration_setTo1HigherThanMax_throwsException() throws MaxTestDurationTimeoutExceededException {
         int maxTestDurationInSec = 1801;
         sauce.timeouts.setMaxTestDurationTimeout(maxTestDurationInSec);
     }
     @Test()
-    public void maxDuration_setTo1LowerThanMax_noException() throws MaxTestDurationTimeoutExceeded {
+    public void maxDuration_setTo1LowerThanMax_noException() throws MaxTestDurationTimeoutExceededException {
         int maxTestDurationInSec = 1799;
         sauce.timeouts.setMaxTestDurationTimeout(maxTestDurationInSec);
         sauce.start();

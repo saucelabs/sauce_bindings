@@ -21,10 +21,10 @@ The focus of this project is to make using Sauce Labs _simple_ so that test deve
 
 This project is a cross-language effort, with bindings available in the following languages:
 
--    [Java](https://github.com/saucelabs/simple_sauce/tree/master/java),
--    [C#](https://github.com/saucelabs/simple_sauce/tree/master/dotnet),
--    [Python](https://github.com/saucelabs/simple_sauce/tree/master/python),
--    [Ruby](https://github.com/saucelabs/simple_sauce/tree/master/ruby).
+-   [Java](https://github.com/saucelabs/simple_sauce/tree/master/java),
+-   [C#](https://github.com/saucelabs/simple_sauce/tree/master/dotnet),
+-   [Python](https://github.com/saucelabs/simple_sauce/tree/master/python),
+-   [Ruby](https://github.com/saucelabs/simple_sauce/tree/master/ruby).
 
 Each binding balances having a shared API and feature set while being idiomatic to the language and ecosystem the binding is a part of. Features should be available in all language bindings. 
 

@@ -21,10 +21,10 @@ The focus of this project is to make using Sauce Labs _simple_ so that test deve
 
 This project is a cross-language effort, with bindings available in the following languages:
 
-- [Java](https://github.com/saucelabs/simple_sauce/tree/master/java),
-- [C#](https://github.com/saucelabs/simple_sauce/tree/master/dotnet),
-- [Python](https://github.com/saucelabs/simple_sauce/tree/master/python),
-- [Ruby](https://github.com/saucelabs/simple_sauce/tree/master/ruby).
+-  [Java](https://github.com/saucelabs/simple_sauce/tree/master/java),
+-  [C#](https://github.com/saucelabs/simple_sauce/tree/master/dotnet),
+-  [Python](https://github.com/saucelabs/simple_sauce/tree/master/python),
+-  [Ruby](https://github.com/saucelabs/simple_sauce/tree/master/ruby).
 
 Each binding balances having a shared API and feature set while being idiomatic to the language and ecosystem the binding is a part of. Features should be available in all language bindings. 
 
@@ -32,17 +32,17 @@ Each binding balances having a shared API and feature set while being idiomatic 
 
 To get started using Simple Sauce, install your preferred language binding(s) based on these language documentation:
 
-- [Java](https://github.com/saucelabs/simple_sauce/tree/master/java/README.md),
-- [C#](https://github.com/saucelabs/simple_sauce/tree/master/dotnet/README.md),
-- [Python](https://github.com/saucelabs/simple_sauce/tree/master/python/README.md),
-- [Ruby](https://github.com/saucelabs/simple_sauce/tree/master/ruby/README.md).
+-  [Java](https://github.com/saucelabs/simple_sauce/tree/master/java/README.md),
+-  [C#](https://github.com/saucelabs/simple_sauce/tree/master/dotnet/README.md),
+-  [Python](https://github.com/saucelabs/simple_sauce/tree/master/python/README.md),
+-  [Ruby](https://github.com/saucelabs/simple_sauce/tree/master/ruby/README.md).
 
 For all bindings, the following is required:
 
-- A valid [Sauce Labs](https://app.saucelabs.com/login) account
-- Sauce Labs username and access key values set on the environment tests will be executing on as the following environment variables:
+-  A valid [Sauce Labs](https://app.saucelabs.com/login) account
+-   Sauce Labs username and access key values set on the environment tests will be executing on as the following environment variables:
 
-```
+```bash
 SAUCE_USERNAME='valid.username'
 SAUCE_ACCESS_KEY='valid.key'
 ```
@@ -55,7 +55,7 @@ Simple Sauce should be a tool for both novice and experienced test developers. T
 
 Here's a pseudocode example of creating a browser session on Sauce Labs with Simple Sauce:
 
-```
+```java
 sauce = new SauceSession();
 
 sauce.start();
@@ -71,28 +71,25 @@ This creates a new `sauce` object that uses reasonable defaults for browser opti
 
 Currently each binding follows its own language-specific build process for building and installing each language binding.
 
-- [Java](https://github.com/saucelabs/simple_sauce/tree/master/java/README.md),
-- [C#](https://github.com/saucelabs/simple_sauce/tree/master/dotnet/README.md),
-- [Python](https://github.com/saucelabs/simple_sauce/tree/master/python#installation),
-- [Ruby](https://github.com/saucelabs/simple_sauce/tree/master/ruby#installation).
+-  [Java](https://github.com/saucelabs/simple_sauce/tree/master/java/README.md),
+-  [C#](https://github.com/saucelabs/simple_sauce/tree/master/dotnet/README.md),
+-  [Python](https://github.com/saucelabs/simple_sauce/tree/master/python#installation),
+-  [Ruby](https://github.com/saucelabs/simple_sauce/tree/master/ruby#installation).
 
 ## Tests
 
 Currently each binding has tests that can be executed in a language-specific way. 
 
-- [Java](https://github.com/saucelabs/simple_sauce/tree/master/java/README.md),
-- [C#](https://github.com/saucelabs/simple_sauce/tree/master/dotnet/README.md),
-- [Python](https://github.com/saucelabs/simple_sauce/tree/master/python#testing),
-- [Ruby](https://github.com/saucelabs/simple_sauce/tree/master/ruby#installation).
+-  [Java](https://github.com/saucelabs/simple_sauce/tree/master/java/README.md),
+-  [C#](https://github.com/saucelabs/simple_sauce/tree/master/dotnet/README.md),
+-  [Python](https://github.com/saucelabs/simple_sauce/tree/master/python#testing),
+-  [Ruby](https://github.com/saucelabs/simple_sauce/tree/master/ruby#installation).
 
 
 ## Contributing
 
 Sauce Labs is proudly based on open source technologies and encourages open source projects like Simple Sauce. If you would like to contribute there are several ways of doing so:
 
-- *Development*: Bug fixes and implementing new features are welcome. There are also [good first issues](https://github.com/saucelabs/simple_sauce/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) labeled if you'd like to get started on development but don't know how. Please fork this this repository and open a pull request if you'd like to contribute this way.
-- *Features and Issues*: See something you'd like fixed? Have a good idea for how to improve Simple Sauce? [Create an issue](https://github.com/saucelabs/simple_sauce/issues) or add to an existing issue. 
-- *Documentation*: A great way to start working with any open source project is through improving documentation. You can add or edit doc strings, either in a pull request or directly from GitHub. You can edit a file in GitHub as long as you're signed in and create a pull request from those edits. 
-
-## Contributors
-
+-  **Development**: Bug fixes and implementing new features are welcome. There are also [good first issues](https://github.com/saucelabs/simple_sauce/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) labeled if you'd like to get started on development but don't know how. Please fork this this repository and open a pull request if you'd like to contribute this way.
+-  **Features and Issues**: See something you'd like fixed? Have a good idea for how to improve Simple Sauce? [Create an issue](https://github.com/saucelabs/simple_sauce/issues) or add to an existing issue. 
+-  **Documentation**: A great way to start working with any open source project is through improving documentation. You can add or edit doc strings, either in a pull request or directly from GitHub. You can edit a file in GitHub as long as you're signed in and create a pull request from those edits. 

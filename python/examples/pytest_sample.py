@@ -4,7 +4,7 @@ from simplesauce.session import SauceSession
 
 
 browsers = [
-    'internet explorer', 
+    'internet explorer',
     'chrome',
     'firefox',
     'safari',

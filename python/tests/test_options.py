@@ -14,10 +14,10 @@ class TestInit(object):
         assert sauce.platformName == 'windows 10'
 
     def test_accepts_browser_version_platform_name(self):
-        sauce = SauceOptions('Firefox', '67.0', 'windows 10')
+        sauce = SauceOptions('Firefox')
 
         assert sauce.browserName == 'Firefox'
-        assert sauce.browserVersion == '67.0'
+        assert sauce.browserVersion == 'latest'
         assert sauce.platformName == 'windows 10'
 
     def test_accepts_w3c_values(self):
@@ -49,8 +49,8 @@ class TestInit(object):
 
         sauce = SauceOptions(options=options)
 
-        assert sauce.name == 'sample test'
-        assert sauce.build == 'sample build'
+        assert sauce.options['sauce:options']['name'] == 'sample test'
+        assert sauce.options['sauce:options']['build'] == 'sample build'
 
     def test_accepts_browser_option_values(self):
         pass

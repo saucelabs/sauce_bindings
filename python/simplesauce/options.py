@@ -13,11 +13,9 @@ class SauceOptions():
     def _set_default_w3c_options(self):
         self.options = {}
         self.options['browserName'] = self.browserName
+        self.options['browserVersion'] = self.browserVersion
+        self.options['platformName'] = self.platformName
         self.options['sauce:options'] = {}
-        self.options['sauce:options']['seleniumVersion'] = '3.141.0'
-        self.options['sauce:options']['browserName'] = self.browserName
-        self.options['sauce:options']['browserVersion'] = self.browserVersion
-        self.options['sauce:options']['platformName'] = self.platformName
 
     def __init__(self, browserName=None, browserVersion=None, platformName=None, options={}):
         self._set_defaults()
@@ -49,7 +47,6 @@ class SauceOptions():
             self.browserName = name
 
         self.options['browserName'] = self.browserName
-        self.options['sauce:options']['browserName'] = self.browserName
 
     def parseBrowserVersion(self, version):
         self.browserVersion = browserVersion
@@ -60,11 +57,11 @@ class SauceOptions():
         if self.browserName == 'safari' and self.browserVersion == 'latest':
             self.platformName == 'macOS 10.14'
         elif 'windows' in platform.lower():
-            self.platformName = 'windows 10'
+            self.platformName = 'Windows 10'
         else:
             self.platformName = platform
 
-        self.options['sauce:options']['platformName'] = self.platformName 
+        self.options['platformName'] = self.platformName 
 
     def parseOptions(self, options):
 
@@ -75,20 +72,20 @@ class SauceOptions():
         elif 'version' in options:
             self.browserName = options['browserName'] if options['browserName'] else 'chrome'
             self.browserVersion = options['version'] if options['version'] else 'latest'
-            self.platformName = 'windows 10' if not options['version'] else options['version']
-            self.options['sauce:options']['browserName'] = self.browserName
-            self.options['sauce:options']['browserVersion'] = self.browserVersion
-            self.options['sauce:options']['platformName'] = self.platformName
+            self.platformName = 'Windows 10' if not options['version'] else options['version']
+            self.options['browserName'] = self.browserName
+            self.options['browserVersion'] = self.browserVersion
+            self.options['platformName'] = self.platformName
         elif 'sauce:options' in options:
-            w3cSauceOptions = options['sauce:options']
+            w3cSauceOptions = options
             self.browserName = w3cSauceOptions.get('browserName')
-            self.browserVersion = w3cSauceOptions.get('browserVersion')
-            self.platformName = w3cSauceOptions.get('platformName')
+            self.browserVersion = w3cSauceOptions['sauce:options'].get('browserVersion')
+            self.platformName = w3cSauceOptions['sauce:options'].get('platformName')
 
             self.options['browserName'] = self.browserName
-            self.options['sauce:options']['browserName'] = self.browserName
-            self.options['sauce:options']['browserVersion'] = self.browserVersion
-            self.options['sauce:options']['platformName'] = self.platformName
+            self.options['browserName'] = self.browserName
+            self.options['browserVersion'] = self.browserVersion
+            self.options['platformName'] = self.platformName
 
             self.options['sauce:options']['name'] = w3cSauceOptions.get('name')
             self.options['sauce:options']['build'] = w3cSauceOptions.get('build')
@@ -98,8 +95,8 @@ class SauceOptions():
             self.platformName = options.get('platformName')
 
             self.options['browserName'] = self.browserName
-            self.options['sauce:options']['browserName'] = self.browserName
-            self.options['sauce:options']['browserVersion'] = self.browserVersion
-            self.options['sauce:options']['platformName'] = self.platformName
+            self.options['browserName'] = self.browserName
+            self.options['browserVersion'] = self.browserVersion
+            self.options['platformName'] = self.platformName
             self.options['sauce:options']['name'] = options.get('name')
             self.options['sauce:options']['build'] = options.get('build')

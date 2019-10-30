@@ -15,9 +15,6 @@ browsers = [
 @pytest.fixture(params=browsers)
 def driver(request):
     opts = SauceOptions(browserName=request.param)
-    print(opts.options)
-    print(opts.browserVersion)
-    print(opts.platformName)
     sauce = SauceSession(options=opts)
     sauce.start()
 

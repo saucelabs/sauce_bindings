@@ -5,9 +5,9 @@ from simplesauce.session import SauceSession
 
 browsers = [
     'internet explorer', 
-    'chrome', 
+    'chrome',
     'firefox',
-    'safari', 
+    'safari',
     'edge'
 ]
 
@@ -25,5 +25,3 @@ def driver(request):
 def test_demo(driver):
     driver.get('https://www.saucedemo.com')
     assert "Swag" in driver.title
-
-    

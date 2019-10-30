@@ -60,7 +60,7 @@ class SauceOptions():
         else:
             self.platformName = platform
 
-        self.options['platformName'] = self.platformName 
+        self.options['platformName'] = self.platformName
 
     def parseOptions(self, options):
 

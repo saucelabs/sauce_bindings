@@ -76,7 +76,7 @@ class SauceSession():
         executor = RemoteConnection(self.remote_url, resolve_ip=False)
         self.driver = webdriver.Remote(
             command_executor=executor,
-            desired_capabilities=caps.__dict__,
+            desired_capabilities=caps.options,
             keep_alive=True
         )
         return self.driver

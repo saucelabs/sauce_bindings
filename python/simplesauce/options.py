@@ -21,7 +21,6 @@ class SauceOptions():
         self._set_defaults()
         self._set_default_w3c_options()
 
-        self._set_defaults()
         if not any([browserName, browserVersion, platformName, options]):
             return
         elif not any([browserName, browserVersion, platformName]):
@@ -35,14 +34,14 @@ class SauceOptions():
         if platformName:
             self.parsePlatformName(platformName)
 
-        self._set_default_w3c_options()
-
     """TODO: create better parsing mechanisms for different capabilities."""
     def parseBrowserName(self, name):
         if name.lower() == 'ie' or name.lower() == 'internet explorer':
             self.browserName = 'internet explorer'
         elif name.lower() == 'edge':
             self.browserName = 'MicrosoftEdge'
+        elif name.lower() == 'safari':
+            self.setMacOs()
         else:
             self.browserName = name
 
@@ -51,11 +50,13 @@ class SauceOptions():
     def parseBrowserVersion(self, version):
         self.browserVersion = browserVersion
 
-        self.options['sauce:options']['browserVersion'] = self.browserVersion
+        self.options['browserVersion'] = self.browserVersion
 
     def parsePlatformName(self, platform):
-        if self.browserName == 'safari' and self.browserVersion == 'latest':
-            self.platformName == 'macOS 10.14'
+        print(self.browserName)
+        if self.browserName.lower() == 'safari':
+            print(">>>>>>>>>>>>>")
+            self.setMacOs()
         elif 'windows' in platform.lower():
             self.platformName = 'Windows 10'
         else:
@@ -95,8 +96,18 @@ class SauceOptions():
             self.platformName = options.get('platformName')
 
             self.options['browserName'] = self.browserName
-            self.options['browserName'] = self.browserName
             self.options['browserVersion'] = self.browserVersion
             self.options['platformName'] = self.platformName
             self.options['sauce:options']['name'] = options.get('name')
             self.options['sauce:options']['build'] = options.get('build')
+
+    # TODO: definitely figure this out :)
+    def setMacOs(self):
+        self.browserName = 'safari'
+        self.browserVersion = 'latest'
+        self.platformName = 'macOS 10.14'
+
+        self.options['browserName'] = self.browserName
+        self.options['browserVersion'] = self.browserVersion
+        self.options['platformName'] = self.platformName
+            

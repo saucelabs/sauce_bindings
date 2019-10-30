@@ -4,17 +4,20 @@ from simplesauce.session import SauceSession
 
 
 browsers = [
-  'internet explorer', 
-  'chrome', 
-  'firefox',
-  'safari', 
-  'edge'
+    'internet explorer', 
+    'chrome', 
+    'firefox',
+    'safari', 
+    'edge'
 ]
 
 
 @pytest.fixture(params=browsers)
 def driver(request):
     opts = SauceOptions(browserName=request.param)
+    print(opts.options)
+    print(opts.browserVersion)
+    print(opts.platformName)
     sauce = SauceSession(options=opts)
     sauce.start()
 

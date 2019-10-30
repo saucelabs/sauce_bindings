@@ -53,9 +53,7 @@ class SauceOptions():
         self.options['browserVersion'] = self.browserVersion
 
     def parsePlatformName(self, platform):
-        print(self.browserName)
         if self.browserName.lower() == 'safari':
-            print(">>>>>>>>>>>>>")
             self.setMacOs()
         elif 'windows' in platform.lower():
             self.platformName = 'Windows 10'

@@ -8,7 +8,7 @@ class SauceOptions():
     def _set_defaults(self, browser=None):
         self.browserName = browser if browser else 'chrome'
         self.browserVersion = 'latest'
-        self.platformName = 'windows 10'
+        self.platformName = 'Windows 10'
 
     def _set_default_w3c_options(self):
         self.options = {}

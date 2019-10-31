@@ -22,6 +22,7 @@ def driver(request):
 
     sauce.stop()
 
+
 def test_demo(driver):
     driver.get('https://www.saucedemo.com')
     assert "Swag" in driver.title

@@ -18,10 +18,10 @@ class TestInit(object):
 
     def test_raises_exception_if_data_center_is_invalid(self):
         with pytest.raises(KeyError):
-            session = SauceSession(data_center='uu')
+            SauceSession(data_center='uu')
 
         with pytest.raises(KeyError):
-            session = SauceSession(data_center='')
+            SauceSession(data_center='')
 
     def test_accepts_provided_Options_instance(self):
         options = SauceOptions()
@@ -100,7 +100,7 @@ class TestStart(object):
         session = SauceSession()
 
         session.username = None
-        
+
         with pytest.raises(KeyError):
             session.start()
 
@@ -111,6 +111,7 @@ class TestStart(object):
 
         with pytest.raises(KeyError):
             session.start()
+
 
 class TestStop(object):
 

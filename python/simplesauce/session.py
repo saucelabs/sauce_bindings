@@ -31,7 +31,7 @@ class SauceSession():
             self.remote_url = US_SAUCE_DC_URL
         else:
             raise KeyError("Invalid Data Center value, please select from 'us' or 'eu'")
-        
+
         self.driver = {}
 
     @property

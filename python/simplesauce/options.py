@@ -1,6 +1,5 @@
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
-from selenium.webdriver import DesiredCapabilities
 
 
 class SauceOptions():
@@ -26,7 +25,7 @@ class SauceOptions():
         elif not any([browserName, browserVersion, platformName]):
             self.parseOptions(options)
             return
-    
+
         if browserName:
             self.parseBrowserName(browserName)
         if browserVersion:
@@ -34,7 +33,7 @@ class SauceOptions():
         if platformName:
             self.parsePlatformName(platformName)
 
-    """TODO: create better parsing mechanisms for different capabilities."""
+    # TODO: create better parsing mechanisms for different capabilities.
     def parseBrowserName(self, name):
         if name.lower() == 'ie' or name.lower() == 'internet explorer':
             self.browserName = 'internet explorer'
@@ -48,7 +47,7 @@ class SauceOptions():
         self.options['browserName'] = self.browserName
 
     def parseBrowserVersion(self, version):
-        self.browserVersion = browserVersion
+        self.browserVersion = version
 
         self.options['browserVersion'] = self.browserVersion
 
@@ -108,4 +107,3 @@ class SauceOptions():
         self.options['browserName'] = self.browserName
         self.options['browserVersion'] = self.browserVersion
         self.options['platformName'] = self.platformName
-            

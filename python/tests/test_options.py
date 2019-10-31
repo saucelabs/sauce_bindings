@@ -1,6 +1,5 @@
 from simplesauce.options import SauceOptions
 from selenium.webdriver.chrome.options import Options as ChromeOptions
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver import DesiredCapabilities
 
 
@@ -70,6 +69,7 @@ class TestInit(object):
         assert sauce.browserName == 'chrome'
         assert sauce.platformName == 'Windows 10'
         assert sauce.browserVersion == 'latest'
+
 
 class TestAccessorVariables(object):
 

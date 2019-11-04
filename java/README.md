@@ -16,7 +16,7 @@ driver.findElement("id").click();
 ### Latest Chrome
 ```        
 SauceOptions options = new SauceOptions();
-options.withSafari();
+options.withChrome();
 webDriver = new SauceSession(options).start();
 ```
 ### Latest Edge

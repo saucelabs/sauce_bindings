@@ -9,7 +9,6 @@ WebDriver driver = new SauceSession().start();
 //now use the driver to interact with your test in Sauce Labs
 driver.findElement("id").click();
 ```
-
 * Defaults are Windows 10 for non-Safari
 * latest Mac for Safari
 ## Run a test on:
@@ -17,7 +16,7 @@ driver.findElement("id").click();
 ### Latest Chrome
 ```        
 SauceOptions options = new SauceOptions();
-options.withSafari();
+options.withChrome();
 webDriver = new SauceSession(options).start();
 ```
 ### Latest Edge

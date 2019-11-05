@@ -67,3 +67,55 @@ Edge version 15
 SauceOptions options = new SauceOptions().withEge15();
 webDriver = new SauceSession(options).start();
 ```
+
+## Installation
+
+Simple Sauce will be available via Maven soon but for now please follow the [Building](#building) instructions for local development.
+
+## Building
+
+Make sure you have the common Simple Sauce [prerequisites](https://github.com/saucelabs/simple_sauce#getting-started-and-prerequisites) set up, as well as
+
+-  Java 8+ JDK,
+-  Maven,
+-  Your favorite Java IDE ([IntelliJ](https://www.jetbrains.com/idea/download/index.html#section=mac) preferred but not required).
+
+The Simple Sauce Java bindings are designed as a standard Maven project and follow Maven conventions.
+
+## Local development
+
+First clone this project, either directly or from a fork. The following instructions will be based on a local clone of the Simple Sauce repository.
+
+To create a `.jar` of the Java bindings in their current state in your local repository, run
+
+```bash
+mvn package
+```
+
+in the `java/` (root) directory. This will create a `.jar` file in the `java/target/` directory which you can them use as you like.
+
+If you'd like to make Simple Sauce available to other local projects via Maven, run
+
+```bash
+mvn install
+```
+
+in the `java/` directory. This will allow you to import Simple Sauce as a Maven dependency in other local projects on your laptop as a snapshot of the state based on the commit that you build from. To add this reference via Maven, add
+
+```xml
+<groupId>com.saucelabs</groupId>
+<artifactId>simple_sauce</artifactId>
+<version>1.0-SNAPSHOT</version>
+```
+
+to other projects' `pom.xml` file to access Simple Sauce.
+
+## Testing
+
+To execute the test suite, run
+
+```bash
+mvn test
+```
+
+Tests will also be automatically executed as part of the building process.

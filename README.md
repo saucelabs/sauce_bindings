@@ -71,7 +71,7 @@ This creates a new `sauce` object that uses reasonable defaults for browser opti
 
 Currently each binding follows its own language-specific build process for building and installing each language binding.
 
--   [Java](https://github.com/saucelabs/simple_sauce/tree/master/java/README.md),
+-   [Java](https://github.com/saucelabs/simple_sauce/tree/master/java/README.md#building),
 -   [C#](https://github.com/saucelabs/simple_sauce/tree/master/dotnet/README.md),
 -   [Python](https://github.com/saucelabs/simple_sauce/tree/master/python#installation),
 -   [Ruby](https://github.com/saucelabs/simple_sauce/tree/master/ruby#installation).
@@ -80,7 +80,7 @@ Currently each binding follows its own language-specific build process for build
 
 Currently each binding has tests that can be executed in a language-specific way. 
 
--   [Java](https://github.com/saucelabs/simple_sauce/tree/master/java/README.md),
+-   [Java](https://github.com/saucelabs/simple_sauce/tree/master/java/README.md#testing),
 -   [C#](https://github.com/saucelabs/simple_sauce/tree/master/dotnet/README.md),
 -   [Python](https://github.com/saucelabs/simple_sauce/tree/master/python#testing),
 -   [Ruby](https://github.com/saucelabs/simple_sauce/tree/master/ruby#installation).

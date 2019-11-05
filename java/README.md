@@ -78,7 +78,7 @@ Make sure you have the common Simple Sauce [prerequisites](https://github.com/sa
 
 -  Java 8+ JDK,
 -  Maven,
--  Your favorite Java IDE ([IntelliJ](https://www.jetbrains.com/idea/download/index.html#section=mac) preferred but not required).
+-  Your favorite Java IDE ([IntelliJ](https://www.jetbrains.com/idea/download/index.html) preferred but not required).
 
 The Simple Sauce Java bindings are designed as a standard Maven project and follow Maven conventions.
 

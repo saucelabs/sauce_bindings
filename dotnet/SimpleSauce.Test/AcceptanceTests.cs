@@ -1,24 +1,27 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
+using SimpleSauce;
+using Moq;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
+using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 
-namespace SimpleSauce
+namespace SimpleSauceTests
 {
-    public class SauceSession
+    [TestClass]
+    public class AcceptanceTests
     {
-        private RemoteWebDriver _driver;
         private string sauceUserName;
         private string sauceAccessKey;
         private Dictionary<string, object> sauceOptions;
+        private IWebDriver _driver;
 
-        public SauceSession()
-        {
-        }
-        public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
+        public TestContext TestContext { get; set; }
 
-        public IWebDriver Start()
+        [TestInitialize]
+        public void SetupTests()
         {
             //TODO please supply your Sauce Labs user name in an environment variable
             sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME", EnvironmentVariableTarget.User);
@@ -29,7 +32,20 @@ namespace SimpleSauce
                 ["username"] = sauceUserName,
                 ["accessKey"] = sauceAccessKey
             };
-
+        }
+        [TestCleanup]
+        public void CleanUpAfterEveryTestMethod()
+        {
+            if (_driver != null)
+            {
+                var passed = TestContext.CurrentTestOutcome == UnitTestOutcome.Passed;
+                ((IJavaScriptExecutor)_driver).ExecuteScript("sauce:job-result=" + (passed ? "passed" : "failed"));
+                _driver?.Quit();
+            }
+        }
+        [TestMethod]
+        public void ShouldReturnObject()
+        {
             var chromeOptions = new ChromeOptions
             {
                 BrowserVersion = "latest",
@@ -40,12 +56,8 @@ namespace SimpleSauce
 
             _driver = new RemoteWebDriver(new Uri("https://ondemand.saucelabs.com/wd/hub"),
                 chromeOptions.ToCapabilities(), TimeSpan.FromSeconds(600));
-            return _driver;
-        }
-        public IWebDriver Start2()
-        {
-            ChromeOptions options = new ChromeOptions();
-            return new RemoteWebDriver(options);
+            _driver.Navigate().GoToUrl("https://www.google.com");
+            ((RemoteWebDriver)_driver).SessionId.Should().NotBeNull();
         }
     }
 }

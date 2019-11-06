@@ -7,9 +7,9 @@ using System.Text;
 
 namespace SimpleSauce
 {
-    class ConcreteRemoteWebDriver
+    class ConcreteRemoteWebDriver : IRemoteDriver
     {
-        public IWebDriver CreateRemoteWebDriver(ChromeOptions chromeOptions)
+        public RemoteWebDriver CreateRemoteWebDriver(ChromeOptions chromeOptions)
         {
             return new RemoteWebDriver(new Uri("https://ondemand.saucelabs.com/wd/hub"),
                 chromeOptions.ToCapabilities(), TimeSpan.FromSeconds(600));

@@ -8,17 +8,23 @@ namespace SimpleSauce
 {
     public class SauceSession
     {
-        private IWebDriver _driver;
+        private RemoteWebDriver _driver;
         private string sauceUserName;
         private string sauceAccessKey;
         private Dictionary<string, object> sauceOptions;
+        private IRemoteDriver remoteDriverManager;
 
         public SauceSession()
         {
+            remoteDriverManager = new ConcreteRemoteWebDriver();
+        }
+        public SauceSession(IRemoteDriver driverManager)
+        {
+            remoteDriverManager = driverManager;
         }
         public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
 
-        public IWebDriver Start()
+        public RemoteWebDriver Start()
         {
             //TODO please supply your Sauce Labs user name in an environment variable
             sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME", EnvironmentVariableTarget.User);
@@ -37,16 +43,8 @@ namespace SimpleSauce
                 UseSpecCompliantProtocol = true
             };
             chromeOptions.AddAdditionalCapability("sauce:options", sauceOptions, true);
-            _driver = new ConcreteRemoteWebDriver().CreateRemoteWebDriver(chromeOptions);
+            _driver = remoteDriverManager.CreateRemoteWebDriver(chromeOptions);
             return _driver;
-        }
-
-
-
-        public IWebDriver Start2()
-        {
-            ChromeOptions options = new ChromeOptions();
-            return new RemoteWebDriver(options);
         }
     }
 }

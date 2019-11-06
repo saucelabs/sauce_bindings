@@ -28,7 +28,7 @@ public class MacOsTest extends BaseConfigurationTest{
     @Test
     @UseDataProvider("expectedMacOsVersions")
     public void withMacOs_returnsValidOsConfiguration(MacVersion version, String expectedMacOsVersion) {
-        sauceOptions.withMac(version.label);
+        sauceOptions.withMac(version);
         mockSauceSession = instantiateSauceSession();
 
         mockSauceSession.start();

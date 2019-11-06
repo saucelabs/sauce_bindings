@@ -61,18 +61,6 @@ public class SauceSessionAcceptanceTest {
         String actualBrowserVersion = (((RemoteWebDriver) webDriver).getCapabilities()).getVersion();
         assertEquals("12.0", actualBrowserVersion);
     }
-    @Test
-    public void startSession_noSauceOptionsSet_returnsDriver() {
-        SauceSession session = new SauceSession();
-        session.start();
-        assertNotNull(session.getDriver());
-    }
-
-    @Test
-    public void runTestOnFirefox() {
-        SauceOptions options = new SauceOptions();
-        options.withFirefox();
-    }
 
     private String getBrowserNameFromRemoteCapabilities() {
         return (((RemoteWebDriver) webDriver).getCapabilities()).getBrowserName();

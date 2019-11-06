@@ -26,7 +26,7 @@ public class MacOsTest extends BaseConfigurationTest{
     @UseDataProvider("expectedMacOsVersions")
     public void withMacOs_returnsValidOsConfiguration(MacVersion version, String expectedMacOsVersion) {
         sauceOptions.withMac(version);
-        mockSauceSession = instantiateSauceSession();
+        sauce = instantiateSauceSession();
 
         sauce.start();
         String actualOsThatWasSet = getSessionPlatformString();
@@ -34,7 +34,7 @@ public class MacOsTest extends BaseConfigurationTest{
     }
 
     private String getSessionPlatformString() {
-        return mockSauceSession.sauceSessionCapabilities.getPlatform().toString();
+        return sauce.currentSessionCapabilities.getPlatform().toString();
     }
 
     @Test
@@ -46,7 +46,7 @@ public class MacOsTest extends BaseConfigurationTest{
 
         //TODO mockSauceSession.sauceSessionCapabilities can be turned into a method, maybe on the session
         //class that allows easier access to the caps
-        String safariVersionSetThroughSauceSession = mockSauceSession.sauceSessionCapabilities.getVersion();
+        String safariVersionSetThroughSauceSession = sauce.currentSessionCapabilities.getVersion();
         assertEquals("latest", safariVersionSetThroughSauceSession);
     }
     @Test

@@ -18,10 +18,10 @@ class TestInit(object):
 
     def test_raises_exception_if_data_center_is_invalid(self):
         with pytest.raises(KeyError):
-            session = SauceSession(data_center='uu')
+            SauceSession(data_center='uu')
 
         with pytest.raises(KeyError):
-            session = SauceSession(data_center='')
+            SauceSession(data_center='')
 
     def test_accepts_provided_Options_instance(self):
         options = SauceOptions()
@@ -30,14 +30,14 @@ class TestInit(object):
 
         assert session.options.browserName == 'chrome'
         assert session.options.browserVersion == 'latest'
-        assert session.options.platformName == 'windows 10'
+        assert session.options.platformName == 'Windows 10'
 
     def test_generates_default_Options_instance_if_not_provided(self):
         session = SauceSession()
 
         assert session.options.browserName == 'chrome'
         assert session.options.browserVersion == 'latest'
-        assert session.options.platformName == 'windows 10'
+        assert session.options.platformName == 'Windows 10'
 
     def test_uses_username_and_access_key_if_ENV_variables_are_defined(self):
         session = SauceSession()
@@ -100,7 +100,7 @@ class TestStart(object):
         session = SauceSession()
 
         session.username = None
-        
+
         with pytest.raises(KeyError):
             session.start()
 
@@ -111,6 +111,7 @@ class TestStart(object):
 
         with pytest.raises(KeyError):
             session.start()
+
 
 class TestStop(object):
 

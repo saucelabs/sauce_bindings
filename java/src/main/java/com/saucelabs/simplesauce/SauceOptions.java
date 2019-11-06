@@ -147,4 +147,9 @@ public class SauceOptions {
         return this;
     }
 
+    public SauceOptions withMac(String macVersion) {
+        operatingSystem = macVersion;
+        browser = "Safari";
+        return this;
+    }
 }

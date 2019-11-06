@@ -8,4 +8,4 @@ class TestInternetExplorer(object):
 
         assert sauce.browserName == 'internet explorer'
         assert sauce.browserVersion == 'latest'
-        assert sauce.platformName == 'windows 10'
+        assert sauce.platformName == 'Windows 10'

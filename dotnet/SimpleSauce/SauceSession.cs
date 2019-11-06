@@ -8,7 +8,7 @@ namespace SimpleSauce
 {
     public class SauceSession
     {
-        private RemoteWebDriver _driver;
+        private IWebDriver _driver;
         private string sauceUserName;
         private string sauceAccessKey;
         private Dictionary<string, object> sauceOptions;
@@ -37,11 +37,12 @@ namespace SimpleSauce
                 UseSpecCompliantProtocol = true
             };
             chromeOptions.AddAdditionalCapability("sauce:options", sauceOptions, true);
-
-            _driver = new RemoteWebDriver(new Uri("https://ondemand.saucelabs.com/wd/hub"),
-                chromeOptions.ToCapabilities(), TimeSpan.FromSeconds(600));
+            _driver = new ConcreteRemoteWebDriver().CreateRemoteWebDriver(chromeOptions);
             return _driver;
         }
+
+
+
         public IWebDriver Start2()
         {
             ChromeOptions options = new ChromeOptions();

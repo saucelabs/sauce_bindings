@@ -1,6 +1,6 @@
 package com.saucelabs.simplesauce;
 
-public enum DataCenter
+enum DataCenter
 {
     ;
     public static final String USWest = "https://ondemand.saucelabs.com/wd/hub";

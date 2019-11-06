@@ -93,3 +93,7 @@ Sauce Labs is proudly based on open source technologies and encourages open sour
 -   **Development**: Bug fixes and implementing new features are welcome. There are also [good first issues](https://github.com/saucelabs/simple_sauce/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) labeled if you'd like to get started on development but don't know how. Please fork this this repository and open a pull request if you'd like to contribute this way.
 -   **Features and Issues**: See something you'd like fixed? Have a good idea for how to improve Simple Sauce? [Create an issue](https://github.com/saucelabs/simple_sauce/issues) or add to an existing issue. 
 -   **Documentation**: A great way to start working with any open source project is through improving documentation. You can add or edit doc strings, either in a pull request or directly from GitHub. You can edit a file in GitHub as long as you're signed in and create a pull request from those edits. 
+
+## Special Thanks
+
+Special thanks to Aaron Evans. Nikolay Advolodkin worked with him in the beginning through several working sessions to create the Alpha version of these bindings. Although Aaron has not contributed much code, he has been instrumental in laying the foundation for the Java bindings :)

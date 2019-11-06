@@ -50,7 +50,7 @@ public class MacOsTest extends BaseConfigurationTest{
         //TODO mockSauceSession.sauceSessionCapabilities can be turned into a method, maybe on the session
         //class that allows easier access to the caps
         String safariVersionSetThroughSauceSession = mockSauceSession.sauceSessionCapabilities.getVersion();
-        assertEquals("12.0", safariVersionSetThroughSauceSession);
+        assertEquals("latest", safariVersionSetThroughSauceSession);
     }
     @Test
     public void defaultSafari_macOsVersionIsMojave() {

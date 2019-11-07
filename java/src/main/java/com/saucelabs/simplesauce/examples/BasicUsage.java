@@ -1,7 +1,6 @@
 package com.saucelabs.simplesauce.examples;
 
 import com.saucelabs.simplesauce.SauceSession;
-import org.openqa.selenium.WebDriver;
 
 public class BasicUsage {
 

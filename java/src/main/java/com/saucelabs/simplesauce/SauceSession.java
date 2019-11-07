@@ -3,7 +3,6 @@ package com.saucelabs.simplesauce;
 import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
 import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
 import lombok.Getter;
-import lombok.Setter;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
@@ -17,7 +16,7 @@ import org.openqa.selenium.safari.SafariOptions;
 import java.net.MalformedURLException;
 
 public class SauceSession {
-    @Getter @Setter public final String sauceDataCenter = DataCenter.USWest;
+    @Getter public String sauceDataCenter = DataCenter.USWest;
     private final EnvironmentManager environmentManager;
     private final SauceOptions sauceOptions;
     public final SauceTimeout timeouts = new SauceTimeout();
@@ -28,7 +27,7 @@ public class SauceSession {
     private MutableCapabilities mutableCapabilities;
     public MutableCapabilities currentSessionCapabilities;
     private final RemoteDriverInterface remoteDriverImplementation;
-    private WebDriver webDriver;
+    @Getter private WebDriver webDriver;
 
     public RemoteDriverInterface getDriverManager() {
         return remoteDriverImplementation;
@@ -65,6 +64,10 @@ public class SauceSession {
         this.environmentManager = environmentManager;
     }
 
+    public WebDriver getDriver() {
+        return this.webDriver;
+    }
+
     public WebDriver start() {
         //TODO this might be the same as sauceCapabilities
         mutableCapabilities = appendSauceCapabilities();
@@ -72,16 +75,14 @@ public class SauceSession {
         currentSessionCapabilities = setRemoteDriverCapabilities(mutableCapabilities);
         String sauceLabsUrl = sauceDataCenter;
         //TODO move to a separate method
-        try
-        {
+        try {
             webDriver = remoteDriverImplementation.createRemoteWebDriver(sauceLabsUrl, currentSessionCapabilities);
-        }
-        catch (MalformedURLException e)
-        {
+        } catch (MalformedURLException e) {
             throw new InvalidArgumentException("Invalid URL");
         }
         return webDriver;
-	}
+    }
+
     private MutableCapabilities appendSauceCapabilities() {
         mutableCapabilities = new MutableCapabilities();
         mutableCapabilities.setCapability("username", getUserName());

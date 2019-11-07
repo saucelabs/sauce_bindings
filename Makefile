@@ -5,7 +5,7 @@ dotnet_tests:
 	echo "run dotnet tests"
 
 java_tests:
-	cd java && mvn clean test -Dmaven.javadoc.skip=true;
+	cd java && mvn install test -Dmaven.javadoc.skip=true;
 
 python_tests:
 	cd python && pip install -r requirements.txt && pytest;

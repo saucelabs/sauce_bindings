@@ -26,13 +26,22 @@ public class SauceSessionAcceptanceTest {
         assertFalse(sessionId.isEmpty());
     }
     @Test
-    public void withWindows10_default() {
+    public void runTestOnWindows10() {
         SauceOptions options = new SauceOptions();
         options.withWindows10();
         webDriver = new SauceSession(options).start();
         String actualOs = (((RemoteWebDriver) webDriver).getCapabilities()).getPlatform().toString();
         //TODO why in the F is this returning XP even though in Sauce it shows Windows 10
         assertEquals("XP", actualOs);
+    }
+    @Test
+    public void runTestOnFirefox() {
+        SauceOptions options = new SauceOptions();
+        options.withFirefox();
+
+        webDriver = new SauceSession(options).start();
+        String actualBrowser = getBrowserNameFromRemoteCapabilities();
+        assertEquals("firefox", actualBrowser);
     }
     @Test
     public void withSafari_default_isMojave() {
@@ -52,23 +61,7 @@ public class SauceSessionAcceptanceTest {
         String actualBrowserVersion = (((RemoteWebDriver) webDriver).getCapabilities()).getVersion();
         assertEquals("12.0", actualBrowserVersion);
     }
-    @Test
-    public void startSession_noSauceOptionsSet_returnsDriver() {
-        SauceSession session = new SauceSession();
-        session.start();
-        assertNotNull(session.getDriver());
-    }
 
-    @Test
-    public void runTestOnFirefox() {
-        SauceOptions options = new SauceOptions();
-        //options.withFirefox();
-        options.withFirefox();
-
-        webDriver = new SauceSession(options).start();
-        String actualBrowser = getBrowserNameFromRemoteCapabilities();
-        assertEquals("firefox", actualBrowser);
-    }
 
     private String getBrowserNameFromRemoteCapabilities() {
         return (((RemoteWebDriver) webDriver).getCapabilities()).getBrowserName();

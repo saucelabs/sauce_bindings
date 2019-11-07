@@ -8,9 +8,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class ConcreteRemoteDriver implements RemoteDriverInterface {
+    private RemoteWebDriver remoteDriver;
+
     public RemoteWebDriver createRemoteWebDriver(String seleniumServer, MutableCapabilities capabilities)
         throws MalformedURLException
     {
-        return new RemoteWebDriver(new URL(seleniumServer), capabilities);
+        remoteDriver = new RemoteWebDriver(new URL(seleniumServer), capabilities);
+        return remoteDriver;
+    }
+
+    @Override
+    public void quit() {
+        remoteDriver.quit();
     }
 }

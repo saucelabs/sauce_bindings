@@ -26,8 +26,6 @@ namespace SimpleSauce
             this.options = options;
         }
 
-        public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
-
         public IWebDriver Start()
         {
             var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME", EnvironmentVariableTarget.User);

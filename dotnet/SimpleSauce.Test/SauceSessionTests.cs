@@ -1,10 +1,7 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
-using SimpleSauce;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Remote;
-using OpenQA.Selenium.Chrome;
+using SimpleSauce;
 
 [assembly: Parallelize(Workers = 100, Scope = ExecutionScope.MethodLevel)]
 

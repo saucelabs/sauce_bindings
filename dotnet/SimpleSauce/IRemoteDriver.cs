@@ -1,10 +1,11 @@
-﻿using OpenQA.Selenium.Chrome;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
 
 namespace SimpleSauce
 {
     public interface IRemoteDriver
     {
-        RemoteWebDriver CreateRemoteWebDriver(ChromeOptions chromeOptions);
+        IWebDriver CreateRemoteWebDriver(ChromeOptions chromeOptions);
     }
 }

@@ -9,7 +9,7 @@ namespace SimpleSauce
 {
     class ConcreteRemoteWebDriver : IRemoteDriver
     {
-        public RemoteWebDriver CreateRemoteWebDriver(ChromeOptions chromeOptions)
+        public IWebDriver CreateRemoteWebDriver(ChromeOptions chromeOptions)
         {
             return new RemoteWebDriver(new Uri("https://ondemand.saucelabs.com/wd/hub"),
                 chromeOptions.ToCapabilities(), TimeSpan.FromSeconds(600));

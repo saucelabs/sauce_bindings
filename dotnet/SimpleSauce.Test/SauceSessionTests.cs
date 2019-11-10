@@ -25,13 +25,16 @@ namespace SimpleSauceTests
             var session = new SauceSession();
             session.DataCenter.Should().BeEquivalentTo(DataCenter.UsWest);
         }
+
         [TestMethod]
         public void Start_Default_IsChrome()
         {
-            var session = new SauceSession();
-            var driver = session.Start();
-            var capabilities = ((RemoteWebDriver)driver).Capabilities;
-            capabilities.GetCapability("browserName").Should().Be("chrome");
+            var dummyManager = new Mock<IRemoteDriver>();
+            var session = new SauceSession(dummyManager.Object);
+
+            session.Start();
+
+            session.ChromeOptions.Should().NotBeNull();
         }
     }
 }

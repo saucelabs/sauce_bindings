@@ -44,7 +44,7 @@ namespace SimpleSauceTests
             }
         }
         [TestMethod]
-        public void ShouldReturnObject()
+        public void WithoutSauceSession_ShouldWork()
         {
             var chromeOptions = new ChromeOptions
             {
@@ -58,6 +58,15 @@ namespace SimpleSauceTests
                 chromeOptions.ToCapabilities(), TimeSpan.FromSeconds(600));
             _driver.Navigate().GoToUrl("https://www.google.com");
             ((RemoteWebDriver)_driver).SessionId.Should().NotBeNull();
+        }
+
+        [TestMethod]
+        public void Start_Default_IsChrome()
+        {
+            var session = new SauceSession();
+            var driver = session.Start();
+            var capabilities = ((RemoteWebDriver)driver).Capabilities;
+            capabilities.GetCapability("browserName").Should().Be("chrome");
         }
     }
 }

@@ -4,8 +4,6 @@ using Moq;
 using SimpleSauce;
 [assembly: Parallelize(Workers = 100, Scope = ExecutionScope.MethodLevel)]
 
-[assembly: Parallelize(Workers = 100, Scope = ExecutionScope.MethodLevel)]
-
 namespace SimpleSauceTests
 {
     [TestClass]

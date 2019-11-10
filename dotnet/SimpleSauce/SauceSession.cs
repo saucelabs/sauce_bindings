@@ -8,6 +8,7 @@ namespace SimpleSauce
     public class SauceSession
     {
         public ChromeOptions ChromeOptions { get; private set; }
+        public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
 
         private readonly IRemoteDriver _remoteDriverManager;
         private SauceOptions options;
@@ -45,6 +46,5 @@ namespace SimpleSauce
             ChromeOptions.AddAdditionalCapability("sauce:options", sauceOptions, true);
             return _remoteDriverManager.CreateRemoteWebDriver(ChromeOptions);
         }
-        public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
     }
 }

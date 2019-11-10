@@ -11,9 +11,10 @@ namespace SimpleSauceTests
     public class SauceSessionTests
     {
         [TestMethod]
-        public void ShouldReturnObject()
+        public void ShouldTakeSauceOptions()
         {
-            var session = new SauceSession();
+            SauceOptions options = new SauceOptions();
+            var session = new SauceSession(options);
             session.Should().NotBeNull();
         }
         [TestMethod]

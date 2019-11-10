@@ -10,6 +10,7 @@ namespace SimpleSauce
         public ChromeOptions ChromeOptions { get; private set; }
 
         private readonly IRemoteDriver _remoteDriverManager;
+        private SauceOptions options;
 
         public SauceSession()
         {
@@ -19,6 +20,12 @@ namespace SimpleSauce
         {
             _remoteDriverManager = driverManager;
         }
+
+        public SauceSession(SauceOptions options)
+        {
+            this.options = options;
+        }
+
         public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
 
         public IWebDriver Start()

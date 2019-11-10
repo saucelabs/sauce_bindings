@@ -12,8 +12,6 @@ namespace SimpleSauceTests
     [TestClass]
     public class AcceptanceTests
     {
-        private string sauceUserName;
-        private string sauceAccessKey;
         private Dictionary<string, object> sauceOptions;
         private IWebDriver _driver;
 
@@ -23,9 +21,9 @@ namespace SimpleSauceTests
         public void SetupTests()
         {
             //TODO please supply your Sauce Labs user name in an environment variable
-            sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME", EnvironmentVariableTarget.User);
+            var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME", EnvironmentVariableTarget.User);
             //TODO please supply your own Sauce Labs access Key in an environment variable
-            sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY", EnvironmentVariableTarget.User);
+            var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY", EnvironmentVariableTarget.User);
             sauceOptions = new Dictionary<string, object>
             {
                 ["username"] = sauceUserName,

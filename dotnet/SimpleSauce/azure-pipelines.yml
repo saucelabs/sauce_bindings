@@ -14,6 +14,13 @@ variables:
 
 steps:
 
+- task: PowerShell@2
+  displayName: 'Set Sauce Labs Environment Variables'
+  inputs:
+    targetType: filePath
+    filePath: ./setSauceEnvironmentVariables.ps1
+    arguments: '$env:SAUCE_USERNAME $env:SAUCE_ACCESSKEY'
+
 - task: DotNetCoreCLI@2
   inputs:
     command: test

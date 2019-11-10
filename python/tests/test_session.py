@@ -18,32 +18,32 @@ class TestInit(object):
 
     def test_raises_exception_if_data_center_is_invalid(self):
         with pytest.raises(KeyError):
-            session = SauceSession(data_center='uu')
+            SauceSession(data_center='uu')
 
         with pytest.raises(KeyError):
-            session = SauceSession(data_center='')
+            SauceSession(data_center='')
 
     def test_accepts_provided_Options_instance(self):
         options = SauceOptions()
 
         session = SauceSession(options=options)
 
-        session.options.browserName == 'chrome'
-        session.options.browserVersion == 'latest'
-        session.options.platformName == 'Windows 10'
+        assert session.options.browserName == 'chrome'
+        assert session.options.browserVersion == 'latest'
+        assert session.options.platformName == 'Windows 10'
 
     def test_generates_default_Options_instance_if_not_provided(self):
         session = SauceSession()
 
-        session.options.browserName == 'chrome'
-        session.options.browserVersion == 'latest'
-        session.options.platformName == 'Windows 10'
+        assert session.options.browserName == 'chrome'
+        assert session.options.browserVersion == 'latest'
+        assert session.options.platformName == 'Windows 10'
 
     def test_uses_username_and_access_key_if_ENV_variables_are_defined(self):
         session = SauceSession()
 
-        session.username == os.environ['SAUCE_USERNAME']
-        session.access_key == os.environ['SAUCE_ACCESS_KEY']
+        assert session.username == os.environ['SAUCE_USERNAME']
+        assert session.access_key == os.environ['SAUCE_ACCESS_KEY']
 
     def test_accepts_provided_username_and_access_key(self):
         user = 'alice.smith'
@@ -51,8 +51,8 @@ class TestInit(object):
 
         session = SauceSession(username=user, access_key=access_key)
 
-        session.username == os.environ['SAUCE_USERNAME']
-        session.access_key == os.environ['SAUCE_ACCESS_KEY']
+        assert session.username == user
+        assert session.access_key == access_key
 
 
 class TestDataCenter(object):
@@ -100,7 +100,7 @@ class TestStart(object):
         session = SauceSession()
 
         session.username = None
-        
+
         with pytest.raises(KeyError):
             session.start()
 
@@ -111,6 +111,7 @@ class TestStart(object):
 
         with pytest.raises(KeyError):
             session.start()
+
 
 class TestStop(object):
 

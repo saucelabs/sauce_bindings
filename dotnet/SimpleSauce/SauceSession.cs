@@ -47,5 +47,6 @@ namespace SimpleSauce
             ChromeOptions.AddAdditionalCapability("sauce:options", sauceOptions, true);
             return _remoteDriverManager.CreateRemoteWebDriver(ChromeOptions);
         }
+        public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
     }
 }

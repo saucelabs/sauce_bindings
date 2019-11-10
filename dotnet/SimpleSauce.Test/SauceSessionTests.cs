@@ -2,6 +2,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using SimpleSauce;
+[assembly: Parallelize(Workers = 100, Scope = ExecutionScope.MethodLevel)]
 
 [assembly: Parallelize(Workers = 100, Scope = ExecutionScope.MethodLevel)]
 
@@ -23,7 +24,6 @@ namespace SimpleSauceTests
             var session = new SauceSession();
             session.DataCenter.Should().BeEquivalentTo(DataCenter.UsWest);
         }
-
         [TestMethod]
         public void Start_Default_IsChrome()
         {

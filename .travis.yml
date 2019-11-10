@@ -4,12 +4,20 @@ env:
   global:
   - SAUCE_USERNAME=sauce_examples
 
-jobs:
+matrix:
+  before_install: export | grep SAUCE_
   include:
-    - stage: "Run All Tests"
-      language: python
-      python: "3.6"
-      jdk: "openjdk8"
-      rvm: "2.5.3"
-      before_install: export | grep SAUCE_
-      script: make run_all_tests
+    - language: python
+      python: 3.6
+      script:
+      - "make python_tests"
+
+    - language: ruby
+      rvm: 2.5.3
+      script:
+      - "make ruby_tests"
+
+    - language: java
+      jdk: openjdk8
+      script:
+      - "make java_tests"

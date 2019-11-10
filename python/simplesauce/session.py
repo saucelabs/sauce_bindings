@@ -31,7 +31,7 @@ class SauceSession():
             self.remote_url = US_SAUCE_DC_URL
         else:
             raise KeyError("Invalid Data Center value, please select from 'us' or 'eu'")
-        
+
         self.driver = {}
 
     @property
@@ -76,7 +76,7 @@ class SauceSession():
         executor = RemoteConnection(self.remote_url, resolve_ip=False)
         self.driver = webdriver.Remote(
             command_executor=executor,
-            desired_capabilities=caps.__dict__,
+            desired_capabilities=caps.options,
             keep_alive=True
         )
         return self.driver

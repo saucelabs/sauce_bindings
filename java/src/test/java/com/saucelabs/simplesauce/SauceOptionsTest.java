@@ -1,7 +1,5 @@
 package com.saucelabs.simplesauce;
 
-import com.saucelabs.simplesauce.SauceOptions;
-import com.saucelabs.simplesauce.SauceSession;
 import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
 import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
 import org.junit.Before;
@@ -35,7 +33,7 @@ public class SauceOptionsTest {
 
         sauceSession = new SauceSession(options,fakeRemoteDriver, fakeEnvironmentManager);
         sauceSession.start();
-        String actualBrowser = sauceSession.sauceSessionCapabilities.getCapability("browserName").toString();
+        String actualBrowser = sauceSession.currentSessionCapabilities.getCapability("browserName").toString();
         assertEquals("Chrome", actualBrowser);
     }
 

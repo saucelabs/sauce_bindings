@@ -2,112 +2,111 @@ package com.saucelabs.simplesauce;
 
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.junit.Assert.assertEquals;
 
 public class MacOsTest extends BaseConfigurationTest{
     @Test
     public void withMacOsMojave_returnsMacOs1014() {
         sauceOptions.withMacOsMojave();
-        mockSauceSession = instantiateSauceSession();
+        sauce = instantiateSauceSession();
 
-        mockSauceSession.start();
+        sauce.start();
         String actualOsThatWasSet = getSessionPlatformString();
-        assertEquals("macOS 10.14", actualOsThatWasSet);
+        assertEquals(Platforms.MAC_OS.MOJAVE, actualOsThatWasSet);
     }
 
     private String getSessionPlatformString() {
-        return mockSauceSession.sauceSessionCapabilities.getPlatform().toString();
+        return sauce.currentSessionCapabilities.getPlatform().toString();
     }
 
     @Test
     public void withMacOsHighSierra_returnsMacOs1013() {
         sauceOptions.withMacOsHighSierra();
-        mockSauceSession = instantiateSauceSession();
+        sauce = instantiateSauceSession();
 
-        mockSauceSession.start();
+        sauce.start();
         String actualOsThatWasSet = getSessionPlatformString();
-        assertEquals("macOS 10.13", actualOsThatWasSet);
+        assertEquals(Platforms.MAC_OS.HIGH_SIERRA, actualOsThatWasSet);
     }
     @Test
     public void withMacOsSierra_returnsMacOs1012() {
         sauceOptions.withMacOsSierra();
-        mockSauceSession = instantiateSauceSession();
+        sauce = instantiateSauceSession();
 
-        mockSauceSession.start();
+        sauce.start();
         String actualOsThatWasSet = getSessionPlatformString();
-        assertEquals("macOS 10.12", actualOsThatWasSet);
+        assertEquals(Platforms.MAC_OS.SIERRA, actualOsThatWasSet);
     }
+    @SuppressWarnings("SpellCheckingInspection")
     @Test
     public void withMacOsElCapitan_returnsMacOs1011() {
         sauceOptions.withMacOsXElCapitan();
-        mockSauceSession = instantiateSauceSession();
+        sauce = instantiateSauceSession();
 
-        mockSauceSession.start();
+        sauce.start();
         String actualOsThatWasSet = getSessionPlatformString();
-        assertEquals("OS X 10.11", actualOsThatWasSet);
+        assertEquals(Platforms.MAC_OS.EL_CAPITAN, actualOsThatWasSet);
     }
     @Test
     public void withMacOsYosemite_returnsMacOsX1010() {
         sauceOptions.withMacOsXYosemite();
-        mockSauceSession = instantiateSauceSession();
+        sauce = instantiateSauceSession();
 
-        mockSauceSession.start();
+        sauce.start();
         String actualOsThatWasSet = getSessionPlatformString();
-        assertEquals("OS X 10.10", actualOsThatWasSet);
+        assertEquals(Platforms.MAC_OS.YOSEMITE, actualOsThatWasSet);
     }
     @Test
     public void defaultSafari_browserVersionIs12_0() {
         sauceOptions.withSafari();
-        mockSauceSession = instantiateSauceSession();
+        sauce = instantiateSauceSession();
 
-        mockSauceSession.start();
+        sauce.start();
 
         //TODO mockSauceSession.sauceSessionCapabilities can be turned into a method, maybe on the session
         //class that allows easier access to the caps
-        String safariVersionSetThroughSauceSession = mockSauceSession.sauceSessionCapabilities.getVersion();
+        String safariVersionSetThroughSauceSession = sauce.currentSessionCapabilities.getVersion();
         assertEquals("12.0", safariVersionSetThroughSauceSession);
     }
     @Test
     public void defaultSafari_macOsVersionIsMojave() {
         sauceOptions.withSafari();
-        mockSauceSession = instantiateSauceSession();
+        sauce = instantiateSauceSession();
 
-        mockSauceSession.start();
+        sauce.start();
 
         String safariVersionSetThroughSauceSession = getSessionPlatformString();
-        assertThat(Platforms.MAC_OS_MOJAVE, equalToIgnoringCase(safariVersionSetThroughSauceSession));
+        assertEquals(Platforms.MAC_OS.MOJAVE, safariVersionSetThroughSauceSession);
     }
     @Test
     public void withSafari_browserName_setToSafari() {
         sauceOptions.withSafari(SafariVersion._8);
-        mockSauceSession = instantiateSauceSession();
+        sauce = instantiateSauceSession();
 
-        mockSauceSession.start();
+        sauce.start();
 
-        String actualBrowserNameSetThroughSauceSession = mockSauceSession.sauceSessionCapabilities.getBrowserName();
+        String actualBrowserNameSetThroughSauceSession = sauce.currentSessionCapabilities.getBrowserName();
         assertEquals("safari", actualBrowserNameSetThroughSauceSession);
     }
     @Test
     public void withSafari_versionChangedFromDefault_returnsCorrectVersion() {
         sauceOptions.withSafari(SafariVersion._8);
-        mockSauceSession = instantiateSauceSession();
+        sauce = instantiateSauceSession();
 
-        mockSauceSession.start();
+        sauce.start();
 
-        String actualBrowserVersionSetThroughSauceSession = mockSauceSession.sauceSessionCapabilities.getVersion();
+        String actualBrowserVersionSetThroughSauceSession = sauce.currentSessionCapabilities.getVersion();
         assertEquals("8.0", actualBrowserVersionSetThroughSauceSession);
     }
     @Test
     public void withSafari_versionNotSet_returnsLatest() {
         sauceOptions.withSafari("");
-        mockSauceSession = instantiateSauceSession();
+        sauce = instantiateSauceSession();
 
-        mockSauceSession.start();
+        sauce.start();
 
         String actualBrowserVersionSetThroughSauceSession =
-                mockSauceSession.sauceSessionCapabilities.getVersion();
+                sauce.currentSessionCapabilities.getVersion();
         assertEquals("latest", actualBrowserVersionSetThroughSauceSession);
     }
 }

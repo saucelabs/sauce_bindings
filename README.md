@@ -2,6 +2,7 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0b21fa72ecaa4a3c92bf7ac9481f4d7d)](https://app.codacy.com/app/SauceLabs/simple_sauce?utm_source=github.com&utm_medium=referral&utm_content=saucelabs/simple_sauce&utm_campaign=Badge_Grade_Dashboard)
 [![Travis Status](https://travis-ci.org/saucelabs/simple_sauce.svg?branch=master)](https://travis-ci.org/saucelabs/simple_sauce)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 The Sauce Bindings project contains
 
@@ -71,7 +72,7 @@ This creates a new `sauce` object that uses reasonable defaults for browser opti
 
 Currently each binding follows its own language-specific build process for building and installing each language binding.
 
--   [Java](https://github.com/saucelabs/simple_sauce/tree/master/java/README.md),
+-   [Java](https://github.com/saucelabs/simple_sauce/tree/master/java/README.md#building),
 -   [C#](https://github.com/saucelabs/simple_sauce/tree/master/dotnet/README.md),
 -   [Python](https://github.com/saucelabs/simple_sauce/tree/master/python#installation),
 -   [Ruby](https://github.com/saucelabs/simple_sauce/tree/master/ruby#installation).
@@ -80,7 +81,7 @@ Currently each binding follows its own language-specific build process for build
 
 Currently each binding has tests that can be executed in a language-specific way. 
 
--   [Java](https://github.com/saucelabs/simple_sauce/tree/master/java/README.md),
+-   [Java](https://github.com/saucelabs/simple_sauce/tree/master/java/README.md#testing),
 -   [C#](https://github.com/saucelabs/simple_sauce/tree/master/dotnet/README.md),
 -   [Python](https://github.com/saucelabs/simple_sauce/tree/master/python#testing),
 -   [Ruby](https://github.com/saucelabs/simple_sauce/tree/master/ruby#installation).

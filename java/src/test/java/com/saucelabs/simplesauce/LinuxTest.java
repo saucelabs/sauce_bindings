@@ -8,10 +8,10 @@ public class LinuxTest extends BaseConfigurationTest {
     @Test
     public void withLinux_setsPlatformToLinux() {
         sauceOptions.withLinux();
-        mockSauceSession = instantiateSauceSession();
+        sauce = instantiateSauceSession();
 
-        mockSauceSession.start();
-        String actualOsSetInConfig = mockSauceSession.sauceSessionCapabilities.getPlatform().toString();
+        sauce.start();
+        String actualOsSetInConfig = sauce.currentSessionCapabilities.getPlatform().toString();
         assertEquals("linux", actualOsSetInConfig.toLowerCase());
     }
 }

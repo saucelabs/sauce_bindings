@@ -71,17 +71,12 @@ public class SauceSession {
         setBrowserSpecificCapabilities(sauceOptions.browser);
         currentSessionCapabilities = setRemoteDriverCapabilities(mutableCapabilities);
         String sauceLabsUrl = sauceDataCenter;
-        //TODO move to a separate method
-        try
-        {
-            webDriver = remoteDriverImplementation.createRemoteWebDriver(sauceLabsUrl, currentSessionCapabilities);
-        }
-        catch (MalformedURLException e)
-        {
-            throw new InvalidArgumentException("Invalid URL");
-        }
+        tryToCreateRemoteWebDriver(sauceLabsUrl);
         return webDriver;
 	}
+
+
+
     private MutableCapabilities appendSauceCapabilities() {
         mutableCapabilities = new MutableCapabilities();
         mutableCapabilities.setCapability("username", getUserName());
@@ -131,6 +126,16 @@ public class SauceSession {
         currentSessionCapabilities.setCapability(CapabilityType.PLATFORM_NAME, this.sauceOptions.operatingSystem);
         currentSessionCapabilities.setCapability(CapabilityType.BROWSER_VERSION, this.sauceOptions.browserVersion);
         return currentSessionCapabilities;
+    }
+    private void tryToCreateRemoteWebDriver(String sauceLabsUrl) {
+        try
+        {
+            webDriver = remoteDriverImplementation.createRemoteWebDriver(sauceLabsUrl, currentSessionCapabilities);
+        }
+        catch (MalformedURLException e)
+        {
+            throw new InvalidArgumentException("Invalid URL");
+        }
     }
     public void stop()
     {

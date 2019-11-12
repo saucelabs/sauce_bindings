@@ -62,7 +62,6 @@ public class SauceSessionAcceptanceTest {
         assertEquals("12.0", actualBrowserVersion);
     }
 
-
     private String getBrowserNameFromRemoteCapabilities() {
         return (((RemoteWebDriver) webDriver).getCapabilities()).getBrowserName();
     }

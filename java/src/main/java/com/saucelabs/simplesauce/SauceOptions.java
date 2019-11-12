@@ -1,5 +1,6 @@
 package com.saucelabs.simplesauce;
 
+import com.saucelabs.simplesauce.enums.MacVersion;
 import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -24,7 +25,7 @@ public class SauceOptions {
     }
     public SauceOptions withSafari()
     {
-        return withMacOsMojave();
+        return withMac(MacVersion.Mojave);
     }
     public SauceOptions withSafari(final String version)
     {
@@ -34,35 +35,7 @@ public class SauceOptions {
         browserVersion = _version;
         return this;
     }
-    public SauceOptions withMacOsMojave() {
-        operatingSystem = "macOS 10.14";
-        browser = "safari";
-        browserVersion = "12.0";
-        return this;
-    }
-    public SauceOptions withMacOsHighSierra()
-    {
-        operatingSystem = "macOS 10.13";
-        browser = "Safari";
-        return this;
-    }
-    public SauceOptions withMacOsSierra() {
-        operatingSystem = "macOS 10.12";
-        browser = "Safari";
-        return this;
-    }
 
-    public SauceOptions withMacOsXElCapitan() {
-        operatingSystem = "OS X 10.11";
-        browser = "Safari";
-        return this;
-    }
-
-    public SauceOptions withMacOsXYosemite() {
-        operatingSystem = "OS X 10.10";
-        browser = "Safari";
-        return this;
-    }
     public SauceOptions withLinux() {
         operatingSystem = "Linux";
         return this;
@@ -147,4 +120,9 @@ public class SauceOptions {
         return this;
     }
 
+    public SauceOptions withMac(MacVersion macVersion) {
+        operatingSystem = macVersion.label;
+        browser = "Safari";
+        return this;
+    }
 }

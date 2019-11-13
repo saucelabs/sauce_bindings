@@ -13,8 +13,8 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  SAUCE_USERNAME: $(SAUCE_USERNAME)
-  SAUCE_ACCESS_KEY: $(SAUCE_ACCESS_KEY)
+  SAUCE_USERNAME: $($env:SAUCE_USER)
+  SAUCE_ACCESS_KEY: $($env:SAUCE_KEY)
 
 steps:
 - task: NuGetToolInstaller@1
@@ -59,8 +59,8 @@ steps:
 #This works at updating the env variable
 #Write-Host ("##vso[task.setvariable variable=SAUCE_USERNAME]test-name")
 - powershell: |
-   Write-Host "Our Sauce Username in ADO is: $($env:SAUCE_USERNAME)";
-   Write-Host "Our Sauce Access Key in ADO is: $($env:SAUCE_ACCESS_KEY)";
+   Write-Host "Our Sauce Username in ADO is: $($env:SAUCE_USER)";
+   Write-Host "Our Sauce Access Key in ADO is: $($env:SAUCE_KEY)";
 
 
 

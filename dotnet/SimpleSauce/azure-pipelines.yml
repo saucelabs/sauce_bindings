@@ -55,6 +55,11 @@ steps:
     pwsh: true
     #workingDirectory: # Optional
 
+- powershell: |
+   Write-Host "Our Sauce Username in ADO is: $($env:SAUCE_USERNAME)";
+   Write-Host ("##vso[task.setvariable variable=SAUCE_USERNAME]test-name")
+   Write-Host "Our altered public variable is: $($env:SAUCE_USERNAME)";
+
 - task: DotNetCoreCLI@2
   inputs:
     command: test

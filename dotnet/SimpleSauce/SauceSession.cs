@@ -29,8 +29,8 @@ namespace SimpleSauce
 
         public IWebDriver Start()
         {
-            var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME", EnvironmentVariableTarget.User);
-            var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY", EnvironmentVariableTarget.User);
+            var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
+            var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
             var sauceOptions = new Dictionary<string, object>
             {
                 ["username"] = sauceUserName,

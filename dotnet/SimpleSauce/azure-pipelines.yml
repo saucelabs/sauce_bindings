@@ -55,11 +55,12 @@ steps:
     pwsh: true
     #workingDirectory: # Optional
 
+#need to use the vso tasks so that the env variables persist trhough tasks in ADO
 - powershell: |
    Write-Host "Our Sauce Username in ADO is: $($env:SAUCE_USERNAME)";
    Write-Host ("##vso[task.setvariable variable=SAUCE_USERNAME]test-name")
-   Write-Host "Our Sauce Access Key in ADO is: $($env:SAUCE_ACCESSKEY)";
-   Write-Host ("##vso[task.setvariable variable=SAUCE_ACCESSKEY]$($env:SAUCE_ACCESSKEY)")
+   Write-Host "Our Sauce Access Key in ADO is: $($env:SAUCE_ACCESS_KEY)";
+   Write-Host ("##vso[task.setvariable variable=SAUCE_ACCESS_KEY]$($env:SAUCE_ACCESS_KEY)")
 
 
 - task: DotNetCoreCLI@2

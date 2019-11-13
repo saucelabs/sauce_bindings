@@ -30,8 +30,8 @@ steps:
 
 - powershell: echo $env:SAUCE_USERNAME
   env:
-    MySecret: $(SAUCE.USERNAME)
-    MySecret: $(SAUCE.ACCESSKEY)
+    SAUCE_USERNAME: $(SAUCE.USERNAME)
+    SAUCE_ACCESSKEY: $(SAUCE.ACCESSKEY)
 
     #This is not able to locate the setSauceEnvironmentVariables because of some issue with the path
 #- task: PowerShell@2

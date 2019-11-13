@@ -51,9 +51,10 @@ steps:
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
-    script: 'Write-Host Sauce username from ADO=> $env:SAUCE_USERNAME' # Required when targetType == Inline
+    script: 'Write-Host Sauce username from ADO=> $($env:SAUCE_USER)' # Required when targetType == Inline
     pwsh: true
     #workingDirectory: # Optional
+    displayName: 'Test inline script to display the name of the variable''
 
 #need to use the vso tasks so that the env variables persist trhough tasks in ADO
 #This works at updating the env variable
@@ -61,7 +62,9 @@ steps:
 - powershell: |
    Write-Host "Our Sauce Username in ADO is: $($env:SAUCE_USER)";
    Write-Host "Our Sauce Access Key in ADO is: $($env:SAUCE_KEY)";
-
+   Write-Host ("##vso[task.setvariable variable=SAUCE_USERNAME]$($env:SAUCE_USER))
+   Write-Host ("##vso[task.setvariable variable=SAUCE_ACCESS_KEY]$($env:SAUCE_KEY)")
+   
 
 
 - task: DotNetCoreCLI@2

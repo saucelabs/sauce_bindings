@@ -31,6 +31,7 @@ steps:
 - powershell: echo $env:SAUCE_USERNAME
   env:
     MySecret: $(SAUCE.USERNAME)
+    MySecret: $(SAUCE.ACCESSKEY)
 
     #This is not able to locate the setSauceEnvironmentVariables because of some issue with the path
 #- task: PowerShell@2
@@ -40,7 +41,17 @@ steps:
 #    filePath: **\$(BuildConfiguration)\**\setSauceEnvironmentVariables.ps1
 #    arguments: '$env:SAUCE_USERNAME $env:SAUCE_ACCESSKEY'
 
-- pwsh: ./setSauceEnvironmentVariables.ps1
+#error: PowerShell exited with code '1'.
+#- pwsh: '**\$(BuildConfiguration)\**\setSauceEnvironmentVariables.ps1'
+
+# PowerShell
+# Run a PowerShell script on Linux, macOS, or Windows
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: '#Write-Host Hello World' # Required when targetType == Inline
+    pwsh: true
+    #workingDirectory: # Optional
 
 - task: DotNetCoreCLI@2
   inputs:

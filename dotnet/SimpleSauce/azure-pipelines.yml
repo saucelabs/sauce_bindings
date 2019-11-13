@@ -14,7 +14,7 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   SAUCE_USERNAME: $(SAUCE_USERNAME)
-  SAUCE_ACCESSKEY: $(SAUCE_ACCESS_KEY)
+  SAUCE_ACCESS_KEY: $(SAUCE_ACCESS_KEY)
 
 steps:
 - task: NuGetToolInstaller@1
@@ -30,10 +30,10 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- powershell: echo $env:SAUCE_USERNAME
-  env:
-    SAUCE_USERNAME: $(SAUCE.USERNAME)
-    SAUCE_ACCESSKEY: $(SAUCE.ACCESSKEY)
+#- powershell: echo $env:SAUCE_USERNAME
+#  env:
+#    SAUCE_USERNAME: $(SAUCE.USERNAME)
+#    SAUCE_ACCESSKEY: $(SAUCE.ACCESSKEY)
 
     #This is not able to locate the setSauceEnvironmentVariables because of some issue with the path
 #- task: PowerShell@2

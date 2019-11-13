@@ -58,7 +58,9 @@ steps:
 - powershell: |
    Write-Host "Our Sauce Username in ADO is: $($env:SAUCE_USERNAME)";
    Write-Host ("##vso[task.setvariable variable=SAUCE_USERNAME]test-name")
-   Write-Host "Our altered public variable is: $($env:SAUCE_USERNAME)";
+   Write-Host "Our Sauce Access Key in ADO is: $($env:SAUCE_ACCESSKEY)";
+   Write-Host ("##vso[task.setvariable variable=SAUCE_ACCESSKEY]$($env:SAUCE_ACCESSKEY)")
+
 
 - task: DotNetCoreCLI@2
   inputs:

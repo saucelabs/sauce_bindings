@@ -28,12 +28,17 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: PowerShell@2
-  displayName: 'Set Sauce Labs Environment Variables'
-  inputs:
-    targetType: filePath
-    filePath: **\$(BuildConfiguration)\**\setSauceEnvironmentVariables.ps1
-    arguments: '$env:SAUCE_USERNAME $env:SAUCE_ACCESSKEY'
+- powershell: echo $env:SAUCE_USERNAME
+  env:
+    MySecret: $(SAUCE.USERNAME)
+
+    #This is not able to locate the setSauceEnvironmentVariables because of some issue with the path
+#- task: PowerShell@2
+#  displayName: 'Set Sauce Labs Environment Variables'
+#  inputs:
+#    targetType: filePath
+#    filePath: **\$(BuildConfiguration)\**\setSauceEnvironmentVariables.ps1
+#    arguments: '$env:SAUCE_USERNAME $env:SAUCE_ACCESSKEY'
 
 - pwsh: ./setSauceEnvironmentVariables.ps1
 

@@ -32,7 +32,7 @@ steps:
   displayName: 'Set Sauce Labs Environment Variables'
   inputs:
     targetType: filePath
-    filePath: ./setSauceEnvironmentVariables.ps1
+    filePath: **\$(BuildConfiguration)\**\setSauceEnvironmentVariables.ps1
     arguments: '$env:SAUCE_USERNAME $env:SAUCE_ACCESSKEY'
 
 - pwsh: ./setSauceEnvironmentVariables.ps1

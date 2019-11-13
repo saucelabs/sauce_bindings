@@ -62,7 +62,7 @@ steps:
 - powershell: |
    Write-Host "Our Sauce Username in ADO is: $($env:SAUCE_USER)";
    Write-Host "Our Sauce Access Key in ADO is: $($env:SAUCE_KEY)";
-   Write-Host ("##vso[task.setvariable variable=SAUCE_USERNAME]$($env:SAUCE_USER))
+   Write-Host ("##vso[task.setvariable variable=SAUCE_USERNAME]$($env:SAUCE_USER)")
    Write-Host ("##vso[task.setvariable variable=SAUCE_ACCESS_KEY]$($env:SAUCE_KEY)")
    
 

@@ -13,6 +13,8 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  SAUCE_USERNAME: $(SAUCE.USERNAME)
+  SAUCE_ACCESSKEY: $(SAUCE.ACCESSKEY)
 
 steps:
 - task: NuGetToolInstaller@1
@@ -49,7 +51,7 @@ steps:
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
-    script: '#Write-Host Hello World' # Required when targetType == Inline
+    script: 'Write-Host Sauce username from ADO=> $env:SAUCE_USERNAME' # Required when targetType == Inline
     pwsh: true
     #workingDirectory: # Optional
 

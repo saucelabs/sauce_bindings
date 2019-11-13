@@ -35,7 +35,6 @@ steps:
     filePath: ./setSauceEnvironmentVariables.ps1
     arguments: '$env:SAUCE_USERNAME $env:SAUCE_ACCESSKEY'
 
-steps:
 - pwsh: ./setSauceEnvironmentVariables.ps1
 
 - task: DotNetCoreCLI@2

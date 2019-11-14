@@ -2,8 +2,5 @@
 {
     public class SauceOptions
     {
-        public SauceOptions()
-        {
-        }
     }
 }

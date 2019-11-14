@@ -11,7 +11,7 @@ namespace SimpleSauce
         public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
 
         private readonly IRemoteDriver _remoteDriverManager;
-        private SauceOptions options;
+        private readonly SauceOptions options;
 
         public SauceSession()
         {

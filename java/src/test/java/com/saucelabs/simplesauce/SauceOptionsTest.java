@@ -1,7 +1,7 @@
 package com.saucelabs.simplesauce;
 
 import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
-import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
+import com.saucelabs.simplesauce.interfaces.SauceRemoteDriver;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,7 +26,7 @@ public class SauceOptionsTest {
     }
     @Test
     public void sauceSession_defaultSauceOptions_returnsChromeBrowser() {
-        RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
+        SauceRemoteDriver fakeRemoteDriver = mock(SauceRemoteDriver.class);
         EnvironmentManager fakeEnvironmentManager = mock(EnvironmentManager.class);
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
         when(fakeEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");

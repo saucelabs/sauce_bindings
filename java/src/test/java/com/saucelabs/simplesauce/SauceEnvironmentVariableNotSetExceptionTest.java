@@ -1,9 +1,7 @@
 package com.saucelabs.simplesauce;
 
-import com.saucelabs.simplesauce.SauceEnvironmentVariablesNotSetException;
-import com.saucelabs.simplesauce.SauceSession;
 import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
-import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
+import com.saucelabs.simplesauce.interfaces.SauceRemoteDriver;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +13,7 @@ public class SauceEnvironmentVariableNotSetExceptionTest {
 
     @Before
     public void setUp() {
-        RemoteDriverInterface fakeRemoteDriver = mock(RemoteDriverInterface.class);
+        SauceRemoteDriver fakeRemoteDriver = mock(SauceRemoteDriver.class);
         EnvironmentManager fakeEnvironmentManager = mock(EnvironmentManager.class);
         fakeSauceSession = new SauceSession(fakeRemoteDriver, fakeEnvironmentManager);
     }

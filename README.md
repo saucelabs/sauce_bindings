@@ -52,7 +52,7 @@ Here are instructions on how to set environment variables on [Windows 10](https:
 
 ## Features and Style
 
-Simple Sauce should be a tool for both novice and experienced test developers. This means providing basic functionality such as being able to start a browser session on Sauce Labs with minimal code as well as creating Sauce Labs sessions [directly from W3C options](https://wiki.saucelabs.com/display/DOCS/Selenium+W3C+Capabilities+Support).
+Simple Sauce should be a tool for both novice and experienced test developers. This means providing basic functionality such as being able to start a browser session on Sauce Labs with minimal code as well as creating Sauce Labs sessions [directly from W3C options](https://wiki.saucelabs.com/display/DOCS/W3C+Capabilities+Support).
 
 Here's a pseudocode example of creating a browser session on Sauce Labs with Simple Sauce:
 

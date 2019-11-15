@@ -18,10 +18,9 @@ variables:
 
 steps:
 - task: DotNetCoreCLI@2
-  displayName: Restore
   inputs:
     command: restore
-    restoreSolution: '$(solution)'
+    projects: '**/*.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: Build

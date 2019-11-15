@@ -16,6 +16,7 @@ variables:
   SAUCE_USERNAME: $($env:SAUCE_USER)
   SAUCE_ACCESS_KEY: $($env:SAUCE_KEY)
 
+  #Excellent docs on .NET Core steps: https://docs.microsoft.com/en-us/azure/devops/pipelines/ecosystems/dotnet-core?view=azure-devops#feedback
 steps:
 - task: DotNetCoreCLI@2
   displayName: Restore
@@ -43,17 +44,3 @@ steps:
     command: test
     projects: '$(Parameters.TestProjects)'
     arguments: '--configuration $(BuildConfiguration)'
-
-- task: DotNetCoreCLI@2
-  displayName: Publish
-  inputs:
-    command: publish
-    publishWebProjects: True
-    arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
-    zipAfterPublish: True
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
-  condition: succeededOrFailed()

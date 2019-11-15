@@ -3,8 +3,8 @@ package com.saucelabs.simplesauce;
 import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
 import com.saucelabs.simplesauce.interfaces.SauceRemoteDriver;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.openqa.selenium.WebDriver;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -107,13 +107,26 @@ public class SauceSessionTest {
         String actualBrowser = sauce.currentSessionCapabilities.getBrowserName();
         assertEquals("Chrome", actualBrowser);
     }
-    //TODO make this test work
     @Test
-    @Ignore("Not sure how to make this work with Mockito. To make sure that the .quit() is actually called on the webDriver")
     public void stop_callsDriverQuit() {
         SauceRemoteDriver dummyDriver = mock(SauceRemoteDriver.class);
+        WebDriver mockDriver = mock(WebDriver.class);
         sauce = new SauceSession(dummyDriver, dummyEnvironmentManager);
+
         sauce.start();
-        verify(dummyDriver).quit();
+        sauce.stop(mockDriver);
+
+        verify(mockDriver).quit();
+    }
+    @Test
+    public void stop_driverNull_doesntCallDriverQuit() {
+        SauceRemoteDriver dummyDriver = mock(SauceRemoteDriver.class);
+        WebDriver mockDriver = mock(WebDriver.class);
+        sauce = new SauceSession(dummyDriver, dummyEnvironmentManager);
+
+        sauce.start();
+        sauce.stop(null);
+
+        verify(mockDriver, times(0)).quit();
     }
 }

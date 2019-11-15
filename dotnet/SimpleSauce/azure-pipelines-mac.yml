@@ -16,23 +16,22 @@ variables:
   SAUCE_USERNAME: $($env:SAUCE_USER)
   SAUCE_ACCESS_KEY: $($env:SAUCE_KEY)
 
+#Excellent docs on .NET Core steps: https://docs.microsoft.com/en-us/azure/devops/pipelines/ecosystems/dotnet-core?view=azure-devops#feedback
 steps:
-- task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
+  displayName: Restore
   inputs:
-    restoreSolution: '$(solution)'
+    command: restore
+    projects: '**/*.csproj'
 
-- task: VSBuild@1
+- task: DotNetCoreCLI@2
+  displayName: Build
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: build
+    projects: '**/*.csproj'
+    arguments: '--configuration Release' # Update this to match your need
 
 #need to use the vso tasks so that the env variables persist trhough tasks in ADO
-#This works at updating the env variable
-#Write-Host ("##vso[task.setvariable variable=SAUCE_USERNAME]test-name")
 - powershell: |
    Write-Host "Our Sauce Username in ADO is=> $($env:SAUCE_USER)";
    Write-Host "Our Sauce Access Key in ADO is=> $($env:SAUCE_KEY)";
@@ -40,8 +39,8 @@ steps:
    Write-Host ("##vso[task.setvariable variable=SAUCE_ACCESS_KEY]$($env:SAUCE_KEY)")
 
 - task: DotNetCoreCLI@2
+  displayName: Test
   inputs:
     command: test
-    projects: '**/*Test/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
-    displayName: 'Run tests'
+    projects: '$(Parameters.TestProjects)'
+    arguments: '--configuration $(BuildConfiguration)'

@@ -16,59 +16,31 @@ variables:
   SAUCE_USERNAME: $($env:SAUCE_USER)
   SAUCE_ACCESS_KEY: $($env:SAUCE_KEY)
 
+#Excellent docs on .NET Core steps: https://docs.microsoft.com/en-us/azure/devops/pipelines/ecosystems/dotnet-core?view=azure-devops#feedback
 steps:
-- task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
+  displayName: Restore
   inputs:
-    restoreSolution: '$(solution)'
-
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-#- powershell: echo $env:SAUCE_USERNAME
-#  env:
-#    SAUCE_USERNAME: $(SAUCE.USERNAME)
-#    SAUCE_ACCESSKEY: $(SAUCE.ACCESSKEY)
-
-    #This is not able to locate the setSauceEnvironmentVariables because of some issue with the path
-#- task: PowerShell@2
-#  displayName: 'Set Sauce Labs Environment Variables'
-#  inputs:
-#    targetType: filePath
-#    filePath: **\$(BuildConfiguration)\**\setSauceEnvironmentVariables.ps1
-#    arguments: '$env:SAUCE_USERNAME $env:SAUCE_ACCESSKEY'
-
-#error: PowerShell exited with code '1'.
-#- pwsh: '**\$(BuildConfiguration)\**\setSauceEnvironmentVariables.ps1'
-
-# PowerShell
-# Run a PowerShell script on Linux, macOS, or Windows
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: 'Write-Host Sauce username from ADO=> $($env:SAUCE_USER)' # Required when targetType == Inline
-    pwsh: true
-    #workingDirectory: # Optional
-    displayName: 'Test inline script to display the name of the variable'
-
-#need to use the vso tasks so that the env variables persist trhough tasks in ADO
-#This works at updating the env variable
-#Write-Host ("##vso[task.setvariable variable=SAUCE_USERNAME]test-name")
-- powershell: |
-   Write-Host "Our Sauce Username in ADO is: $($env:SAUCE_USER)";
-   Write-Host "Our Sauce Access Key in ADO is: $($env:SAUCE_KEY)";
-   Write-Host ("##vso[task.setvariable variable=SAUCE_USERNAME]$($env:SAUCE_USER)")
-   Write-Host ("##vso[task.setvariable variable=SAUCE_ACCESS_KEY]$($env:SAUCE_KEY)")
-   
-
+    command: restore
+    projects: '**/*.csproj'
 
 - task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    command: build
+    projects: '**/*.csproj'
+    arguments: '--configuration Release' # Update this to match your need
+
+#need to use the vso tasks so that the env variables persist trhough tasks in ADO
+- powershell: |
+   Write-Host "Our Sauce Username in ADO is=> $($env:SAUCE_USER)";
+   Write-Host "Our Sauce Access Key in ADO is=> $($env:SAUCE_KEY)";
+   Write-Host ("##vso[task.setvariable variable=SAUCE_USERNAME]$($env:SAUCE_USER)")
+   Write-Host ("##vso[task.setvariable variable=SAUCE_ACCESS_KEY]$($env:SAUCE_KEY)")
+
+- task: DotNetCoreCLI@2
+  displayName: Test
   inputs:
     command: test
-    projects: '**/*Test/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
+    projects: '$(Parameters.TestProjects)'
+    arguments: '--configuration $(BuildConfiguration)'

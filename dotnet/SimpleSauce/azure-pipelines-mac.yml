@@ -18,15 +18,18 @@ variables:
 
 steps:
 - task: DotNetCoreCLI@2
+  displayName: Restore
   inputs:
     command: restore
     projects: '**/*.csproj'
 
+steps:
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
-    projects: '$(Parameters.RestoreBuildProjects)'
-    arguments: '--configuration $(BuildConfiguration)'
+    command: build
+    projects: '**/*.csproj'
+    arguments: '--configuration Release' # Update this to match your need
 
 #need to use the vso tasks so that the env variables persist trhough tasks in ADO
 - powershell: |

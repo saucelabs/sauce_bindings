@@ -21,7 +21,7 @@ steps:
   displayName: Restore
   inputs:
     command: restore
-    projects: '$(Parameters.RestoreBuildProjects)'
+    restoreSolution: '$(solution)'
 
 - task: DotNetCoreCLI@2
   displayName: Build

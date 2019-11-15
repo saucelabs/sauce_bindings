@@ -97,7 +97,6 @@ public class SauceSessionTest {
     }
     @Test
     public void sauceOptions_startWithChrome_startsChrome() {
-        dummyRemoteDriver = mock(SauceRemoteDriver.class);
         options = new SauceOptions();
         options.withChrome();
 
@@ -109,9 +108,7 @@ public class SauceSessionTest {
     }
     @Test
     public void stop_callsDriverQuit() {
-        SauceRemoteDriver dummyDriver = mock(SauceRemoteDriver.class);
         WebDriver mockDriver = mock(WebDriver.class);
-        sauce = new SauceSession(dummyDriver, dummyEnvironmentManager);
 
         sauce.start();
         sauce.stop(mockDriver);
@@ -120,9 +117,7 @@ public class SauceSessionTest {
     }
     @Test
     public void stop_driverNull_doesntCallDriverQuit() {
-        SauceRemoteDriver dummyDriver = mock(SauceRemoteDriver.class);
         WebDriver mockDriver = mock(WebDriver.class);
-        sauce = new SauceSession(dummyDriver, dummyEnvironmentManager);
 
         sauce.start();
         sauce.stop(null);

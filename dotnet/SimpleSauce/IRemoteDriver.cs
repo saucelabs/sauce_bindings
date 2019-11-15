@@ -5,6 +5,6 @@ namespace SimpleSauce
 {
     public interface IRemoteDriver
     {
-        IWebDriver CreateRemoteWebDriver(ChromeOptions chromeOptions);
+        IWebDriver CreateRemoteWebDriver(DriverOptions options);
     }
 }

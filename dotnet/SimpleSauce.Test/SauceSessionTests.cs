@@ -17,6 +17,12 @@ namespace SimpleSauceTests
             session.Should().NotBeNull();
         }
         [TestMethod]
+        public void SauceSession_NoConstructorParam_OptionsInitialized()
+        {
+            var session = new SauceSession();
+            Assert.IsNotNull(session.Options);
+        }
+        [TestMethod]
         public void GetDataCenter_Default_IsWest()
         {
             var session = new SauceSession();
@@ -31,6 +37,18 @@ namespace SimpleSauceTests
             session.Start();
 
             session.ChromeOptions.Should().NotBeNull();
+        }
+        [TestMethod]
+        public void Start_WithEdge_SetsEdgeBrowser()
+        {
+            var options = new SauceOptions();
+            options.WithEdge();
+            var dummyManager = new Mock<IRemoteDriver>();
+            var session = new SauceSession(options, dummyManager.Object);
+
+            session.Start();
+
+            session.Options.EdgeOptions.Should().NotBeNull();
         }
     }
 }

@@ -11,7 +11,7 @@ import static org.mockito.Mockito.*;
 
 public class SauceSessionTest {
 
-    //TODO duplication in 3 classes, excluding DataCenterTest
+
     private SauceSession sauce;
     private EnvironmentManager dummyEnvironmentManager;
     private SauceRemoteDriver dummyRemoteDriver;
@@ -19,6 +19,8 @@ public class SauceSessionTest {
 
     @Before
     public void setUp() {
+        //TODO duplication in setup in BaseConfigurationTest. Can be moved out of here
+        //and combined into a single setup()
         dummyRemoteDriver = mock(SauceRemoteDriver.class);
         dummyEnvironmentManager = mock(EnvironmentManager.class);
         sauce = new SauceSession(dummyRemoteDriver, dummyEnvironmentManager);

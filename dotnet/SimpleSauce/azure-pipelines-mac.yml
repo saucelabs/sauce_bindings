@@ -13,8 +13,6 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  SAUCE_USERNAME: $($env:SAUCE_USER)
-  SAUCE_ACCESS_KEY: $($env:SAUCE_KEY)
 
 #Excellent docs on .NET Core steps: https://docs.microsoft.com/en-us/azure/devops/pipelines/ecosystems/dotnet-core?view=azure-devops#feedback
 steps:

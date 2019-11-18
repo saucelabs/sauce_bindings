@@ -37,8 +37,8 @@ steps:
    Write-Host ("##vso[task.setvariable variable=SAUCE_ACCESS_KEY]$($env:SAUCE_KEY)")
 
 - task: DotNetCoreCLI@2
-  displayName: Test
   inputs:
     command: test
-    projects: '$(Parameters.TestProjects)'
-    arguments: '--configuration $(BuildConfiguration)'
+    projects: '**/*Test/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+    displayName: 'Run tests'

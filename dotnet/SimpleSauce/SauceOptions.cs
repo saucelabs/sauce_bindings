@@ -7,13 +7,10 @@ namespace SimpleSauce
     {
         public EdgeOptions EdgeOptions { get; set; }
 
-        public void WithEdge()
+        public void WithEdge() => EdgeOptions = new EdgeOptions
         {
-            EdgeOptions = new EdgeOptions()
-            {
-                BrowserVersion = "latest",
-                PlatformName = "Windows 10"
-            };
-        }
+            BrowserVersion = "latest",
+            PlatformName = "Windows 10"
+        };
     }
 }

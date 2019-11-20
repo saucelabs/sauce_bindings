@@ -5,7 +5,7 @@ using System;
 
 namespace SimpleSauce
 {
-    class ConcreteRemoteWebDriver : IRemoteDriver
+    public class ConcreteRemoteWebDriver : IRemoteDriver
     {
         public IWebDriver CreateRemoteWebDriver(DriverOptions browserOptions)
         {

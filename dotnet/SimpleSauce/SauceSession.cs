@@ -12,7 +12,7 @@ namespace SimpleSauce
         public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
         public SauceOptions Options => _options;
 
-        private readonly IRemoteDriver _driverImplementation;
+        public readonly IRemoteDriver _driverImplementation;
         private readonly SauceOptions _options;
 
         public SauceSession()
@@ -29,6 +29,7 @@ namespace SimpleSauce
         public SauceSession(SauceOptions options)
         {
             this._options = options;
+            _driverImplementation = new ConcreteRemoteWebDriver();
         }
 
         public SauceSession(SauceOptions options, IRemoteDriver driver)
@@ -63,14 +64,14 @@ namespace SimpleSauce
         {
             var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
             var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
-            var sauceOptions = new Dictionary<string, object>
+            var sauceConfiguration = new Dictionary<string, object>
             {
                 ["username"] = sauceUserName,
                 ["accessKey"] = sauceAccessKey
             };
 
-            _options.EdgeOptions.AddAdditionalCapability("sauce:options", sauceOptions);
-            return _driverImplementation.CreateRemoteWebDriver(ChromeOptions);
+            _options.EdgeOptions.AddAdditionalCapability("sauce:options", sauceConfiguration);
+            return _driverImplementation.CreateRemoteWebDriver(_options.EdgeOptions);
         }
     }
 }

@@ -12,10 +12,10 @@ namespace SimpleSauceTests
         [TestMethod]
         public void WithEdge_SetsEdgeOptions()
         {
-            sauceOptions = new SauceOptions();
-            sauceOptions.WithEdge();
-            sauceOptions.EdgeOptions.Should().NotBeNull();
-            sauceOptions.EdgeOptions.Should().BeOfType(typeof(EdgeOptions));
+            SauceOptions = new SauceOptions();
+            SauceOptions.WithEdge();
+            SauceOptions.EdgeOptions.Should().NotBeNull();
+            SauceOptions.EdgeOptions.Should().BeOfType(typeof(EdgeOptions));
         }
     }
 }

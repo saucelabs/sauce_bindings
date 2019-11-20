@@ -3,6 +3,7 @@ package com.saucelabs.simplesauce;
 import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
 import com.saucelabs.simplesauce.interfaces.SauceRemoteDriver;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 
@@ -125,5 +126,15 @@ public class SauceSessionTest {
         sauce.stop(null);
 
         verify(mockDriver, times(0)).quit();
+    }
+    @Test
+    @Ignore("Not sure how to make this work with Mockito. To make sure that the .quit() is actually called on the webDriver")
+    public void stop_noParams_callsDriverQuit() {
+        WebDriver mockDriver = mock(WebDriver.class);
+
+        sauce.start();
+        sauce.stop();
+
+        verify(mockDriver).quit();
     }
 }

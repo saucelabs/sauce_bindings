@@ -22,7 +22,7 @@ namespace SimpleSauceTests
         {
             SauceOptions = new SauceOptions();
             SauceSession = new SauceSession(SauceOptions);
-            SauceSession.driverImplementation.Should().BeOfType(typeof(ConcreteRemoteWebDriver));
+            SauceSession.DriverImplementation.Should().BeOfType(typeof(ConcreteRemoteWebDriver));
         }
         [TestMethod]
         public void SauceSession_NoConstructorParam_OptionsInitialized()

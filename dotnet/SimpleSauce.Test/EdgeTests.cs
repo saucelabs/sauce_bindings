@@ -1,7 +1,5 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using OpenQA.Selenium.Edge;
 using SimpleSauce;
 
 namespace SimpleSauceTests

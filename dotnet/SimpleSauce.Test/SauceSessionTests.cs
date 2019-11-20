@@ -2,27 +2,18 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using SimpleSauce;
-[assembly: Parallelize(Workers = 100, Scope = ExecutionScope.MethodLevel)]
 
 namespace SimpleSauceTests
 {
     [TestClass]
     public class SauceSessionTests : BaseTest
     {
-
-        [TestMethod]
-        public void ShouldTakeSauceOptions()
-        {
-            SauceOptions = new SauceOptions();
-            SauceSession = new SauceSession(SauceOptions);
-            SauceSession.Should().NotBeNull();
-        }
         [TestMethod]
         public void SauceSession_OptionsPassedIn_SetsConcreteDriver()
         {
             SauceOptions = new SauceOptions();
             SauceSession = new SauceSession(SauceOptions);
-            SauceSession.DriverImplementation.Should().BeOfType(typeof(ConcreteRemoteWebDriver));
+            SauceSession.DriverImplementation.Should().BeOfType(typeof(SauceDriver));
         }
         [TestMethod]
         public void SauceSession_NoConstructorParam_OptionsInitialized()
@@ -39,7 +30,7 @@ namespace SimpleSauceTests
         [TestMethod]
         public void Start_Default_IsChrome()
         {
-            var dummyManager = new Mock<IRemoteDriver>();
+            var dummyManager = new Mock<ISauceRemoteDriver>();
             SauceSession = new SauceSession(dummyManager.Object);
 
             SauceSession.Start();
@@ -51,7 +42,7 @@ namespace SimpleSauceTests
         {
             SauceOptions = new SauceOptions();
             SauceOptions.WithEdge();
-            var dummyManager = new Mock<IRemoteDriver>();
+            var dummyManager = new Mock<ISauceRemoteDriver>();
             SauceSession = new SauceSession(SauceOptions, dummyManager.Object);
 
             SauceSession.Start();

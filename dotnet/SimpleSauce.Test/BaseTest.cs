@@ -4,7 +4,7 @@ namespace SimpleSauceTests
 {
     public class BaseTest
     {
-        public SauceOptions sauceOptions;
-        public SauceSession sauceSession;
+        public SauceOptions SauceOptions { get; set; }
+        public SauceSession SauceSession { get; set; }
     }
 }

@@ -13,43 +13,50 @@ namespace SimpleSauceTests
         [TestMethod]
         public void ShouldTakeSauceOptions()
         {
-            sauceOptions = new SauceOptions();
-            sauceSession = new SauceSession(sauceOptions);
-            sauceSession.Should().NotBeNull();
+            SauceOptions = new SauceOptions();
+            SauceSession = new SauceSession(SauceOptions);
+            SauceSession.Should().NotBeNull();
+        }
+        [TestMethod]
+        public void SauceSession_OptionsPassedIn_SetsConcreteDriver()
+        {
+            SauceOptions = new SauceOptions();
+            SauceSession = new SauceSession(SauceOptions);
+            SauceSession._driverImplementation.Should().BeOfType(typeof(ConcreteRemoteWebDriver));
         }
         [TestMethod]
         public void SauceSession_NoConstructorParam_OptionsInitialized()
         {
-            sauceSession = new SauceSession();
-            Assert.IsNotNull(sauceSession.Options);
+            SauceSession = new SauceSession();
+            Assert.IsNotNull(SauceSession.Options);
         }
         [TestMethod]
         public void GetDataCenter_Default_IsWest()
         {
-            sauceSession = new SauceSession();
-            sauceSession.DataCenter.Should().BeEquivalentTo(DataCenter.UsWest);
+            SauceSession = new SauceSession();
+            SauceSession.DataCenter.Should().BeEquivalentTo(DataCenter.UsWest);
         }
         [TestMethod]
         public void Start_Default_IsChrome()
         {
             var dummyManager = new Mock<IRemoteDriver>();
-            sauceSession = new SauceSession(dummyManager.Object);
+            SauceSession = new SauceSession(dummyManager.Object);
 
-            sauceSession.Start();
+            SauceSession.Start();
 
-            sauceSession.ChromeOptions.Should().NotBeNull();
+            SauceSession.ChromeOptions.Should().NotBeNull();
         }
         [TestMethod]
         public void Start_WithEdge_SetsEdgeBrowser()
         {
-            sauceOptions = new SauceOptions();
-            sauceOptions.WithEdge();
+            SauceOptions = new SauceOptions();
+            SauceOptions.WithEdge();
             var dummyManager = new Mock<IRemoteDriver>();
-            sauceSession = new SauceSession(sauceOptions, dummyManager.Object);
+            SauceSession = new SauceSession(SauceOptions, dummyManager.Object);
 
-            sauceSession.Start();
+            SauceSession.Start();
 
-            sauceSession.Options.EdgeOptions.Should().NotBeNull();
+            SauceSession.Options.EdgeOptions.Should().NotBeNull();
         }
     }
 }

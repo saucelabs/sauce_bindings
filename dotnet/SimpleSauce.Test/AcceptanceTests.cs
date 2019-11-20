@@ -63,5 +63,15 @@ namespace SimpleSauceTests
             var capabilities = ((RemoteWebDriver)driver).Capabilities;
             capabilities.GetCapability("browserName").Should().Be("chrome");
         }
+        [TestMethod]
+        public void RunTestWithEdge()
+        {
+            var options = new SauceOptions();
+            options.WithEdge();
+            var session = new SauceSession(options);
+            var driver = session.Start();
+            var capabilities = ((RemoteWebDriver)driver).Capabilities;
+            capabilities.GetCapability("browserName").Should().Be("MicrosoftEdge");
+        }
     }
 }

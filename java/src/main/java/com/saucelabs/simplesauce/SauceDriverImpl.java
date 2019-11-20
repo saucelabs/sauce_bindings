@@ -1,13 +1,13 @@
 package com.saucelabs.simplesauce;
 
-import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
+import com.saucelabs.simplesauce.interfaces.SauceRemoteDriver;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class ConcreteRemoteDriver implements RemoteDriverInterface {
+public class SauceDriverImpl implements SauceRemoteDriver {
     private RemoteWebDriver remoteDriver;
 
     public RemoteWebDriver createRemoteWebDriver(String seleniumServer, MutableCapabilities capabilities)

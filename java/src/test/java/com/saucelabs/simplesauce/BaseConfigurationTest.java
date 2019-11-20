@@ -1,7 +1,7 @@
 package com.saucelabs.simplesauce;
 
 import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
-import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
+import com.saucelabs.simplesauce.interfaces.SauceRemoteDriver;
 import org.junit.Before;
 
 import static org.mockito.Mockito.mock;
@@ -9,14 +9,14 @@ import static org.mockito.Mockito.when;
 
 class BaseConfigurationTest {
     public SauceSession sauce;
-    protected RemoteDriverInterface dummyRemoteDriver;
+    protected SauceRemoteDriver dummyRemoteDriver;
     protected EnvironmentManager dummyEnvironmentManager;
     protected SauceOptions sauceOptions;
 
     @Before
     public void setUp()
     {
-        dummyRemoteDriver = mock(RemoteDriverInterface.class);
+        dummyRemoteDriver = mock(SauceRemoteDriver.class);
         dummyEnvironmentManager = mock(EnvironmentManager.class);
         sauceOptions = new SauceOptions();
 

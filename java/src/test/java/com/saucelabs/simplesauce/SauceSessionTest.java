@@ -1,25 +1,28 @@
 package com.saucelabs.simplesauce;
 
 import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
-import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
+import com.saucelabs.simplesauce.interfaces.SauceRemoteDriver;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.openqa.selenium.WebDriver;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class SauceSessionTest {
 
-    //TODO duplication in 3 classes, excluding DataCenterTest
+
     private SauceSession sauce;
     private EnvironmentManager dummyEnvironmentManager;
-    private RemoteDriverInterface dummyRemoteDriver;
+    private SauceRemoteDriver dummyRemoteDriver;
     private SauceOptions options;
 
     @Before
     public void setUp() {
-        dummyRemoteDriver = mock(RemoteDriverInterface.class);
+        //TODO duplication in setup in BaseConfigurationTest. Can be moved out of here
+        //and combined into a single setup()
+        dummyRemoteDriver = mock(SauceRemoteDriver.class);
         dummyEnvironmentManager = mock(EnvironmentManager.class);
         sauce = new SauceSession(dummyRemoteDriver, dummyEnvironmentManager);
         when(dummyEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
@@ -30,7 +33,7 @@ public class SauceSessionTest {
     @Test
     public void sauceSession_defaultSauceOptions_returnsChromeBrowser() {
         options = new SauceOptions();
-        dummyRemoteDriver = mock(RemoteDriverInterface.class);
+        dummyRemoteDriver = mock(SauceRemoteDriver.class);
 
         sauce = new SauceSession(options, dummyRemoteDriver, dummyEnvironmentManager);
         sauce.start();
@@ -58,7 +61,7 @@ public class SauceSessionTest {
     public void defaultConstructor_instantiated_setsConcreteDriverManager()
     {
         SauceSession concreteSauceSession = new SauceSession();
-        assertTrue(concreteSauceSession.getDriverManager() instanceof ConcreteRemoteDriver);
+        assertTrue(concreteSauceSession.getDriverManager() instanceof SauceDriverImpl);
     }
 
     @Test
@@ -97,7 +100,6 @@ public class SauceSessionTest {
     }
     @Test
     public void sauceOptions_startWithChrome_startsChrome() {
-        dummyRemoteDriver = mock(RemoteDriverInterface.class);
         options = new SauceOptions();
         options.withChrome();
 
@@ -107,14 +109,32 @@ public class SauceSessionTest {
         String actualBrowser = sauce.currentSessionCapabilities.getBrowserName();
         assertEquals("Chrome", actualBrowser);
     }
-    //TODO make this test work
+    @Test
+    public void stop_callsDriverQuit() {
+        WebDriver mockDriver = mock(WebDriver.class);
+
+        sauce.start();
+        sauce.stop(mockDriver);
+
+        verify(mockDriver).quit();
+    }
+    @Test
+    public void stop_driverNull_doesntCallDriverQuit() {
+        WebDriver mockDriver = mock(WebDriver.class);
+
+        sauce.start();
+        sauce.stop(null);
+
+        verify(mockDriver, times(0)).quit();
+    }
     @Test
     @Ignore("Not sure how to make this work with Mockito. To make sure that the .quit() is actually called on the webDriver")
-    public void stop_callsDriverQuit() {
-        RemoteDriverInterface dummyDriver = mock(RemoteDriverInterface.class);
-        sauce = new SauceSession(dummyDriver, dummyEnvironmentManager);
+    public void stop_noParams_callsDriverQuit() {
+        WebDriver mockDriver = mock(WebDriver.class);
+
         sauce.start();
         sauce.stop();
-        verify(dummyDriver).quit();
+
+        verify(mockDriver).quit();
     }
 }

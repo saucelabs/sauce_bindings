@@ -9,46 +9,49 @@ namespace SimpleSauceTests
     [TestClass]
     public class SauceSessionTests
     {
+        private SauceOptions sauceOptions;
+        private SauceSession sauceSession;
+
         [TestMethod]
         public void ShouldTakeSauceOptions()
         {
-            SauceOptions options = new SauceOptions();
-            var session = new SauceSession(options);
-            session.Should().NotBeNull();
+            sauceOptions = new SauceOptions();
+            sauceSession = new SauceSession(sauceOptions);
+            sauceSession.Should().NotBeNull();
         }
         [TestMethod]
         public void SauceSession_NoConstructorParam_OptionsInitialized()
         {
-            var session = new SauceSession();
-            Assert.IsNotNull(session.Options);
+            sauceSession = new SauceSession();
+            Assert.IsNotNull(sauceSession.Options);
         }
         [TestMethod]
         public void GetDataCenter_Default_IsWest()
         {
-            var session = new SauceSession();
-            session.DataCenter.Should().BeEquivalentTo(DataCenter.UsWest);
+            sauceSession = new SauceSession();
+            sauceSession.DataCenter.Should().BeEquivalentTo(DataCenter.UsWest);
         }
         [TestMethod]
         public void Start_Default_IsChrome()
         {
             var dummyManager = new Mock<IRemoteDriver>();
-            var session = new SauceSession(dummyManager.Object);
+            sauceSession = new SauceSession(dummyManager.Object);
 
-            session.Start();
+            sauceSession.Start();
 
-            session.ChromeOptions.Should().NotBeNull();
+            sauceSession.ChromeOptions.Should().NotBeNull();
         }
         [TestMethod]
         public void Start_WithEdge_SetsEdgeBrowser()
         {
-            var options = new SauceOptions();
-            options.WithEdge();
+            sauceOptions = new SauceOptions();
+            sauceOptions.WithEdge();
             var dummyManager = new Mock<IRemoteDriver>();
-            var session = new SauceSession(options, dummyManager.Object);
+            sauceSession = new SauceSession(sauceOptions, dummyManager.Object);
 
-            session.Start();
+            sauceSession.Start();
 
-            session.Options.EdgeOptions.Should().NotBeNull();
+            sauceSession.Options.EdgeOptions.Should().NotBeNull();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium.Edge;
-using System;
 
 namespace SimpleSauce
 {

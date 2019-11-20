@@ -11,14 +11,14 @@ namespace SimpleSauce
         public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
         public SauceOptions Options { get; }
 
-        public IRemoteDriver DriverImplementation { get; set; }
+        public ISauceRemoteDriver DriverImplementation { get; set; }
 
         public SauceSession()
         {
-            DriverImplementation = new ConcreteRemoteWebDriver();
+            DriverImplementation = new SauceDriver();
             Options = new SauceOptions();
         }
-        public SauceSession(IRemoteDriver driver)
+        public SauceSession(ISauceRemoteDriver driver)
         {
             DriverImplementation = driver;
             Options = new SauceOptions();
@@ -27,10 +27,10 @@ namespace SimpleSauce
         public SauceSession(SauceOptions options)
         {
             this.Options = options;
-            DriverImplementation = new ConcreteRemoteWebDriver();
+            DriverImplementation = new SauceDriver();
         }
 
-        public SauceSession(SauceOptions options, IRemoteDriver driver)
+        public SauceSession(SauceOptions options, ISauceRemoteDriver driver)
         {
             this.Options = options;
             DriverImplementation = driver;

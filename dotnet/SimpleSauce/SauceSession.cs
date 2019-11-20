@@ -10,38 +10,38 @@ namespace SimpleSauce
     {
         public ChromeOptions ChromeOptions { get; private set; }
         public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
-        public SauceOptions Options => _options;
+        public SauceOptions Options { get; }
 
-        public readonly IRemoteDriver _driverImplementation;
-        private readonly SauceOptions _options;
+        public IRemoteDriver DriverImplementation { get; set; }
 
         public SauceSession()
         {
-            _driverImplementation = new ConcreteRemoteWebDriver();
-            _options = new SauceOptions();
+            DriverImplementation = new ConcreteRemoteWebDriver();
+            Options = new SauceOptions();
         }
         public SauceSession(IRemoteDriver driver)
         {
-            _driverImplementation = driver;
-            _options = new SauceOptions();
+            DriverImplementation = driver;
+            Options = new SauceOptions();
         }
 
         public SauceSession(SauceOptions options)
         {
-            this._options = options;
-            _driverImplementation = new ConcreteRemoteWebDriver();
+            this.Options = options;
+            DriverImplementation = new ConcreteRemoteWebDriver();
         }
 
         public SauceSession(SauceOptions options, IRemoteDriver driver)
         {
-            this._options = options;
-            _driverImplementation = driver;
+            this.Options = options;
+            DriverImplementation = driver;
         }
 
         public IWebDriver Start()
         {
-            if (_options.EdgeOptions != null)
+            if (Options.EdgeOptions != null)
                 return CreateEdgeBrowser();
+
             var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
             var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
             var sauceOptions = new Dictionary<string, object>
@@ -57,7 +57,7 @@ namespace SimpleSauce
                 UseSpecCompliantProtocol = true
             };
             ChromeOptions.AddAdditionalCapability("sauce:options", sauceOptions, true);
-            return _driverImplementation.CreateRemoteWebDriver(ChromeOptions);
+            return DriverImplementation.CreateRemoteWebDriver(ChromeOptions);
         }
 
         private IWebDriver CreateEdgeBrowser()
@@ -70,8 +70,8 @@ namespace SimpleSauce
                 ["accessKey"] = sauceAccessKey
             };
 
-            _options.EdgeOptions.AddAdditionalCapability("sauce:options", sauceConfiguration);
-            return _driverImplementation.CreateRemoteWebDriver(_options.EdgeOptions);
+            Options.EdgeOptions.AddAdditionalCapability("sauce:options", sauceConfiguration);
+            return DriverImplementation.CreateRemoteWebDriver(Options.EdgeOptions);
         }
     }
 }

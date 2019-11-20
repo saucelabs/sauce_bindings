@@ -73,5 +73,17 @@ namespace SimpleSauceTests
             var capabilities = ((RemoteWebDriver)driver).Capabilities;
             capabilities.GetCapability("browserName").Should().Be("MicrosoftEdge");
         }
+        [TestMethod]
+        [Ignore("Throwing Sauce infrastructure error, not sure why")]
+        public void RunTestWithEdge15()
+        {
+            sauceOptions.Add("name", TestContext.TestName);
+            var options = new SauceOptions();
+            options.WithEdge(EdgeVersion._15);
+            var session = new SauceSession(options);
+            var driver = session.Start();
+            var capabilities = ((RemoteWebDriver)driver).Capabilities;
+            capabilities.GetCapability("browserName").Should().Be("MicrosoftEdge");
+        }
     }
 }

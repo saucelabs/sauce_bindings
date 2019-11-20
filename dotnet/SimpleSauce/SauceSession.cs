@@ -10,7 +10,6 @@ namespace SimpleSauce
     {
         public ChromeOptions ChromeOptions { get; private set; }
         public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
-        public EdgeOptions EdgeOptions { get; set; }
         public SauceOptions Options => _options;
 
         private readonly IRemoteDriver _driverImplementation;

@@ -5,7 +5,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 
-public interface RemoteDriverInterface {
+public interface SauceRemoteDriver {
     RemoteWebDriver createRemoteWebDriver(String seleniumServer, MutableCapabilities capabilities)
         throws MalformedURLException;
     void quit();

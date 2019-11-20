@@ -7,15 +7,15 @@ using SimpleSauce;
 namespace SimpleSauceTests
 {
     [TestClass]
-    public class SauceOptionsTests
+    public class SauceOptionsTests : BaseTest
     {
         [TestMethod]
         public void WithEdge_SetsEdgeOptions()
         {
-            SauceOptions options = new SauceOptions();
-            options.WithEdge();
-            options.EdgeOptions.Should().NotBeNull();
-            options.EdgeOptions.Should().BeOfType(typeof(EdgeOptions));
+            sauceOptions = new SauceOptions();
+            sauceOptions.WithEdge();
+            sauceOptions.EdgeOptions.Should().NotBeNull();
+            sauceOptions.EdgeOptions.Should().BeOfType(typeof(EdgeOptions));
         }
     }
 }

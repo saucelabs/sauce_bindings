@@ -7,10 +7,8 @@ using SimpleSauce;
 namespace SimpleSauceTests
 {
     [TestClass]
-    public class SauceSessionTests
+    public class SauceSessionTests : BaseTest
     {
-        private SauceOptions sauceOptions;
-        private SauceSession sauceSession;
 
         [TestMethod]
         public void ShouldTakeSauceOptions()

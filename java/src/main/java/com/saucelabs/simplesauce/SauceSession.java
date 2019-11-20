@@ -1,7 +1,7 @@
 package com.saucelabs.simplesauce;
 
 import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
-import com.saucelabs.simplesauce.interfaces.RemoteDriverInterface;
+import com.saucelabs.simplesauce.interfaces.SauceRemoteDriver;
 import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.InvalidArgumentException;
@@ -27,10 +27,10 @@ public class SauceSession {
     //definitely should be fixed
     private MutableCapabilities mutableCapabilities;
     public MutableCapabilities currentSessionCapabilities;
-    private final RemoteDriverInterface remoteDriverImplementation;
+    private final SauceRemoteDriver remoteDriverImplementation;
     private WebDriver webDriver;
 
-    public RemoteDriverInterface getDriverManager() {
+    public SauceRemoteDriver getDriverManager() {
         return remoteDriverImplementation;
     }
 
@@ -39,12 +39,12 @@ public class SauceSession {
     }
     public SauceSession() {
         currentSessionCapabilities = new MutableCapabilities();
-        remoteDriverImplementation = new ConcreteRemoteDriver();
+        remoteDriverImplementation = new SauceDriverImpl();
         environmentManager = new ConcreteSystemManager();
         sauceOptions = new SauceOptions();
     }
 
-    public SauceSession(RemoteDriverInterface remoteManager, EnvironmentManager environmentManager) {
+    public SauceSession(SauceRemoteDriver remoteManager, EnvironmentManager environmentManager) {
         remoteDriverImplementation = remoteManager;
         currentSessionCapabilities = new MutableCapabilities();
         this.environmentManager = environmentManager;
@@ -55,10 +55,10 @@ public class SauceSession {
         sauceOptions = options;
         currentSessionCapabilities = new MutableCapabilities();
         environmentManager = new ConcreteSystemManager();
-        remoteDriverImplementation = new ConcreteRemoteDriver();
+        remoteDriverImplementation = new SauceDriverImpl();
     }
 
-    public SauceSession(SauceOptions options, RemoteDriverInterface remoteManager, EnvironmentManager environmentManager) {
+    public SauceSession(SauceOptions options, SauceRemoteDriver remoteManager, EnvironmentManager environmentManager) {
         sauceOptions = options;
         remoteDriverImplementation = remoteManager;
         currentSessionCapabilities = new MutableCapabilities();
@@ -137,9 +137,13 @@ public class SauceSession {
             throw new InvalidArgumentException("Invalid URL");
         }
     }
-    public void stop()
+    public void stop(WebDriver driver)
     {
-        if(webDriver != null)
+        if(driver != null)
+            driver.quit();
+    }
+    public void stop() {
+        if(webDriver !=null)
             webDriver.quit();
     }
 
@@ -158,4 +162,6 @@ public class SauceSession {
         String accessKey = environmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY");
         return checkIfEmpty(accessKey);
     }
+
+
 }

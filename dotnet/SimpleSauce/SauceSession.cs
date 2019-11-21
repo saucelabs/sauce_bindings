@@ -69,7 +69,7 @@ namespace SimpleSauce
                 ["accessKey"] = sauceAccessKey
             };
 
-            Options.EdgeOptions.AddAdditionalCapability("sauce:options", sauceConfiguration);
+            Options.EdgeOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
             return DriverImplementation.CreateRemoteWebDriver(Options.EdgeOptions);
         }
     }

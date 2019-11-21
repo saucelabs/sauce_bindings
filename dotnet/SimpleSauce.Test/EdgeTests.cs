@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SimpleSauce;
+using System;
 using System.Collections.Generic;
 
 namespace SimpleSauceTests
@@ -38,7 +39,13 @@ namespace SimpleSauceTests
             new object[] {"15.15063", EdgeVersion._15 },
             new object[] {"14.14393", EdgeVersion._14 },
             new object[] { "13.10586", EdgeVersion._13 },
-
         };
+
+        [TestMethod]
+        public void WithEdge_NullBrowserVersion_ThrowsException()
+        {
+            SauceOptions = new SauceOptions();
+            Assert.ThrowsException<ArgumentNullException>(() => SauceOptions.WithEdge(null));
+        }
     }
 }

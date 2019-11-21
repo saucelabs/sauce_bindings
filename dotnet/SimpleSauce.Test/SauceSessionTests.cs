@@ -1,6 +1,8 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json.Linq;
+using OpenQA.Selenium.Edge;
 using SimpleSauce;
 
 namespace SimpleSauceTests
@@ -49,5 +51,26 @@ namespace SimpleSauceTests
 
             SauceSession.Options.EdgeOptions.Should().NotBeNull();
         }
+        //[TestMethod]
+        //public void Start_WithEdge15_SetsCorrectOptions()
+        //{
+        //    string json = @"{
+    	   //     'browserName': 'MicrosoftEdge',
+        //        'browserVersion': '15.15063',
+    	   //     'sauce:options': {
+        //            'username': 'nikolay-a',
+    		  //      'accessKey': '3c9c7da6-9264-4b46-8aae-8f3806a1e645'
+        //        }
+        //    }";
+        //    JObject expectedEdgeOptions = JObject.Parse(json);
+        //    SauceOptions = new SauceOptions();
+        //    SauceOptions.WithEdge(EdgeVersion._15);
+        //    var dummyManager = new Mock<ISauceRemoteDriver>();
+        //    SauceSession = new SauceSession(SauceOptions, dummyManager.Object);
+
+        //    SauceSession.Start();
+
+        //    SauceSession.Options.EdgeOptions.Should().BeSameAs(expectedEdgeOptions);
+        //}
     }
 }

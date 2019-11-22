@@ -9,12 +9,11 @@ import org.openqa.selenium.WebDriver;
 
 public class UsingJUnit {
 
-    private SauceSession sauceSession;
     private WebDriver driver;
 
     @Before
     public void setUp(){
-        sauceSession = new SauceSession();
+        SauceSession sauceSession = new SauceSession();
         driver = sauceSession.start();
     }
 

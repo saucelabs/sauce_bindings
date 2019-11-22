@@ -3,7 +3,6 @@ package com.saucelabs.simplesauce;
 import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
 import com.saucelabs.simplesauce.interfaces.SauceRemoteDriver;
 import lombok.Getter;
-import lombok.Setter;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
@@ -17,7 +16,7 @@ import org.openqa.selenium.safari.SafariOptions;
 import java.net.MalformedURLException;
 
 public class SauceSession {
-    @Getter @Setter public final String sauceDataCenter = DataCenter.USWest;
+    @Getter public final String sauceDataCenter = DataCenter.USWest;
     private final EnvironmentManager environmentManager;
     private final SauceOptions sauceOptions;
     public final SauceTimeout timeouts = new SauceTimeout();
@@ -28,7 +27,7 @@ public class SauceSession {
     private MutableCapabilities mutableCapabilities;
     public MutableCapabilities currentSessionCapabilities;
     private final SauceRemoteDriver remoteDriverImplementation;
-    private WebDriver webDriver;
+    @Getter private WebDriver webDriver;
 
     public SauceRemoteDriver getDriverManager() {
         return remoteDriverImplementation;

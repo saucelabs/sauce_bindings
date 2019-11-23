@@ -35,10 +35,17 @@ namespace SimpleSauceTests
             SauceOptions.ConfiguredChromeOptions.BrowserVersion.Should().Be("latest");
         }
         [TestMethod]
-        public void WithChrome_Platform_Win10()
+        public void WithChrome_DefaultPlatform_Win10()
         {
             SauceOptions.WithChrome();
             SauceOptions.ConfiguredChromeOptions.PlatformName.Should().Be("Windows 10");
+        }
+        [TestMethod]
+        public void WithChrome_VersionChanged_SetsVersion()
+        {
+            SauceOptions.WithChrome("72");
+            SauceOptions.ConfiguredChromeOptions.BrowserVersion.Should().
+                Be("72", "we set a specific chrome version and this version should be passed to ChromeOptions");
         }
     }
 }

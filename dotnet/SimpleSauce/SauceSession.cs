@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Edge;
 using System;
 using System.Collections.Generic;
 
@@ -12,6 +13,7 @@ namespace SimpleSauce
         public SauceOptions Options { get; }
 
         public ISauceRemoteDriver DriverImplementation { get; set; }
+        public EdgeOptions EdgeOptions { get; set; }
 
         public SauceSession()
         {
@@ -40,23 +42,23 @@ namespace SimpleSauce
         {
             if (Options.ConfiguredEdgeOptions != null)
                 return CreateEdgeBrowser();
+            else if (Options.ConfiguredChromeOptions != null)
+                return CreateChromeDriver();
+            return DriverImplementation.CreateRemoteWebDriver(ChromeOptions);
+        }
 
+        private IWebDriver CreateChromeDriver()
+        {
             var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
             var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
-            var sauceOptions = new Dictionary<string, object>
+            var sauceConfiguration = new Dictionary<string, object>
             {
                 ["username"] = sauceUserName,
                 ["accessKey"] = sauceAccessKey
             };
 
-            ChromeOptions = new ChromeOptions
-            {
-                BrowserVersion = "latest",
-                PlatformName = "Windows 10",
-                UseSpecCompliantProtocol = true
-            };
-            ChromeOptions.AddAdditionalCapability("sauce:options", sauceOptions, true);
-            return DriverImplementation.CreateRemoteWebDriver(ChromeOptions);
+            Options.ConfiguredChromeOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
+            return DriverImplementation.CreateRemoteWebDriver(Options.ConfiguredChromeOptions);
         }
 
         private IWebDriver CreateEdgeBrowser()

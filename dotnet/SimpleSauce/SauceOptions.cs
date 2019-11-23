@@ -11,6 +11,11 @@ namespace SimpleSauce
         public EdgeOptions ConfiguredEdgeOptions { get; set; }
         public ChromeOptions ConfiguredChromeOptions { get; private set; }
 
+        public SauceOptions()
+        {
+            WithChrome();
+        }
+
         public void WithEdge() => ConfiguredEdgeOptions = new EdgeOptions
         {
             BrowserVersion = DefaultBrowserVersion,
@@ -33,6 +38,15 @@ namespace SimpleSauce
             ConfiguredChromeOptions = new ChromeOptions()
             {
                 BrowserVersion = DefaultBrowserVersion,
+                PlatformName = DefaultPlatform
+            };
+        }
+
+        public void WithChrome(string chromeVersion)
+        {
+            ConfiguredChromeOptions = new ChromeOptions()
+            {
+                BrowserVersion = chromeVersion,
                 PlatformName = DefaultPlatform
             };
         }

@@ -38,7 +38,7 @@ namespace SimpleSauce
 
         public IWebDriver Start()
         {
-            if (Options.EdgeOptions != null)
+            if (Options.ConfiguredEdgeOptions != null)
                 return CreateEdgeBrowser();
 
             var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
@@ -69,8 +69,8 @@ namespace SimpleSauce
                 ["accessKey"] = sauceAccessKey
             };
 
-            Options.EdgeOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
-            return DriverImplementation.CreateRemoteWebDriver(Options.EdgeOptions);
+            Options.ConfiguredEdgeOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
+            return DriverImplementation.CreateRemoteWebDriver(Options.ConfiguredEdgeOptions);
         }
     }
 }

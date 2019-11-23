@@ -14,14 +14,14 @@ namespace SimpleSauceTests
         {
             SauceOptions = new SauceOptions();
             SauceOptions.WithEdge();
-            SauceOptions.EdgeOptions.PlatformName.Should().Be("Windows 10");
+            SauceOptions.ConfiguredEdgeOptions.PlatformName.Should().Be("Windows 10");
         }
         [TestMethod]
         public void WithEdge_DefaultBrowserVersion_latest()
         {
             SauceOptions = new SauceOptions();
             SauceOptions.WithEdge();
-            SauceOptions.EdgeOptions.BrowserVersion.Should().Be("latest");
+            SauceOptions.ConfiguredEdgeOptions.BrowserVersion.Should().Be("latest");
         }
         [TestMethod]
         [DynamicData(nameof(PossibleEdgeConfigurations), typeof(EdgeTests))]
@@ -29,7 +29,7 @@ namespace SimpleSauceTests
         {
             SauceOptions = new SauceOptions();
             SauceOptions.WithEdge(edgeVersion);
-            SauceOptions.EdgeOptions.BrowserVersion.Should().Be(expectedVersion);
+            SauceOptions.ConfiguredEdgeOptions.BrowserVersion.Should().Be(expectedVersion);
         }
         public static IEnumerable<object[]> PossibleEdgeConfigurations => new[]
         {

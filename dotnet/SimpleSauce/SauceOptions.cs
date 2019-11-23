@@ -8,10 +8,10 @@ namespace SimpleSauce
     {
         private readonly string DefaultBrowserVersion = "latest";
         private readonly string DefaultPlatform = "Windows 10";
-        public EdgeOptions EdgeOptions { get; set; }
-        public ChromeOptions SauceChromeOptions { get; private set; }
+        public EdgeOptions ConfiguredEdgeOptions { get; set; }
+        public ChromeOptions ConfiguredChromeOptions { get; private set; }
 
-        public void WithEdge() => EdgeOptions = new EdgeOptions
+        public void WithEdge() => ConfiguredEdgeOptions = new EdgeOptions
         {
             BrowserVersion = DefaultBrowserVersion,
             PlatformName = DefaultPlatform
@@ -21,7 +21,7 @@ namespace SimpleSauce
         {
             if (edgeVersion == null)
                 throw new ArgumentNullException("Please supply a valid EdgeVersion. You suplied an invalid value=>" + edgeVersion);
-            EdgeOptions = new EdgeOptions
+            ConfiguredEdgeOptions = new EdgeOptions
             {
                 BrowserVersion = edgeVersion.Value,
                 PlatformName = DefaultPlatform       
@@ -30,7 +30,7 @@ namespace SimpleSauce
 
         public void WithChrome()
         {
-            SauceChromeOptions = new ChromeOptions()
+            ConfiguredChromeOptions = new ChromeOptions()
             {
                 BrowserVersion = DefaultBrowserVersion,
                 PlatformName = DefaultPlatform

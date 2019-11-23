@@ -10,6 +10,12 @@ namespace SimpleSauceTests
     [TestClass]
     public class SauceSessionTests : BaseTest
     {
+        private Mock<ISauceRemoteDriver> _dummyDriver;
+        [TestInitialize]
+        public void Setup()
+        {
+            _dummyDriver = new Mock<ISauceRemoteDriver>();
+        }
         [TestMethod]
         public void SauceSession_OptionsPassedIn_SetsConcreteDriver()
         {
@@ -32,8 +38,7 @@ namespace SimpleSauceTests
         [TestMethod]
         public void Start_Default_IsChrome()
         {
-            var dummyManager = new Mock<ISauceRemoteDriver>();
-            SauceSession = new SauceSession(dummyManager.Object);
+            SauceSession = new SauceSession(_dummyDriver.Object);
 
             SauceSession.Start();
 
@@ -44,22 +49,35 @@ namespace SimpleSauceTests
         {
             SauceOptions = new SauceOptions();
             SauceOptions.WithEdge();
-            var dummyManager = new Mock<ISauceRemoteDriver>();
-            SauceSession = new SauceSession(SauceOptions, dummyManager.Object);
+            SauceSession = new SauceSession(SauceOptions, _dummyDriver.Object);
 
             SauceSession.Start();
 
-            SauceSession.Options.EdgeOptions.Should().NotBeNull();
+            SauceSession.Options.ConfiguredEdgeOptions.Should().NotBeNull();
         }
+        [TestMethod]
+        public void Start_WithChrome_SetsChromeBrowser()
+        {
+            SauceOptions = new SauceOptions();
+            SauceOptions.WithChrome();
+            SauceSession = new SauceSession(SauceOptions, _dummyDriver.Object);
+
+            SauceSession.Start();
+
+            SauceSession.Options.ConfiguredChromeOptions.Should().
+                NotBeNull("we passed in options configured with Chrome, hence ChromeOptions should be set.");
+        }
+
+
         //[TestMethod]
         //public void Start_WithEdge15_SetsCorrectOptions()
         //{
         //    string json = @"{
-    	   //     'browserName': 'MicrosoftEdge',
+        //     'browserName': 'MicrosoftEdge',
         //        'browserVersion': '15.15063',
-    	   //     'sauce:options': {
+        //     'sauce:options': {
         //            'username': 'nikolay-a',
-    		  //      'accessKey': '3c9c7da6-9264-4b46-8aae-8f3806a1e645'
+        //      'accessKey': '3c9c7da6-9264-4b46-8aae-8f3806a1e645'
         //        }
         //    }";
         //    JObject expectedEdgeOptions = JObject.Parse(json);

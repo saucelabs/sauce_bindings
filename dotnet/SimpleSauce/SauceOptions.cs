@@ -1,4 +1,5 @@
 ﻿using System;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 
 namespace SimpleSauce
@@ -8,6 +9,7 @@ namespace SimpleSauce
         private readonly string DefaultBrowserVersion = "latest";
         private readonly string DefaultPlatform = "Windows 10";
         public EdgeOptions EdgeOptions { get; set; }
+        public ChromeOptions SauceChromeOptions { get; private set; }
 
         public void WithEdge() => EdgeOptions = new EdgeOptions
         {
@@ -23,6 +25,15 @@ namespace SimpleSauce
             {
                 BrowserVersion = edgeVersion.Value,
                 PlatformName = DefaultPlatform       
+            };
+        }
+
+        public void WithChrome()
+        {
+            SauceChromeOptions = new ChromeOptions()
+            {
+                BrowserVersion = DefaultBrowserVersion,
+                PlatformName = DefaultPlatform
             };
         }
     }

@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OpenQA.Selenium.Edge;
 using SimpleSauce;
@@ -48,6 +49,11 @@ namespace SimpleSauceTests
             SauceSession.Start();
 
             SauceSession.Options.ConfiguredEdgeOptions.Should().NotBeNull("because we set SauceSession to run withEdge()");
+
+            var edgeOptionsString = SauceSession.Options.ConfiguredEdgeOptions.ToString();
+            var configuredOptions = JsonConvert.DeserializeObject<Root>(edgeOptionsString);
+            configuredOptions.SauceOptions.Username.Should().NotBeNullOrEmpty();
+            configuredOptions.SauceOptions.AccessKey.Should().NotBeNullOrEmpty();
         }
         [TestMethod]
         public void Start_WithChrome_SetsChromeBrowser()
@@ -72,28 +78,20 @@ namespace SimpleSauceTests
 
             SauceSession.Options.ConfiguredChromeOptions.BrowserVersion.Should().Be("72");
         }
+    }
+    public class Root
+    {
+        public string BrowserName { get; set; }
+        public string BrowserVersion { get; set; }
+        public string PlatformName { get; set; }
 
+        [JsonProperty("sauce:options")]
+        public Options SauceOptions { get; set; }
+    }
 
-        //[TestMethod]
-        //public void Start_WithEdge15_SetsCorrectOptions()
-        //{
-        //    string json = @"{
-        //     'browserName': 'MicrosoftEdge',
-        //        'browserVersion': '15.15063',
-        //     'sauce:options': {
-        //            'username': 'nikolay-a',
-        //      'accessKey': '3c9c7da6-9264-4b46-8aae-8f3806a1e645'
-        //        }
-        //    }";
-        //    JObject expectedEdgeOptions = JObject.Parse(json);
-        //    SauceOptions = new SauceOptions();
-        //    SauceOptions.WithEdge(EdgeVersion._15);
-        //    var dummyManager = new Mock<ISauceRemoteDriver>();
-        //    SauceSession = new SauceSession(SauceOptions, dummyManager.Object);
-
-        //    SauceSession.Start();
-
-        //    SauceSession.Options.EdgeOptions.Should().BeSameAs(expectedEdgeOptions);
-        //}
+    public class Options
+    {
+        public string Username { get; set; }
+        public string AccessKey { get; set; }
     }
 }

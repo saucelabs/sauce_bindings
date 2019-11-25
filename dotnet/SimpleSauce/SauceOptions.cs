@@ -32,7 +32,6 @@ namespace SimpleSauce
                 PlatformName = DefaultPlatform       
             };
         }
-
         public void WithChrome()
         {
             ConfiguredChromeOptions = new ChromeOptions()

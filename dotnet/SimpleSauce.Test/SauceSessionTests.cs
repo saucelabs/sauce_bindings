@@ -25,6 +25,12 @@ namespace SimpleSauceTests
             SauceSession.DriverImplementation.Should().BeOfType(typeof(SauceDriver));
         }
         [TestMethod]
+        public void SauceSession_NoConstructorParam_OptionsInitialized()
+        {
+            SauceSession = new SauceSession();
+            Assert.IsNotNull(SauceSession.Options);
+        }
+        [TestMethod]
         public void GetDataCenter_Default_IsWest()
         {
             SauceSession = new SauceSession();

@@ -40,6 +40,18 @@ namespace SimpleSauceTests
             SauceSession.Options.ConfiguredChromeOptions.Should().NotBeNull();
         }
         [TestMethod]
+        public void Start_Default_SetsSauceOptionsTag()
+        {
+            SauceSession = new SauceSession(_dummyDriver.Object);
+
+            SauceSession.Start();
+
+            var optionsString = SauceSession.Options.ConfiguredChromeOptions.ToString();
+            var configuredOptions = JsonConvert.DeserializeObject<Root>(optionsString);
+            configuredOptions.SauceOptions.Username.Should().NotBeNullOrEmpty();
+            configuredOptions.SauceOptions.AccessKey.Should().NotBeNullOrEmpty();
+        }
+        [TestMethod]
         public void Start_WithEdge_SetsEdgeBrowser()
         {
             SauceOptions = new SauceOptions();

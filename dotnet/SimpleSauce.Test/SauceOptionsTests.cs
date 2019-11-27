@@ -2,9 +2,8 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
-using SimpleSauce;
 
-namespace SimpleSauceTests
+namespace SimpleSauce.Test
 {
     [TestClass]
     public class SauceOptionsTests : BaseTest

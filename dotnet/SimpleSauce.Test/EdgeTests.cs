@@ -1,10 +1,9 @@
-using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SimpleSauce;
 using System;
 using System.Collections.Generic;
+using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace SimpleSauceTests
+namespace SimpleSauce.Test
 {
     [TestClass]
     public class EdgeTests : BaseTest

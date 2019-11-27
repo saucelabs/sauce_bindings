@@ -2,11 +2,8 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using OpenQA.Selenium.Edge;
-using SimpleSauce;
 
-namespace SimpleSauceTests
+namespace SimpleSauce.Test
 {
     [TestClass]
     public class SauceSessionTests : BaseTest

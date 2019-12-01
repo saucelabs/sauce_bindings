@@ -1,7 +1,5 @@
 package com.saucelabs.simplesauce;
 
-import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
-import com.saucelabs.simplesauce.interfaces.SauceRemoteDriver;
 import org.junit.Before;
 import org.junit.Test;
 

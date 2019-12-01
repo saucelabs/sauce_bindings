@@ -1,18 +1,20 @@
 package com.saucelabs.simplesauce;
 
-import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
-import com.saucelabs.simplesauce.interfaces.SauceRemoteDriver;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.openqa.selenium.MutableCapabilities;
+
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.SessionId;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class SauceSessionTest {
-
-
+    //TODO duplication in 3 classes, excluding DataCenterTest
     private SauceSession sauce;
     private EnvironmentManager dummyEnvironmentManager;
     private SauceRemoteDriver dummyRemoteDriver;
@@ -30,6 +32,7 @@ public class SauceSessionTest {
 
         sauce.start();
     }
+
     @Test
     public void sauceSession_defaultSauceOptions_returnsChromeBrowser() {
         options = new SauceOptions();
@@ -37,29 +40,32 @@ public class SauceSessionTest {
 
         sauce = new SauceSession(options, dummyRemoteDriver, dummyEnvironmentManager);
         sauce.start();
-        String actualBrowser = sauce.currentSessionCapabilities.getCapability("browserName").toString();
-        assertEquals("Chrome", actualBrowser);
+        String actualBrowser = sauce.getCurrentSessionCapabilities().getCapability("browserName").toString();
+        assertEquals("chrome", actualBrowser);
     }
+
     @Test
     public void startSession_defaultConfig_usWestDataCenter() {
-        String expectedDataCenterUrl = DataCenter.USWest;
-        assertEquals(expectedDataCenterUrl, sauce.sauceDataCenter);
+        String expectedDataCenterUrl = DataCenter.US_WEST.getEndpoint();
+        assertEquals(expectedDataCenterUrl, sauce.getSauceDataCenter());
     }
+
     @Test
-    public void getUserName_usernameSetInEnvironmentVariable_returnsValue()  {
+    public void getUserName_usernameSetInEnvironmentVariable_returnsValue() {
         when(dummyEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
         String actualUserName = sauce.getUserName();
         assertNotEquals("",actualUserName);
     }
+
     @Test
     public void getAccessKey_keySetInEnvironmentVariable_returnsValue() {
         when(dummyEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
         String actualAccessKey = sauce.getAccessKey();
         assertNotEquals("", actualAccessKey);
     }
+
     @Test
-    public void defaultConstructor_instantiated_setsConcreteDriverManager()
-    {
+    public void defaultConstructor_instantiated_setsConcreteDriverManager() {
         SauceSession concreteSauceSession = new SauceSession();
         assertTrue(concreteSauceSession.getDriverManager() instanceof SauceDriverImpl);
     }
@@ -67,51 +73,59 @@ public class SauceSessionTest {
     @Test
     public void startSession_setsBrowserKey() {
         String expectedBrowserCapabilityKey = "browserName";
-        String actualBrowser = sauce.currentSessionCapabilities.getCapability(expectedBrowserCapabilityKey).toString();
+        String actualBrowser = sauce.getCurrentSessionCapabilities().getCapability(expectedBrowserCapabilityKey).toString();
         assertNotEquals("", actualBrowser);
     }
+
     @Test
     public void start_setsPlatformNameKey() {
         String correctPlatformKey = "platformName";
-        String browserSetInSauceSession = sauce.currentSessionCapabilities.getCapability(correctPlatformKey).toString();
+        String browserSetInSauceSession = sauce.getCurrentSessionCapabilities().getCapability(correctPlatformKey).toString();
         assertEquals("Windows 10", browserSetInSauceSession);
     }
+
     @Test
     public void defaultBrowserIsLatest() {
         String correctKey = "browserVersion";
-        String browserSetThroughSauceSession = sauce.currentSessionCapabilities.getCapability(correctKey).toString();
+        String browserSetThroughSauceSession = sauce.getCurrentSessionCapabilities().getCapability(correctKey).toString();
         assertEquals("latest", browserSetThroughSauceSession);
     }
+
     @Test
-    public void defaultIsChrome()
-    {
-        String actualBrowser = sauce.currentSessionCapabilities.getBrowserName();
-        assertEquals("Chrome", actualBrowser);
+    public void defaultIsChrome() {
+        String actualBrowser = sauce.getCurrentSessionCapabilities().getBrowserName();
+        assertEquals("chrome", actualBrowser);
     }
+
     @Test
     public void defaultIsWindows10() {
-        String actualOs = sauce.currentSessionCapabilities.getPlatform().name();
+        String actualOs = sauce.getCurrentSessionCapabilities().getPlatform().name();
         assertEquals("WIN10", actualOs);
     }
+
     @Test
     public void sauceOptions_defaultConfiguration_setsSauceOptions() {
-        boolean hasAccessKey = sauce.getSauceOptionsCapability().asMap().containsKey("accessKey");
-        assertTrue("You need to have Sauce Credentials set (SAUCE_USERNAME, SAUCE_ACCESSKEY) before this unit test will pass", hasAccessKey);
+        MutableCapabilities sauceOptions = (MutableCapabilities) sauce.getCurrentSessionCapabilities().getCapability("sauce:options");
+        String accessKey = (String) sauceOptions.getCapability("accessKey");
+        assertEquals("You need to have Sauce Credentials set (SAUCE_USERNAME, SAUCE_ACCESSKEY) before this unit test will pass", "accessKey", accessKey);
     }
+
     @Test
     public void sauceOptions_startWithChrome_startsChrome() {
+        dummyRemoteDriver = mock(SauceRemoteDriver.class);
         options = new SauceOptions();
         options.withChrome();
 
         sauce = new SauceSession(options, dummyRemoteDriver, dummyEnvironmentManager);
         sauce.start();
 
-        String actualBrowser = sauce.currentSessionCapabilities.getBrowserName();
-        assertEquals("Chrome", actualBrowser);
+        String actualBrowser = sauce.getCurrentSessionCapabilities().getBrowserName();
+        assertEquals("chrome", actualBrowser);
     }
+
     @Test
     public void stop_callsDriverQuit() {
-        WebDriver mockDriver = mock(WebDriver.class);
+        RemoteWebDriver mockDriver = mock(RemoteWebDriver.class);
 
         sauce.start();
         sauce.stop(mockDriver);

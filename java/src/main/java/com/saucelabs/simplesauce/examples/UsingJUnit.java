@@ -2,9 +2,10 @@ package com.saucelabs.simplesauce.examples;
 
 import com.saucelabs.simplesauce.SauceSession;
 import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 
 public class UsingJUnit {
@@ -30,7 +31,8 @@ public class UsingJUnit {
     }
 
     @Test
-    public void failingTest(){
+    @Ignore
+    public void failingTest() {
         driver.get("https://www.saucedemo.com");
 
         Assert.assertTrue(driver.getCurrentUrl().contains("Swag Labs"));

@@ -19,6 +19,7 @@ public class SauceSessionAcceptanceTest {
     {
         sauce.stop();
     }
+
     @Test
     public void sauceSession_defaultSauceOptions_startsRealSession() {
         SauceOptions options = new SauceOptions();
@@ -27,6 +28,7 @@ public class SauceSessionAcceptanceTest {
         String sessionId = ((RemoteWebDriver) webDriver).getSessionId().toString();
         assertFalse(sessionId.isEmpty());
     }
+
     @Test
     public void runTestOnWindows10() {
         SauceOptions options = new SauceOptions();
@@ -38,6 +40,7 @@ public class SauceSessionAcceptanceTest {
         //TODO why in the F is this returning XP even though in Sauce it shows Windows 10
         assertEquals("XP", actualOs);
     }
+
     @Test
     public void runTestOnFirefox() {
         SauceOptions options = new SauceOptions();
@@ -48,6 +51,7 @@ public class SauceSessionAcceptanceTest {
         String actualBrowser = getBrowserNameFromRemoteCapabilities();
         assertEquals("firefox", actualBrowser);
     }
+
     @Test
     public void withSafari_default_isMojave() {
         SauceOptions options = new SauceOptions();
@@ -58,6 +62,7 @@ public class SauceSessionAcceptanceTest {
         String actualPlatform = (((RemoteWebDriver) webDriver).getCapabilities()).getPlatform().toString();
         assertEquals("MAC", actualPlatform);
     }
+
     @Test
     public void withSafari_default_isBrowserVersion12_0() {
         SauceOptions options = new SauceOptions();

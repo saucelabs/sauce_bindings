@@ -1,6 +1,13 @@
 package com.saucelabs.simplesauce;
 
+import lombok.Getter;
+
 enum IEVersion {
-    ;
-    public static final String _11 = "11.285";
+    _11("11.285");
+
+    @Getter private final String version;
+
+    IEVersion(String version) {
+        this.version = version;
+    }
 }

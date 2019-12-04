@@ -1,5 +1,7 @@
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from datetime import datetime
+import os
 
 
 class SauceOptions():
@@ -9,14 +11,43 @@ class SauceOptions():
         self.browserVersion = 'latest'
         self.platformName = 'Windows 10'
 
-    def _set_default_w3c_options(self):
-        self.options = {}
         self.options['browserName'] = self.browserName
-        self.options['browserVersion'] = self.browserVersion
-        self.options['platformName'] = self.platformName
-        self.options['sauce:options'] = {}
+
+    def _set_default_w3c_options(self):
+        self.options['sauce:options']['browserName'] = self.browserName
+        self.options['sauce:options']['browserVersion'] = self.browserVersion
+        self.options['sauce:options']['platformName'] = self.platformName
+        self.options['sauce:options']['name'] = self._test_name
+        self.options['sauce:options']['build'] = self._sauce_build
+
+    def _set_default_build_name(self):
+        """Look CI build tag values first before defaulting to a generic timestamp-based value."""
+        self.build = 'Local execution: {}'.format(datetime.utcnow())
+
+        build_tags = [
+            "BUILD_NAME",
+            "BUILD_TAG",
+            "SAUCE_BAMBOO_BUILDNUMBER",
+            "TRAVIS_BUILD_ID",
+            "CIRCLE_BUILD_NUM",
+        ]
+
+        for b in build_tags:
+            if os.environ.get(b):
+                if 'TRAVIS' in b:
+                    self.build = "{}: {}".format(os.environ['TRAVIS_REPO_SLUG'], os.environ['TRAVIS_JOB_NUMBER'])
+                elif 'CIRCLE' in b:
+                    self.build = "{}: {}".format(os.environ['CIRCLE_JOB'], os.environ['CIRCLE_BUILD_NUM'])
+                else:
+                    self.build = b
 
     def __init__(self, browserName=None, browserVersion=None, platformName=None, options={}):
+        self.options = {}
+        self.options['sauce:options'] = {}
+
+        self._test_name = 'test'
+        self._set_default_build_name()
+
         self._set_defaults()
         self._set_default_w3c_options()
 
@@ -33,13 +64,41 @@ class SauceOptions():
         if platformName:
             self.parsePlatformName(platformName)
 
-    # TODO: create better parsing mechanisms for different capabilities.
+    @property
+    def name(self):
+        return self._test_name
+
+    @name.setter
+    def name(self, name):
+        self._test_name = name
+
+        self.options['sauce:options']['name'] = self._test_name
+
+    @property
+    def build(self):
+        return self._sauce_build
+
+    @build.setter
+    def build(self, build):
+        self._sauce_build = build
+
+        self.options['sauce:options']['name'] = self._sauce_build
+
+    def set_capability(self, key, val):
+        self.options[key] = val
+
+    def set_sauce_capability(self, key, val):
+        self.options['sauce:options'][key] = val
+
+    """TODO: create better parsing mechanisms for different capabilities."""
     def parseBrowserName(self, name):
-        if name.lower() == 'ie' or name.lower() == 'internet explorer':
+        name = name.lower()
+
+        if name == 'ie' or name == 'internet explorer':
             self.browserName = 'internet explorer'
-        elif name.lower() == 'edge':
+        elif name == 'edge':
             self.browserName = 'MicrosoftEdge'
-        elif name.lower() == 'safari':
+        elif name == 'safari':
             self.setMacOs()
         else:
             self.browserName = name

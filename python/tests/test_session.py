@@ -121,3 +121,28 @@ class TestStop(object):
         session.start()
 
         session.stop()
+
+
+class TestUpdateResult(object):
+
+    def test_passing_case(self):
+        session = SauceSession()
+
+        session.start()
+
+        session.stop(True)
+
+    def test_failing_case(self):
+        session = SauceSession()
+
+        session.start()
+
+        session.stop(False)
+
+    def test_update_method(self):
+        session = SauceSession()
+
+        session.start()
+
+        session.update_test_result(True)
+        session.stop()

@@ -1,9 +1,6 @@
-using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Edge;
 
 namespace SimpleSauce.Test
 {

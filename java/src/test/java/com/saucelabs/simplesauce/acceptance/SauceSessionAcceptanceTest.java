@@ -17,7 +17,7 @@ public class SauceSessionAcceptanceTest {
     @After
     public void cleanUp()
     {
-        sauce.stop(webDriver);
+        sauce.stop();
     }
     @Test
     public void sauceSession_defaultSauceOptions_startsRealSession() {

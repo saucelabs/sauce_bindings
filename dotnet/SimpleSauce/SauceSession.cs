@@ -1,25 +1,19 @@
-﻿using OpenQA.Selenium;
+﻿using System;
+using System.Collections.Generic;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
-using System;
-using System.Collections.Generic;
 
 namespace SimpleSauce
 {
     public class SauceSession
     {
-        public ChromeOptions ChromeOptions { get; private set; }
-        public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
-        public SauceOptions Options { get; }
-
-        public ISauceRemoteDriver DriverImplementation { get; set; }
-        public EdgeOptions EdgeOptions { get; set; }
-
         public SauceSession()
         {
             DriverImplementation = new SauceDriver();
             Options = new SauceOptions();
         }
+
         public SauceSession(ISauceRemoteDriver driver)
         {
             DriverImplementation = driver;
@@ -28,21 +22,28 @@ namespace SimpleSauce
 
         public SauceSession(SauceOptions options)
         {
-            this.Options = options;
+            Options = options;
             DriverImplementation = new SauceDriver();
         }
 
         public SauceSession(SauceOptions options, ISauceRemoteDriver driver)
         {
-            this.Options = options;
+            Options = options;
             DriverImplementation = driver;
         }
+
+        public ChromeOptions ChromeOptions { get; private set; }
+        public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
+        public SauceOptions Options { get; }
+
+        public ISauceRemoteDriver DriverImplementation { get; set; }
+        public EdgeOptions EdgeOptions { get; set; }
 
         public IWebDriver Start()
         {
             if (Options.ConfiguredEdgeOptions != null)
                 return CreateEdgeBrowser();
-            else if (Options.ConfiguredChromeOptions != null)
+            if (Options.ConfiguredChromeOptions != null)
                 return CreateChromeDriver();
             return DriverImplementation.CreateRemoteWebDriver(ChromeOptions);
         }

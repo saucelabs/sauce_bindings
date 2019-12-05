@@ -103,9 +103,11 @@ mvn install
 in the `java/` directory. This will allow you to import Simple Sauce as a Maven dependency in other local projects on your laptop as a snapshot of the state based on the commit that you build from. To add this reference via Maven, add
 
 ```xml
-<groupId>com.saucelabs</groupId>
-<artifactId>simple_sauce</artifactId>
-<version>1.0-SNAPSHOT</version>
+<dependency>
+    <groupId>com.saucelabs</groupId>
+    <artifactId>simple_sauce</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
 ```
 
 to other projects' `pom.xml` file to access Simple Sauce. Note that adding these coordinates to other Maven projects will get the latest `1.0-SNAPSHOT` version that was built, and so using these coordinates are recommended for development and not for general usage.

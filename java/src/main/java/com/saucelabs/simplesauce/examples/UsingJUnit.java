@@ -1,7 +1,11 @@
 package com.saucelabs.simplesauce.examples;
 
 import com.saucelabs.simplesauce.SauceSession;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 
 public class UsingJUnit {

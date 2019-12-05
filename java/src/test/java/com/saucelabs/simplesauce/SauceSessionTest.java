@@ -1,6 +1,5 @@
 package com.saucelabs.simplesauce;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -8,7 +7,6 @@ import org.openqa.selenium.MutableCapabilities;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.remote.SessionId;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -67,7 +65,7 @@ public class SauceSessionTest {
     @Test
     public void defaultConstructor_instantiated_setsConcreteDriverManager() {
         SauceSession concreteSauceSession = new SauceSession();
-        assertTrue(concreteSauceSession.getDriverManager() instanceof SauceDriverImpl);
+        assertTrue(concreteSauceSession.getSauceDriver() instanceof SauceDriverImpl);
     }
 
     @Test

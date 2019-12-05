@@ -25,7 +25,7 @@ public class SauceSession {
     //TODO 2 same variables being used differently
     private MutableCapabilities mutableCapabilities;
     @Getter private MutableCapabilities currentSessionCapabilities;
-    @Getter private final SauceRemoteDriver driverManager;
+    @Getter private final SauceRemoteDriver sauceDriver;
     @Getter private WebDriver webDriver;
 
     public MutableCapabilities getSauceOptionsCapability(){
@@ -34,13 +34,13 @@ public class SauceSession {
 
     public SauceSession() {
         currentSessionCapabilities = new MutableCapabilities();
-        driverManager = new SauceDriverImpl();
+        sauceDriver = new SauceDriverImpl();
         environmentManager = new EnvironmentManagerImpl();
         sauceOptions = new SauceOptions();
     }
 
     public SauceSession(SauceRemoteDriver remoteManager, EnvironmentManager environmentManager) {
-        driverManager = remoteManager;
+        sauceDriver = remoteManager;
         currentSessionCapabilities = new MutableCapabilities();
         this.environmentManager = environmentManager;
         sauceOptions = new SauceOptions();
@@ -50,12 +50,12 @@ public class SauceSession {
         sauceOptions = options;
         currentSessionCapabilities = new MutableCapabilities();
         environmentManager = new EnvironmentManagerImpl();
-        driverManager = new SauceDriverImpl();
+        sauceDriver = new SauceDriverImpl();
     }
 
     public SauceSession(SauceOptions options, SauceRemoteDriver remoteManager, EnvironmentManager environmentManager) {
         sauceOptions = options;
-        driverManager = remoteManager;
+        sauceDriver = remoteManager;
         currentSessionCapabilities = new MutableCapabilities();
         this.environmentManager = environmentManager;
     }
@@ -120,7 +120,7 @@ public class SauceSession {
 
     private void tryToCreateRemoteWebDriver(String sauceLabsUrl) {
         try {
-            webDriver = this.driverManager.createRemoteWebDriver(sauceLabsUrl, currentSessionCapabilities);
+            webDriver = this.sauceDriver.createRemoteWebDriver(sauceLabsUrl, currentSessionCapabilities);
         }
         catch (MalformedURLException e) {
             throw new InvalidArgumentException("Invalid URL");

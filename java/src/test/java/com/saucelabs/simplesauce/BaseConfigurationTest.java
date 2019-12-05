@@ -6,8 +6,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class BaseConfigurationTest {
-    SauceSession sauce;
-    SauceOptions sauceOptions;
+    protected SauceSession sauce;
+    protected SauceOptions sauceOptions;
     private SauceRemoteDriver dummyRemoteDriver;
     private EnvironmentManager dummyEnvironmentManager;
 

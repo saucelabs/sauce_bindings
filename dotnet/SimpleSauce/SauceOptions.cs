@@ -1,4 +1,5 @@
 ﻿using System;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 
 namespace SimpleSauce
@@ -7,22 +8,51 @@ namespace SimpleSauce
     {
         private readonly string DefaultBrowserVersion = "latest";
         private readonly string DefaultPlatform = "Windows 10";
-        public EdgeOptions EdgeOptions { get; set; }
 
-        public void WithEdge() => EdgeOptions = new EdgeOptions
+        public SauceOptions()
         {
-            BrowserVersion = DefaultBrowserVersion,
-            PlatformName = DefaultPlatform
-        };
+            WithChrome();
+        }
+
+        public EdgeOptions ConfiguredEdgeOptions { get; set; }
+        public ChromeOptions ConfiguredChromeOptions { get; private set; }
+
+        public void WithEdge()
+        {
+            ConfiguredEdgeOptions = new EdgeOptions
+            {
+                BrowserVersion = DefaultBrowserVersion,
+                PlatformName = DefaultPlatform
+            };
+        }
 
         public void WithEdge(EdgeVersion edgeVersion)
         {
             if (edgeVersion == null)
-                throw new ArgumentNullException("Please supply a valid EdgeVersion. You suplied an invalid value=>" + edgeVersion);
-            EdgeOptions = new EdgeOptions
+                throw new ArgumentNullException("Please supply a valid EdgeVersion. You suplied an invalid value=>" +
+                                                edgeVersion);
+            ConfiguredEdgeOptions = new EdgeOptions
             {
                 BrowserVersion = edgeVersion.Value,
-                PlatformName = DefaultPlatform       
+                PlatformName = DefaultPlatform
+            };
+        }
+
+        public void WithChrome()
+        {
+            ConfiguredChromeOptions = new ChromeOptions
+            {
+                BrowserVersion = DefaultBrowserVersion,
+                PlatformName = DefaultPlatform
+            };
+        }
+
+        public void WithChrome(string chromeVersion)
+        {
+            ConfiguredChromeOptions = new ChromeOptions
+            {
+                BrowserVersion = chromeVersion,
+                PlatformName = DefaultPlatform
             };
         }
     }

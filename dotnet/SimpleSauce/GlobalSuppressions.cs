@@ -3,4 +3,8 @@
 // Project-level suppressions either have no target or are given
 // a specific target and scoped to a namespace, type, member, etc.
 
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "<Pending>", Scope = "member", Target = "~P:SimpleSauce.EdgeVersion._18")]
+using System.Diagnostics.CodeAnalysis;
+
+[assembly:
+    SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "<Pending>",
+        Scope = "member", Target = "~P:SimpleSauce.EdgeVersion._18")]

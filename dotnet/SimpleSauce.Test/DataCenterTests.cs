@@ -1,8 +1,7 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SimpleSauce;
 
-namespace SimpleSauceTests
+namespace SimpleSauce.Test
 {
     [TestClass]
     public class DataCenterTests

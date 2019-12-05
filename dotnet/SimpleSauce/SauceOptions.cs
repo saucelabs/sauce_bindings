@@ -1,13 +1,14 @@
 ﻿using System;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
+using OpenQA.Selenium.Safari;
 
 namespace SimpleSauce
 {
     public class SauceOptions
     {
-        private readonly string DefaultBrowserVersion = "latest";
-        private readonly string DefaultPlatform = "Windows 10";
+        private const string DefaultBrowserVersion = "latest";
+        private const string DefaultPlatform = "Windows 10";
 
         public SauceOptions()
         {
@@ -55,5 +56,16 @@ namespace SimpleSauce
                 PlatformName = DefaultPlatform
             };
         }
+
+        public void WithSafari()
+        {
+            ConfiguredSafariOptions = new SafariOptions
+            {
+                BrowserVersion = DefaultBrowserVersion,
+                PlatformName = DefaultPlatform
+            };
+        }
+
+        public SafariOptions ConfiguredSafariOptions { get; set; }
     }
 }

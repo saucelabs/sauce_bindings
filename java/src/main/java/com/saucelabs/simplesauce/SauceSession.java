@@ -136,11 +136,6 @@ public class SauceSession {
             throw new InvalidArgumentException("Invalid URL");
         }
     }
-    public void stop(WebDriver driver)
-    {
-        if(driver != null)
-            driver.quit();
-    }
     public void stop() {
         if(webDriver !=null)
             webDriver.quit();

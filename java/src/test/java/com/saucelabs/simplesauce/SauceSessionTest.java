@@ -109,23 +109,14 @@ public class SauceSessionTest {
         String actualBrowser = sauce.currentSessionCapabilities.getBrowserName();
         assertEquals("Chrome", actualBrowser);
     }
-    @Test
-    public void stop_callsDriverQuit() {
-        WebDriver mockDriver = mock(WebDriver.class);
+    @Test(expected = NullPointerException.class)
+    public void stop_newWebDriverInstanceSetByStart_stopsSession() {
+        sauce = new SauceSession(dummyRemoteDriver, dummyEnvironmentManager);
 
-        sauce.start();
-        sauce.stop(mockDriver);
+        WebDriver driver = sauce.start();
+        sauce.stop();
 
-        verify(mockDriver).quit();
-    }
-    @Test
-    public void stop_driverNull_doesntCallDriverQuit() {
-        WebDriver mockDriver = mock(WebDriver.class);
-
-        sauce.start();
-        sauce.stop(null);
-
-        verify(mockDriver, times(0)).quit();
+        driver.quit();
     }
     @Test
     @Ignore("Not sure how to make this work with Mockito. To make sure that the .quit() is actually called on the webDriver")

@@ -8,8 +8,20 @@ require:
 Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
 
+Metrics/BlockLength:
+  Exclude:
+    - "**/*_spec.rb"
+
 Metrics/LineLength:
   Max: 120
+
+Metrics/MethodLength:
+  Max: 13
+
+Metrics/ModuleLength:
+  CountComments: false
+  Exclude:
+    - 'spec/**/*'
 
 Style/Documentation:
   Enabled: false
@@ -19,3 +31,6 @@ RSpec/ExampleLength:
 
 RSpec/MultipleExpectations:
   Enabled: false
+
+RSpec/DescribedClass:
+  EnforcedStyle: explicit

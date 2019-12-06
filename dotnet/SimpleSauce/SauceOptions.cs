@@ -17,6 +17,7 @@ namespace SimpleSauce
 
         public EdgeOptions ConfiguredEdgeOptions { get; set; }
         public ChromeOptions ConfiguredChromeOptions { get; private set; }
+        public SafariOptions ConfiguredSafariOptions { get; set; }
 
         public void WithEdge()
         {
@@ -65,6 +66,7 @@ namespace SimpleSauce
                 PlatformName = DefaultPlatform
             };
         }
+
         public void WithSafari(string safariVersion)
         {
             ConfiguredSafariOptions = new SafariOptions
@@ -73,6 +75,5 @@ namespace SimpleSauce
                 PlatformName = DefaultPlatform
             };
         }
-        public SafariOptions ConfiguredSafariOptions { get; set; }
     }
 }

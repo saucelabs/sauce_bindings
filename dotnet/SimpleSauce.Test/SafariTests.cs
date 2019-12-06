@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -31,11 +29,6 @@ namespace SimpleSauce.Test
             var expectedSafariVersion = "12";
             SauceOptions.WithSafari(expectedSafariVersion);
             SauceOptions.ConfiguredSafariOptions.BrowserVersion.Should().Be(expectedSafariVersion);
-        }
-        [TestMethod]
-        public void WithEdge_NullBrowserVersion_ThrowsException()
-        {
-            Assert.ThrowsException<ArgumentNullException>(() => SauceOptions.WithEdge(null));
         }
     }
 }

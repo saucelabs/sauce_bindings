@@ -55,7 +55,7 @@ namespace SimpleSauce.Test
             configuredOptions.SauceOptions.AccessKey.Should().NotBeNullOrEmpty();
         }
         [TestMethod]
-        public void Start_WithEdge_SetsEdgeBrowser()
+        public void Start_WithEdge_SetsEdgeOptions()
         {
             SauceOptions = new SauceOptions();
             SauceOptions.WithEdge();
@@ -64,6 +64,20 @@ namespace SimpleSauce.Test
             SauceSession.Start();
 
             SauceSession.Options.ConfiguredEdgeOptions.Should().NotBeNull("because we set SauceSession to run withEdge()");
+
+            var edgeOptionsString = SauceSession.Options.ConfiguredEdgeOptions.ToString();
+            var configuredOptions = JsonConvert.DeserializeObject<Root>(edgeOptionsString);
+            configuredOptions.SauceOptions.Username.Should().NotBeNullOrEmpty();
+            configuredOptions.SauceOptions.AccessKey.Should().NotBeNullOrEmpty();
+        }
+        [TestMethod]
+        public void Start_WithEdge_SetsUsernameAndAccessKey()
+        {
+            SauceOptions = new SauceOptions();
+            SauceOptions.WithEdge();
+            SauceSession = new SauceSession(SauceOptions, _dummyDriver.Object);
+
+            SauceSession.Start();
 
             var edgeOptionsString = SauceSession.Options.ConfiguredEdgeOptions.ToString();
             var configuredOptions = JsonConvert.DeserializeObject<Root>(edgeOptionsString);

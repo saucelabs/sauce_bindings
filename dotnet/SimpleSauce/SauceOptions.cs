@@ -2,7 +2,6 @@
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Safari;
-using SimpleSauce.Test;
 
 namespace SimpleSauce
 {

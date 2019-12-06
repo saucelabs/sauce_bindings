@@ -9,7 +9,6 @@ using OpenQA.Selenium.Remote;
 namespace SimpleSauce.Test
 {
     [TestClass]
-    [Ignore]
     public class AcceptanceTests
     {
         private Dictionary<string, object> sauceOptions;
@@ -83,6 +82,16 @@ namespace SimpleSauce.Test
             var driver = session.Start();
             var capabilities = ((RemoteWebDriver)driver).Capabilities;
             capabilities.GetCapability("browserName").Should().Be("MicrosoftEdge");
+        }
+        [TestMethod]
+        public void RunTestWithSafariDefault()
+        {
+            var options = new SauceOptions();
+            options.WithSafari();
+            var session = new SauceSession(options);
+            var driver = session.Start();
+            var capabilities = ((RemoteWebDriver)driver).Capabilities;
+            capabilities.GetCapability("browserName").Should().Be("Safari");
         }
     }
 }

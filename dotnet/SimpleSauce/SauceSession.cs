@@ -57,7 +57,7 @@ namespace SimpleSauce
             };
 
             Options.ConfiguredSafariOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
-            return DriverImplementation.CreateRemoteWebDriver(Options.ConfiguredChromeOptions);
+            return DriverImplementation.CreateRemoteWebDriver(Options.ConfiguredSafariOptions);
         }
 
         private IWebDriver CreateChromeDriver()

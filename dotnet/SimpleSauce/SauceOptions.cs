@@ -2,6 +2,7 @@
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Safari;
+using SimpleSauce.Test;
 
 namespace SimpleSauce
 {
@@ -63,7 +64,7 @@ namespace SimpleSauce
             ConfiguredSafariOptions = new SafariOptions
             {
                 BrowserVersion = DefaultBrowserVersion,
-                PlatformName = DefaultPlatform
+                PlatformName = Platforms.MacOsMojave.Value
             };
         }
 

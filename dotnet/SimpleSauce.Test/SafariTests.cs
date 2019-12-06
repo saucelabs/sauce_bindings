@@ -26,13 +26,13 @@ namespace SimpleSauce.Test
             SauceOptions.ConfiguredSafariOptions.BrowserVersion.Should().Be("latest");
         }
         [TestMethod]
-        [DynamicData(nameof(PossibleEdgeConfigurations), typeof(EdgeTests))]
-        public void WithEdge_SetVersion_SetsCorrectVersion(string expectedVersion, EdgeVersion edgeVersion)
+        [DynamicData(nameof(PossibleSafariOptions), typeof(EdgeTests))]
+        public void WithSafari_SetVersion_SetsCorrectVersion(string expectedVersion, SafariVersion safariVersion)
         {
-            SauceOptions.WithEdge(edgeVersion);
-            SauceOptions.ConfiguredEdgeOptions.BrowserVersion.Should().Be(expectedVersion);
+            SauceOptions.WithSafari(safariVersion);
+            SauceOptions.ConfiguredSafariOptions.BrowserVersion.Should().Be(expectedVersion);
         }
-        public static IEnumerable<object[]> PossibleEdgeConfigurations => new[]
+        public static IEnumerable<object[]> PossibleSafariOptions => new[]
         {
             new object[] {"18.17763", EdgeVersion._18 },
             new object[] {"17.17134", EdgeVersion._17 },

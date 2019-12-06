@@ -39,7 +39,7 @@ namespace SimpleSauce.Test
             new object[] {"16.16299", EdgeVersion._16 },
             new object[] {"15.15063", EdgeVersion._15 },
             new object[] {"14.14393", EdgeVersion._14 },
-            new object[] { "13.10586", EdgeVersion._13 },
+            new object[] { "13.10586", EdgeVersion._13 }
         };
 
         [TestMethod]

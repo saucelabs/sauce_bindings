@@ -26,11 +26,11 @@ namespace SimpleSauce.Test
             SauceOptions.ConfiguredSafariOptions.BrowserVersion.Should().Be("latest");
         }
         [TestMethod]
-        public void WithSafari_UpdatedVersion_SetsCorrectVersion()
+        public void WithSafari_InvalidVersion_ThrowsException()
         {
-            var expectedSafariVersion = "12";
-            SauceOptions.WithSafari(expectedSafariVersion);
-            SauceOptions.ConfiguredSafariOptions.BrowserVersion.Should().Be(expectedSafariVersion);
+            var invalidSafariVersion = "BadVersion";
+            Assert.ThrowsException<IncorrectSafariVersionException>(
+                () => SauceOptions.WithSafari(invalidSafariVersion));
         }
         [TestMethod]
         public void WithSafari_UpdatedVersion_SetsCorrectPlatform()

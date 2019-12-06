@@ -11,6 +11,9 @@ namespace SimpleSauce.Test
     public class SauceSessionTests : BaseTest
     {
         private Mock<ISauceRemoteDriver> _dummyDriver;
+        private string _browserOptionsSetInSauceJson;
+        private Root _browserOptionsSetInSauce;
+
         [TestInitialize]
         public void Setup()
         {
@@ -57,22 +60,6 @@ namespace SimpleSauce.Test
             configuredOptions.SauceOptions.AccessKey.Should().NotBeNullOrEmpty();
         }
         [TestMethod]
-        public void Start_WithEdge_SetsEdgeOptions()
-        {
-            SauceOptions = new SauceOptions();
-            SauceOptions.WithEdge();
-            SauceSession = new SauceSession(SauceOptions, _dummyDriver.Object);
-
-            SauceSession.Start();
-
-            SauceSession.Options.ConfiguredEdgeOptions.Should().NotBeNull("because we set SauceSession to run withEdge()");
-
-            var edgeOptionsString = SauceSession.Options.ConfiguredEdgeOptions.ToString();
-            var configuredOptions = JsonConvert.DeserializeObject<Root>(edgeOptionsString);
-            configuredOptions.SauceOptions.Username.Should().NotBeNullOrEmpty();
-            configuredOptions.SauceOptions.AccessKey.Should().NotBeNullOrEmpty();
-        }
-        [TestMethod]
         public void Start_WithEdge_SetsUsernameAndAccessKey()
         {
             SauceOptions = new SauceOptions();
@@ -81,13 +68,12 @@ namespace SimpleSauce.Test
 
             SauceSession.Start();
 
-            var edgeOptionsString = SauceSession.Options.ConfiguredEdgeOptions.ToString();
-            var configuredOptions = JsonConvert.DeserializeObject<Root>(edgeOptionsString);
-            configuredOptions.SauceOptions.Username.Should().NotBeNullOrEmpty();
-            configuredOptions.SauceOptions.AccessKey.Should().NotBeNullOrEmpty();
+            _browserOptionsSetInSauceJson = SauceSession.Options.ConfiguredEdgeOptions.ToString();
+            _browserOptionsSetInSauce = DeserializeToObject(_browserOptionsSetInSauceJson);
+            AssertUsernameAndAccessKeyExist(_browserOptionsSetInSauce);
         }
         [TestMethod]
-        public void Start_WithChrome_SetsAdditionalSauceOptions()
+        public void Start_WithChrome_SetsUsernameAndAccessKey()
         {
             SauceOptions = new SauceOptions();
             SauceOptions.WithChrome();
@@ -95,10 +81,9 @@ namespace SimpleSauce.Test
 
             SauceSession.Start();
 
-            var browserOptions = SauceSession.Options.ConfiguredChromeOptions.ToString();
-            var configuredSauceOptions = JsonConvert.DeserializeObject<Root>(browserOptions);
-            configuredSauceOptions.SauceOptions.Username.Should().NotBeNullOrEmpty();
-            configuredSauceOptions.SauceOptions.AccessKey.Should().NotBeNullOrEmpty();
+            _browserOptionsSetInSauceJson = SauceSession.Options.ConfiguredChromeOptions.ToString();
+            _browserOptionsSetInSauce = DeserializeToObject(_browserOptionsSetInSauceJson);
+            AssertUsernameAndAccessKeyExist(_browserOptionsSetInSauce);
         }
         [TestMethod]
         public void Start_WithChromeVersionSet_CreatesCorrectDriver()
@@ -112,7 +97,7 @@ namespace SimpleSauce.Test
             SauceSession.Options.ConfiguredChromeOptions.BrowserVersion.Should().Be("72");
         }
         [TestMethod]
-        public void Start_WithSafari_SetsSafariBrowser()
+        public void Start_WithSafari_SetsUsernameAndAccessKey()
         {
             SauceOptions = new SauceOptions();
             SauceOptions.WithSafari();
@@ -120,9 +105,9 @@ namespace SimpleSauce.Test
 
             SauceSession.Start();
 
-            var browserOptions = SauceSession.Options.ConfiguredSafariOptions.ToString();
-            var configuredSauceOptions = DeserializeToObject(browserOptions);
-            AssertUsernameAndAccessKeyExist(configuredSauceOptions);
+            _browserOptionsSetInSauceJson = SauceSession.Options.ConfiguredSafariOptions.ToString();
+            _browserOptionsSetInSauce = DeserializeToObject(_browserOptionsSetInSauceJson);
+            AssertUsernameAndAccessKeyExist(_browserOptionsSetInSauce);
         }
         private static Root DeserializeToObject(string browserOptions)
         {

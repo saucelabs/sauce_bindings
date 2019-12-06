@@ -54,10 +54,9 @@ namespace SimpleSauce.Test
 
             SauceSession.Start();
 
-            var optionsString = SauceSession.Options.ConfiguredChromeOptions.ToString();
-            var configuredOptions = JsonConvert.DeserializeObject<Root>(optionsString);
-            configuredOptions.SauceOptions.Username.Should().NotBeNullOrEmpty();
-            configuredOptions.SauceOptions.AccessKey.Should().NotBeNullOrEmpty();
+            _browserOptionsSetInSauceJson = SauceSession.Options.ConfiguredEdgeOptions.ToString();
+            _browserOptionsSetInSauce = DeserializeToObject(_browserOptionsSetInSauceJson);
+            AssertUsernameAndAccessKeyExist(_browserOptionsSetInSauce);
         }
         [TestMethod]
         public void Start_WithEdge_SetsUsernameAndAccessKey()
@@ -109,6 +108,9 @@ namespace SimpleSauce.Test
             _browserOptionsSetInSauce = DeserializeToObject(_browserOptionsSetInSauceJson);
             AssertUsernameAndAccessKeyExist(_browserOptionsSetInSauce);
         }
+        //TODO need a test that will validate that
+        //DriverImplementation.CreateRemoteWebDriver(Options.ConfiguredSafariOptions);
+        //Calls the correct Options property on each of the Create driver methods
         private static Root DeserializeToObject(string browserOptions)
         {
             return JsonConvert.DeserializeObject<Root>(browserOptions);
@@ -118,7 +120,6 @@ namespace SimpleSauce.Test
             configuredSauceOptions.SauceOptions.Username.Should().NotBeNullOrEmpty();
             configuredSauceOptions.SauceOptions.AccessKey.Should().NotBeNullOrEmpty();
         }
-
 
     }
     public class Root

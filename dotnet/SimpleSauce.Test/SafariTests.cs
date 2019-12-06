@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Microsoft.DotNet.PlatformAbstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SimpleSauce.Test
@@ -12,10 +13,10 @@ namespace SimpleSauce.Test
             SauceOptions = new SauceOptions();
         }
         [TestMethod]
-        public void WithSafari_DefaultPlatform_Windows10()
+        public void WithSafari_DefaultPlatform_Mojave()
         {
             SauceOptions.WithSafari();
-            SauceOptions.ConfiguredSafariOptions.PlatformName.Should().Be("Windows 10");
+            SauceOptions.ConfiguredSafariOptions.PlatformName.Should().Be(Platforms.MacOsMojave.Value);
         }
         [TestMethod]
         public void WithSafari_DefaultBrowserVersion_latest()

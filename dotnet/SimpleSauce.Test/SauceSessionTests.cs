@@ -85,7 +85,7 @@ namespace SimpleSauce.Test
             configuredOptions.SauceOptions.AccessKey.Should().NotBeNullOrEmpty();
         }
         [TestMethod]
-        public void Start_WithChrome_SetsChromeBrowser()
+        public void Start_WithChrome_SetsAdditionalSauceOptions()
         {
             SauceOptions = new SauceOptions();
             SauceOptions.WithChrome();
@@ -93,8 +93,10 @@ namespace SimpleSauce.Test
 
             SauceSession.Start();
 
-            SauceSession.Options.ConfiguredChromeOptions.Should().
-                NotBeNull("we passed in options configured with Chrome, hence ChromeOptions should be set.");
+            var browserOptions = SauceSession.Options.ConfiguredChromeOptions.ToString();
+            var configuredSauceOptions = JsonConvert.DeserializeObject<Root>(browserOptions);
+            configuredSauceOptions.SauceOptions.Username.Should().NotBeNullOrEmpty();
+            configuredSauceOptions.SauceOptions.AccessKey.Should().NotBeNullOrEmpty();
         }
         [TestMethod]
         public void Start_WithChromeVersionSet_CreatesCorrectDriver()
@@ -106,6 +108,21 @@ namespace SimpleSauce.Test
             SauceSession.Start();
 
             SauceSession.Options.ConfiguredChromeOptions.BrowserVersion.Should().Be("72");
+        }
+        [TestMethod]
+        public void Start_WithSafari_SetsSafariBrowser()
+        {
+            SauceOptions = new SauceOptions();
+            SauceOptions.WithSafari();
+            SauceSession = new SauceSession(SauceOptions, _dummyDriver.Object);
+
+            SauceSession.Start();
+
+            var browserOptions = SauceSession.Options.ConfiguredSafariOptions.ToString();
+            var configuredSauceOptions = JsonConvert.DeserializeObject<Root>(browserOptions);
+            //TODO see if I can figure out a way to just check that configuredSauceOptions has the right amount
+            configuredSauceOptions.SauceOptions.Username.Should().NotBeNullOrEmpty();
+            configuredSauceOptions.SauceOptions.AccessKey.Should().NotBeNullOrEmpty();
         }
     }
     public class Root

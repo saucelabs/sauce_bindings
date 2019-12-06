@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Edge;
 
 namespace SimpleSauce
 {
@@ -37,15 +36,28 @@ namespace SimpleSauce
         public SauceOptions Options { get; }
 
         public ISauceRemoteDriver DriverImplementation { get; set; }
-        public EdgeOptions EdgeOptions { get; set; }
 
         public IWebDriver Start()
         {
             if (Options.ConfiguredEdgeOptions != null)
                 return CreateEdgeBrowser();
-            if (Options.ConfiguredChromeOptions != null)
-                return CreateChromeDriver();
-            return DriverImplementation.CreateRemoteWebDriver(ChromeOptions);
+            if (Options.ConfiguredSafariOptions != null)
+                return CreateSafariDriver();
+            return CreateChromeDriver();
+        }
+
+        private IWebDriver CreateSafariDriver()
+        {
+            var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
+            var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
+            var sauceConfiguration = new Dictionary<string, object>
+            {
+                ["username"] = sauceUserName,
+                ["accessKey"] = sauceAccessKey
+            };
+
+            Options.ConfiguredSafariOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
+            return DriverImplementation.CreateRemoteWebDriver(Options.ConfiguredChromeOptions);
         }
 
         private IWebDriver CreateChromeDriver()

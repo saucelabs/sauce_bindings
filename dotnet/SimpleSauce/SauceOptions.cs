@@ -72,7 +72,9 @@ namespace SimpleSauce
             ConfiguredSafariOptions = new SafariOptions
             {
                 BrowserVersion = safariVersion,
-                PlatformName = DefaultPlatform
+                //TODO temporarily fine, but I need the logic to determine what
+                //version is running and then set the correct PlatformName
+                PlatformName = Platforms.MacOsMojave.Value
             };
         }
     }

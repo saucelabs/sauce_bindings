@@ -8,17 +8,20 @@ namespace SimpleSauce.Test
     [TestClass]
     public class EdgeTests : BaseTest
     {
+        [TestInitialize]
+        public void Setup()
+        {
+            SauceOptions = new SauceOptions();
+        }
         [TestMethod]
         public void WithEdge_DefaultPlatform_Windows10()
         {
-            SauceOptions = new SauceOptions();
             SauceOptions.WithEdge();
             SauceOptions.ConfiguredEdgeOptions.PlatformName.Should().Be("Windows 10");
         }
         [TestMethod]
         public void WithEdge_DefaultBrowserVersion_latest()
         {
-            SauceOptions = new SauceOptions();
             SauceOptions.WithEdge();
             SauceOptions.ConfiguredEdgeOptions.BrowserVersion.Should().Be("latest");
         }
@@ -26,7 +29,6 @@ namespace SimpleSauce.Test
         [DynamicData(nameof(PossibleEdgeConfigurations), typeof(EdgeTests))]
         public void WithEdge_SetVersion_SetsCorrectVersion(string expectedVersion, EdgeVersion edgeVersion)
         {
-            SauceOptions = new SauceOptions();
             SauceOptions.WithEdge(edgeVersion);
             SauceOptions.ConfiguredEdgeOptions.BrowserVersion.Should().Be(expectedVersion);
         }
@@ -43,7 +45,6 @@ namespace SimpleSauce.Test
         [TestMethod]
         public void WithEdge_NullBrowserVersion_ThrowsException()
         {
-            SauceOptions = new SauceOptions();
             Assert.ThrowsException<ArgumentNullException>(() => SauceOptions.WithEdge(null));
         }
     }

@@ -11,8 +11,6 @@ namespace SimpleSauce.Test
     public class SauceSessionTests : BaseTest
     {
         private Mock<ISauceRemoteDriver> _dummyDriver;
-        private string _browserOptionsSetInSauceJson;
-        private Root _browserOptionsSetInSauce;
 
         [TestInitialize]
         public void Setup()
@@ -54,9 +52,9 @@ namespace SimpleSauce.Test
 
             SauceSession.Start();
 
-            _browserOptionsSetInSauceJson = SauceSession.Options.ConfiguredChromeOptions.ToString();
-            _browserOptionsSetInSauce = DeserializeToObject(_browserOptionsSetInSauceJson);
-            AssertUsernameAndAccessKeyExist(_browserOptionsSetInSauce);
+            var browserOptionsSetInSauceJson = SauceSession.Options.ConfiguredChromeOptions.ToString();
+            var browserOptionsSetInSauce = DeserializeToObject(browserOptionsSetInSauceJson);
+            AssertUsernameAndAccessKeyExist(browserOptionsSetInSauce);
         }
         [TestMethod]
         public void Start_WithEdge_SetsUsernameAndAccessKey()
@@ -67,9 +65,9 @@ namespace SimpleSauce.Test
 
             SauceSession.Start();
 
-            _browserOptionsSetInSauceJson = SauceSession.Options.ConfiguredEdgeOptions.ToString();
-            _browserOptionsSetInSauce = DeserializeToObject(_browserOptionsSetInSauceJson);
-            AssertUsernameAndAccessKeyExist(_browserOptionsSetInSauce);
+            var browserOptionsSetInSauceJson = SauceSession.Options.ConfiguredEdgeOptions.ToString();
+            var browserOptionsSetInSauce = DeserializeToObject(browserOptionsSetInSauceJson);
+            AssertUsernameAndAccessKeyExist(browserOptionsSetInSauce);
         }
         [TestMethod]
         public void Start_WithChrome_SetsUsernameAndAccessKey()
@@ -80,9 +78,9 @@ namespace SimpleSauce.Test
 
             SauceSession.Start();
 
-            _browserOptionsSetInSauceJson = SauceSession.Options.ConfiguredChromeOptions.ToString();
-            _browserOptionsSetInSauce = DeserializeToObject(_browserOptionsSetInSauceJson);
-            AssertUsernameAndAccessKeyExist(_browserOptionsSetInSauce);
+            var browserOptionsSetInSauceJson = SauceSession.Options.ConfiguredChromeOptions.ToString();
+            var browserOptionsSetInSauce = DeserializeToObject(browserOptionsSetInSauceJson);
+            AssertUsernameAndAccessKeyExist(browserOptionsSetInSauce);
         }
         [TestMethod]
         public void Start_WithChromeVersionSet_CreatesCorrectDriver()
@@ -104,9 +102,9 @@ namespace SimpleSauce.Test
 
             SauceSession.Start();
 
-            _browserOptionsSetInSauceJson = SauceSession.Options.ConfiguredSafariOptions.ToString();
-            _browserOptionsSetInSauce = DeserializeToObject(_browserOptionsSetInSauceJson);
-            AssertUsernameAndAccessKeyExist(_browserOptionsSetInSauce);
+            var browserOptionsSetInSauceJson = SauceSession.Options.ConfiguredSafariOptions.ToString();
+            var browserOptionsSetInSauce = DeserializeToObject(browserOptionsSetInSauceJson);
+            AssertUsernameAndAccessKeyExist(browserOptionsSetInSauce);
         }
         //TODO need a test that will validate that
         //DriverImplementation.CreateRemoteWebDriver(Options.ConfiguredSafariOptions);

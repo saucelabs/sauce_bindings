@@ -65,7 +65,14 @@ namespace SimpleSauce
                 PlatformName = DefaultPlatform
             };
         }
-
+        public void WithSafari(SafariVersion safariVersion)
+        {
+            ConfiguredSafariOptions = new SafariOptions
+            {
+                BrowserVersion = safariVersion.Value,
+                PlatformName = DefaultPlatform
+            };
+        }
         public SafariOptions ConfiguredSafariOptions { get; set; }
     }
 }

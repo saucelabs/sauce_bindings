@@ -31,5 +31,14 @@ namespace SimpleSauce.Test
             SauceOptions.WithSafari(expectedSafariVersion);
             SauceOptions.ConfiguredSafariOptions.BrowserVersion.Should().Be(expectedSafariVersion);
         }
+        [TestMethod]
+        public void WithSafari_UpdatedVersion_SetsCorrectPlatform()
+        {
+            var expectedSafariVersion = "latest";
+            SauceOptions.WithSafari(expectedSafariVersion);
+            SauceOptions.ConfiguredSafariOptions.PlatformName.Should().Be(Platforms.MacOsMojave.Value);
+        }
+        //TODO need tests that will validate that different version of Safari
+        //set the corresponding PlatformName
     }
 }

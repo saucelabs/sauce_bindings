@@ -54,7 +54,7 @@ namespace SimpleSauce.Test
 
             SauceSession.Start();
 
-            _browserOptionsSetInSauceJson = SauceSession.Options.ConfiguredEdgeOptions.ToString();
+            _browserOptionsSetInSauceJson = SauceSession.Options.ConfiguredChromeOptions.ToString();
             _browserOptionsSetInSauce = DeserializeToObject(_browserOptionsSetInSauceJson);
             AssertUsernameAndAccessKeyExist(_browserOptionsSetInSauce);
         }

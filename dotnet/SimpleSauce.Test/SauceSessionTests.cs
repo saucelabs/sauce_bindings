@@ -106,9 +106,7 @@ namespace SimpleSauce.Test
             var browserOptionsSetInSauce = DeserializeToObject(browserOptionsSetInSauceJson);
             AssertUsernameAndAccessKeyExist(browserOptionsSetInSauce);
         }
-        //TODO need a test that will validate that
-        //DriverImplementation.CreateRemoteWebDriver(Options.ConfiguredSafariOptions);
-        //Calls the correct Options property on each of the Create driver methods
+
         private static Root DeserializeToObject(string browserOptions)
         {
             return JsonConvert.DeserializeObject<Root>(browserOptions);
@@ -118,7 +116,9 @@ namespace SimpleSauce.Test
             configuredSauceOptions.SauceOptions.Username.Should().NotBeNullOrEmpty();
             configuredSauceOptions.SauceOptions.AccessKey.Should().NotBeNullOrEmpty();
         }
-
+        //TODO need a test that will validate that
+        //DriverImplementation.CreateRemoteWebDriver(Options.ConfiguredSafariOptions);
+        //Calls the correct Options property on each of the Create driver methods
     }
     public class Root
     {

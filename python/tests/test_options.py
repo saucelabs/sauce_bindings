@@ -12,12 +12,19 @@ class TestInit(object):
         assert sauce.browserVersion == 'latest'
         assert sauce.platformName == 'Windows 10'
 
-    def test_accepts_browser_version_platform_name(self):
+    def test_accepts_browser_name(self):
         sauce = SauceOptions('Firefox')
 
-        assert sauce.browserName == 'Firefox'
+        assert sauce.browserName == 'firefox'
         assert sauce.browserVersion == 'latest'
         assert sauce.platformName == 'Windows 10'
+
+    def test_accepts_browser_version_platform_name(self):
+        sauce = SauceOptions(browserName='Chrome', browserVersion='75.0', platformName='macOS 10.13')
+
+        assert sauce.browserName == 'chrome'
+        assert sauce.browserVersion == '75.0'
+        assert sauce.platformName == 'macOS 10.13'
 
     def test_accepts_w3c_values(self):
         options = {
@@ -69,6 +76,31 @@ class TestInit(object):
         assert sauce.browserName == 'chrome'
         assert sauce.platformName == 'Windows 10'
         assert sauce.browserVersion == 'latest'
+
+
+class TestSauceSpecificOptions(object):
+
+    def test_default_build_value(self):
+        sauce = SauceOptions()
+
+        assert sauce.build is not None
+
+    def test_default_test_name(self):
+        sauce = SauceOptions()
+
+        assert sauce.name is not None
+
+    def test_add_test_name(self):
+        sauce = SauceOptions()
+        sauce.name = 'my-test'
+
+        assert "my-test" == sauce.name
+
+    def test_add_build_name(self):
+        sauce = SauceOptions()
+        sauce.build = 'my-build'
+
+        assert "my-build" == sauce.build
 
 
 class TestAccessorVariables(object):

@@ -81,5 +81,20 @@ class SauceSession():
         )
         return self.driver
 
-    def stop(self):
+    def stop(self, result=None):
+        self.update_test_result(result)
         self.driver.quit()
+
+    def update_test_result(self, result_in):
+        result = ''
+
+        if result_in is True:
+            result = 'passed'
+        elif result_in is False:
+            result = 'failed'
+        elif result_in and 'pass' in result_in.lower():
+            result = 'passed'
+        elif result_in and 'fail' in result_in.lower():
+            result = 'failed'
+
+        self.driver.execute_script('sauce:job-result={}'.format(result))

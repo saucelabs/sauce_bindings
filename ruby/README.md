@@ -1,8 +1,7 @@
-# SimpleSauce
+# SimpleSauce 
+## Ruby's Sauce Labs Bindings!
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/simple_sauce`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This gem is intended as a way to easily interact with Sauce Labs in an obvious and straightforward way. 
 
 ## Installation
 
@@ -22,17 +21,84 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+`SimpleSauce` is broken into two main components, `Options` and `Session`
 
-## Development
+### Options class
+`Options` provides an easy interface to the Sauce Labs specific settings you want in your tests.
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+If you want the default settings (the latest Chrome version on Windows 10) with no other settings,
+this is all the code you need:
+```
+sauce_opts = SimpleSauce::Options.new
+```
+To specify additional 
+[Sauce Labs supported settings](https://wiki.saucelabs.com/display/DOCS/Test+Configuration+Options),
+simply pass these in as a `Hash`, or use an accessor:
+```
+sauce_options = {screen_resolution: '1080x720',
+                 browser_name: 'Firefox',
+                 platform_name: 'Mac OS'}
+sauce_opts = SimpleSauce::Options.new(sauce_options)
+sauce_opts.idle_timeout = 100
+```
+if you have additional browser specific settings, or 
+[webdriver w3c spec compliant settings](http://w3c.github.io/webdriver/webdriver-spec.html#capabilities), in 
+Selenium 3.x you need to generate each of these separately; see the `Session` class below for how to use it:
+```
+sauce_options = SimpleSauce::Options.new(screen_resolution: '1080x720',
+                                         browser_name: 'Firefox',
+                                         platform_name: 'Mac OS')
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+selenium_options = Selenium::WebDriver::Remote::Capabilities.new(accept_insecure_certs: false,
+                                                                 page_load_strategy: 'eager'}
+
+browser_options = Selenium::WebDriver::Firefox::Options.new(args: ['-foo'])
+```
+
+### Session class
+#### Intializing a Session
+`Session` class gets initialized with an `Options` instance. If you want the
+default settings (latest Chrome version on Windows 10), you don't even need to use an `Options` instance:
+```ruby
+@session = SimpleSauce::Session.new
+```
+If you want something other than the default, create a Sauce `Option` instance (as generated in the section above,
+then pass it into the constructor:
+```ruby
+@session = SimpleSauce::Session.new(sauce_opts)
+```
+If you also have Selenium or Browser options as described above, then you pass them in with an `Array` like so:
+```ruby
+@session = SimpleSauce::Session.new([sauce_opts, se_opts, browser_opts])
+```
+
+#### Creating a driver instance
+The `#start` method is required, and will return a `Selenium::WebDriver::<Browser>::Driver` instance,
+and the `#stop` method will automatically quit the driver as well as ending the Sauce Labs session.
+```ruby
+session = SimpleSauce::Session.new
+driver = session.start
+# Use the driver
+session.stop
+```
+Note that the `Driver` instance can also be obtained at any time with the `#driver` method:
+```ruby
+session = SimpleSauce::Session.new
+session.start
+driver = session.driver
+# Use the driver
+session.stop
+```
+#### Additional Session methods
+We have a number of features we plan to add; stay tuned to see what additional features are made available. If you
+have any request, please contact the Sauce Labs Solution Architect team.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/simple_sauce. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/sauce/simple_sauce. 
+This project is intended to be a safe, welcoming space for collaboration, 
+and contributors are expected to adhere to the 
+[Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
@@ -40,4 +106,5 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the SimpleSauce project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/simple_sauce/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the SimpleSauce project’s codebases, issue trackers, chat rooms and mailing lists 
+is expected to follow the [code of conduct](https://github.com/saucelabs/simple_sauce/blob/master/CODE_OF_CONDUCT.md).

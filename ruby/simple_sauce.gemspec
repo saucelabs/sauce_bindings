@@ -25,6 +25,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop', '~>0.66'
   spec.add_development_dependency 'rubocop-performance'
   spec.add_development_dependency 'rubocop-rspec', '~>1.32'
+  spec.add_development_dependency 'webmock', '~> 3.5'
 
   spec.add_runtime_dependency 'selenium-webdriver', '~> 3.0'
+  spec.add_runtime_dependency 'sauce_whisk'
+
 end

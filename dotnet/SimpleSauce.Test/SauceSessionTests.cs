@@ -1,3 +1,5 @@
+using System;
+using System.Reflection;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -119,11 +121,20 @@ namespace SimpleSauce.Test
             SauceSession.Start();
 
             var browserOptions = SauceSession.Options.ConfiguredSafariOptions.ToString();
-            var configuredSauceOptions = JsonConvert.DeserializeObject<Root>(browserOptions);
-            //TODO see if I can figure out a way to just check that configuredSauceOptions has the right amount
+            var configuredSauceOptions = DeserializeToObject(browserOptions);
+            AssertUsernameAndAccessKeyExist(configuredSauceOptions);
+        }
+        private static Root DeserializeToObject(string browserOptions)
+        {
+            return JsonConvert.DeserializeObject<Root>(browserOptions);
+        }
+        private static void AssertUsernameAndAccessKeyExist(Root configuredSauceOptions)
+        {
             configuredSauceOptions.SauceOptions.Username.Should().NotBeNullOrEmpty();
             configuredSauceOptions.SauceOptions.AccessKey.Should().NotBeNullOrEmpty();
         }
+
+
     }
     public class Root
     {

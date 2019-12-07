@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.openqa.selenium.MutableCapabilities;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;

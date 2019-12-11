@@ -12,7 +12,7 @@ namespace SimpleSauce.Test
     [TestCategory("Acceptance")]
     public class AcceptanceTests
     {
-        private Dictionary<string, object> sauceOptions;
+        private Dictionary<string, object> _sauceOptions;
         private IWebDriver _driver;
 
         public TestContext TestContext { get; set; }
@@ -22,7 +22,7 @@ namespace SimpleSauce.Test
         {
             var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
             var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
-            sauceOptions = new Dictionary<string, object>
+            _sauceOptions = new Dictionary<string, object>
             {
                 ["username"] = sauceUserName,
                 ["accessKey"] = sauceAccessKey
@@ -47,7 +47,7 @@ namespace SimpleSauce.Test
                 PlatformName = "Windows 10",
                 UseSpecCompliantProtocol = true
             };
-            chromeOptions.AddAdditionalOption("sauce:options", sauceOptions);
+            chromeOptions.AddAdditionalOption("sauce:options", _sauceOptions);
 
             _driver = new RemoteWebDriver(new Uri("https://ondemand.saucelabs.com/wd/hub"),
                 chromeOptions.ToCapabilities(), TimeSpan.FromSeconds(600));

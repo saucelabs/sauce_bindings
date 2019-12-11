@@ -9,6 +9,7 @@ using OpenQA.Selenium.Remote;
 namespace SimpleSauce.Test
 {
     [TestClass]
+    [TestCategory("Acceptance")]
     public class AcceptanceTests
     {
         private Dictionary<string, object> sauceOptions;
@@ -46,7 +47,7 @@ namespace SimpleSauce.Test
                 PlatformName = "Windows 10",
                 UseSpecCompliantProtocol = true
             };
-            chromeOptions.AddAdditionalCapability("sauce:options", sauceOptions, true);
+            chromeOptions.AddAdditionalOption("sauce:options", sauceOptions);
 
             _driver = new RemoteWebDriver(new Uri("https://ondemand.saucelabs.com/wd/hub"),
                 chromeOptions.ToCapabilities(), TimeSpan.FromSeconds(600));
@@ -73,7 +74,6 @@ namespace SimpleSauce.Test
             capabilities.GetCapability("browserName").Should().Be("MicrosoftEdge");
         }
         [TestMethod]
-        [Ignore("Getting infrastructure error, needs fixing")]
         public void RunTestWithEdge15()
         {
             var options = new SauceOptions();

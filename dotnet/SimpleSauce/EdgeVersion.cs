@@ -18,5 +18,7 @@
 
         public static EdgeVersion _14 => new EdgeVersion("14.14393");
         public static EdgeVersion _13 => new EdgeVersion("13.10586");
+        public static EdgeVersion Latest => new EdgeVersion("latest");
+
     }
 }

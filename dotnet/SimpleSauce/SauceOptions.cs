@@ -21,11 +21,7 @@ namespace SimpleSauce
 
         public void WithEdge()
         {
-            ConfiguredEdgeOptions = new EdgeOptions
-            {
-                BrowserVersion = DefaultBrowserVersion,
-                PlatformName = DefaultPlatform
-            };
+            WithEdge(EdgeVersion.Latest);
         }
 
         public void WithEdge(EdgeVersion edgeVersion)

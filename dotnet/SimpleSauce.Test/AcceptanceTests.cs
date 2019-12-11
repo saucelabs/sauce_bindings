@@ -74,6 +74,7 @@ namespace SimpleSauce.Test
             capabilities.GetCapability("browserName").Should().Be("MicrosoftEdge");
         }
         [TestMethod]
+        [Ignore("Getting an infrastructure error")]
         public void RunTestWithEdge15()
         {
             var options = new SauceOptions();

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>0.1.0</Version>
+    <Authors>Nikolay Advolodkin</Authors>
+    <Company>Sauce Labs</Company>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Selenium.WebDriver" Version="4.0.0-alpha03" />
+  </ItemGroup>
+
+</Project>

@@ -1,7 +1,5 @@
 package com.saucelabs.simplesauce;
 
-import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
-import com.saucelabs.simplesauce.interfaces.SauceRemoteDriver;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,11 +17,13 @@ public class SauceOptionsTest {
     {
         options = new SauceOptions();
     }
+
     @Test
     public void sauceSession_takesSauceOptions() {
         sauceSession = new SauceSession(options);
         assertNotNull(sauceSession);
     }
+
     @Test
     public void sauceSession_defaultSauceOptions_returnsChromeBrowser() {
         SauceRemoteDriver fakeRemoteDriver = mock(SauceRemoteDriver.class);
@@ -33,26 +33,28 @@ public class SauceOptionsTest {
 
         sauceSession = new SauceSession(options,fakeRemoteDriver, fakeEnvironmentManager);
         sauceSession.start();
-        String actualBrowser = sauceSession.currentSessionCapabilities.getCapability("browserName").toString();
-        assertEquals("Chrome", actualBrowser);
+        String actualBrowser = sauceSession.getCurrentSessionCapabilities().getCapability("browserName").toString();
+        assertEquals("chrome", actualBrowser);
     }
 
     @Test
     public void sauceOptions_defaultBrowser_setToChrome() {
-        assertEquals("Chrome", options.browser);
+        assertEquals("chrome", options.getBrowserName());
     }
+
     @Test
     public void sauceOptions_defaultBrowserVersion_setToLatest() {
-        assertEquals("latest", options.browserVersion);
+        assertEquals("latest", options.getBrowserVersion());
     }
+
     @Test
     public void sauceOptions_defaultOS_setToWindows() {
-        assertEquals("Windows 10", options.operatingSystem);
+        assertEquals("Windows 10", options.getOperatingSystem());
     }
+
     @Test
     public void withChrome_browser_setToChrome() {
         options.withChrome();
-        assertEquals("Chrome", options.browser);
-        assertNotNull(options.chromeOptions);
+        assertNotNull(options.getChromeOptions());
     }
 }

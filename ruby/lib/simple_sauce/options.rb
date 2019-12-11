@@ -18,11 +18,12 @@ module SimpleSauce
                username video_upload_on_pass capture_performance].freeze
 
     def initialize(**opts)
-      @browser_name = 'chrome'
-      @platform_name = 'Windows 10'
-      @browser_version = 'latest'
-
       create_variables(SAUCE + W3C, opts)
+      @build ||= build_name
+
+      @browser_name ||= 'chrome'
+      @platform_name ||= 'Windows 10'
+      @browser_version ||= 'latest'
     end
 
     def capabilities
@@ -52,6 +53,28 @@ module SimpleSauce
       return if opts.empty?
 
       raise ArgumentError, "#{opts.inspect} are not valid parameters for Options class"
+    end
+
+    def build_name
+      # Set by user
+      if ENV['BUILD_NAME']
+        ENV['BUILD_NAME']
+      # Jenkins
+      elsif ENV['BUILD_TAG']
+        ENV['BUILD_TAG']
+      # Travis
+      elsif ENV['TRAVIS_JOB_NUMBER']
+        "#{ENV['TRAVIS_REPO_SLUG'][%r{[^/]+$}]}: #{ENV['TRAVIS_JOB_NUMBER']}"
+      # Bamboo
+      elsif ENV['SAUCE_BAMBOO_BUILDNUMBER']
+        ENV['SAUCE_BAMBOO_BUILDNUMBER']
+      # CircleCI
+      elsif ENV['CIRCLE_BUILD_NUM']
+        "#{ENV['CIRCLE_JOB']}: #{ENV['CIRCLE_BUILD_NUM']}"
+      # Default
+      else
+        "Build Time - #{Time.now.to_i}"
+      end
     end
   end
 end

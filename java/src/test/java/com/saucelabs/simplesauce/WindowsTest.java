@@ -11,7 +11,7 @@ public class WindowsTest extends BaseConfigurationTest {
         sauce = instantiateSauceSession();
 
         sauce.start();
-        String actualOsSetInConfig = sauce.currentSessionCapabilities.getPlatform().toString();
+        String actualOsSetInConfig = sauce.getCurrentSessionCapabilities().getPlatform().toString();
         assertEquals("WIN10", actualOsSetInConfig);
     }
     @Test
@@ -20,7 +20,7 @@ public class WindowsTest extends BaseConfigurationTest {
         sauce = instantiateSauceSession();
 
         sauce.start();
-        String actualOsSetInConfig = sauce.currentSessionCapabilities.getPlatform().toString();
+        String actualOsSetInConfig = sauce.getCurrentSessionCapabilities().getPlatform().toString();
         assertEquals("WIN8_1", actualOsSetInConfig);
     }
     @Test
@@ -29,7 +29,7 @@ public class WindowsTest extends BaseConfigurationTest {
         sauce = instantiateSauceSession();
 
         sauce.start();
-        String actualOsSetInConfig = sauce.currentSessionCapabilities.getPlatform().toString();
+        String actualOsSetInConfig = sauce.getCurrentSessionCapabilities().getPlatform().toString();
         assertEquals("WIN8", actualOsSetInConfig);
     }
     @Test
@@ -38,7 +38,7 @@ public class WindowsTest extends BaseConfigurationTest {
         sauce = instantiateSauceSession();
 
         sauce.start();
-        String actualOsSetInConfig = sauce.currentSessionCapabilities.getPlatform().toString();
+        String actualOsSetInConfig = sauce.getCurrentSessionCapabilities().getPlatform().toString();
         assertEquals("VISTA", actualOsSetInConfig);
     }
 }

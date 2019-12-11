@@ -5,14 +5,23 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class IETest extends BaseConfigurationTest{
-
     @Test
-    public void withIE_validIeVersion() {
+    public void withIE_validIeVersionEnum() {
         sauceOptions.withIE(IEVersion._11);
         sauce = instantiateSauceSession();
 
         sauce.start();
-        String actualBrowserSetInConfig = sauce.currentSessionCapabilities.getVersion();
+        String actualBrowserSetInConfig = sauce.getCurrentSessionCapabilities().getVersion();
+        assertEquals("11.285", actualBrowserSetInConfig);
+    }
+
+    @Test
+    public void withIE_validIeVersionString() {
+        sauceOptions.withIE(IEVersion._11.getVersion());
+        sauce = instantiateSauceSession();
+
+        sauce.start();
+        String actualBrowserSetInConfig = sauce.getCurrentSessionCapabilities().getVersion();
         assertEquals("11.285", actualBrowserSetInConfig);
     }
 
@@ -22,7 +31,7 @@ public class IETest extends BaseConfigurationTest{
         sauce = instantiateSauceSession();
 
         sauce.start();
-        String actualBrowserSetInConfig = sauce.currentSessionCapabilities.getVersion();
+        String actualBrowserSetInConfig = sauce.getCurrentSessionCapabilities().getVersion();
         assertEquals("latest", actualBrowserSetInConfig);
     }
 }

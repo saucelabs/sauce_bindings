@@ -4,34 +4,36 @@ import com.saucelabs.simplesauce.enums.MacVersion;
 import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.BrowserType;
 
 public class SauceOptions {
-    //TODO can probably use BrowserType enum from Selenium to do BrowserType.CHROME
-    @Getter
-    @Setter
-    public String browser = "Chrome";
+    @Getter @Setter private String browserName = BrowserType.CHROME;
+    @Getter @Setter private String browserVersion = "latest";
+    @Getter @Setter private String operatingSystem = Platforms.windowsLatest().getOsVersion();
+    @Getter private ChromeOptions chromeOptions;
 
-    @Getter @Setter public String browserVersion = "latest";
-    @Getter @Setter public String operatingSystem = "Windows 10";
-    @Getter public  ChromeOptions chromeOptions;
-
-    public SauceOptions withChrome()
-    {
+    public SauceOptions withChrome() {
         chromeOptions = new ChromeOptions();
         //TODO no longer needed with Chrome 75+
         chromeOptions.setExperimentalOption("w3c", true);
-        browser = "Chrome";
+        browserName = BrowserType.CHROME;
         return this;
     }
     public SauceOptions withSafari()
     {
         return withMac(MacVersion.Mojave);
     }
-    public SauceOptions withSafari(final String version)
-    {
+
+    public SauceOptions withSafari(SafariVersion version) {
+        browserName = BrowserType.SAFARI;
+        browserVersion = version.getVersion();
+        return this;
+    }
+
+    public SauceOptions withSafari(final String version) {
         String _version = version;
         if (_version.isEmpty()) { _version = "latest"; }
-        browser = "safari";
+        browserName = BrowserType.SAFARI;
         browserVersion = _version;
         return this;
     }
@@ -42,7 +44,7 @@ public class SauceOptions {
     }
 
     public SauceOptions withWindows10() {
-        operatingSystem = "Windows 10";
+        operatingSystem = "windows 10";
         return this;
     }
     public SauceOptions withWindows8_1() {
@@ -60,7 +62,7 @@ public class SauceOptions {
     }
 
     public SauceOptions withEdge() {
-        browser = "Edge";
+        browserName = "Edge";
         browserVersion = "18.17763";
         return this;
     }
@@ -102,27 +104,31 @@ public class SauceOptions {
         return this;
     }
 
-    public SauceOptions withFirefox()
-    {
-        browser = "Firefox";
+    public SauceOptions withFirefox() {
+        browserName = "Firefox";
+        return this;
+    }
+
+    public SauceOptions withIE(IEVersion version) {
+        this.browserVersion = version.getVersion();
         return this;
     }
 
     public SauceOptions withIE(String version) {
-        browser = "IE";
+        browserName = "IE";
         browserVersion = version;
         return this;
     }
 
     public SauceOptions withIE() {
-        browser = "IE";
+        browserName = "IE";
         browserVersion = "latest";
         return this;
     }
 
     public SauceOptions withMac(MacVersion macVersion) {
         operatingSystem = macVersion.label;
-        browser = "Safari";
+        browserName = "Safari";
         return this;
     }
 }

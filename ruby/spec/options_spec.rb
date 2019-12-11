@@ -4,12 +4,16 @@ require 'spec_helper'
 
 module SimpleSauce
   describe Options do
+    before { ENV['BUILD_TAG'] = 'TEMP BUILD NAME' }
+
+    after { ENV.delete 'BUILD_TAG' }
+
     describe '#new' do
       let(:default_options) do
         {'browserName' => 'chrome',
          'browserVersion' => 'latest',
          'platformName' => 'Windows 10',
-         'sauce:options' => {}}
+         'sauce:options' => {'build' => 'TEMP BUILD NAME'}}
       end
 
       it 'uses latest Chrome version on Windows 10 by default' do
@@ -51,8 +55,8 @@ module SimpleSauce
 
         sauce_opts = SimpleSauce::Options.new(sauce_options)
 
-        expected_options =  default_options.merge('sauce:options' => {})
-        sauce_options.each  do |key, value|
+        expected_options = default_options.merge('sauce:options' => {})
+        sauce_options.each do |key, value|
           expected_options['sauce:options'][SimpleSauce::Options.send(:camel_case, key.to_s)] = value
         end
 
@@ -72,7 +76,8 @@ module SimpleSauce
       expect(sauce_opts.capabilities).to eq('browserName' => 'firefox',
                                             'browserVersion' => 'latest',
                                             'platformName' => 'Windows 10',
-                                            'sauce:options' => {'idleTimeout' => 3})
+                                            'sauce:options' => {'idleTimeout' => 3,
+                                                                'build' => 'TEMP BUILD NAME'})
     end
   end
 end

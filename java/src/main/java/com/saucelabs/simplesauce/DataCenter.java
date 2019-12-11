@@ -1,9 +1,15 @@
 package com.saucelabs.simplesauce;
 
-enum DataCenter
-{
-    ;
-    public static final String USWest = "https://ondemand.saucelabs.com/wd/hub";
-    public static final String US_EAST  = "https://ondemand.us-east-1.saucelabs.com/wd/hub";
-    public static final String EU_CENTRAL = "https://ondemand.eu-central-1.saucelabs.com/wd/hub";
+import lombok.Getter;
+
+enum DataCenter {
+    US_WEST("https://ondemand.saucelabs.com/wd/hub"),
+    US_EAST("https://ondemand.us-east-1.saucelabs.com/wd/hub"),
+    EU_CENTRAL("https://ondemand.eu-central-1.saucelabs.com/wd/hub");
+
+    @Getter private final String endpoint;
+
+    DataCenter(String endpoint) {
+        this.endpoint = endpoint;
+    }
 }

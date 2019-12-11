@@ -8,6 +8,9 @@ require:
 Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
 
+Metrics/AbcSize:
+  Max: 17
+
 Metrics/BlockLength:
   Exclude:
     - "**/*_spec.rb"

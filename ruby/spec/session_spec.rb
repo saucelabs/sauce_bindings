@@ -14,7 +14,7 @@ module SimpleSauce
       {browserName: 'chrome',
        platformName: 'Windows 10',
        browserVersion: 'latest',
-       'sauce:options': {}}
+       'sauce:options': {build: 'TEMP BUILD NAME'}}
     end
 
     def expect_request(body: nil, endpoint: nil)
@@ -25,11 +25,13 @@ module SimpleSauce
     end
 
     before do
+      ENV['BUILD_TAG'] = 'TEMP BUILD NAME'
       ENV['SAUCE_USERNAME'] = 'foo'
       ENV['SAUCE_ACCESS_KEY'] = '123'
     end
 
     after do
+      ENV.delete 'BUILD_TAG'
       ENV.delete 'SAUCE_USERNAME'
       ENV.delete 'SAUCE_ACCESS_KEY'
     end
@@ -42,7 +44,7 @@ module SimpleSauce
                             desired_capabilities: {'browserName' => 'chrome',
                                                    'browserVersion' => 'latest',
                                                    'platformName' => 'Windows 10',
-                                                   'sauce:options' => {}}}
+                                                   'sauce:options' => {'build' => 'TEMP BUILD NAME'}}}
         expect(session.to_selenium).to eq expected_results
       end
 
@@ -56,7 +58,8 @@ module SimpleSauce
                             desired_capabilities: {'browserName' => 'chrome',
                                                    'browserVersion' => '123',
                                                    'platformName' => 'Mac',
-                                                   'sauce:options' => {'idleTimeout' => 4}}}
+                                                   'sauce:options' => {'idleTimeout' => 4,
+                                                                       'build' => 'TEMP BUILD NAME'}}}
         expect(session.to_selenium).to eq expected_results
       end
 
@@ -82,7 +85,8 @@ module SimpleSauce
                                  'acceptInsecureCerts' => false,
                                  'pageLoadStrategy' => 'eager',
                                  'moz:firefoxOptions' => {args: ['-foo']},
-                                 'sauce:options' => {'idleTimeout' => 4}}
+                                 'sauce:options' => {'idleTimeout' => 4,
+                                                     'build' => 'TEMP BUILD NAME'}}
 
         oss_capabilities = {'cssSelectorsEnabled' => false,
                             'javascriptEnabled' => false,

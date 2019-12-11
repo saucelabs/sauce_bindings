@@ -22,6 +22,8 @@ module SimpleSauce
     end
 
     def stop(result)
+      return if @driver.nil?
+
       SauceWhisk::Jobs.change_status(@driver.session_id, result)
       @driver.quit
     end

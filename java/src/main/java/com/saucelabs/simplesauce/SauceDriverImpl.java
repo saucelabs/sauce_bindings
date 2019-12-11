@@ -1,6 +1,5 @@
 package com.saucelabs.simplesauce;
 
-import com.saucelabs.simplesauce.interfaces.SauceRemoteDriver;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 

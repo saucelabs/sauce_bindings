@@ -1,3 +1,6 @@
+import os
+import pytest
+
 from simplesauce.options import SauceOptions
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver import DesiredCapabilities
@@ -26,14 +29,11 @@ class TestInit(object):
         assert sauce.browserVersion == '75.0'
         assert sauce.platformName == 'macOS 10.13'
 
-    def test_accepts_w3c_values(self):
+    def test_accepts_w3c_values_as_options(self):
         options = {
             "browserName": "chrome",
-            "sauce:options": {
-                "browserName": "chrome",
-                "browserVersion": "75.0",
-                "platformName": "Windows 10"
-            }
+            "browserVersion": "75.0",
+            "platformName": "Windows 10"
         }
 
         sauce = SauceOptions(options=options)
@@ -56,39 +56,21 @@ class TestInit(object):
         assert sauce.options['sauce:options']['name'] == 'sample test'
         assert sauce.options['sauce:options']['build'] == 'sample build'
 
-    def test_accepts_browser_option_values(self):
-        pass
-
-    def test_accepts_selenium_browser_options_instance(self):
-        options = ChromeOptions()
-
-        sauce = SauceOptions(options=options)
-
-        assert sauce.browserName == 'chrome'
-        assert sauce.browserVersion == 'latest'
-        assert sauce.platformName == 'Windows 10'
-
-    def test_accepts_selenium_browser_capabilities_instance(self):
-        options = DesiredCapabilities.CHROME.copy()
-
-        sauce = SauceOptions(options=options)
-
-        assert sauce.browserName == 'chrome'
-        assert sauce.platformName == 'Windows 10'
-        assert sauce.browserVersion == 'latest'
-
-
-class TestSauceSpecificOptions(object):
-
     def test_default_build_value(self):
         sauce = SauceOptions()
 
         assert sauce.build is not None
 
-    def test_default_test_name(self):
-        sauce = SauceOptions()
+    def test_raises_exception_if_option_is_invalid(self):
+        options = {
+            "invalid": "value"
+        }
 
-        assert sauce.name is not None
+        with pytest.raises(AttributeError):
+            SauceOptions(options=options)
+
+
+class TestSauceSpecificOptions(object):
 
     def test_add_test_name(self):
         sauce = SauceOptions()
@@ -105,20 +87,40 @@ class TestSauceSpecificOptions(object):
 
 class TestAccessorVariables(object):
 
-    def test_overrides_default_values_for_browser_version_and_platform_name(self):
-        pass
+    def test_overrides_default_values_for_w3c_settings(self):
+        # How do I delete these after test?
+        os.environ["BUILD_TAG"] = "A"
+        os.environ["BUILD_NAME"] = "TEMP BUILD"
+        os.environ["BUILD_NUMBER"] = "11"
 
-    def test_accepts_provided_w3c_values(self):
-        pass
+        sauce = SauceOptions()
+        sauce.browserName = 'firefox'
+        sauce.browserVersion = '7'
+        sauce.platformName = 'macOS 10.14'
 
-    def test_accepts_provided_Sauce_values(self):
-        pass
+        expected_results = {'browserName': 'firefox',
+                            'browserVersion': '7',
+                            'platformName': 'macOS 10.14',
+                            'sauce:options': {'build': 'TEMP BUILD: 11'}}
 
-    def test_accepts_provided_browser_option_values(self):
-        pass
+        assert sauce.options == expected_results
 
+    def test_overrides_default_values_for_sauce_settings(self):
+        # How do I delete these after test?
+        os.environ["BUILD_TAG"] = "A"
+        os.environ["BUILD_NAME"] = "TEMP BUILD"
+        os.environ["BUILD_NUMBER"] = "11"
 
-class TestAsJSON(object):
+        sauce = SauceOptions()
 
-    def creates_the_correct_hash_representation(self):
-        pass
+        sauce.idleTimeout = 3
+        sauce.build = 'CUSTOM BUILD'
+        sauce.name = 'TEST NAME'
+        sauce.recordScreenshots = False
+
+        expected_results = {'idleTimeout': 3,
+                            'recordScreenshots': False,
+                            'name': 'TEST NAME',
+                            'build': 'CUSTOM BUILD'}
+
+        assert sauce.options['sauce:options'] == expected_results

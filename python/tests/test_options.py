@@ -2,8 +2,6 @@ import os
 import pytest
 
 from simplesauce.options import SauceOptions
-from selenium.webdriver.chrome.options import Options as ChromeOptions
-from selenium.webdriver import DesiredCapabilities
 
 
 class TestInit(object):

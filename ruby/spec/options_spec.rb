@@ -4,7 +4,11 @@ require 'spec_helper'
 
 module SimpleSauce
   describe Options do
-    before { ENV['BUILD_TAG'] = 'TEMP BUILD NAME' }
+    before do
+      ENV['BUILD_TAG'] = ''
+      ENV['BUILD_NAME'] = 'TEMP BUILD'
+      ENV['BUILD_NUMBER'] = '11'
+    end
 
     after { ENV.delete 'BUILD_TAG' }
 
@@ -13,11 +17,11 @@ module SimpleSauce
         {'browserName' => 'chrome',
          'browserVersion' => 'latest',
          'platformName' => 'Windows 10',
-         'sauce:options' => {'build' => 'TEMP BUILD NAME'}}
+         'sauce:options' => {'build' => 'TEMP BUILD: 11'}}
       end
 
       it 'uses latest Chrome version on Windows 10 by default' do
-        sauce_opts = SimpleSauce::Options.new
+        sauce_opts = Options.new
 
         expect(sauce_opts.capabilities).to eq(default_options)
       end
@@ -53,31 +57,51 @@ module SimpleSauce
                          access_key: '1234',
                          passed: true}
 
-        sauce_opts = SimpleSauce::Options.new(sauce_options)
+        sauce_opts = Options.new(sauce_options)
 
         expected_options = default_options.merge('sauce:options' => {})
         sauce_options.each do |key, value|
-          expected_options['sauce:options'][SimpleSauce::Options.send(:camel_case, key.to_s)] = value
+          expected_options['sauce:options'][Options.send(:camel_case, key.to_s)] = value
         end
 
         expect(sauce_opts.capabilities).to eq(expected_options)
       end
 
+      it 'creates a default build value' do
+        sauce_opts = Options.new
+        expect(sauce_opts.capabilities.dig('sauce:options', 'build')).to eq 'TEMP BUILD: 11'
+      end
+
       it 'raises ArgumentError if parameter is not recognized as valid' do
-        expect { SimpleSauce::Options.new(foo: 'bar') }.to raise_exception(ArgumentError)
+        expect { Options.new(foo: 'bar') }.to raise_exception(ArgumentError)
       end
     end
 
-    it 'uses accessor' do
-      sauce_opts = SimpleSauce::Options.new
-      sauce_opts.browser_name = 'firefox'
-      sauce_opts.idle_timeout = 3
+    describe '#accessors' do
+      it 'parses w3c values' do
+        sauce_opts = Options.new
+        sauce_opts.browser_name = 'firefox'
+        sauce_opts.browser_version = '7'
+        sauce_opts.platform_name = 'macOS 10.14'
 
-      expect(sauce_opts.capabilities).to eq('browserName' => 'firefox',
-                                            'browserVersion' => 'latest',
-                                            'platformName' => 'Windows 10',
-                                            'sauce:options' => {'idleTimeout' => 3,
-                                                                'build' => 'TEMP BUILD NAME'})
+        expect(sauce_opts.capabilities).to eq('browserName' => 'firefox',
+                                              'browserVersion' => '7',
+                                              'platformName' => 'macOS 10.14',
+                                              'sauce:options' => {'build' => 'TEMP BUILD: 11'})
+      end
+
+      it 'parses Sauce values' do
+        sauce_opts = Options.new
+        sauce_opts.idle_timeout = 3
+        sauce_opts.build = 'CUSTOM BUILD'
+        sauce_opts.name = 'TEST NAME'
+        sauce_opts.record_screenshots = false
+
+        expect(sauce_opts.capabilities['sauce:options']).to eq('idleTimeout' => 3,
+                                                               'recordScreenshots' => false,
+                                                               'name' => 'TEST NAME',
+                                                               'build' => 'CUSTOM BUILD')
+      end
     end
   end
 end

@@ -8,7 +8,8 @@ Simple Sauce uses Selenium 4.0+ which introduces a slightly different API than p
 However, you don't need to care about that with Simple Sauce. Rather, you need to update your Selenium version.
 
 Can I force the installation of the latest Selenium to happen with a Nuget install?
-1. ```Install-Package Selenium.WebDriver -Version 4.0.0-alpha03```
+1. Install the Simple Sauce Nuget package
+2. ```Install-Package Selenium.WebDriver -Version 4.0.0-alpha03```
 2. 
 
 ### Issues that you might face migrating to Simple Sauce

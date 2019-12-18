@@ -2,6 +2,7 @@ from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from datetime import datetime
 import os
+import re
 
 
 class SauceOptions():
@@ -21,25 +22,26 @@ class SauceOptions():
         self.options['sauce:options']['build'] = self._sauce_build
 
     def _set_default_build_name(self):
-        """Look CI build tag values first before defaulting to a generic timestamp-based value."""
-        self.build = 'Local execution: {}'.format(datetime.utcnow())
-
-        build_tags = [
-            "BUILD_NAME",
-            "BUILD_TAG",
-            "SAUCE_BAMBOO_BUILDNUMBER",
-            "TRAVIS_BUILD_ID",
-            "CIRCLE_BUILD_NUM",
-        ]
-
-        for b in build_tags:
-            if os.environ.get(b):
-                if 'TRAVIS' in b:
-                    self.build = "{}: {}".format(os.environ['TRAVIS_REPO_SLUG'], os.environ['TRAVIS_JOB_NUMBER'])
-                elif 'CIRCLE' in b:
-                    self.build = "{}: {}".format(os.environ['CIRCLE_JOB'], os.environ['CIRCLE_BUILD_NUM'])
-                else:
-                    self.build = b
+        if 'build' in self.options['sauce:options']:
+            return
+        # Jenkins
+        elif os.environ.get("BUILD_TAG"):
+            self.build = "{}: {}".format(os.environ['BUILD_NAME'], os.environ['BUILD_NUMBER'])
+        # Bamboo
+        elif os.environ.get('bamboo_agentId'):
+            self.build = "{}: {}".format(os.environ['bamboo_shortJobName'], os.environ['bamboo_buildNumber'])
+        # Travis
+        elif os.environ.get('TRAVIS_JOB_ID'):
+            job_name = re.search("[^/]+$", os.environ.get("TRAVIS_REPO_SLUG"))
+            self.build = "{}: {}".format(job_name, os.environ['TRAVIS_JOB_NUMBER'])
+        # Circle
+        elif os.environ.get('CIRCLE_JOB'):
+            self.build = "{}: {}".format(os.environ['CIRCLE_JOB'], os.environ['CIRCLE_BUILD_NUM'])
+        # Gitlab
+        elif os.environ.get('CI'):
+            self.build = "{}: {}".format(os.environ['CI_JOB_NAME'], os.environ['CI_JOB_ID'])
+        else:
+            self.build = 'Build Time: {}'.format(datetime.utcnow())
 
     def __init__(self, browserName=None, browserVersion=None, platformName=None, options={}):
         self.options = {}

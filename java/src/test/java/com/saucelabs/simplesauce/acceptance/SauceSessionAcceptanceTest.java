@@ -38,7 +38,7 @@ public class SauceSessionAcceptanceTest {
         webDriver = sauce.start();
         String actualOs = (((RemoteWebDriver) webDriver).getCapabilities()).getPlatform().toString();
         //TODO why in the F is this returning XP even though in Sauce it shows Windows 10
-        assertEquals("XP", actualOs);
+        assertEquals("WINDOWS", actualOs);
     }
 
     @Test

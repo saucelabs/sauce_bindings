@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Simple.Sauce;
 
 namespace SimpleSauce.Test
 {

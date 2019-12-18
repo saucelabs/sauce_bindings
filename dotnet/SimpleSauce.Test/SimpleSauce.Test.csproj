@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SimpleSauce\SimpleSauce.csproj" />
+    <ProjectReference Include="..\Simple.Sauce\Simple.Sauce.csproj" />
   </ItemGroup>
 
 </Project>

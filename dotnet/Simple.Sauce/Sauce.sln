@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A87FACF6-AEF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{8D1592F6-2723-4AD2-A792-3FEC4408BDC2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple.Sauce", "..\Simple.Sauce\Simple.Sauce.csproj", "{14CDEF4F-FE78-4FA7-AD7C-A535C555BED9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple.Sauce", "Simple.Sauce.csproj", "{14CDEF4F-FE78-4FA7-AD7C-A535C555BED9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

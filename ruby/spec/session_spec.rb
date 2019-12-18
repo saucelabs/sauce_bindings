@@ -12,8 +12,8 @@ module SimpleSauce
     end
     let(:default_capabilities) do
       {browserName: 'chrome',
-       platformName: 'Windows 10',
        browserVersion: 'latest',
+       platformName: 'Windows 10',
        'sauce:options': {build: 'TEMP BUILD: 11'}}
     end
 
@@ -41,7 +41,7 @@ module SimpleSauce
     end
 
     describe '#new' do
-      it 'uses latest Chrome version and Windows 10 by default' do
+      it 'creates default Options instance if none is provided' do
         session = SimpleSauce::Session.new
 
         expected_results = {url: 'https://foo:123@ondemand.saucelabs.com:443/wd/hub',
@@ -64,46 +64,6 @@ module SimpleSauce
                                                    'platformName' => 'Mac',
                                                    'sauce:options' => {'idleTimeout' => 4,
                                                                        'build' => 'TEMP BUILD: 11'}}}
-        expect(session.to_selenium).to eq expected_results
-      end
-
-      it 'uses provided Options with Selenium Capabilities and Options classes' do
-        sauce_options = {idle_timeout: 4,
-                         browser_name: 'Firefox',
-                         platform_name: 'Mac OS'}
-
-        se_options = {accept_insecure_certs: false,
-                      page_load_strategy: 'eager'}
-
-        browser_options = {args: ['-foo']}
-
-        sauce_opts = SimpleSauce::Options.new(sauce_options)
-        se_opts = Selenium::WebDriver::Remote::Capabilities.firefox(se_options)
-        browser_opts = Selenium::WebDriver::Firefox::Options.new(browser_options)
-
-        session = SimpleSauce::Session.new([sauce_opts, se_opts, browser_opts])
-
-        expected_capabilities = {'browserName' => 'firefox',
-                                 'platformName' => 'Mac OS',
-                                 'browserVersion' => 'latest',
-                                 'acceptInsecureCerts' => false,
-                                 'pageLoadStrategy' => 'eager',
-                                 'moz:firefoxOptions' => {args: ['-foo']},
-                                 'sauce:options' => {'idleTimeout' => 4,
-                                                     'build' => 'TEMP BUILD: 11'}}
-
-        oss_capabilities = {'cssSelectorsEnabled' => false,
-                            'javascriptEnabled' => false,
-                            'marionette' => true,
-                            'nativeEvents' => false,
-                            'platform' => 'ANY',
-                            'rotatable' => false,
-                            'takesScreenshot' => false,
-                            'timeouts' => {},
-                            'version' => ''}
-
-        expected_results = {url: 'https://foo:123@ondemand.saucelabs.com:443/wd/hub',
-                            desired_capabilities: expected_capabilities.merge(oss_capabilities)}
         expect(session.to_selenium).to eq expected_results
       end
 

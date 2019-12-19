@@ -8,13 +8,12 @@ module SimpleSauce
     attr_writer :username, :access_key, :url
     attr_reader :driver, :options, :data_center
 
-    def initialize(options = nil)
+    def initialize(options = nil, username: nil, access_key: nil, data_center: nil)
       @options = options || Options.new
-      raise unless [Array, Options].include?(@options.class)
 
-      self.data_center = :US_WEST
-      @username = ENV['SAUCE_USERNAME']
-      @access_key = ENV['SAUCE_ACCESS_KEY']
+      self.data_center = data_center || :US_WEST
+      @username = username || ENV['SAUCE_USERNAME']
+      @access_key = access_key || ENV['SAUCE_ACCESS_KEY']
     end
 
     def start

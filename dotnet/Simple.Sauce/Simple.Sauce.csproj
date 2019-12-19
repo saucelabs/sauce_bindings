@@ -4,7 +4,12 @@
     <PackageId>Simple.Sauce</PackageId>
     <PackageTags>Sauce Labs, Simple Sauce, Selenium</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.1.1-alpha</Version>
+    <VersionPrefix>0.1.1</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+    <VersionSuffix Condition=" '$(Configuration)' == 'Debug' ">debug</VersionSuffix>
+    <!-- For local/debug builds -->
+    <VersionSuffix Condition=" '$(Build_SourceBranch)' == 'refs/heads/develop' ">pre.$(Build_BuildID)</VersionSuffix>
+    <!-- This is using variables that are specific to Azure Dev Ops Pipelines -->
     <Authors>Nikolay Advolodkin</Authors>
     <Company>Sauce Labs</Company>
   </PropertyGroup>

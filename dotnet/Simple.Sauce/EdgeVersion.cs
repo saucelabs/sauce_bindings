@@ -1,4 +1,4 @@
-﻿namespace SimpleSauce
+﻿namespace Simple.Sauce
 {
     public class EdgeVersion
     {

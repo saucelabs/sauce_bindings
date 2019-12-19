@@ -3,7 +3,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Safari;
 
-namespace SimpleSauce
+namespace Simple.Sauce
 {
     public class SauceOptions
     {

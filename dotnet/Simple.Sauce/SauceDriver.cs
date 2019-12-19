@@ -2,7 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 
-namespace SimpleSauce
+namespace Simple.Sauce
 {
     public class SauceDriver : ISauceRemoteDriver
     {

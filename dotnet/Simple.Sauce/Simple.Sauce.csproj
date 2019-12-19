@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>Simple.Sauce</PackageId>
+    <PackageTags>Sauce Labs, Simple Sauce, Selenium</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.1.1-alpha</Version>
+    <Authors>Nikolay Advolodkin</Authors>
+    <Company>Sauce Labs</Company>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Selenium.WebDriver" Version="4.0.0-alpha03" />
+  </ItemGroup>
+
+</Project>

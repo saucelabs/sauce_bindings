@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace SimpleSauce
+namespace Simple.Sauce
 {
     public interface ISauceRemoteDriver
     {

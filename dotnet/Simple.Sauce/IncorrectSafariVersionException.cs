@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SimpleSauce
+namespace Simple.Sauce
 {
     public class IncorrectSafariVersionException : Exception
     {

@@ -56,21 +56,21 @@ module SimpleSauce
     end
 
     def build_name
-      # Set by user
-      if ENV['BUILD_NAME']
-        ENV['BUILD_NAME']
       # Jenkins
-      elsif ENV['BUILD_TAG']
-        ENV['BUILD_TAG']
-      # Travis
-      elsif ENV['TRAVIS_JOB_NUMBER']
-        "#{ENV['TRAVIS_REPO_SLUG'][%r{[^/]+$}]}: #{ENV['TRAVIS_JOB_NUMBER']}"
+      if ENV['BUILD_TAG']
+        "#{ENV['BUILD_NAME']}: #{ENV['BUILD_NUMBER']}"
       # Bamboo
-      elsif ENV['SAUCE_BAMBOO_BUILDNUMBER']
-        ENV['SAUCE_BAMBOO_BUILDNUMBER']
+      elsif ENV['bamboo_agentId']
+        "#{ENV['bamboo_shortJobName']}: #{ENV['bamboo_buildNumber']}"
+      # Travis
+      elsif ENV['TRAVIS_JOB_ID']
+        "#{ENV['TRAVIS_REPO_SLUG'][%r{[^/]+$}]}: #{ENV['TRAVIS_JOB_NUMBER']}"
       # CircleCI
-      elsif ENV['CIRCLE_BUILD_NUM']
+      elsif ENV['CIRCLE_JOB']
         "#{ENV['CIRCLE_JOB']}: #{ENV['CIRCLE_BUILD_NUM']}"
+      # Gitlab
+      elsif ENV['CI']
+        "#{ENV['CI_JOB_NAME']}: #{ENV['CI_JOB_ID']}"
       # Default
       else
         "Build Time - #{Time.now.to_i}"

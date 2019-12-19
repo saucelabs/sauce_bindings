@@ -16,6 +16,9 @@ variables:
 
 #Excellent docs on .NET Core steps: https://docs.microsoft.com/en-us/azure/devops/pipelines/ecosystems/dotnet-core?view=azure-devops#feedback
 steps:
+- script: set
+  displayName: show all variables
+
 - task: DotNetCoreCLI@2
   displayName: Restore
   inputs:
@@ -52,13 +55,3 @@ steps:
     command: 'pack'
     outputDir: '$(Build.ArtifactStagingDirectory)/TestDir'
 
-- task: NuGetCommand@2
-  displayName: 'nuget push'
-  inputs:
-    command: 'push'
-    feedsToUse: 'Simple.Sauce'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-    nuGetFeedType: 'internal'
-    publishVstsFeed: 'Simple.Sauce'
-    versioningScheme: 'off'
-    allowPackageConflicts: true

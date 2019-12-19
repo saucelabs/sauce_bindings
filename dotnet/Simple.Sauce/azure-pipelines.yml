@@ -33,6 +33,8 @@ steps:
 - powershell: |
    Write-Host "Our Sauce Username in ADO is=> $($env:SAUCE_USER)";
    Write-Host "Our Sauce Access Key in ADO is=> $($env:SAUCE_KEY)";
+   Write-Host "System.DefaultWorkingDirectory=>$(System.DefaultWorkingDirectory)"
+   Write-Host "Build.ArtifactStagingDirectory=>$(Build.ArtifactStagingDirectory)"
    Write-Host ("##vso[task.setvariable variable=SAUCE_USERNAME]$($env:SAUCE_USER)")
    Write-Host ("##vso[task.setvariable variable=SAUCE_ACCESS_KEY]$($env:SAUCE_KEY)")
 
@@ -45,6 +47,7 @@ steps:
 
 # Pack a NuGet package to a test directory
 - task: DotNetCoreCLI@2
+  displayName: 'Pack NuGet'
   inputs: 
     command: 'pack'
     outputDir: '$(Build.ArtifactStagingDirectory)/TestDir'

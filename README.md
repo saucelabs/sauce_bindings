@@ -4,8 +4,7 @@
 [![Travis Status](https://travis-ci.org/saucelabs/simple_sauce.svg?branch=master)](https://travis-ci.org/saucelabs/simple_sauce)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](https://github.com/saucelabs/simple_sauce/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
-
-The Sauce Bindings project contains
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/saucelabs/simple_sauce.svg)](http://isitmaintained.com/project/saucelabs/simple_sauce "Average time to resolve an issue")
 
 ## The Idea - Making Sauce Simple To Use
 

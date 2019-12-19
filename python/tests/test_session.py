@@ -28,16 +28,16 @@ class TestInit(object):
 
         session = SauceSession(options=options)
 
-        assert session.options.browserName == 'chrome'
-        assert session.options.browserVersion == 'latest'
-        assert session.options.platformName == 'Windows 10'
+        assert session.options.browser_name == 'chrome'
+        assert session.options.browser_version == 'latest'
+        assert session.options.platform_name == 'Windows 10'
 
     def test_generates_default_Options_instance_if_not_provided(self):
         session = SauceSession()
 
-        assert session.options.browserName == 'chrome'
-        assert session.options.browserVersion == 'latest'
-        assert session.options.platformName == 'Windows 10'
+        assert session.options.browser_name == 'chrome'
+        assert session.options.browser_version == 'latest'
+        assert session.options.platform_name == 'Windows 10'
 
     def test_uses_username_and_access_key_if_ENV_variables_are_defined(self):
         session = SauceSession()

@@ -43,14 +43,11 @@ steps:
     projects: '**/*Test/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
+# Pack a NuGet package to a test directory
 - task: DotNetCoreCLI@2
-  displayName: 'dotnet pack'
-  inputs:
+  inputs: 
     command: 'pack'
-    arguments: '--configuration $(buildConfiguration)'
-    packagesToPack: 'Simple.Sauce/simple.sauce.csproj'
-    nobuild: true
-    versioningScheme: 'off'
+    outputDir: '$(Build.ArtifactStagingDirectory)/TestDir'
 
 - task: NuGetCommand@2
   displayName: 'nuget push'

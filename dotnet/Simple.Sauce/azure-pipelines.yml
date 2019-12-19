@@ -48,7 +48,7 @@ steps:
   inputs:
     command: 'pack'
     arguments: '--configuration $(buildConfiguration)'
-    packagesToPack: 'simple.sauce.csproj'
+    packagesToPack: 'Simple.Sauce/simple.sauce.csproj'
     nobuild: true
     versioningScheme: 'off'
 
@@ -59,6 +59,6 @@ steps:
     feedsToUse: 'Simple.Sauce'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
     nuGetFeedType: 'internal'
-    publishVstsFeed: 'TestFeed'
+    publishVstsFeed: 'Simple.Sauce'
     versioningScheme: 'off'
     allowPackageConflicts: true

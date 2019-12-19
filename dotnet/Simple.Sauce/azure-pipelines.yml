@@ -55,3 +55,11 @@ steps:
     command: 'pack'
     outputDir: '$(Build.ArtifactStagingDirectory)/TestDir'
 
+- task: NuGetCommand@2
+  displayName: publish
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranchName'], 'master'),eq(variables['Build.SourceBranchName'], 'develop')))
+  inputs:
+    command: push
+    nuGetFeedType: external
+    publishFeedCredentials: 'NuGet'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg'

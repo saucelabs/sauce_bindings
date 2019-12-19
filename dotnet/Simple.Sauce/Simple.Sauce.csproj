@@ -4,7 +4,7 @@
     <PackageId>Simple.Sauce</PackageId>
     <PackageTags>Sauce Labs, Simple Sauce, Selenium</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.1.1</Version>
+    <Version>0.1.1-alpha</Version>
     <Authors>Nikolay Advolodkin</Authors>
     <Company>Sauce Labs</Company>
   </PropertyGroup>

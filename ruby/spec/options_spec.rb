@@ -36,7 +36,15 @@ module SimpleSauce
         expect(options.platform_name).to eq 'Mac'
       end
 
-      it 'accepts Sauce Lab specific settings' do
+      it 'accepts other w3c values' do
+        options = Options.new(accept_insecure_certs: true,
+                              page_load_strategy: 'eager')
+
+        expect(options.accept_insecure_certs).to eq true
+        expect(options.page_load_strategy).to eq 'eager'
+      end
+
+      it 'accepts Sauce Labs specific settings' do
         sauce_options = {max_duration: 1,
                          command_timeout: 2,
                          idle_timeout: 3,
@@ -65,6 +73,58 @@ module SimpleSauce
         end
 
         expect(sauce_opts.capabilities).to eq(expected_options)
+      end
+
+      it 'accepts Selenium Capabilities and overrides default browser' do
+        caps = Selenium::WebDriver::Remote::Capabilities.firefox(accept_insecure_certs: true,
+                                                                 page_load_strategy: 'eager')
+        options = Options.new(selenium_options: caps)
+
+        expect(options.browser_name).to eq 'firefox'
+        expect(options.selenium_options['pageLoadStrategy']).to eq 'eager'
+        expect(options.selenium_options['acceptInsecureCerts']).to eq true
+      end
+
+      it 'accepts Selenium Options and overrides default browser' do
+        browser_opts = Selenium::WebDriver::Firefox::Options.new(args: ['--foo'])
+        options = Options.new(selenium_options: browser_opts)
+
+        expect(options.browser_name).to eq 'firefox'
+        # Note - this is a bug in Selenium
+        expect(options.selenium_options['moz:firefoxOptions']).to eq(args: ['--foo'])
+      end
+
+      it 'accepts Selenium Capabilities and Options class instances' do
+        caps = Selenium::WebDriver::Remote::Capabilities.chrome(accept_insecure_certs: true,
+                                                                page_load_strategy: 'eager')
+        browser_opts = Selenium::WebDriver::Chrome::Options.new(args: ['--foo'])
+        options = Options.new(selenium_options: [caps, browser_opts])
+
+        expect(options.selenium_options['pageLoadStrategy']).to eq 'eager'
+        expect(options.selenium_options['acceptInsecureCerts']).to eq true
+        # Note - this is a bug in Selenium
+        expect(options.selenium_options['goog:chromeOptions']).to eq(args: ['--foo'])
+      end
+
+      it 'accepts W3C, Sauce, Browser Options and Capabilities at the same time' do
+        caps = Selenium::WebDriver::Remote::Capabilities.chrome(page_load_strategy: 'eager')
+        browser_opts = Selenium::WebDriver::Firefox::Options.new(args: ['--foo'])
+
+        options = Options.new(browser_name: 'firefox',
+                              browser_version: '77',
+                              accept_insecure_certs: true,
+                              command_timeout: 2,
+                              time_zone: 'Alaska',
+                              selenium_options: [caps, browser_opts])
+
+        expect(options.browser_name).to eq 'firefox'
+        expect(options.browser_version).to eq '77'
+        expect(options.platform_name).to eq 'Windows 10'
+        expect(options.accept_insecure_certs).to eq true
+
+        expect(options.selenium_options['pageLoadStrategy']).to eq 'eager'
+        # Note - this is a bug in Selenium
+        expect(options.selenium_options['moz:firefoxOptions']).to eq(args: ['--foo'])
       end
 
       it 'creates a default build value' do
@@ -101,6 +161,56 @@ module SimpleSauce
                                                                'recordScreenshots' => false,
                                                                'name' => 'TEST NAME',
                                                                'build' => 'CUSTOM BUILD')
+      end
+    end
+
+    describe '#capabilities' do
+      it 'correctly generates capabilities for w3c values' do
+        options = Options.new(browser_name: 'firefox',
+                              accept_insecure_certs: true)
+
+        expect(options.capabilities).to eq('browserName' => 'firefox',
+                                           'browserVersion' => 'latest',
+                                           'platformName' => 'Windows 10',
+                                           'acceptInsecureCerts' => true,
+                                           'sauce:options' => {'build' => 'TEMP BUILD: 11'})
+      end
+
+      it 'correctly generates capabilities for sauce specific values' do
+        options = Options.new(command_timeout: 2,
+                              time_zone: 'Alaska')
+
+        expect(options.capabilities).to eq('browserName' => 'chrome',
+                                           'browserVersion' => 'latest',
+                                           'platformName' => 'Windows 10',
+                                           'sauce:options' => {'build' => 'TEMP BUILD: 11',
+                                                               'commandTimeout' => 2,
+                                                               'timeZone' => 'Alaska'})
+      end
+
+      it 'correctly generates capabilities for selenium object values' do
+        caps = Selenium::WebDriver::Remote::Capabilities.chrome(accept_insecure_certs: true,
+                                                                page_load_strategy: 'eager')
+        browser_opts = Selenium::WebDriver::Chrome::Options.new(args: ['--foo'])
+        options = Options.new(selenium_options: [caps, browser_opts])
+
+        jwp_defaults = {'cssSelectorsEnabled' => true,
+                        'javascriptEnabled' => true,
+                        'nativeEvents' => false,
+                        'platform' => 'ANY',
+                        'rotatable' => false,
+                        'takesScreenshot' => false,
+                        'version' => ''}
+
+        expected_caps = {'browserName' => 'chrome',
+                         'browserVersion' => 'latest',
+                         'platformName' => 'Windows 10',
+                         'acceptInsecureCerts' => true,
+                         'pageLoadStrategy' => 'eager',
+                         'sauce:options' => {'build' => 'TEMP BUILD: 11'},
+                         'goog:chromeOptions' => {args: ['--foo']}}
+
+        expect(options.capabilities).to eq(jwp_defaults.merge(expected_caps))
       end
     end
   end

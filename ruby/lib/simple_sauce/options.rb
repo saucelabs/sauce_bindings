@@ -8,7 +8,8 @@ module SimpleSauce
       end
     end
 
-    W3C = %i[browser_name platform_name browser_version].freeze
+    W3C = %i[browser_name browser_version platform_name accept_insecure_certs page_load_strategy proxy
+             set_window_rect timeouts unhandled_prompt_behavior strict_file_interactability].freeze
 
     SAUCE = %i[access_key appium_version avoid_proxy build capture_html chromedriver_version command_timeout
                crmuxdriver_version custom_data disable_popup_handler extended_debugging firefox_adapter_version
@@ -17,19 +18,23 @@ module SimpleSauce
                restricted_public_info screen_resolution selenium_version source tags time_zone tunnel_identifier
                username video_upload_on_pass capture_performance].freeze
 
+    attr_reader :selenium_options
+
     def initialize(**opts)
+      parse_selenium_options(opts.delete(:selenium_options))
       create_variables(SAUCE + W3C, opts)
       @build ||= build_name
 
-      @browser_name ||= 'chrome'
+      @browser_name ||= selenium_options['browserName'] || 'chrome'
       @platform_name ||= 'Windows 10'
       @browser_version ||= 'latest'
     end
 
     def capabilities
-      caps = W3C.each_with_object({}) do |key, hash|
+      caps = selenium_options.dup
+      W3C.each do |key|
         value = send(key)
-        hash[self.class.camel_case(key)] = value if value
+        caps[self.class.camel_case(key)] = value if value
       end
       caps['sauce:options'] = {}
       SAUCE.each do |key|
@@ -38,10 +43,30 @@ module SimpleSauce
       end
       caps
     end
-
     alias as_json capabilities
 
     private
+
+    def parse_selenium_options(selenium_opts)
+      opts = Array(selenium_opts)
+
+      opts.each do |opt|
+        case opt
+        when Selenium::WebDriver::Firefox::Options
+          @browser_name = 'firefox'
+        when Selenium::WebDriver::Chrome::Options
+          @browser_name = 'chrome'
+        when Selenium::WebDriver::Edge::Options
+          @browser_name = 'MicrosoftEdge'
+        when Selenium::WebDriver::IE::Options
+          @browser_name = 'internet explorer'
+        when Selenium::WebDriver::Safari::Options
+          @browser_name = 'safari'
+        end
+      end
+
+      @selenium_options = opts.map(&:as_json).inject(:merge) || {}
+    end
 
     def create_variables(key, opts)
       key.each do |option|

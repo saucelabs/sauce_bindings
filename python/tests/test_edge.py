@@ -6,6 +6,6 @@ class TestEdge(object):
     def test_defaults(self):
         sauce = SauceOptions('edge')
 
-        assert sauce.browserName == 'MicrosoftEdge'
-        assert sauce.browserVersion == 'latest'
-        assert sauce.platformName == 'Windows 10'
+        assert sauce.browser_name == 'MicrosoftEdge'
+        assert sauce.browser_version == 'latest'
+        assert sauce.platform_name == 'Windows 10'

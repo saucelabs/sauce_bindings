@@ -9,17 +9,20 @@ Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
 
 Metrics/AbcSize:
-  Max: 17
+  Max: 19
 
 Metrics/BlockLength:
   Exclude:
     - "**/*_spec.rb"
 
+Metrics/CyclomaticComplexity:
+  Max: 7
+
 Metrics/LineLength:
   Max: 120
 
 Metrics/MethodLength:
-  Max: 13
+  Max: 16
 
 Metrics/ModuleLength:
   CountComments: false

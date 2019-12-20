@@ -20,7 +20,7 @@ module SimpleSauce
     def expect_request(body: nil, endpoint: nil)
       body = (body || {desiredCapabilities: default_capabilities,
                        capabilities: {firstMatch: [default_capabilities]}}).to_json
-      endpoint ||= 'https://ondemand.saucelabs.com/wd/hub/session'
+      endpoint ||= 'https://ondemand.us-west-1.saucelabs.com/wd/hub/session'
       stub_request(:post, endpoint).with(body: body).to_return(valid_response)
     end
 
@@ -44,7 +44,7 @@ module SimpleSauce
       it 'creates default Options instance if none is provided' do
         session = Session.new
 
-        expected_results = {url: 'https://foo:123@ondemand.saucelabs.com:443/wd/hub',
+        expected_results = {url: 'https://foo:123@ondemand.us-west-1.saucelabs.com:443/wd/hub',
                             desired_capabilities: {'browserName' => 'chrome',
                                                    'browserVersion' => 'latest',
                                                    'platformName' => 'Windows 10',
@@ -58,7 +58,7 @@ module SimpleSauce
                                  idle_timeout: 4)
         session = Session.new(sauce_opts)
 
-        expected_results = {url: 'https://foo:123@ondemand.saucelabs.com:443/wd/hub',
+        expected_results = {url: 'https://foo:123@ondemand.us-west-1.saucelabs.com:443/wd/hub',
                             desired_capabilities: {'browserName' => 'chrome',
                                                    'browserVersion' => '123',
                                                    'platformName' => 'Mac',
@@ -132,7 +132,7 @@ module SimpleSauce
         session = Session.new
         session.data_center = :US_EAST
 
-        expect(session.url).to eq('https://foo:123@us-east-1.saucelabs.com:443/wd/hub')
+        expect(session.url).to eq('https://foo:123@ondemand.us-east-1.saucelabs.com:443/wd/hub')
       end
 
       it 'raises exception if data center is invalid' do
@@ -147,7 +147,7 @@ module SimpleSauce
         session = Session.new
         session.username = 'name'
 
-        expect(session.url).to eq('https://name:123@ondemand.saucelabs.com:443/wd/hub')
+        expect(session.url).to eq('https://name:123@ondemand.us-west-1.saucelabs.com:443/wd/hub')
       end
     end
 
@@ -156,7 +156,7 @@ module SimpleSauce
         session = Session.new
         session.access_key = '456'
 
-        expect(session.url).to eq('https://foo:456@ondemand.saucelabs.com:443/wd/hub')
+        expect(session.url).to eq('https://foo:456@ondemand.us-west-1.saucelabs.com:443/wd/hub')
       end
     end
 

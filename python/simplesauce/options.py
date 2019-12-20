@@ -1,25 +1,77 @@
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.edge.options import Options as EdgeOptions
+from selenium.webdriver.ie.options import Options as IEOptions
 from datetime import datetime
 import os
 import re
 
+w3c_configs = {
+    'browser_name': 'browserName',
+    'browser_version': 'browserVersion',
+    'platform_name': 'platformName',
+    'accept_insecure_certs': 'acceptInsecureCerts',
+    'page_load_strategy': 'pageLoadStrategy',
+    'proxy': 'proxy',
+    'set_window_rect': 'setWindowRect',
+    'timeouts': 'timeouts',
+    'unhandled_prompt_behavior': 'unhandledPromptBehavior',
+    'strict_file_interactability': 'strictFileInteractability'
+}
+
+sauce_configs = {
+    'access_key': 'accessKey',
+    'avoid_proxy': 'avoidProxy',
+    'build': 'build',
+    'capture_html': 'captureHtml',
+    'chromedriver_version': 'chromedriverVersion',
+    'command_timeout': 'commandTimeout',
+    'crmuxdriver_version': 'crmuxdriverVersion',
+    'custom_data': 'customData',
+    'disable_popup_handler': 'disablePopupHandler',
+    'extended_debugging': 'extendedDebugging',
+    'firefox_adapter_version': 'firefoxAdapterVersion',
+    'firefox_profile_url': 'firefoxProfileUrl',
+    'idle_timeout': 'idleTimeout',
+    'iedriver_version': 'iedriverVersion',
+    'max_duration': 'maxDuration',
+    'name': 'name',
+    'parent_tunnel': 'parentTunnel',
+    'passed': 'passed',
+    'prerun': 'prerun',
+    'prevent_requeue': 'preventRequeue',
+    'priority': 'priority',
+    'proxy_host': 'proxyHost',
+    'public': 'public',
+    'record_logs': 'recordLogs',
+    'record_screenshots': 'recordScreenshots',
+    'record_video': 'recordVideo',
+    'restricted_public_info': 'restrictedPublicInfo',
+    'screen_resolution': 'screenResolution',
+    'selenium_version': 'seleniumVersion',
+    'source': 'source',
+    'tags': 'tags',
+    'time_zone': 'timeZone',
+    'tunnel_identifier': 'tunnelIdentifier',
+    'username': 'username',
+    'video_upload_on_pass': 'videoUploadOnPass',
+    'capture_performance': 'capturePerformance'
+}
+
+browser_names = {
+    'ie': 'internet explorer',
+    'edge': 'MicrosoftEdge',
+}
+
+option_types = {
+    FirefoxOptions: 'firefox',
+    ChromeOptions: 'chrome',
+    IEOptions: 'internet explorer',
+    EdgeOptions: 'MicrosoftEdge'
+}
+
 
 class SauceOptions():
-
-    def _set_defaults(self, browser=None):
-        self.browser_name = browser if browser else 'chrome'
-        self.browser_version = 'latest'
-        self.platform_name = 'Windows 10'
-
-        self.options['browserName'] = self.browser_name
-
-    def _set_default_w3c_options(self):
-        self.options['sauce:options']['browserName'] = self.browser_name
-        self.options['sauce:options']['browserVersion'] = self.browser_version
-        self.options['sauce:options']['platformName'] = self.platform_name
-        self.options['sauce:options']['name'] = self._test_name
-        self.options['sauce:options']['build'] = self._sauce_build
 
     def _set_default_build_name(self):
         if 'build' in self.options['sauce:options']:
@@ -45,128 +97,87 @@ class SauceOptions():
         else:
             self.build = 'Build Time: {}'.format(datetime.utcnow())
 
-    def __init__(self, browserName=None, browserVersion=None, platformName=None, options={}):
-        self.options = {}
-        self.options['sauce:options'] = {}
+    def _set_browser_name(self, browser_name):
+        if self.browser_name is None and browser_name is None:
+            self.set_capability('browserName', 'chrome')
+        elif browser_name and browser_name.lower() in browser_names.keys():
+            self.set_capability('browserName', browser_names[browser_name.lower()])
+        elif browser_name:
+            self.set_capability('browserName', browser_name.lower())
 
-        self._test_name = 'test'
+        self._set_platform_name()
+
+    def _set_platform_name(self):
+        if self.browser_name == 'safari' and self.browser_version == 'latest':
+            self.set_capability('platformName', 'macOS 10.14')
+        elif self.platform_name is None:
+            self.set_capability('platformName', 'Windows 10')
+
+    def __init__(self, browserName=None, **kwargs):
+        super(SauceOptions, self).__setattr__('options', {'sauce:options': {}})
+        super(SauceOptions, self).__setattr__('seleniumOptions', {})
+
+        for key, value in kwargs.items():
+            if key is 'seleniumOptions':
+                if type(value) in option_types:
+                    self.browser_name = option_types[type(value)]
+
+                self.selenium_options = value
+            else:
+                self.set_capability(key, value)
+
+        if self.browser_version is None:
+            self.browser_version = 'latest'
+
+        self._set_browser_name(browserName)
+        self._set_platform_name()
+
         self._set_default_build_name()
 
-        self._set_defaults()
-        self._set_default_w3c_options()
+    def __setattr__(self, key, value):
+        self.set_option(key, value)
 
-        if not any([browserName, browserVersion, platformName, options]):
-            return
-        elif not any([browserName, browserVersion, platformName]):
-            self.parse_options(options)
-            return
+    def __getattr__(self, key):
+        if key is 'selenium_options':
+            if 'opts' in self.seleniumOptions.keys():
+                return self.seleniumOptions['opts']
+            else:
+                return None
+        try:
+            if key in sauce_configs.keys():
+                return self.options['sauce:options'][sauce_configs[key]]
+            elif key in w3c_configs.keys():
+                return self.options[w3c_configs[key]]
+            else:
+                raise AttributeError
+        except KeyError:
+            return None
 
-        if browserName:
-            self.parse_browser_name(browserName)
-        if browserVersion:
-            self.parse_browser_version(browserVersion)
-        if platformName:
-            self.parse_platform_name(platformName)
-
-    @property
-    def name(self):
-        return self._test_name
-
-    @name.setter
-    def name(self, name):
-        self._test_name = name
-
-        self.options['sauce:options']['name'] = self._test_name
-
-    @property
-    def build(self):
-        return self._sauce_build
-
-    @build.setter
-    def build(self, build):
-        self._sauce_build = build
-
-        self.options['sauce:options']['name'] = self._sauce_build
-
-    def set_capability(self, key, val):
-        self.options[key] = val
-
-    def set_sauce_capability(self, key, val):
-        self.options['sauce:options'][key] = val
-
-    """TODO: create better parsing mechanisms for different capabilities."""
-    def parse_browser_name(self, name):
-        name = name.lower()
-
-        if name == 'ie' or name == 'internet explorer':
-            self.browser_name = 'internet explorer'
-        elif name == 'edge':
-            self.browser_name = 'MicrosoftEdge'
-        elif name == 'safari':
-            self.set_mac_os()
+    # Sets with camelCase
+    def set_capability(self, key, value):
+        if key in sauce_configs.values():
+            self.options['sauce:options'][key] = value
+        elif key in w3c_configs.values():
+            self.options[key] = value
         else:
-            self.browser_name = name
+            raise AttributeError
 
-        self.options['browserName'] = self.browser_name
-
-    def parse_browser_version(self, version):
-        self.browser_version = version
-
-        self.options['browserVersion'] = self.browser_version
-
-    def parse_platform_name(self, platform):
-        if self.browser_name.lower() == 'safari':
-            self.set_mac_os()
-        elif 'windows' in platform.lower():
-            self.platform_name = 'Windows 10'
+    # Sets with snake_case
+    def set_option(self, key, value):
+        if key == 'browser_name':
+            self._set_browser_name(value)
+        elif key == 'platform_name':
+            self._set_platform_name(value)
+        elif key is 'selenium_options':
+            self.seleniumOptions['opts'] = value.to_capabilities()
+        elif key in sauce_configs.keys():
+            self.options['sauce:options'][sauce_configs[key]] = value
+        elif key in w3c_configs.keys():
+            self.options[w3c_configs[key]] = value
         else:
-            self.platform_name = platform
+            raise AttributeError
 
-        self.options['platformName'] = self.platform_name
-
-    def parse_options(self, options):
-
-        if type(options) == ChromeOptions:
-            self._set_defaults()
-        elif type(options) == FirefoxOptions:
-            self._set_defaults('firefox')
-        elif 'version' in options:
-            self.browser_name = options['browserName'] if options['browserName'] else 'chrome'
-            self.browser_version = options['version'] if options['version'] else 'latest'
-            self.platform_name = 'Windows 10' if not options['version'] else options['version']
-            self.options['browserName'] = self.browser_name
-            self.options['browserVersion'] = self.browser_version
-            self.options['platformName'] = self.platform_name
-        elif 'sauce:options' in options:
-            w3cSauceOptions = options
-            self.browser_name = w3cSauceOptions.get('browserName')
-            self.browser_version = w3cSauceOptions['sauce:options'].get('browserVersion')
-            self.platform_name = w3cSauceOptions['sauce:options'].get('platformName')
-
-            self.options['browserName'] = self.browser_name
-            self.options['browserName'] = self.browser_name
-            self.options['browserVersion'] = self.browser_version
-            self.options['platformName'] = self.platform_name
-
-            self.options['sauce:options']['name'] = w3cSauceOptions.get('name')
-            self.options['sauce:options']['build'] = w3cSauceOptions.get('build')
-        else:
-            self.browser_name = options.get('browserName')
-            self.browser_version = options.get('browserVersion')
-            self.platform_name = options.get('platformName')
-
-            self.options['browserName'] = self.browser_name
-            self.options['browserVersion'] = self.browser_version
-            self.options['platformName'] = self.platform_name
-            self.options['sauce:options']['name'] = options.get('name')
-            self.options['sauce:options']['build'] = options.get('build')
-
-    # TODO: definitely figure this out :)
-    def set_mac_os(self):
-        self.browser_name = 'safari'
-        self.browser_version = 'latest'
-        self.platform_name = 'macOS 10.14'
-
-        self.options['browserName'] = self.browser_name
-        self.options['browserVersion'] = self.browser_version
-        self.options['platformName'] = self.platform_name
+    def to_capabilities(self):
+        if self.selenium_options:
+            self.options.update(self.selenium_options)
+        return self.options

@@ -16,6 +16,9 @@ variables:
 
 #Excellent docs on .NET Core steps: https://docs.microsoft.com/en-us/azure/devops/pipelines/ecosystems/dotnet-core?view=azure-devops#feedback
 steps:
+- script: set
+  displayName: show all variables
+
 - task: DotNetCoreCLI@2
   displayName: Restore
   inputs:
@@ -33,6 +36,8 @@ steps:
 - powershell: |
    Write-Host "Our Sauce Username in ADO is=> $($env:SAUCE_USER)";
    Write-Host "Our Sauce Access Key in ADO is=> $($env:SAUCE_KEY)";
+   Write-Host "System.DefaultWorkingDirectory=>$(System.DefaultWorkingDirectory)"
+   Write-Host "Build.ArtifactStagingDirectory=>$(Build.ArtifactStagingDirectory)"
    Write-Host ("##vso[task.setvariable variable=SAUCE_USERNAME]$($env:SAUCE_USER)")
    Write-Host ("##vso[task.setvariable variable=SAUCE_ACCESS_KEY]$($env:SAUCE_KEY)")
 
@@ -43,22 +48,18 @@ steps:
     projects: '**/*Test/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
+# Pack a NuGet package to a test directory
 - task: DotNetCoreCLI@2
-  displayName: 'dotnet pack'
-  inputs:
+  displayName: 'Pack NuGet'
+  inputs: 
     command: 'pack'
-    arguments: '--configuration $(buildConfiguration)'
-    packagesToPack: 'simple.sauce.csproj'
-    nobuild: true
-    versioningScheme: 'off'
+    outputDir: '$(Build.ArtifactStagingDirectory)/TestDir'
 
 - task: NuGetCommand@2
-  displayName: 'nuget push'
+  displayName: publish
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranchName'], 'master'),eq(variables['Build.SourceBranchName'], 'develop')))
   inputs:
-    command: 'push'
-    feedsToUse: 'Simple.Sauce'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-    nuGetFeedType: 'internal'
-    publishVstsFeed: 'TestFeed'
-    versioningScheme: 'off'
-    allowPackageConflicts: true
+    command: push
+    nuGetFeedType: external
+    publishFeedCredentials: 'NuGet'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg'

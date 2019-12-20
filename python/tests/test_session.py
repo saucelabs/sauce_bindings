@@ -150,4 +150,4 @@ class TestStop(object):
         session.start()
 
         with pytest.raises(TypeError):
-            session.stop()
+            session.stop(True)

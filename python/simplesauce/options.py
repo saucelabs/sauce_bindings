@@ -167,7 +167,7 @@ class SauceOptions():
         if key == 'browser_name':
             self._set_browser_name(value)
         elif key == 'platform_name':
-            self._set_platform_name(value)
+            self._set_platform_name()
         elif key is 'selenium_options':
             self.seleniumOptions['opts'] = value.to_capabilities()
         elif key in sauce_configs.keys():

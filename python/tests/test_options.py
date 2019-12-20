@@ -33,7 +33,7 @@ class TestInit(object):
     def test_accepts_w3c_values(self):
         sauce = SauceOptions(acceptInsecureCerts=True, pageLoadStrategy='eager')
 
-        assert sauce.accept_insecure_certs == True
+        assert sauce.accept_insecure_certs is True
         assert sauce.page_load_strategy == 'eager'
 
     def test_accepts_sauce_values_with_dict(self):
@@ -69,15 +69,15 @@ class TestInit(object):
         assert sauce.tunnel_identifier == 'foobar'
         assert sauce.screen_resolution == '10x10'
         assert sauce.time_zone == 'Foo'
-        assert sauce.extended_debugging == True
-        assert sauce.capture_performance == True
-        assert sauce.record_video == False
-        assert sauce.video_upload_on_pass == False
-        assert sauce.record_screenshots == False
-        assert sauce.record_logs == False
+        assert sauce.extended_debugging is True
+        assert sauce.capture_performance is True
+        assert sauce.record_video is False
+        assert sauce.video_upload_on_pass is False
+        assert sauce.record_screenshots is False
+        assert sauce.record_logs is False
         assert sauce.username == 'foo'
         assert sauce.access_key == '1234'
-        assert sauce.passed == True
+        assert sauce.passed is True
 
     def test_accepts_sauce_values_as_params(self):
         sauce = SauceOptions(maxDuration=1, commandTimeout=2)
@@ -109,7 +109,7 @@ class TestInit(object):
         sauce = SauceOptions(seleniumOptions=browser_options, **options)
 
         assert sauce.browser_name == 'firefox'
-        assert sauce.accept_insecure_certs == True
+        assert sauce.accept_insecure_certs is True
         assert sauce.page_load_strategy == 'eager'
         assert sauce.max_duration == 1
         assert sauce.command_timeout == 2

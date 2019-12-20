@@ -119,7 +119,7 @@ class SauceOptions():
 
         for key, value in kwargs.items():
             if key is 'seleniumOptions':
-                if type(value) in option_types:
+                if isinstance(value, tuple(option_types)):
                     self.browser_name = option_types[type(value)]
 
                 self.selenium_options = value

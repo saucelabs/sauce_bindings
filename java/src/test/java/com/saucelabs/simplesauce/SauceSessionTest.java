@@ -1,143 +1,222 @@
 package com.saucelabs.simplesauce;
 
 import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 import org.openqa.selenium.MutableCapabilities;
 
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.openqa.selenium.PageLoadStrategy.EAGER;
+import static org.openqa.selenium.UnexpectedAlertBehaviour.ACCEPT_AND_NOTIFY;
+
+import org.junit.contrib.java.lang.system.EnvironmentVariables;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SauceSessionTest {
-    //TODO duplication in 3 classes, excluding DataCenterTest
-    private SauceSession sauce;
-    private EnvironmentManager dummyEnvironmentManager;
-    private SauceRemoteDriver dummyRemoteDriver;
-    private SauceOptions options;
+    private SauceSession sauceSession;
+    private String actualUsername = System.getenv("SAUCE_USERNAME");
+    private String actualAccessKey = System.getenv("SAUCE_ACCESS_KEY");
+
+    @Rule
+    public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 
     @Before
     public void setUp() {
-        //TODO duplication in setup in BaseConfigurationTest. Can be moved out of here
-        //and combined into a single setup()
-        dummyRemoteDriver = mock(SauceRemoteDriver.class);
-        dummyEnvironmentManager = mock(EnvironmentManager.class);
-        sauce = new SauceSession(dummyRemoteDriver, dummyEnvironmentManager);
-        when(dummyEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
-        when(dummyEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
-
-        sauce.start();
+        environmentVariables.set("BUILD_TAG", " ");
+        environmentVariables.set("BUILD_NAME", "TEMP BUILD");
+        environmentVariables.set("BUILD_NUMBER", "11");
+        environmentVariables.set("SAUCE_USERNAME", "user-name");
+        environmentVariables.set("SAUCE_ACCESS_KEY", "1234");
     }
 
     @Test
-    public void sauceSession_defaultSauceOptions_returnsChromeBrowser() {
-        options = new SauceOptions();
-        dummyRemoteDriver = mock(SauceRemoteDriver.class);
+    public void sauceSessionCreatesDefaultSauceOptions() {
+        sauceSession = new SauceSession();
+        SauceOptions sauceOptions = sauceSession.getSauceOptions();
 
-        sauce = new SauceSession(options, dummyRemoteDriver, dummyEnvironmentManager);
-        sauce.start();
-        String actualBrowser = sauce.getCurrentSessionCapabilities().getCapability("browserName").toString();
-        assertEquals("chrome", actualBrowser);
+        assertNotNull(sauceOptions);
+        assertEquals("chrome", sauceOptions.getBrowserName());
+        assertEquals("Windows 10", sauceOptions.getPlatformName());
+        assertEquals("latest", sauceOptions.getBrowserVersion());
+        assertEquals("TEMP BUILD: 11", sauceOptions.getBuild());
     }
 
     @Test
-    public void startSession_defaultConfig_usWestDataCenter() {
-        String expectedDataCenterUrl = DataCenter.US_WEST.getEndpoint();
-        assertEquals(expectedDataCenterUrl, sauce.getSauceDataCenter());
+    public void sauceSessionUsesProvidedSauceOptions() {
+        // Selenium browser options
+        FirefoxOptions firefoxOptions = new FirefoxOptions();
+        firefoxOptions.addArguments("--foo");
+        firefoxOptions.addPreference("foo", "bar");
+
+        // Selenium w3c options
+        firefoxOptions.setUnhandledPromptBehaviour(ACCEPT_AND_NOTIFY);
+
+        SauceOptions options = new SauceOptions(firefoxOptions);
+
+        // w3c options
+        options.setPlatformName("macOS 10.14");
+        options.setBrowserVersion("68");
+        options.setAcceptInsecureCerts(true);
+        options.setPageLoadStrategy("eager");
+
+        // sauce options
+        options.setMaxDuration(1);
+        options.setCommandTimeout(2);
+
+        sauceSession = new SauceSession(options);
+
+        SauceOptions sauceOptions = sauceSession.getSauceOptions();
+        Map capabilities = sauceOptions.toCapabilities().toJson();
+
+        // Validate w3c options
+        assertEquals("firefox", capabilities.get("browserName"));
+        assertEquals("macOS 10.14", capabilities.get("platformName"));
+        assertEquals("68", capabilities.get("browserVersion"));
+        assertEquals("eager", capabilities.get("pageLoadStrategy"));
+        assertEquals(ACCEPT_AND_NOTIFY, capabilities.get("unhandledPromptBehavior"));
+
+        // Validate Sauce options
+        MutableCapabilities sauceCapabilities = (MutableCapabilities) capabilities.get("sauce:options");
+        assertEquals(1, sauceCapabilities.getCapability("maxDuration"));
+        assertEquals(2, sauceCapabilities.getCapability("commandTimeout"));
+        assertEquals("TEMP BUILD: 11", sauceCapabilities.getCapability("build"));
+
+        // Validate Selenium options
+        Map firefoxCapabilities = (Map) capabilities.get("moz:firefoxOptions");
+
+        ArrayList<String> expectedArgs = new ArrayList<>();
+        expectedArgs.add("--foo");
+        assertEquals(expectedArgs, firefoxCapabilities.get("args"));
+
+        Map<String, Object> expectedPrefs = new HashMap<>();
+        expectedPrefs.put("foo", "bar");
+        assertEquals(expectedPrefs, firefoxCapabilities.get("prefs"));
     }
 
     @Test
-    public void getUserName_usernameSetInEnvironmentVariable_returnsValue() {
-        when(dummyEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
-        String actualUserName = sauce.getUserName();
-        assertNotEquals("",actualUserName);
+    public void defaultsToUSWestDataCenter() throws MalformedURLException {
+        sauceSession = new SauceSession();
+        String expectedUrl = "https://user-name:1234@ondemand.us-west-1.saucelabs.com:443/wd/hub";
+        assertEquals(sauceSession.getSauceUrl().toString(), expectedUrl);
     }
 
     @Test
-    public void getAccessKey_keySetInEnvironmentVariable_returnsValue() {
-        when(dummyEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
-        String actualAccessKey = sauce.getAccessKey();
-        assertNotEquals("", actualAccessKey);
+    public void setsDataCenter() throws MalformedURLException {
+        sauceSession = new SauceSession();
+        sauceSession.setSauceDataCenter(DataCenter.EU_CENTRAL);
+
+        String expectedUrl = "https://user-name:1234@ondemand.eu-central-1.saucelabs.com:443/wd/hub";
+        assertEquals(sauceSession.getSauceUrl().toString(), expectedUrl);
     }
 
     @Test
-    public void defaultConstructor_instantiated_setsConcreteDriverManager() {
-        SauceSession concreteSauceSession = new SauceSession();
-        assertTrue(concreteSauceSession.getSauceDriver() instanceof SauceDriverImpl);
+    public void setsSauceURLDirectly() throws MalformedURLException {
+        sauceSession = new SauceSession();
+
+        sauceSession.setSauceUrl(new URL("http://example.com"));
+        String expectedUrl = "http://example.com";
+        assertEquals(expectedUrl, sauceSession.getSauceUrl().toString());
     }
 
     @Test
-    public void startSession_setsBrowserKey() {
-        String expectedBrowserCapabilityKey = "browserName";
-        String actualBrowser = sauce.getCurrentSessionCapabilities().getCapability(expectedBrowserCapabilityKey).toString();
-        assertNotEquals("", actualBrowser);
+    public void setsSauceUsernameAndAccessKey() throws MalformedURLException {
+        sauceSession = new SauceSession();
+        sauceSession.setSauceUsername("me");
+        sauceSession.setSauceAccessKey("321");
+
+        String expectedUrl = "https://me:321@ondemand.us-west-1.saucelabs.com:443/wd/hub";
+        assertEquals(expectedUrl, sauceSession.getSauceUrl().toString());
     }
 
     @Test
-    public void start_setsPlatformNameKey() {
-        String correctPlatformKey = "platformName";
-        String browserSetInSauceSession = sauce.getCurrentSessionCapabilities().getCapability(correctPlatformKey).toString();
-        assertEquals("Windows 10", browserSetInSauceSession);
+    public void startThrowsErrorWithoutUsername() throws MalformedURLException {
+        environmentVariables.clear("SAUCE_USERNAME");
+        sauceSession = new SauceSession();
+
+        try {
+            sauceSession.start();
+            fail("Expected a SauceEnvironmentVariablesNotSetException to be thrown");
+        } catch (SauceEnvironmentVariablesNotSetException exception) {
+            assertEquals("Sauce Username was not provided", exception.getMessage());
+        }
     }
 
     @Test
-    public void defaultBrowserIsLatest() {
-        String correctKey = "browserVersion";
-        String browserSetThroughSauceSession = sauce.getCurrentSessionCapabilities().getCapability(correctKey).toString();
-        assertEquals("latest", browserSetThroughSauceSession);
+    public void startThrowsErrorWithoutAccessKey() throws MalformedURLException {
+        environmentVariables.clear("SAUCE_ACCESS_KEY");
+        sauceSession = new SauceSession();
+
+        try {
+            sauceSession.start();
+            fail("Expected a SauceEnvironmentVariablesNotSetException to be thrown");
+        } catch (SauceEnvironmentVariablesNotSetException exception) {
+            assertEquals("Sauce Access Key was not provided", exception.getMessage());
+        }
     }
 
+    // TODO: This needs to get mocked
     @Test
-    public void defaultIsChrome() {
-        String actualBrowser = sauce.getCurrentSessionCapabilities().getBrowserName();
-        assertEquals("chrome", actualBrowser);
-    }
+    public void startsSessionAndReturnsSeleniumDriver() throws MalformedURLException {
+        sauceSession = new SauceSession();
+        sauceSession.setSauceUsername(actualUsername);
+        sauceSession.setSauceAccessKey(actualAccessKey);
 
-    @Test
-    public void defaultIsWindows10() {
-        String actualOs = sauce.getCurrentSessionCapabilities().getPlatform().name();
-        assertEquals("WIN10", actualOs);
-    }
-
-    @Test
-    public void sauceOptions_defaultConfiguration_setsSauceOptions() {
-        MutableCapabilities sauceOptions = (MutableCapabilities) sauce.getCurrentSessionCapabilities().getCapability("sauce:options");
-        String accessKey = (String) sauceOptions.getCapability("accessKey");
-        assertEquals("You need to have Sauce Credentials set (SAUCE_USERNAME, SAUCE_ACCESSKEY) before this unit test will pass", "accessKey", accessKey);
-    }
-
-    @Test
-    public void sauceOptions_startWithChrome_startsChrome() {
-        dummyRemoteDriver = mock(SauceRemoteDriver.class);
-        options = new SauceOptions();
-        options.withChrome();
-
-        sauce = new SauceSession(options, dummyRemoteDriver, dummyEnvironmentManager);
-        sauce.start();
-
-        String actualBrowser = sauce.getCurrentSessionCapabilities().getBrowserName();
-        assertEquals("chrome", actualBrowser);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void stop_newWebDriverInstanceSetByStart_stopsSession() {
-        sauce = new SauceSession(dummyRemoteDriver, dummyEnvironmentManager);
-
-        WebDriver driver = sauce.start();
-        sauce.stop();
+        WebDriver driver = sauceSession.start();
+        assertNotNull(driver);
 
         driver.quit();
     }
 
+    // TODO: This needs to get mocked
     @Test
-    @Ignore("Not sure how to make this work with Mockito. To make sure that the .quit() is actually called on the webDriver")
-    public void stop_noParams_callsDriverQuit() {
-        WebDriver mockDriver = mock(WebDriver.class);
+    public void startsSessionWithProvidedOptions() throws MalformedURLException {
+        SauceOptions sauceOptions = new SauceOptions();
+        sauceOptions.setBrowserName("firefox");
+        sauceOptions.setPlatformName("macOS 10.14");
+        sauceOptions.setBrowserVersion("68");
 
-        sauce.start();
-        sauce.stop();
+        sauceSession = new SauceSession(sauceOptions);
+        sauceSession.setSauceUsername(actualUsername);
+        sauceSession.setSauceAccessKey(actualAccessKey);
 
-        verify(mockDriver).quit();
+        RemoteWebDriver driver = (RemoteWebDriver) sauceSession.start();
+        MutableCapabilities capabilities = (MutableCapabilities) driver.getCapabilities();
+
+        assertEquals("firefox", capabilities.getBrowserName());
+        assertEquals("68.0", capabilities.getCapability("browserVersion"));
+        assertEquals(Platform.MAC, capabilities.getCapability("platformName"));
+        driver.quit();
+    }
+
+    // TODO: This needs to get mocked
+    @Test
+    public void stopsSessionWithPassingResult() throws MalformedURLException {
+        sauceSession = new SauceSession();
+        sauceSession.setSauceUsername(actualUsername);
+        sauceSession.setSauceAccessKey(actualAccessKey);
+
+        sauceSession.start();
+        sauceSession.stop(TestResult.PASS);
+    }
+
+    // TODO: This needs to get mocked
+    @Test
+    public void stopsSessionWithFailingResult() throws MalformedURLException {
+        sauceSession = new SauceSession();
+        sauceSession.setSauceUsername(actualUsername);
+        sauceSession.setSauceAccessKey(actualAccessKey);
+
+        sauceSession.start();
+        sauceSession.stop(TestResult.FAIL);
     }
 }

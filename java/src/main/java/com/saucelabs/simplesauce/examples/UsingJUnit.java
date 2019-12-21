@@ -8,12 +8,14 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 
+import java.net.MalformedURLException;
+
 public class UsingJUnit {
 
     private WebDriver driver;
 
     @Before
-    public void setUp(){
+    public void setUp() throws MalformedURLException {
         SauceSession sauceSession = new SauceSession();
         driver = sauceSession.start();
     }

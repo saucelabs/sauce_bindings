@@ -205,13 +205,16 @@ public class SauceOptions {
             return System.getenv("bamboo_shortJobName") + ": " + System.getenv("bamboo_buildNumber");
             // Travis
         } else if (System.getenv("TRAVIS_JOB_ID") != null) {
-            return System.getenv("TRAVIS_REPO_SLUG") + ": " + System.getenv("TRAVIS_JOB_NUMBER");
+            return System.getenv("TRAVIS_JOB_NAME") + ": " + System.getenv("TRAVIS_JOB_NUMBER");
             // CircleCI
         } else if (System.getenv("CIRCLE_JOB") != null) {
             return System.getenv("CIRCLE_JOB") + ": " + System.getenv("CIRCLE_BUILD_NUM");
             // Gitlab
         } else if (System.getenv("CI") != null) {
             return System.getenv("CI_JOB_NAME") + ": " + System.getenv("CI_JOB_ID");
+            // Team City
+        } else if (System.getenv("TEAMCITY_VERSION") != null) {
+            return System.getenv("TEAMCITY_PROJECT_NAME") + ": " + System.getenv("BUILD_NUMBER");
             // Default
         } else {
             return "Build Time: " + Long.toString(System.currentTimeMillis());

@@ -17,14 +17,14 @@ class TestInit(object):
         assert sauce.platform_name == 'Windows 10'
 
     def test_accepts_browser_name(self):
-        sauce = SauceOptions('Firefox')
+        sauce = SauceOptions('firefox')
 
         assert sauce.browser_name == 'firefox'
         assert sauce.browser_version == 'latest'
         assert sauce.platform_name == 'Windows 10'
 
     def test_accepts_browser_version_platform_name(self):
-        sauce = SauceOptions(browserName='Firefox', browserVersion='75.0', platformName='macOS 10.13')
+        sauce = SauceOptions(browserName='firefox', browserVersion='75.0', platformName='macOS 10.13')
 
         assert sauce.browser_name == 'firefox'
         assert sauce.browser_version == '75.0'
@@ -143,6 +143,8 @@ class TestSauceSpecificOptions(object):
     def test_w3c_options(self):
         sauce = SauceOptions()
         sauce.browser_name = 'safari'
+        sauce.platform_name = 'macOS 10.14'
+
         sauce.accept_insecure_certs = True
 
         assert sauce.browser_name == 'safari'
@@ -163,6 +165,7 @@ class TestCapabilitiesCreation(object):
     def test_capabilities_for_w3c(self):
         sauce = SauceOptions()
         sauce.browser_name = 'safari'
+        sauce.platform_name = 'macOS 10.14'
         sauce.accept_insecure_certs = True
 
         capabilities = sauce.to_capabilities()

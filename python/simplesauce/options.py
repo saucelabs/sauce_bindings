@@ -59,11 +59,6 @@ sauce_configs = {
 }
 
 browser_names = {
-    'ie': 'internet explorer',
-    'edge': 'MicrosoftEdge',
-}
-
-option_types = {
     FirefoxOptions: 'firefox',
     ChromeOptions: 'chrome',
     IEOptions: 'internet explorer',
@@ -71,7 +66,7 @@ option_types = {
 }
 
 
-class SauceOptions():
+class SauceOptions:
 
     def _set_default_build_name(self):
         if 'build' in self.options['sauce:options']:
@@ -97,40 +92,31 @@ class SauceOptions():
         else:
             self.build = 'Build Time: {}'.format(datetime.utcnow())
 
-    def _set_browser_name(self, browser_name):
-        if self.browser_name is None and browser_name is None:
-            self.set_capability('browserName', 'chrome')
-        elif browser_name and browser_name.lower() in browser_names.keys():
-            self.set_capability('browserName', browser_names[browser_name.lower()])
-        elif browser_name:
-            self.set_capability('browserName', browser_name.lower())
-
-        self._set_platform_name()
-
-    def _set_platform_name(self):
-        if self.browser_name == 'safari' and self.browser_version == 'latest':
-            self.set_capability('platformName', 'macOS 10.14')
-        elif self.platform_name is None:
-            self.set_capability('platformName', 'Windows 10')
-
     def __init__(self, browserName=None, **kwargs):
         super(SauceOptions, self).__setattr__('options', {'sauce:options': {}})
         super(SauceOptions, self).__setattr__('seleniumOptions', {})
 
         for key, value in kwargs.items():
             if key is 'seleniumOptions':
-                if isinstance(value, tuple(option_types)):
-                    self.browser_name = option_types[type(value)]
+                if isinstance(value, tuple(browser_names)):
+                    self.set_capability('browserName', browser_names[type(value)])
 
-                self.selenium_options = value
+                self.seleniumOptions['caps'] = value.to_capabilities()
             else:
                 self.set_capability(key, value)
 
         if self.browser_version is None:
-            self.browser_version = 'latest'
+            self.set_capability('browserVersion', 'latest')
 
-        self._set_browser_name(browserName)
-        self._set_platform_name()
+        if browserName:
+            self.set_capability('browserName', browserName)
+        elif self.browser_name:
+            pass  # browser name set by Selenium Class
+        else:
+            self.set_capability('browserName', 'chrome')
+
+        if self.platform_name is None:
+            self.set_capability('platformName', 'Windows 10')
 
         self._set_default_build_name()
 
@@ -139,8 +125,8 @@ class SauceOptions():
 
     def __getattr__(self, key):
         if key is 'selenium_options':
-            if 'opts' in self.seleniumOptions.keys():
-                return self.seleniumOptions['opts']
+            if 'caps' in self.seleniumOptions.keys():
+                return self.seleniumOptions['caps']
             else:
                 return None
         try:
@@ -164,13 +150,7 @@ class SauceOptions():
 
     # Sets with snake_case
     def set_option(self, key, value):
-        if key == 'browser_name':
-            self._set_browser_name(value)
-        elif key == 'platform_name':
-            self._set_platform_name()
-        elif key is 'selenium_options':
-            self.seleniumOptions['opts'] = value.to_capabilities()
-        elif key in sauce_configs.keys():
+        if key in sauce_configs.keys():
             self.options['sauce:options'][sauce_configs[key]] = value
         elif key in w3c_configs.keys():
             self.options[w3c_configs[key]] = value

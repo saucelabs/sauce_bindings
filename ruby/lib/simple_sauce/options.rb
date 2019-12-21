@@ -89,13 +89,16 @@ module SimpleSauce
         "#{ENV['bamboo_shortJobName']}: #{ENV['bamboo_buildNumber']}"
       # Travis
       elsif ENV['TRAVIS_JOB_ID']
-        "#{ENV['TRAVIS_REPO_SLUG'][%r{[^/]+$}]}: #{ENV['TRAVIS_JOB_NUMBER']}"
+        "#{ENV['TRAVIS_JOB_NAME']}: #{ENV['TRAVIS_JOB_NUMBER']}"
       # CircleCI
       elsif ENV['CIRCLE_JOB']
         "#{ENV['CIRCLE_JOB']}: #{ENV['CIRCLE_BUILD_NUM']}"
       # Gitlab
       elsif ENV['CI']
         "#{ENV['CI_JOB_NAME']}: #{ENV['CI_JOB_ID']}"
+      # Team City
+      elsif ENV['TEAMCITY_VERSION']
+        "#{ENV['TEAMCITY_PROJECT_NAME']}: #{ENV['BUILD_NUMBER']}"
       # Default
       else
         "Build Time - #{Time.now.to_i}"

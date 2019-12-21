@@ -194,6 +194,7 @@ module SimpleSauce
         browser_opts = Selenium::WebDriver::Chrome::Options.new(args: ['--foo'])
         options = Options.new(selenium_options: [caps, browser_opts])
 
+        # Note this part goes away in Selenium 4
         jwp_defaults = {'cssSelectorsEnabled' => true,
                         'javascriptEnabled' => true,
                         'nativeEvents' => false,

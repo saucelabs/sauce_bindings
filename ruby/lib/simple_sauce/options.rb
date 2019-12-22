@@ -11,12 +11,10 @@ module SimpleSauce
     W3C = %i[browser_name browser_version platform_name accept_insecure_certs page_load_strategy proxy
              set_window_rect timeouts unhandled_prompt_behavior strict_file_interactability].freeze
 
-    SAUCE = %i[access_key appium_version avoid_proxy build capture_html chromedriver_version command_timeout
-               crmuxdriver_version custom_data disable_popup_handler extended_debugging firefox_adapter_version
-               firefox_profile_url idle_timeout iedriver_version max_duration name parent_tunnel passed prerun
-               prevent_requeue priority proxy_host public record_logs record_screenshots record_video
-               restricted_public_info screen_resolution selenium_version source tags time_zone tunnel_identifier
-               username video_upload_on_pass capture_performance].freeze
+    SAUCE = %i[avoid_proxy build chromedriver_version command_timeout custom_data extended_debugging idle_timeout
+               iedriver_version max_duration name parent_tunnel prerun priority public record_logs record_screenshots
+               record_video screen_resolution selenium_version tags time_zone tunnel_identifier video_upload_on_pass
+               capture_performance].freeze
 
     attr_reader :selenium_options
 

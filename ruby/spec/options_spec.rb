@@ -60,10 +60,7 @@ module SimpleSauce
                          record_video: false,
                          video_upload_on_pass: false,
                          record_screenshots: false,
-                         record_logs: false,
-                         username: 'foo',
-                         access_key: '1234',
-                         passed: true}
+                         record_logs: false}
 
         sauce_opts = Options.new(sauce_options)
 

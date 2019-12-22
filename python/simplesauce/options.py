@@ -20,40 +20,28 @@ w3c_configs = {
 }
 
 sauce_configs = {
-    'access_key': 'accessKey',
     'avoid_proxy': 'avoidProxy',
     'build': 'build',
-    'capture_html': 'captureHtml',
     'chromedriver_version': 'chromedriverVersion',
     'command_timeout': 'commandTimeout',
-    'crmuxdriver_version': 'crmuxdriverVersion',
     'custom_data': 'customData',
-    'disable_popup_handler': 'disablePopupHandler',
     'extended_debugging': 'extendedDebugging',
-    'firefox_adapter_version': 'firefoxAdapterVersion',
-    'firefox_profile_url': 'firefoxProfileUrl',
     'idle_timeout': 'idleTimeout',
     'iedriver_version': 'iedriverVersion',
     'max_duration': 'maxDuration',
     'name': 'name',
     'parent_tunnel': 'parentTunnel',
-    'passed': 'passed',
     'prerun': 'prerun',
-    'prevent_requeue': 'preventRequeue',
     'priority': 'priority',
-    'proxy_host': 'proxyHost',
     'public': 'public',
     'record_logs': 'recordLogs',
     'record_screenshots': 'recordScreenshots',
     'record_video': 'recordVideo',
-    'restricted_public_info': 'restrictedPublicInfo',
     'screen_resolution': 'screenResolution',
     'selenium_version': 'seleniumVersion',
-    'source': 'source',
     'tags': 'tags',
     'time_zone': 'timeZone',
     'tunnel_identifier': 'tunnelIdentifier',
-    'username': 'username',
     'video_upload_on_pass': 'videoUploadOnPass',
     'capture_performance': 'capturePerformance'
 }
@@ -87,7 +75,7 @@ class SauceOptions:
         elif os.environ.get('CI'):
             self.build = "{}: {}".format(os.environ['CI_JOB_NAME'], os.environ['CI_JOB_ID'])
         # Team City
-        elif os.environ.get('TEAMCITY_VERSION'):
+        elif os.environ.get('TEAMCITY_PROJECT_NAME'):
             self.build = "{}: {}".format(os.environ['TEAMCITY_PROJECT_NAME'], os.environ['BUILD_NUMBER'])
         else:
             self.build = 'Build Time: {}'.format(datetime.utcnow())

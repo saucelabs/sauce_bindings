@@ -52,10 +52,7 @@ class TestInit(object):
                    'recordVideo': False,
                    'videoUploadOnPass': False,
                    'recordScreenshots': False,
-                   'recordLogs': False,
-                   'username': 'foo',
-                   'accessKey': '1234',
-                   'passed': True}
+                   'recordLogs': False}
 
         sauce = SauceOptions(**options)
 
@@ -75,9 +72,6 @@ class TestInit(object):
         assert sauce.video_upload_on_pass is False
         assert sauce.record_screenshots is False
         assert sauce.record_logs is False
-        assert sauce.username == 'foo'
-        assert sauce.access_key == '1234'
-        assert sauce.passed is True
 
     def test_accepts_sauce_values_as_params(self):
         sauce = SauceOptions(maxDuration=1, commandTimeout=2)

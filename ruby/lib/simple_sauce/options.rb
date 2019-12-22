@@ -95,7 +95,7 @@ module SimpleSauce
       elsif ENV['CI']
         "#{ENV['CI_JOB_NAME']}: #{ENV['CI_JOB_ID']}"
       # Team City
-      elsif ENV['TEAMCITY_VERSION']
+      elsif ENV['TEAMCITY_PROJECT_NAME']
         "#{ENV['TEAMCITY_PROJECT_NAME']}: #{ENV['BUILD_NUMBER']}"
       # Default
       else

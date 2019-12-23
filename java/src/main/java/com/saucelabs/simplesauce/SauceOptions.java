@@ -55,10 +55,6 @@ public class SauceOptions {
     @Getter @Setter private String tunnelIdentifier;
     @Getter @Setter private Boolean videoUploadOnPass = null;
 
-    private static <E extends Enum<E>> boolean isInEnum(String value, Class<E> enumClass) {
-        return Arrays.stream(enumClass.getEnumConstants()).anyMatch(e -> e.name().equals(value));
-    }
-
     public SauceOptions() {
         this(new MutableCapabilities());
     }
@@ -82,9 +78,9 @@ public class SauceOptions {
                     String key = "prerunUrl".equals(fieldName) ? "prerun" : fieldName;
                     if (value == null) {
                         continue;
-                    } else if (isInEnum(key, Options.W3C.class)) {
+                    } else if (Options.w3c.contains(key)) {
                         w3cCapabilities.setCapability(fieldName, value);
-                    } else if (isInEnum(key, Options.SAUCE.class)) {
+                    } else if (Options.sauce.contains(key)) {
                         sauceCapabilities.setCapability(fieldName, value);
                     } else if ("publicRestricted".equals(key)) {
                         sauceCapabilities.setCapability("public", value);

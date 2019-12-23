@@ -28,16 +28,12 @@ public class SauceSessionTest {
     private String actualAccessKey = System.getenv("SAUCE_ACCESS_KEY");
 
     @Rule
-    public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
-
-    @Before
-    public void setUp() {
-        environmentVariables.set("BUILD_TAG", " ");
-        environmentVariables.set("BUILD_NAME", "TEMP BUILD");
-        environmentVariables.set("BUILD_NUMBER", "11");
-        environmentVariables.set("SAUCE_USERNAME", "user-name");
-        environmentVariables.set("SAUCE_ACCESS_KEY", "1234");
-    }
+    public final EnvironmentVariables environmentVariables = new EnvironmentVariables()
+            .set("BUILD_TAG", " ")
+            .set("BUILD_NAME", "TEMP BUILD")
+            .set("BUILD_NUMBER", "11")
+            .set("SAUCE_USERNAME", "user-name")
+            .set("SAUCE_ACCESS_KEY", "1234");
 
     @Test
     public void sauceSessionCreatesDefaultSauceOptions() {

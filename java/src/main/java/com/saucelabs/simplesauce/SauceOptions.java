@@ -2,6 +2,7 @@ package com.saucelabs.simplesauce;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Proxy;
 
@@ -33,14 +34,14 @@ public class SauceOptions {
     @Getter @Setter private Boolean capturePerformance = null;
     @Getter @Setter private String chromedriverVersion;
     @Getter @Setter private Integer commandTimeout = null;
-    @Getter @Setter private Map customData = null;
+    @Getter @Setter private Map<String, Object> customData = null;
     @Getter @Setter private Boolean extendedDebugging = null;
     @Getter @Setter private Integer idleTimeout = null;
     @Getter @Setter private String iedriverVersion;
     @Getter @Setter private Integer maxDuration = null;
     @Getter @Setter private String name;
     @Getter @Setter private String parentTunnel;
-    @Getter @Setter private Map prerun;
+    @Getter @Setter private Map<String, Object> prerun;
     @Getter @Setter private String prerunUrl;
     @Getter @Setter private Integer priority = null;
     @Getter @Setter private String publicRestricted;
@@ -49,12 +50,12 @@ public class SauceOptions {
     @Getter @Setter private Boolean recordVideo = null;
     @Getter @Setter private String screenResolution;
     @Getter @Setter private String seleniumVersion;
-    @Getter @Setter private List tags = null;
+    @Getter @Setter private List<String> tags = null;
     @Getter @Setter private String timeZone;
     @Getter @Setter private String tunnelIdentifier;
     @Getter @Setter private Boolean videoUploadOnPass = null;
 
-    public static <E extends Enum<E>> boolean isInEnum(String value, Class<E> enumClass) {
+    private static <E extends Enum<E>> boolean isInEnum(String value, Class<E> enumClass) {
         return Arrays.stream(enumClass.getEnumConstants()).anyMatch(e -> e.name().equals(value));
     }
 
@@ -62,8 +63,8 @@ public class SauceOptions {
         this(new MutableCapabilities());
     }
 
-    public SauceOptions(MutableCapabilities capabilities) {
-        seleniumCapabilities = capabilities;
+    public SauceOptions(Capabilities capabilities) {
+        seleniumCapabilities = new MutableCapabilities(capabilities);
         if (capabilities.getCapability("browserName") != null) {
             browserName = (String) capabilities.getCapability("browserName");
         }
@@ -121,7 +122,7 @@ public class SauceOptions {
             return System.getenv("TEAMCITY_PROJECT_NAME") + ": " + System.getenv("BUILD_NUMBER");
             // Default
         } else {
-            return "Build Time: " + Long.toString(System.currentTimeMillis());
+            return "Build Time: " + System.currentTimeMillis();
         }
     }
 

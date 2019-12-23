@@ -15,7 +15,7 @@ public class SauceSession {
     @Setter private String sauceUsername = System.getenv("SAUCE_USERNAME");
     @Setter private String sauceAccessKey = System.getenv("SAUCE_ACCESS_KEY");
     @Getter private SauceOptions sauceOptions;
-    @Getter private WebDriver webDriver;
+    @Getter private WebDriver driver;
     @Setter private URL sauceUrl;
 
     public SauceSession() {
@@ -27,26 +27,26 @@ public class SauceSession {
     }
 
     public WebDriver start() throws MalformedURLException {
-        if(sauceUsername == null) {
+        if (sauceUsername == null) {
             throw new SauceEnvironmentVariablesNotSetException("Sauce Username was not provided");
-        } else if(sauceAccessKey == null) {
+        } else if (sauceAccessKey == null) {
             throw new SauceEnvironmentVariablesNotSetException("Sauce Access Key was not provided");
         } else {
-            webDriver = new RemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities());
-            return webDriver;
+            driver = new RemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities());
+            return driver;
         }
     }
 
     public void stop(TestResult result) {
-        JavascriptExecutor js = (JavascriptExecutor) webDriver;
+        JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("sauce:job-result=" + result.getResult());
 
-        if(webDriver !=null)
-            webDriver.quit();
+        if (driver != null)
+            driver.quit();
     }
 
     public URL getSauceUrl() throws MalformedURLException {
-        if(sauceUrl != null) {
+        if (sauceUrl != null) {
             return sauceUrl;
         } else {
             String url = "https://" + sauceUsername + ":" + sauceAccessKey + "@" +

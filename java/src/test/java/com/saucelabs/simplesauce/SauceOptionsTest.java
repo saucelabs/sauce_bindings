@@ -79,7 +79,7 @@ public class SauceOptionsTest {
         sauceOptions.setChromedriverVersion("2");
         sauceOptions.setCommandTimeout(2);
 
-        Map<String, String> data = new HashMap<>();
+        Map<String, Object> data = new HashMap<>();
         data.put("foo", "bar");
         sauceOptions.setCustomData(data);
         sauceOptions.setExtendedDebugging(true);
@@ -144,7 +144,7 @@ public class SauceOptionsTest {
     }
 
     @Test
-    public void acceptsSeleniumSettings() {
+    public void acceptsSeleniumBrowserOptionsClass() {
         FirefoxOptions firefoxOptions = new FirefoxOptions();
         firefoxOptions.addArguments("--foo");
         firefoxOptions.addPreference("foo", "bar");
@@ -154,6 +154,17 @@ public class SauceOptionsTest {
 
         assertEquals("firefox", sauceOptions.getBrowserName());
         assertEquals(firefoxOptions, sauceOptions.getSeleniumCapabilities());
+    }
+
+    @Test
+    public void acceptsSeleniumMutableCapabilitiesClass() {
+        MutableCapabilities caps = new MutableCapabilities();
+        caps.setCapability("browserName", "firefox");
+        SauceOptions sauceOptions = new SauceOptions(caps);
+        assertEquals(caps, sauceOptions.getSeleniumCapabilities());
+
+        caps.setCapability("browserName", "chrome");
+        assertEquals("firefox", sauceOptions.getSeleniumCapabilities().getBrowserName());
     }
 
     @Test

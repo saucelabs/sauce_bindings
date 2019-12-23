@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{8D1592F6-2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple.Sauce", "Simple.Sauce.csproj", "{14CDEF4F-FE78-4FA7-AD7C-A535C555BED9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetFramework.Test", "..\DotnetFrameworkIntegration.Test\DotnetFramework.Test.csproj", "{26FCF68E-FE8D-40C8-9CB5-20095DFFF360}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetFramework.Test", "..\DotnetFramework.Test\DotnetFramework.Test.csproj", "{26FCF68E-FE8D-40C8-9CB5-20095DFFF360}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetCore.Test", "..\DotnetCore.Test\DotnetCore.Test.csproj", "{EAEF175B-778D-4207-8E0A-F04D4F0A10F8}"
 EndProject

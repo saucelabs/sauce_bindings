@@ -80,7 +80,7 @@ public class SauceOptions {
                     Object value = getCapability(fieldName);
                     String key = "prerunUrl".equals(fieldName) ? "prerun" : fieldName;
                     if (value == null) {
-                        break;
+                        continue;
                     } else if (isInEnum(key, Options.W3C.class)) {
                         w3cCapabilities.setCapability(fieldName, value);
                     } else if (isInEnum(key, Options.SAUCE.class)) {

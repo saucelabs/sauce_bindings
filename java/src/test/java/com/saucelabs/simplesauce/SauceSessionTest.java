@@ -1,6 +1,5 @@
 package com.saucelabs.simplesauce;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.openqa.selenium.MutableCapabilities;
@@ -8,7 +7,6 @@ import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 
-import static com.saucelabs.simplesauce.SauceDataCenter.*;
 import static org.junit.Assert.*;
 import static org.openqa.selenium.UnexpectedAlertBehaviour.ACCEPT_AND_NOTIFY;
 
@@ -109,7 +107,7 @@ public class SauceSessionTest {
     @Test
     public void setsDataCenter() throws MalformedURLException {
         sauceSession = new SauceSession();
-        sauceSession.setSauceDataCenter(EU_CENTRAL);
+        sauceSession.setSauceDataCenter(SauceDataCenter.EU_CENTRAL);
 
         String expectedUrl = "https://user-name:1234@ondemand.eu-central-1.saucelabs.com:443/wd/hub";
         assertEquals(sauceSession.getSauceUrl().toString(), expectedUrl);

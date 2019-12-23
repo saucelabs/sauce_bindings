@@ -75,16 +75,16 @@ public class SauceOptions {
         Arrays.stream(this.getClass().getDeclaredFields()).forEach(field -> {
             try {
                 String fieldName = field.getName();
-                if (!fieldName.equals("seleniumCapabilities")) {
+                if (!"seleniumCapabilities".equals(fieldName)) {
                     Object value = getCapability(fieldName);
-                    String key = fieldName.equals("prerunUrl") ? "prerun" : fieldName;
+                    String key = "prerunUrl".equals(fieldName) ? "prerun" : fieldName;
                     if (value == null) {
                         // noop
                     } else if (isInEnum(key, Options.W3C.class)) {
                         w3cCapabilities.setCapability(fieldName, value);
                     } else if (isInEnum(key, Options.SAUCE.class)) {
                         sauceCapabilities.setCapability(fieldName, value);
-                    } else if (key.equals("publicRestricted")) {
+                    } else if ("publicRestricted".equals(key)) {
                         sauceCapabilities.setCapability("public", value);
                     }
                 }
@@ -116,7 +116,7 @@ public class SauceOptions {
         } else if (System.getenv("CI") != null) {
             return System.getenv("CI_JOB_NAME") + ": " + System.getenv("CI_JOB_ID");
             // Team City
-        } else if (System.getenv("TEAMCITY_VERSION") != null) {
+        } else if (System.getenv("TEAMCITY_PROJECT_NAME") != null) {
             return System.getenv("TEAMCITY_PROJECT_NAME") + ": " + System.getenv("BUILD_NUMBER");
             // Default
         } else {

@@ -143,11 +143,3 @@ class TestStop(object):
         session.start()
 
         session.stop(False)
-
-    def test_raises_exception_if_result_value_not_used(self):
-        session = SauceSession()
-
-        session.start()
-
-        with pytest.raises(TypeError):
-            session.stop()

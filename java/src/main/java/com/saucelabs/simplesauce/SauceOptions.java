@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Proxy;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -72,14 +73,14 @@ public class SauceOptions {
         MutableCapabilities w3cCapabilities = getSeleniumCapabilities();
         MutableCapabilities sauceCapabilities = new MutableCapabilities();
 
-        Arrays.stream(this.getClass().getDeclaredFields()).forEach(field -> {
+        for (Field field : this.getClass().getDeclaredFields()) {
             try {
                 String fieldName = field.getName();
                 if (!"seleniumCapabilities".equals(fieldName)) {
                     Object value = getCapability(fieldName);
                     String key = "prerunUrl".equals(fieldName) ? "prerun" : fieldName;
                     if (value == null) {
-                        // noop
+                        break;
                     } else if (isInEnum(key, Options.W3C.class)) {
                         w3cCapabilities.setCapability(fieldName, value);
                     } else if (isInEnum(key, Options.SAUCE.class)) {
@@ -91,7 +92,7 @@ public class SauceOptions {
             } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 e.printStackTrace();
             }
-        });
+        }
 
         w3cCapabilities.setCapability("sauce:options", sauceCapabilities);
         return w3cCapabilities;

@@ -10,6 +10,9 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -45,8 +48,24 @@ public class SauceSessionTest {
 
     @Test
     public void startSession_defaultConfig_usWestDataCenter() {
-        String expectedDataCenterUrl = DataCenter.US_WEST.getEndpoint();
-        assertEquals(expectedDataCenterUrl, sauce.getSauceDataCenter());
+        String expectedDataCenterEndpoint = DataCenter.US_WEST.getEndpoint();
+        assertEquals(expectedDataCenterEndpoint, sauce.getSauceDataCenter());
+    }
+
+    @Test
+    public void defaultSauceURL() throws MalformedURLException {
+        String dataCenterEndpoint = DataCenter.US_WEST.getEndpoint();
+        String user = System.getenv("SAUCE_USERNAME");
+        String key = System.getenv("SAUCE_ACCESS_KEY");
+        URL expetedSauceUrl = new URL("https://" + user + ":" + key + "@" + dataCenterEndpoint + ":443/wd/hub");
+        assertEquals(expetedSauceUrl, sauce.getSauceUrl());
+    }
+
+    @Test
+    public void setsSauceURLDirectly() throws MalformedURLException {
+        sauce.setSauceUrl(new URL("http://example.com"));
+        URL expetedSauceUrl = new URL("http://example.com");
+        assertEquals(expetedSauceUrl, sauce.getSauceUrl());
     }
 
     @Test

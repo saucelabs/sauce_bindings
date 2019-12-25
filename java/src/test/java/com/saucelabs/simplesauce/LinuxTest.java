@@ -8,9 +8,8 @@ public class LinuxTest extends BaseTestConfiguration {
     @Test
     public void withLinux_setsPlatformToLinux() {
         sauceOptions.withLinux();
-        startSauceSession();
 
-        String actualOsSetInConfig = sauce.getCurrentSessionCapabilities().getPlatform().toString();
+        String actualOsSetInConfig = sauceOptions.getPlatformName();
         assertEquals("linux", actualOsSetInConfig.toLowerCase());
     }
 }

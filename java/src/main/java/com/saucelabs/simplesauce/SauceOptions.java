@@ -1,26 +1,47 @@
 package com.saucelabs.simplesauce;
 
-import com.saucelabs.simplesauce.enums.MacVersion;
 import lombok.Getter;
 import lombok.Setter;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.remote.BrowserType;
+import org.openqa.selenium.remote.CapabilityType;
+
+import java.util.HashMap;
 
 public class SauceOptions {
+    @Getter private MutableCapabilities seleniumCapabilities;
+
     @Getter @Setter private String browserName = BrowserType.CHROME;
     @Getter @Setter private String browserVersion = "latest";
     @Getter @Setter private String platformName = Platforms.windowsLatest().getOsVersion();
-    @Getter private ChromeOptions chromeOptions;
+    @Getter private final SauceTimeout sauceTimeout = new SauceTimeout();
+
+    public SauceOptions() {
+        this(new MutableCapabilities());
+    }
+
+    public SauceOptions(Capabilities capabilities) {
+        seleniumCapabilities = new MutableCapabilities(capabilities);
+        if (capabilities.getCapability("browserName") != null) {
+            browserName = (String) capabilities.getCapability("browserName");
+        }
+    }
+
+    public MutableCapabilities toCapabilities() {
+        seleniumCapabilities.setCapability(CapabilityType.BROWSER_NAME, browserName);
+        seleniumCapabilities.setCapability(CapabilityType.PLATFORM_NAME, platformName);
+        seleniumCapabilities.setCapability(CapabilityType.BROWSER_VERSION, browserVersion);
+        seleniumCapabilities.setCapability("sauce:options", new HashMap<>());
+        return seleniumCapabilities;
+    }
 
     public SauceOptions withChrome() {
-        chromeOptions = new ChromeOptions();
-        //TODO no longer needed with Chrome 75+
-        chromeOptions.setExperimentalOption("w3c", true);
         browserName = BrowserType.CHROME;
         return this;
     }
-    public SauceOptions withSafari()
-    {
+
+    public SauceOptions withSafari() {
         return withMac(MacVersion.Mojave);
     }
 
@@ -32,7 +53,9 @@ public class SauceOptions {
 
     public SauceOptions withSafari(final String version) {
         String _version = version;
-        if (_version.isEmpty()) { _version = "latest"; }
+        if (_version.isEmpty()) {
+            _version = "latest";
+        }
         browserName = BrowserType.SAFARI;
         browserVersion = _version;
         return this;
@@ -44,13 +67,15 @@ public class SauceOptions {
     }
 
     public SauceOptions withWindows10() {
-        platformName = "windows 10";
+        platformName = "Windows 10";
         return this;
     }
+
     public SauceOptions withWindows8_1() {
         platformName = "Windows 8.1";
         return this;
     }
+
     public SauceOptions withWindows8() {
         platformName = "Windows 8";
         return this;
@@ -75,11 +100,13 @@ public class SauceOptions {
         browserVersion = "18.17763";
         return this;
     }
+
     public SauceOptions withEdge17() {
         withEdge();
         browserVersion = "17.17134";
         return this;
     }
+
     public SauceOptions withEdge16() {
         withEdge();
         browserVersion = "16.16299";

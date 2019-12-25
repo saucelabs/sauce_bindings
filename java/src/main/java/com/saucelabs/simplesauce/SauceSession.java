@@ -3,36 +3,20 @@ package com.saucelabs.simplesauce;
 import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.InvalidArgumentException;
-import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeOptions;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.ie.InternetExplorerOptions;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.safari.SafariOptions;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
 public class SauceSession {
-    @Getter private final String sauceDataCenter = DataCenter.US_WEST.getEndpoint();
+    @Getter private final DataCenter dataCenter = DataCenter.US_WEST;
     @Getter private final SauceOptions sauceOptions;
-    @Getter private final SauceTimeout timeouts = new SauceTimeout();
-    @Getter @Setter private String sauceUserName = System.getenv("SAUCE_USERNAME");
+    @Getter @Setter private String sauceUsername = System.getenv("SAUCE_USERNAME");
     @Getter @Setter private String sauceAccessKey = System.getenv("SAUCE_ACCESS_KEY");
-    @Getter @Setter private URL sauceUrl;
-    private final String sauceOptionsTag = "sauce:options";
+    @Setter private URL sauceUrl;
 
-    //TODO 2 same variables being used differently
-    private MutableCapabilities mutableCapabilities;
-    @Getter private MutableCapabilities currentSessionCapabilities;
     @Getter private WebDriver driver;
-
-    public MutableCapabilities getSauceOptionsCapability(){
-        return ((MutableCapabilities) currentSessionCapabilities.getCapability(sauceOptionsTag));
-    }
 
     public SauceSession() {
         this(new SauceOptions());
@@ -40,91 +24,40 @@ public class SauceSession {
 
     public SauceSession(SauceOptions options) {
         sauceOptions = options;
-        currentSessionCapabilities = new MutableCapabilities();
     }
 
     public WebDriver start() {
-        if (sauceUserName == null) {
+        if (sauceUsername == null) {
             throw new SauceEnvironmentVariablesNotSetException("Sauce Username was not provided");
         } else if (sauceAccessKey == null) {
             throw new SauceEnvironmentVariablesNotSetException("Sauce Access Key was not provided");
         } else {
-            mutableCapabilities = appendSauceCapabilities();
-            setBrowserSpecificCapabilities(sauceOptions.getBrowserName());
-            currentSessionCapabilities = setRemoteDriverCapabilities(mutableCapabilities);
             driver = createRemoteWebDriver();
             return driver;
         }
 	}
 
-    private MutableCapabilities appendSauceCapabilities() {
-        mutableCapabilities = new MutableCapabilities();
-        if (timeouts.getCommandTimeout() != 0) {
-            mutableCapabilities.setCapability("commandTimeout", timeouts.getCommandTimeout());
-        }
-        if (timeouts.getIdleTimeout() != 0) {
-            mutableCapabilities.setCapability("idleTimeout", timeouts.getIdleTimeout());
-        }
-        if (timeouts.getMaxTestDurationTimeout() != 0) {
-            mutableCapabilities.setCapability("maxDuration", timeouts.getMaxTestDurationTimeout());
-        }
-        return mutableCapabilities;
+    public void stop() {
+        if(driver !=null)
+            driver.quit();
     }
 
-    private void setBrowserSpecificCapabilities(String browserName) {
-        if (browserName.equalsIgnoreCase("Chrome")) {
-            ChromeOptions chromeOptions = new ChromeOptions();
-            currentSessionCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+    RemoteWebDriver createRemoteWebDriver() {
+        try {
+            return new RemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities());
         }
-        else if (browserName.equalsIgnoreCase("Firefox")) {
-            FirefoxOptions firefoxOptions = new FirefoxOptions();
-            currentSessionCapabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
+        catch (MalformedURLException e) {
+            throw new InvalidArgumentException("Invalid URL" + e.getMessage());
         }
-        else if(browserName.equalsIgnoreCase("Safari")) {
-            SafariOptions safariOptions = new SafariOptions();
-            currentSessionCapabilities.setCapability(SafariOptions.CAPABILITY, safariOptions);
-        }
-        else if(browserName.equalsIgnoreCase("Edge")) {
-            EdgeOptions edgeOptions = new EdgeOptions();
-            currentSessionCapabilities.setCapability("Edge", edgeOptions);
-        }
-        else if(browserName.equalsIgnoreCase("IE")) {
-            InternetExplorerOptions ieOptions = new InternetExplorerOptions();
-            currentSessionCapabilities.setCapability("se:ieOptions", ieOptions);
-        }
-        else {
-            throw new IllegalArgumentException("The browserName=>" + browserName + " that you passed in is not a valid option.");
-        }
-    }
-
-    private MutableCapabilities setRemoteDriverCapabilities(MutableCapabilities sauceOptions) {
-        currentSessionCapabilities.setCapability(sauceOptionsTag, sauceOptions);
-        currentSessionCapabilities.setCapability(CapabilityType.BROWSER_NAME, this.sauceOptions.getBrowserName());
-        currentSessionCapabilities.setCapability(CapabilityType.PLATFORM_NAME, this.sauceOptions.getPlatformName());
-        currentSessionCapabilities.setCapability(CapabilityType.BROWSER_VERSION, this.sauceOptions.getBrowserVersion());
-        return currentSessionCapabilities;
     }
 
     public URL getSauceUrl() throws MalformedURLException {
         if (sauceUrl != null) {
             return sauceUrl;
         } else {
-            String url = "https://" + sauceUserName + ":" + sauceAccessKey + "@" + sauceDataCenter + ":443/wd/hub";
+            String url = "https://" + sauceUsername + ":" + sauceAccessKey + "@" +
+                    dataCenter.getEndpoint() + ":443/wd/hub";
             return new URL(url);
         }
-    }
-
-    RemoteWebDriver createRemoteWebDriver() {
-        try {
-            return new RemoteWebDriver(getSauceUrl(), currentSessionCapabilities);
-        }
-        catch (MalformedURLException e) {
-            throw new InvalidArgumentException("Invalid URL");
-        }
-    }
-
-    public void stop() {
-        if(driver !=null)
-            driver.quit();
     }
 }

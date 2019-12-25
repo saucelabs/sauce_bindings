@@ -1,4 +1,4 @@
-package com.saucelabs.simplesauce.enums;
+package com.saucelabs.simplesauce;
 
 public enum MacVersion {
     Mojave("macOS 10.14"),

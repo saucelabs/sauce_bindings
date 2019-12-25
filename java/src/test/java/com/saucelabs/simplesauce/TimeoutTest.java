@@ -2,54 +2,44 @@ package com.saucelabs.simplesauce;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.openqa.selenium.MutableCapabilities;
 
 import static org.junit.Assert.assertEquals;
 
 public class TimeoutTest extends BaseTestConfiguration {
-    @Before
-    public void mockSession() {
-        sauce = Mockito.spy(new SauceSession(sauceOptions));
-        Mockito.doReturn(dummyRemoteDriver).when(sauce).createRemoteWebDriver();
-    }
+    private SauceOptions options = new SauceOptions();
+    private SauceTimeout sauceTimeout;
 
+    @Before
+    public void setup() {
+        sauceTimeout = options.getSauceTimeout();
+    }
+    
     @Test
     public void commandTimeout_canBeSet() {
-        sauce.getTimeouts().setCommandTimeout(100);
-        sauce.start();
-        assertCorrectCommandSetOnRemoteSession("commandTimeout", 100);
-    }
+        int maxTestDurationInSec = 1800;
+        sauceTimeout.setCommandTimeout(100);
 
-    private void assertCorrectCommandSetOnRemoteSession(String commandTimeout, int expectedTimeout) {
-        Object sauceOptions = sauce.getCurrentSessionCapabilities().asMap().get("sauce:options");
-        Object commandTimeoutSetInCaps = ((MutableCapabilities) sauceOptions).getCapability(commandTimeout);
-        assertEquals(expectedTimeout, commandTimeoutSetInCaps);
+        assertEquals(sauceTimeout.getCommandTimeout(), 100);
     }
 
     @Test
     public void idleTimeout_canBeSet() {
-        sauce.getTimeouts().setIdleTimeout(100);
-        sauce.start();
-        assertCorrectCommandSetOnRemoteSession("idleTimeout", 100);
+        int idleTimeout = 100;
+
+        sauceTimeout.setIdleTimeout(idleTimeout);
+        assertEquals(idleTimeout, sauceTimeout.getIdleTimeout());
     }
     @Test
     public void maxDuration_canBeSet() throws MaxTestDurationTimeoutExceededException {
         int maxTestDurationInSec = 1800;
-        sauce.getTimeouts().setMaxTestDurationTimeout(maxTestDurationInSec);
-        sauce.start();
-        assertCorrectCommandSetOnRemoteSession("maxDuration", maxTestDurationInSec);
+        sauceTimeout.setMaxTestDurationTimeout(maxTestDurationInSec);
+
+        assertEquals(maxTestDurationInSec, sauceTimeout.getMaxTestDurationTimeout());
     }
     @Test(expected = MaxTestDurationTimeoutExceededException.class)
     public void maxDuration_setTo1HigherThanMax_throwsException() throws MaxTestDurationTimeoutExceededException {
         int maxTestDurationInSec = 1801;
-        sauce.getTimeouts().setMaxTestDurationTimeout(maxTestDurationInSec);
-    }
-    @Test()
-    public void maxDuration_setTo1LowerThanMax_noException() throws MaxTestDurationTimeoutExceededException {
-        int maxTestDurationInSec = 1799;
-        sauce.getTimeouts().setMaxTestDurationTimeout(maxTestDurationInSec);
-        sauce.start();
-        assertCorrectCommandSetOnRemoteSession("maxDuration", maxTestDurationInSec);
+        sauceTimeout.setMaxTestDurationTimeout(maxTestDurationInSec);
     }
 }

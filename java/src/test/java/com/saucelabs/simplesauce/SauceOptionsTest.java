@@ -2,44 +2,29 @@ package com.saucelabs.simplesauce;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.Platform;
+import org.openqa.selenium.remote.BrowserType;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class SauceOptionsTest {
-    private SauceSession sauceSession;
-    private SauceOptions options;
-
-    @Before
-    public void setUp()
-    {
-        options = new SauceOptions();
-    }
+    private SauceOptions options = new SauceOptions();
 
     @Test
-    public void sauceSession_takesSauceOptions() {
-        sauceSession = new SauceSession(options);
-        assertNotNull(sauceSession);
-    }
-
-    @Test
-    public void sauceOptions_defaultBrowser_setToChrome() {
-        assertEquals("chrome", options.getBrowserName());
-    }
-
-    @Test
-    public void sauceOptions_defaultBrowserVersion_setToLatest() {
+    public void usesLatestChromeWindowsVersions() {
+        assertEquals(BrowserType.CHROME, options.getBrowserName());
         assertEquals("latest", options.getBrowserVersion());
-    }
-
-    @Test
-    public void sauceOptions_defaultOS_setToWindows() {
         assertEquals("Windows 10", options.getPlatformName());
     }
 
     @Test
-    public void withChrome_browser_setToChrome() {
-        options.withChrome();
-        assertNotNull(options.getChromeOptions());
+    public void updatesW3CValues() {
+        options.setBrowserName(BrowserType.FIREFOX);
+        options.setPlatformName(Platforms.MAC_OS_HIGH_SIERRA.getOsVersion());
+        options.setBrowserVersion("68");
+
+        assertEquals(BrowserType.FIREFOX, options.getBrowserName());
+        assertEquals("68", options.getBrowserVersion());
+        assertEquals("macOS 10.13", options.getPlatformName());
     }
 }

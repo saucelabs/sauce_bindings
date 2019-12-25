@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -35,25 +35,24 @@ public class SauceSessionTest {
     @Before
     public void setUp() {
         PowerMockito.mockStatic(System.class);
-        PowerMockito.when(System.getenv(eq("SAUCE_USERNAME"))).thenReturn("test-name");
-        PowerMockito.when(System.getenv(eq("SAUCE_ACCESS_KEY"))).thenReturn("accessKey");
+//        PowerMockito.when(System.getenv(eq("SAUCE_USERNAME"))).thenReturn("test-name");
+//        PowerMockito.when(System.getenv(eq("SAUCE_ACCESS_KEY"))).thenReturn("accessKey");
         sauce = new SauceSession();
-
-        sauce = Mockito.spy(new SauceSession(options));
-        Mockito.doReturn(dummyRemoteDriver).when(sauce).createRemoteWebDriver();
+//
+//        sauce = Mockito.spy(new SauceSession(options));
+//        Mockito.doReturn(dummyRemoteDriver).when(sauce).createRemoteWebDriver();
     }
 
     @Test
     public void sauceSession_defaultSauceOptions_returnsChromeBrowser() {
-        sauce.start();
-        String actualBrowser = sauce.getCurrentSessionCapabilities().getCapability("browserName").toString();
-        assertEquals("chrome", actualBrowser);
+        String actualBrowser = sauce.getSauceOptions().getBrowserName();
+        assertEquals(BrowserType.CHROME, actualBrowser);
     }
 
     @Test
     public void startSession_defaultConfig_usWestDataCenter() {
-        String expectedDataCenterEndpoint = DataCenter.US_WEST.getEndpoint();
-        assertEquals(expectedDataCenterEndpoint, sauce.getSauceDataCenter());
+        DataCenter expectedDataCenterEndpoint = DataCenter.US_WEST;
+        assertEquals(expectedDataCenterEndpoint, sauce.getDataCenter());
     }
 
     @Test
@@ -61,6 +60,7 @@ public class SauceSessionTest {
         String dataCenterEndpoint = DataCenter.US_WEST.getEndpoint();
         String user = System.getenv("SAUCE_USERNAME");
         String key = System.getenv("SAUCE_ACCESS_KEY");
+
         URL expetedSauceUrl = new URL("https://" + user + ":" + key + "@" + dataCenterEndpoint + ":443/wd/hub");
         assertEquals(expetedSauceUrl, sauce.getSauceUrl());
     }
@@ -68,63 +68,37 @@ public class SauceSessionTest {
     @Test
     public void setsSauceURLDirectly() throws MalformedURLException {
         sauce.setSauceUrl(new URL("http://example.com"));
+
         URL expetedSauceUrl = new URL("http://example.com");
         assertEquals(expetedSauceUrl, sauce.getSauceUrl());
     }
 
     @Test
     public void getUserName_usernameSetInEnvironmentVariable_returnsValue() {
-        String actualUserName = sauce.getSauceUserName();
-        assertNotEquals("",actualUserName);
+        PowerMockito.when(System.getenv(Mockito.eq("SAUCE_USERNAME"))).thenReturn("test-name");
+
+        String actualUserName = sauce.getSauceUsername();
+        assertNotEquals("test-name", actualUserName);
     }
 
     @Test
     public void getAccessKey_keySetInEnvironmentVariable_returnsValue() {
+        PowerMockito.when(System.getenv(Mockito.eq("SAUCE_ACCESS_KEY"))).thenReturn("accessKey");
+
         String actualAccessKey = sauce.getSauceAccessKey();
-        assertNotEquals("", actualAccessKey);
-    }
-
-    @Test
-    public void startSession_setsBrowserKey() {
-        sauce.start();
-
-        String expectedBrowserCapabilityKey = "browserName";
-        String actualBrowser = sauce.getCurrentSessionCapabilities().getCapability(expectedBrowserCapabilityKey).toString();
-        assertNotEquals("", actualBrowser);
-    }
-
-    @Test
-    public void start_setsPlatformNameKey() {
-        sauce.start();
-
-        String correctPlatformKey = "platformName";
-        String browserSetInSauceSession = sauce.getCurrentSessionCapabilities().getCapability(correctPlatformKey).toString();
-        assertEquals("Windows 10", browserSetInSauceSession);
-    }
-
-    @Test
-    public void defaultBrowserIsLatest() {
-        sauce.start();
-
-        String correctKey = "browserVersion";
-        String browserSetThroughSauceSession = sauce.getCurrentSessionCapabilities().getCapability(correctKey).toString();
-        assertEquals("latest", browserSetThroughSauceSession);
+        assertNotEquals("accessKey", actualAccessKey);
     }
 
     @Test
     public void defaultIsChrome() {
-        sauce.start();
-
-        String actualBrowser = sauce.getCurrentSessionCapabilities().getBrowserName();
+        String actualBrowser = sauce.getSauceOptions().getBrowserName();
         assertEquals("chrome", actualBrowser);
     }
 
     @Test
     public void defaultIsWindows10() {
-        sauce.start();
-
-        String actualOs = sauce.getCurrentSessionCapabilities().getPlatform().name();
-        assertEquals("WIN10", actualOs);
+        String actualOs = sauce.getSauceOptions().getPlatformName();
+        assertEquals("Windows 10", actualOs);
     }
 
     @Test
@@ -136,13 +110,13 @@ public class SauceSessionTest {
         Mockito.doReturn(dummyRemoteDriver).when(sauce).createRemoteWebDriver();
         sauce.start();
 
-        String actualBrowser = sauce.getCurrentSessionCapabilities().getBrowserName();
+        String actualBrowser = sauce.getSauceOptions().getBrowserName();
         assertEquals("firefox", actualBrowser);
     }
 
     @Test
     public void startThrowsErrorWithoutUsername() {
-        sauce.setSauceUserName(null);
+        sauce.setSauceUsername(null);
 
         try {
             sauce.start();
@@ -166,6 +140,9 @@ public class SauceSessionTest {
 
     @Test
     public void stop_noParams_callsDriverQuit() {
+        sauce = Mockito.spy(new SauceSession(options));
+        Mockito.doReturn(dummyRemoteDriver).when(sauce).createRemoteWebDriver();
+
         sauce.start();
         sauce.stop();
 

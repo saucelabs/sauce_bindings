@@ -3,31 +3,31 @@ package com.saucelabs.simplesauce;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openqa.selenium.MutableCapabilities;
+import org.junit.runner.RunWith;
 
 import org.openqa.selenium.WebDriver;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({System.class})
 public class SauceSessionTest {
     //TODO duplication in 3 classes, excluding DataCenterTest
     private SauceSession sauce;
-    private EnvironmentManager dummyEnvironmentManager;
     private SauceRemoteDriver dummyRemoteDriver;
     private SauceOptions options;
 
     @Before
     public void setUp() {
-        //TODO duplication in setup in BaseConfigurationTest. Can be moved out of here
-        //and combined into a single setup()
         dummyRemoteDriver = mock(SauceRemoteDriver.class);
-        dummyEnvironmentManager = mock(EnvironmentManager.class);
-        sauce = new SauceSession(dummyRemoteDriver, dummyEnvironmentManager);
-        when(dummyEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
-        when(dummyEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
-
-        sauce.start();
+        PowerMockito.mockStatic(System.class);
+        PowerMockito.when(System.getenv(eq("SAUCE_USERNAME"))).thenReturn("test-name");
+        PowerMockito.when(System.getenv(eq("SAUCE_ACCESS_KEY"))).thenReturn("accessKey");
+        sauce = new SauceSession(dummyRemoteDriver);
     }
 
     @Test
@@ -35,7 +35,7 @@ public class SauceSessionTest {
         options = new SauceOptions();
         dummyRemoteDriver = mock(SauceRemoteDriver.class);
 
-        sauce = new SauceSession(options, dummyRemoteDriver, dummyEnvironmentManager);
+        sauce = new SauceSession(options, dummyRemoteDriver);
         sauce.start();
         String actualBrowser = sauce.getCurrentSessionCapabilities().getCapability("browserName").toString();
         assertEquals("chrome", actualBrowser);
@@ -49,15 +49,13 @@ public class SauceSessionTest {
 
     @Test
     public void getUserName_usernameSetInEnvironmentVariable_returnsValue() {
-        when(dummyEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
-        String actualUserName = sauce.getUserName();
+        String actualUserName = sauce.getSauceUserName();
         assertNotEquals("",actualUserName);
     }
 
     @Test
     public void getAccessKey_keySetInEnvironmentVariable_returnsValue() {
-        when(dummyEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
-        String actualAccessKey = sauce.getAccessKey();
+        String actualAccessKey = sauce.getSauceAccessKey();
         assertNotEquals("", actualAccessKey);
     }
 
@@ -101,19 +99,12 @@ public class SauceSessionTest {
     }
 
     @Test
-    public void sauceOptions_defaultConfiguration_setsSauceOptions() {
-        MutableCapabilities sauceOptions = (MutableCapabilities) sauce.getCurrentSessionCapabilities().getCapability("sauce:options");
-        String accessKey = (String) sauceOptions.getCapability("accessKey");
-        assertEquals("You need to have Sauce Credentials set (SAUCE_USERNAME, SAUCE_ACCESSKEY) before this unit test will pass", "accessKey", accessKey);
-    }
-
-    @Test
     public void sauceOptions_startWithChrome_startsChrome() {
         dummyRemoteDriver = mock(SauceRemoteDriver.class);
         options = new SauceOptions();
         options.withChrome();
 
-        sauce = new SauceSession(options, dummyRemoteDriver, dummyEnvironmentManager);
+        sauce = new SauceSession(options, dummyRemoteDriver);
         sauce.start();
 
         String actualBrowser = sauce.getCurrentSessionCapabilities().getBrowserName();
@@ -122,12 +113,38 @@ public class SauceSessionTest {
 
     @Test(expected = NullPointerException.class)
     public void stop_newWebDriverInstanceSetByStart_stopsSession() {
-        sauce = new SauceSession(dummyRemoteDriver, dummyEnvironmentManager);
+        sauce = new SauceSession(dummyRemoteDriver);
 
         WebDriver driver = sauce.start();
         sauce.stop();
 
         driver.quit();
+    }
+
+    @Test
+    public void startThrowsErrorWithoutUsername() {
+        sauce = new SauceSession(dummyRemoteDriver);
+        sauce.setSauceUserName(null);
+
+        try {
+            sauce.start();
+            fail("Expected a SauceEnvironmentVariablesNotSetException to be thrown");
+        } catch (SauceEnvironmentVariablesNotSetException exception) {
+            assertEquals("Sauce Username was not provided", exception.getMessage());
+        }
+    }
+
+    @Test
+    public void startThrowsErrorWithoutAccessKey() {
+        sauce = new SauceSession(dummyRemoteDriver);
+        sauce.setSauceAccessKey(null);
+
+        try {
+            sauce.start();
+            fail("Expected a SauceEnvironmentVariablesNotSetException to be thrown");
+        } catch (SauceEnvironmentVariablesNotSetException exception) {
+            assertEquals("Sauce Access Key was not provided", exception.getMessage());
+        }
     }
 
     @Test

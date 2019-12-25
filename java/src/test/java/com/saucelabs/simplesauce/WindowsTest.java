@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class WindowsTest extends BaseConfigurationTest {
+public class WindowsTest extends BaseTestConfiguration {
     @Test
     public void withWindows10_setsWindows10Platform() {
         sauceOptions.withWindows10();

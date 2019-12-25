@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class IETest extends BaseConfigurationTest{
+public class IETest extends BaseTestConfiguration {
     @Test
     public void withIE_validIeVersionEnum() {
         sauceOptions.withIE(IEVersion._11);

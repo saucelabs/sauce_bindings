@@ -1,7 +1,7 @@
 package com.saucelabs.simplesauce;
 
-import com.google.common.annotations.VisibleForTesting;
 import lombok.Getter;
+import lombok.Setter;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
@@ -16,10 +16,10 @@ import java.net.MalformedURLException;
 
 public class SauceSession {
     @Getter private final String sauceDataCenter = DataCenter.US_WEST.getEndpoint();
-    @Getter private final EnvironmentManager environmentManager;
     @Getter private final SauceOptions sauceOptions;
     @Getter private final SauceTimeout timeouts = new SauceTimeout();
-
+    @Getter @Setter private String sauceUserName = System.getenv("SAUCE_USERNAME");
+    @Getter @Setter private String sauceAccessKey = System.getenv("SAUCE_ACCESS_KEY");
     private final String sauceOptionsTag = "sauce:options";
 
     //TODO 2 same variables being used differently
@@ -35,43 +35,45 @@ public class SauceSession {
     public SauceSession() {
         currentSessionCapabilities = new MutableCapabilities();
         sauceDriver = new SauceDriverImpl();
-        environmentManager = new EnvironmentManagerImpl();
         sauceOptions = new SauceOptions();
     }
 
-    public SauceSession(SauceRemoteDriver remoteManager, EnvironmentManager environmentManager) {
+    public SauceSession(SauceRemoteDriver remoteManager) {
         sauceDriver = remoteManager;
         currentSessionCapabilities = new MutableCapabilities();
-        this.environmentManager = environmentManager;
         sauceOptions = new SauceOptions();
     }
 
     public SauceSession(SauceOptions options) {
         sauceOptions = options;
         currentSessionCapabilities = new MutableCapabilities();
-        environmentManager = new EnvironmentManagerImpl();
         sauceDriver = new SauceDriverImpl();
     }
 
-    public SauceSession(SauceOptions options, SauceRemoteDriver remoteManager, EnvironmentManager environmentManager) {
+    public SauceSession(SauceOptions options, SauceRemoteDriver remoteManager) {
         sauceOptions = options;
         sauceDriver = remoteManager;
         currentSessionCapabilities = new MutableCapabilities();
-        this.environmentManager = environmentManager;
     }
 
     public WebDriver start() {
-        mutableCapabilities = appendSauceCapabilities();
-        setBrowserSpecificCapabilities(sauceOptions.getBrowserName());
-        currentSessionCapabilities = setRemoteDriverCapabilities(mutableCapabilities);
-        tryToCreateRemoteWebDriver(sauceDataCenter);
-        return webDriver;
+        if (sauceUserName == null) {
+            throw new SauceEnvironmentVariablesNotSetException("Sauce Username was not provided");
+        } else if (sauceAccessKey == null) {
+            throw new SauceEnvironmentVariablesNotSetException("Sauce Access Key was not provided");
+        } else {
+            mutableCapabilities = appendSauceCapabilities();
+            setBrowserSpecificCapabilities(sauceOptions.getBrowserName());
+            currentSessionCapabilities = setRemoteDriverCapabilities(mutableCapabilities);
+            tryToCreateRemoteWebDriver(sauceDataCenter);
+            return webDriver;
+        }
 	}
 
     private MutableCapabilities appendSauceCapabilities() {
         mutableCapabilities = new MutableCapabilities();
-        mutableCapabilities.setCapability("username", getUserName());
-        mutableCapabilities.setCapability("accessKey", getAccessKey());
+        mutableCapabilities.setCapability("username", getSauceUserName());
+        mutableCapabilities.setCapability("accessKey", getSauceAccessKey());
         if (timeouts.getCommandTimeout() != 0) {
             mutableCapabilities.setCapability("commandTimeout", timeouts.getCommandTimeout());
         }
@@ -113,7 +115,7 @@ public class SauceSession {
     private MutableCapabilities setRemoteDriverCapabilities(MutableCapabilities sauceOptions) {
         currentSessionCapabilities.setCapability(sauceOptionsTag, sauceOptions);
         currentSessionCapabilities.setCapability(CapabilityType.BROWSER_NAME, this.sauceOptions.getBrowserName());
-        currentSessionCapabilities.setCapability(CapabilityType.PLATFORM_NAME, this.sauceOptions.getOperatingSystem());
+        currentSessionCapabilities.setCapability(CapabilityType.PLATFORM_NAME, this.sauceOptions.getPlatformName());
         currentSessionCapabilities.setCapability(CapabilityType.BROWSER_VERSION, this.sauceOptions.getBrowserVersion());
         return currentSessionCapabilities;
     }
@@ -130,24 +132,5 @@ public class SauceSession {
     public void stop() {
         if(webDriver !=null)
             webDriver.quit();
-    }
-
-    @VisibleForTesting
-    String getUserName() throws SauceEnvironmentVariablesNotSetException{
-        String userName = environmentManager.getEnvironmentVariable("SAUCE_USERNAME");
-        return checkIfEmpty(userName);
-    }
-
-    @VisibleForTesting
-    String getAccessKey() throws SauceEnvironmentVariablesNotSetException {
-        String accessKey = environmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY");
-        return checkIfEmpty(accessKey);
-    }
-
-    private String checkIfEmpty(String variableToCheck) {
-        if (variableToCheck == null) {
-            throw new SauceEnvironmentVariablesNotSetException();
-        }
-        return variableToCheck;
     }
 }

@@ -5,7 +5,7 @@ import org.openqa.selenium.MutableCapabilities;
 
 import static org.junit.Assert.assertEquals;
 
-public class TimeoutTest extends BaseConfigurationTest {
+public class TimeoutTest extends BaseTestConfiguration {
     @Test
     public void commandTimeout_canBeSet() {
         sauce.getTimeouts().setCommandTimeout(100);

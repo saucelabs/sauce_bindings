@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class LinuxTest extends BaseConfigurationTest {
+public class LinuxTest extends BaseTestConfiguration {
     @Test
     public void withLinux_setsPlatformToLinux() {
         sauceOptions.withLinux();

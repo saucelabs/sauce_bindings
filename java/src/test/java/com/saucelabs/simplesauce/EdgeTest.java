@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class EdgeTest extends BaseConfigurationTest {
+public class EdgeTest extends BaseTestConfiguration {
     @Test
     public void withEdge_default() {
         sauceOptions.withEdge();

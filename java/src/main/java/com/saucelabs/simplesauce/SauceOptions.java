@@ -9,7 +9,7 @@ import org.openqa.selenium.remote.BrowserType;
 public class SauceOptions {
     @Getter @Setter private String browserName = BrowserType.CHROME;
     @Getter @Setter private String browserVersion = "latest";
-    @Getter @Setter private String operatingSystem = Platforms.windowsLatest().getOsVersion();
+    @Getter @Setter private String platformName = Platforms.windowsLatest().getOsVersion();
     @Getter private ChromeOptions chromeOptions;
 
     public SauceOptions withChrome() {
@@ -39,25 +39,25 @@ public class SauceOptions {
     }
 
     public SauceOptions withLinux() {
-        operatingSystem = "Linux";
+        platformName = "Linux";
         return this;
     }
 
     public SauceOptions withWindows10() {
-        operatingSystem = "windows 10";
+        platformName = "windows 10";
         return this;
     }
     public SauceOptions withWindows8_1() {
-        operatingSystem = "Windows 8.1";
+        platformName = "Windows 8.1";
         return this;
     }
     public SauceOptions withWindows8() {
-        operatingSystem = "Windows 8";
+        platformName = "Windows 8";
         return this;
     }
 
     public SauceOptions withWindows7() {
-        operatingSystem = "Windows 7";
+        platformName = "Windows 7";
         return this;
     }
 
@@ -127,7 +127,7 @@ public class SauceOptions {
     }
 
     public SauceOptions withMac(MacVersion macVersion) {
-        operatingSystem = macVersion.label;
+        platformName = macVersion.label;
         browserName = "Safari";
         return this;
     }

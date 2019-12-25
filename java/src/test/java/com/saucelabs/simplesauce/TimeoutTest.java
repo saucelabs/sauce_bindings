@@ -1,11 +1,19 @@
 package com.saucelabs.simplesauce;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.openqa.selenium.MutableCapabilities;
 
 import static org.junit.Assert.assertEquals;
 
 public class TimeoutTest extends BaseTestConfiguration {
+    @Before
+    public void mockSession() {
+        sauce = Mockito.spy(new SauceSession(sauceOptions));
+        Mockito.doReturn(dummyRemoteDriver).when(sauce).createRemoteWebDriver();
+    }
+
     @Test
     public void commandTimeout_canBeSet() {
         sauce.getTimeouts().setCommandTimeout(100);

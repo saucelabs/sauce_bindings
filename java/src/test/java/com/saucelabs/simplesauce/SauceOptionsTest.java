@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
 
 public class SauceOptionsTest {
     private SauceSession sauceSession;
@@ -21,16 +20,6 @@ public class SauceOptionsTest {
     public void sauceSession_takesSauceOptions() {
         sauceSession = new SauceSession(options);
         assertNotNull(sauceSession);
-    }
-
-    @Test
-    public void sauceSession_defaultSauceOptions_returnsChromeBrowser() {
-        SauceRemoteDriver fakeRemoteDriver = mock(SauceRemoteDriver.class);
-
-        sauceSession = new SauceSession(options,fakeRemoteDriver);
-        sauceSession.start();
-        String actualBrowser = sauceSession.getCurrentSessionCapabilities().getCapability("browserName").toString();
-        assertEquals("chrome", actualBrowser);
     }
 
     @Test

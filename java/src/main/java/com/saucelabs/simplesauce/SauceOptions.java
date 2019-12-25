@@ -105,7 +105,7 @@ public class SauceOptions {
     }
 
     public SauceOptions withFirefox() {
-        browserName = "Firefox";
+        browserName = "firefox";
         return this;
     }
 

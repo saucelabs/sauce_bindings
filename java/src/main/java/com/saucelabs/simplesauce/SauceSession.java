@@ -10,6 +10,7 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
 import java.net.MalformedURLException;
@@ -27,34 +28,18 @@ public class SauceSession {
     //TODO 2 same variables being used differently
     private MutableCapabilities mutableCapabilities;
     @Getter private MutableCapabilities currentSessionCapabilities;
-    @Getter private final SauceRemoteDriver sauceDriver;
-    @Getter private WebDriver webDriver;
+    @Getter private WebDriver driver;
 
     public MutableCapabilities getSauceOptionsCapability(){
         return ((MutableCapabilities) currentSessionCapabilities.getCapability(sauceOptionsTag));
     }
 
     public SauceSession() {
-        currentSessionCapabilities = new MutableCapabilities();
-        sauceDriver = new SauceDriverImpl();
-        sauceOptions = new SauceOptions();
-    }
-
-    public SauceSession(SauceRemoteDriver remoteManager) {
-        sauceDriver = remoteManager;
-        currentSessionCapabilities = new MutableCapabilities();
-        sauceOptions = new SauceOptions();
+        this(new SauceOptions());
     }
 
     public SauceSession(SauceOptions options) {
         sauceOptions = options;
-        currentSessionCapabilities = new MutableCapabilities();
-        sauceDriver = new SauceDriverImpl();
-    }
-
-    public SauceSession(SauceOptions options, SauceRemoteDriver remoteManager) {
-        sauceOptions = options;
-        sauceDriver = remoteManager;
         currentSessionCapabilities = new MutableCapabilities();
     }
 
@@ -67,8 +52,8 @@ public class SauceSession {
             mutableCapabilities = appendSauceCapabilities();
             setBrowserSpecificCapabilities(sauceOptions.getBrowserName());
             currentSessionCapabilities = setRemoteDriverCapabilities(mutableCapabilities);
-            tryToCreateRemoteWebDriver();
-            return webDriver;
+            driver = createRemoteWebDriver();
+            return driver;
         }
 	}
 
@@ -129,9 +114,9 @@ public class SauceSession {
         }
     }
 
-    private void tryToCreateRemoteWebDriver() {
+    RemoteWebDriver createRemoteWebDriver() {
         try {
-            webDriver = this.sauceDriver.createRemoteWebDriver(getSauceUrl(), currentSessionCapabilities);
+            return new RemoteWebDriver(getSauceUrl(), currentSessionCapabilities);
         }
         catch (MalformedURLException e) {
             throw new InvalidArgumentException("Invalid URL");
@@ -139,7 +124,7 @@ public class SauceSession {
     }
 
     public void stop() {
-        if(webDriver !=null)
-            webDriver.quit();
+        if(driver !=null)
+            driver.quit();
     }
 }

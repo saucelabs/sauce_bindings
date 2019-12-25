@@ -54,7 +54,7 @@ public class SauceSessionTest {
     public void defaultSauceURL() throws MalformedURLException {
         String dataCenterEndpoint = DataCenter.US_WEST.getEndpoint();
         String user = System.getenv("SAUCE_USERNAME");
-        String key = System.getenv("SAUCE_ACCESS_KEY");;
+        String key = System.getenv("SAUCE_ACCESS_KEY");
         URL expetedSauceUrl = new URL("https://" + user + ":" + key + "@" + dataCenterEndpoint + ":443/wd/hub");
         assertEquals(expetedSauceUrl, sauce.getSauceUrl());
     }

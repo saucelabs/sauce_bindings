@@ -1,26 +1,12 @@
 package com.saucelabs.simplesauce;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class SauceOptionsTest {
-    private SauceSession sauceSession;
-    private SauceOptions options;
-
-    @Before
-    public void setUp()
-    {
-        options = new SauceOptions();
-    }
-
-    @Test
-    public void sauceSession_takesSauceOptions() {
-        sauceSession = new SauceSession(options);
-        assertNotNull(sauceSession);
-    }
+    private SauceOptions options = new SauceOptions();
 
     @Test
     public void sauceOptions_defaultBrowser_setToChrome() {

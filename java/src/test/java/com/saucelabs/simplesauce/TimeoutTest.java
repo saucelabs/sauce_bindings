@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 public class TimeoutTest extends BaseConfigurationTest {
     @Before
     public void mockSession() {
-        sauce = Mockito.spy(new SauceSession(sauceOptions, dummyEnvironmentManager));
+        sauce = Mockito.spy(new SauceSession(sauceOptions));
         Mockito.doReturn(dummyRemoteDriver).when(sauce).createRemoteWebDriver();
     }
 

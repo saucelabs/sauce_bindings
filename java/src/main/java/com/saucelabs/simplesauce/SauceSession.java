@@ -119,22 +119,21 @@ public class SauceSession {
         return currentSessionCapabilities;
     }
 
-    public URL getSauceUrl() throws MalformedURLException {
+    public URL getSauceUrl() {
         if (sauceUrl != null) {
             return sauceUrl;
         } else {
             String url = "https://" + getUserName() + ":" + getAccessKey() + "@" + sauceDataCenter + "/wd/hub";
-            return new URL(url);
+            try {
+                return new URL(url);
+            } catch (MalformedURLException e) {
+                throw new InvalidArgumentException("Invalid URL");
+            }
         }
     }
 
     private void tryToCreateRemoteWebDriver() {
-        try {
             webDriver = this.sauceDriver.createRemoteWebDriver(getSauceUrl(), currentSessionCapabilities);
-        }
-        catch (MalformedURLException e) {
-            throw new InvalidArgumentException("Invalid URL");
-        }
     }
 
     public void stop() {

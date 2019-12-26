@@ -137,7 +137,7 @@ public class SauceSessionTest {
     @Test
     public void stop_noParams_callsDriverQuit() {
         sauce.start();
-        sauce.stop();
+        sauce.stop(true);
 
         verify(dummyRemoteDriver).quit();
     }

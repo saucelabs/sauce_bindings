@@ -52,9 +52,7 @@ public class SauceSessionTest {
     @Test
     public void defaultSauceURL() {
         String dataCenterEndpoint = DataCenter.US_WEST.getEndpoint();
-        String user = System.getenv("SAUCE_USERNAME");
-        String key = System.getenv("SAUCE_ACCESS_KEY");
-        String expetedSauceUrl = "https://" + user + ":" + key + "@" + dataCenterEndpoint + "/wd/hub";
+        String expetedSauceUrl = "https://test-name:accessKey@" + dataCenterEndpoint + "/wd/hub";
         assertEquals(expetedSauceUrl, sauce.getSauceUrl().toString());
     }
 

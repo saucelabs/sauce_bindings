@@ -123,7 +123,7 @@ public class SauceSession {
         if (sauceUrl != null) {
             return sauceUrl;
         } else {
-            String url = "https://" + getUserName() + ":" + getAccessKey() + "@" + sauceDataCenter + ":443/wd/hub";
+            String url = "https://" + getUserName() + ":" + getAccessKey() + "@" + sauceDataCenter + "/wd/hub";
             return new URL(url);
         }
     }

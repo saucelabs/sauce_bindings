@@ -14,7 +14,6 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class SauceSessionTest {
-    //TODO duplication in 3 classes, excluding DataCenterTest
     private SauceSession sauce;
     private EnvironmentManager dummyEnvironmentManager;
     private SauceRemoteDriver dummyRemoteDriver;
@@ -55,7 +54,7 @@ public class SauceSessionTest {
         String dataCenterEndpoint = DataCenter.US_WEST.getEndpoint();
         String user = System.getenv("SAUCE_USERNAME");
         String key = System.getenv("SAUCE_ACCESS_KEY");
-        URL expetedSauceUrl = new URL("https://" + user + ":" + key + "@" + dataCenterEndpoint + ":443/wd/hub");
+        URL expetedSauceUrl = new URL("https://" + user + ":" + key + "@" + dataCenterEndpoint + "/wd/hub");
         assertEquals(expetedSauceUrl, sauce.getSauceUrl());
     }
 

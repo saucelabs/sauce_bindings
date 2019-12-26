@@ -1,6 +1,7 @@
 package com.saucelabs.simplesauce;
 
 import lombok.Getter;
+import org.openqa.selenium.JavascriptExecutor;
 import lombok.Setter;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.MutableCapabilities;
@@ -117,9 +118,24 @@ public class SauceSession {
         return new RemoteWebDriver(getSauceUrl(), currentSessionCapabilities);
     }
 
+    protected JavascriptExecutor getJSExecutor() {
+        return (JavascriptExecutor) driver;
+    }
+
     public void stop() {
-        if(driver !=null)
+        if(driver !=null) {
             driver.quit();
+        }
+    }
+
+    public void stop(String result) {
+        getJSExecutor().executeScript("sauce:job-result=" + result);
+        stop();
+    }
+
+    public void stop(Boolean passed) {
+        String result = passed ? "passed" : "failed";
+        stop(result);
     }
 
     protected String getEnvironmentVariable(String key) {

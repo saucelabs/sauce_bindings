@@ -11,6 +11,7 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
 import java.net.MalformedURLException;
@@ -21,15 +22,14 @@ public class SauceSession {
     @Getter private final EnvironmentManager environmentManager;
     @Getter private final SauceOptions sauceOptions;
     @Getter private final SauceTimeout timeouts = new SauceTimeout();
-    @Getter @Setter private URL sauceUrl;
+    @Setter private URL sauceUrl;
 
     private final String sauceOptionsTag = "sauce:options";
 
     //TODO 2 same variables being used differently
     private MutableCapabilities mutableCapabilities;
     @Getter private MutableCapabilities currentSessionCapabilities;
-    @Getter private final SauceRemoteDriver sauceDriver;
-    @Getter private WebDriver webDriver;
+    @Getter private WebDriver driver;
 
     public MutableCapabilities getSauceOptionsCapability(){
         return ((MutableCapabilities) currentSessionCapabilities.getCapability(sauceOptionsTag));
@@ -37,13 +37,11 @@ public class SauceSession {
 
     public SauceSession() {
         currentSessionCapabilities = new MutableCapabilities();
-        sauceDriver = new SauceDriverImpl();
         environmentManager = new EnvironmentManagerImpl();
         sauceOptions = new SauceOptions();
     }
 
-    public SauceSession(SauceRemoteDriver remoteManager, EnvironmentManager environmentManager) {
-        sauceDriver = remoteManager;
+    public SauceSession(EnvironmentManager environmentManager) {
         currentSessionCapabilities = new MutableCapabilities();
         this.environmentManager = environmentManager;
         sauceOptions = new SauceOptions();
@@ -53,12 +51,10 @@ public class SauceSession {
         sauceOptions = options;
         currentSessionCapabilities = new MutableCapabilities();
         environmentManager = new EnvironmentManagerImpl();
-        sauceDriver = new SauceDriverImpl();
     }
 
-    public SauceSession(SauceOptions options, SauceRemoteDriver remoteManager, EnvironmentManager environmentManager) {
+    public SauceSession(SauceOptions options, EnvironmentManager environmentManager) {
         sauceOptions = options;
-        sauceDriver = remoteManager;
         currentSessionCapabilities = new MutableCapabilities();
         this.environmentManager = environmentManager;
     }
@@ -67,8 +63,8 @@ public class SauceSession {
         mutableCapabilities = appendSauceCapabilities();
         setBrowserSpecificCapabilities(sauceOptions.getBrowserName());
         currentSessionCapabilities = setRemoteDriverCapabilities(mutableCapabilities);
-        tryToCreateRemoteWebDriver();
-        return webDriver;
+        driver = createRemoteWebDriver();
+        return driver;
 	}
 
     private MutableCapabilities appendSauceCapabilities() {
@@ -132,13 +128,13 @@ public class SauceSession {
         }
     }
 
-    private void tryToCreateRemoteWebDriver() {
-            webDriver = this.sauceDriver.createRemoteWebDriver(getSauceUrl(), currentSessionCapabilities);
+    protected RemoteWebDriver createRemoteWebDriver() {
+        return new RemoteWebDriver(getSauceUrl(), currentSessionCapabilities);
     }
 
     public void stop() {
-        if(webDriver !=null)
-            webDriver.quit();
+        if(driver !=null)
+            driver.quit();
     }
 
     @VisibleForTesting

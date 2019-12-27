@@ -13,9 +13,6 @@ namespace SimpleSauce.Test
     [TestCategory("Acceptance")]
     public class BaselineSeleniumAcceptanceTests
     {
-        private Dictionary<string, object> _sauceOptions;
-        private IWebDriver _driver;
-
         public TestContext TestContext { get; set; }
 
         [TestMethod]
@@ -23,7 +20,7 @@ namespace SimpleSauce.Test
         {
             var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
             var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
-            _sauceOptions = new Dictionary<string, object>
+            var _sauceOptions = new Dictionary<string, object>
             {
                 ["username"] = sauceUserName,
                 ["accessKey"] = sauceAccessKey
@@ -36,15 +33,14 @@ namespace SimpleSauce.Test
             };
             chromeOptions.AddAdditionalOption("sauce:options", _sauceOptions);
 
-            _driver = new RemoteWebDriver(new Uri("https://ondemand.saucelabs.com/wd/hub"),
+            var driver = new RemoteWebDriver(new Uri("https://ondemand.saucelabs.com/wd/hub"),
                 chromeOptions.ToCapabilities(), TimeSpan.FromSeconds(600));
-            _driver.Navigate().GoToUrl("https://www.google.com");
-            ((RemoteWebDriver)_driver).SessionId.Should().NotBeNull();
+            driver.Navigate().GoToUrl("https://www.google.com");
+            driver.SessionId.Should().NotBeNull();
 
-            if (_driver == null) return;
             var passed = TestContext.CurrentTestOutcome == UnitTestOutcome.Passed;
-            ((IJavaScriptExecutor)_driver).ExecuteScript("sauce:job-result=" + (passed ? "passed" : "failed"));
-            _driver?.Quit();
+            ((IJavaScriptExecutor)driver).ExecuteScript("sauce:job-result=" + (passed ? "passed" : "failed"));
+            driver?.Quit();
         }
     }
 }

@@ -6,7 +6,7 @@ from simplesauce.session import SauceSession
 
 class TestInit(object):
 
-    def test_defaults_to_US_West_data_center(self):
+    def test_defaults_to_us_west_data_center(self):
         session = SauceSession()
 
         assert "us-west-1" in session.remote_url
@@ -17,29 +17,26 @@ class TestInit(object):
         assert "eu-central-1" in session.remote_url
 
     def test_raises_exception_if_data_center_is_invalid(self):
-        with pytest.raises(KeyError):
-            SauceSession(data_center='uu')
+        with pytest.raises(ValueError):
+            SauceSession(data_center='invalid')
 
-        with pytest.raises(KeyError):
-            SauceSession(data_center='')
-
-    def test_accepts_provided_Options_instance(self):
+    def test_accepts_provided_options_instance(self):
         options = SauceOptions()
 
-        session = SauceSession(options=options)
+        session = SauceSession(options)
 
         assert session.options.browser_name == 'chrome'
         assert session.options.browser_version == 'latest'
         assert session.options.platform_name == 'Windows 10'
 
-    def test_generates_default_Options_instance_if_not_provided(self):
+    def test_generates_default_options_instance_if_not_provided(self):
         session = SauceSession()
 
         assert session.options.browser_name == 'chrome'
         assert session.options.browser_version == 'latest'
         assert session.options.platform_name == 'Windows 10'
 
-    def test_uses_username_and_access_key_if_ENV_variables_are_defined(self):
+    def test_uses_username_and_access_key_if_environment_variables_are_defined(self):
         session = SauceSession()
 
         assert session.username == os.environ['SAUCE_USERNAME']
@@ -64,6 +61,11 @@ class TestDataCenter(object):
 
         assert "eu-central-1" in session.remote_url
 
+    def test_raises_exception_if_data_center_is_invalid(self):
+        session = SauceSession()
+
+        with pytest.raises(ValueError):
+            session.data_center = 'invalid'
 
 class TestUsername(object):
 
@@ -89,7 +91,7 @@ class TestAccessKey(object):
 
 class TestStart(object):
 
-    def test_creates_a_session_on_Sauce_labs(self):
+    def test_creates_a_session_on_sauce_labs(self):
         session = SauceSession()
 
         session.start()
@@ -113,17 +115,20 @@ class TestStart(object):
             session.start()
 
 
+class TestURL(object):
+
+    def test_user_can_override_default_url(self):
+        session = SauceSession()
+        session.remote_url = 'https://foo:bar@foobar.com/wd/hub'
+
+        assert session.remote_url == 'https://foo:bar@foobar.com/wd/hub'
+
+
 class TestStop(object):
 
-    def test_it_quits_the_driver(self):
-        session = SauceSession()
-
-        session.start()
-
-        session.stop()
-
-
-class TestUpdateResult(object):
+    def test_sauce_session_ended(self):
+        # TODO - Mock the driver to verify it gets the quit command
+        pass
 
     def test_passing_case(self):
         session = SauceSession()
@@ -138,11 +143,3 @@ class TestUpdateResult(object):
         session.start()
 
         session.stop(False)
-
-    def test_update_method(self):
-        session = SauceSession()
-
-        session.start()
-
-        session.update_test_result(True)
-        session.stop()

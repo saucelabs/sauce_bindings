@@ -96,7 +96,7 @@ public class SauceSession {
     private MutableCapabilities setRemoteDriverCapabilities(MutableCapabilities sauceOptions) {
         currentSessionCapabilities.setCapability(sauceOptionsTag, sauceOptions);
         currentSessionCapabilities.setCapability(CapabilityType.BROWSER_NAME, this.sauceOptions.getBrowserName());
-        currentSessionCapabilities.setCapability(CapabilityType.PLATFORM_NAME, this.sauceOptions.getOperatingSystem());
+        currentSessionCapabilities.setCapability(CapabilityType.PLATFORM_NAME, this.sauceOptions.getPlatformName());
         currentSessionCapabilities.setCapability(CapabilityType.BROWSER_VERSION, this.sauceOptions.getBrowserVersion());
         return currentSessionCapabilities;
     }

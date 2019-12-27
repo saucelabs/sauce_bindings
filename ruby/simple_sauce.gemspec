@@ -28,5 +28,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'webmock', '~> 3.5'
 
   spec.add_runtime_dependency 'sauce_whisk'
-  spec.add_runtime_dependency 'selenium-webdriver', '~> 3.0'
+  spec.add_runtime_dependency 'selenium-webdriver', '~> 3.141.0', '>= 3.141.7'
 end

@@ -47,7 +47,7 @@ namespace Simple.Sauce
 
         public void Quit()
         {
-            throw new NotImplementedException();
+            _driver.Quit();
         }
 
         public IOptions Manage()

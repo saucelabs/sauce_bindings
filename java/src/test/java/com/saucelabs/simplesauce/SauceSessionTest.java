@@ -3,12 +3,10 @@ package com.saucelabs.simplesauce;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
@@ -173,6 +171,6 @@ public class SauceSessionTest {
         sauce.start();
         sauce.stop();
 
-        verify(dummyJSExecutor, never()).executeScript(Mockito.anyString());
+        verify(dummyJSExecutor, never()).executeScript(anyString());
     }
 }

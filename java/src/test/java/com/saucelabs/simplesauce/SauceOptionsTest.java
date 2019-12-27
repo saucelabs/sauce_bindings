@@ -22,7 +22,7 @@ public class SauceOptionsTest extends BaseConfigurationTest{
     @Test
     public void updatesBrowserBrowserVersionPlatformVersionValues() {
         sauceOptions.setBrowserName(BrowserType.FIREFOX);
-        sauceOptions.setPlatformName(Platforms.MAC_OS_HIGH_SIERRA.getOsVersion());
+        sauceOptions.setPlatformName("macOS 10.13");
         sauceOptions.setBrowserVersion("68");
 
         assertEquals(BrowserType.FIREFOX, sauceOptions.getBrowserName());

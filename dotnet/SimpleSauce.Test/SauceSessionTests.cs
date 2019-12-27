@@ -128,6 +128,22 @@ namespace SimpleSauce.Test
             SauceSession.Stop(true);
             _dummyDriver.Verify(driver => driver.Quit(), Times.Exactly(1));
         }
+        [TestMethod]
+        public void Stop_TestPassed_UpdatesTestStatus()
+        {
+            SauceSession = new SauceSession(_dummyDriver.Object);
+            SauceSession.Start();
+            SauceSession.Stop(true);
+            _dummyDriver.Verify(driver => driver.ExecuteScript("sauce:job-result=passed"), Times.Exactly(1));
+        }
+        [TestMethod]
+        public void Stop_TestFailed_UpdatesTestStatus()
+        {
+            SauceSession = new SauceSession(_dummyDriver.Object);
+            SauceSession.Start();
+            SauceSession.Stop(false);
+            _dummyDriver.Verify(driver => driver.ExecuteScript("sauce:job-result=failed"), Times.Exactly(1));
+        }
     }
     public class Root
     {

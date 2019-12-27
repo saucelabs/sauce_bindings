@@ -90,10 +90,11 @@ namespace Simple.Sauce
 
         public void Stop(bool isPassed)
         {
+            if (DriverImplementation is null)
+                return;
             var script = "sauce:job-result=" + (isPassed ? "passed" : "failed");
             DriverImplementation.ExecuteScript(script);
-
-            DriverImplementation?.Quit();
+            DriverImplementation.Quit();
         }
     }
 }

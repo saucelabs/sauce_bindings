@@ -10,9 +10,10 @@ from simplesauce.session import SauceSession
 
 session = SauceSession()
 
-session.driver.get("www.saucedemo.com")
+driver = session.driver
+driver.get("www.saucedemo.com")
 
-session.driver.quit()
+session.stop("passed")
 ```
 
 
@@ -30,7 +31,7 @@ pip install simplesauce
 
 ## Development
 
-This project will be developed intially in Python 3.x so please create a virtual environment:
+This project will be developed initially in Python 3.x so please create a virtual environment:
 
 ```
 python3 -m venv venv

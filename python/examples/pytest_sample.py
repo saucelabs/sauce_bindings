@@ -26,12 +26,9 @@ def driver(request):
 
     # report results
     # use the test result to send the pass/fail status to Sauce Labs
-    if request.node.rep_call.failed:
-        sauce.setTestStatus("failed")
-    else:
-        sauce.setTestStatus("passed")
+    result = not request.node.rep_call.failed
 
-    sauce.stop()
+    sauce.stop(result)
 
 
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)

@@ -32,14 +32,16 @@ class SauceOptions():
             self.build = "{}: {}".format(os.environ['bamboo_shortJobName'], os.environ['bamboo_buildNumber'])
         # Travis
         elif os.environ.get('TRAVIS_JOB_ID'):
-            job_name = re.search("[^/]+$", os.environ.get("TRAVIS_REPO_SLUG"))
-            self.build = "{}: {}".format(job_name, os.environ['TRAVIS_JOB_NUMBER'])
+            self.build = "{}: {}".format(os.environ['TRAVIS_JOB_NAME'], os.environ['TRAVIS_JOB_NUMBER'])
         # Circle
         elif os.environ.get('CIRCLE_JOB'):
             self.build = "{}: {}".format(os.environ['CIRCLE_JOB'], os.environ['CIRCLE_BUILD_NUM'])
         # Gitlab
         elif os.environ.get('CI'):
             self.build = "{}: {}".format(os.environ['CI_JOB_NAME'], os.environ['CI_JOB_ID'])
+        # Team City
+        elif os.environ.get('TEAMCITY_VERSION'):
+            self.build = "{}: {}".format(os.environ['TEAMCITY_PROJECT_NAME'], os.environ['BUILD_NUMBER'])
         else:
             self.build = 'Build Time: {}'.format(datetime.utcnow())
 

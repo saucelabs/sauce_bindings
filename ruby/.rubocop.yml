@@ -9,7 +9,7 @@ Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
 
 Metrics/AbcSize:
-  Max: 19
+  Max: 22
 
 Metrics/BlockLength:
   Exclude:
@@ -17,6 +17,9 @@ Metrics/BlockLength:
 
 Metrics/CyclomaticComplexity:
   Max: 7
+
+Metrics/PerceivedComplexity:
+  Max: 8
 
 Metrics/LineLength:
   Max: 120

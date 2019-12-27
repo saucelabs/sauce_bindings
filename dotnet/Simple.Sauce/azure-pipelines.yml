@@ -4,7 +4,13 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- master
+  branches:
+    include:
+    - master
+# This was meant to exclude DotnetFramework.Test from building, but I couldn't get it to work
+#  paths:
+#    exclude:
+#    - DotnetFramework.Test\DotnetFramework.Test.csproj
 
 pool:
   vmImage: 'windows-latest'
@@ -31,6 +37,7 @@ steps:
     command: build
     projects: '**/*.csproj'
     arguments: '--configuration Release' # Update this to match your need
+
 
 #need to use the vso tasks so that the env variables persist trhough tasks in ADO
 - powershell: |

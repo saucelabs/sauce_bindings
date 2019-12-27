@@ -9,7 +9,7 @@ trigger:
     - master
   paths:
     exclude:
-    - DotnetFramework.Test/*
+    - DotnetFramework.Test\DotnetFramework.Test.csproj
 
 pool:
   vmImage: 'windows-latest'

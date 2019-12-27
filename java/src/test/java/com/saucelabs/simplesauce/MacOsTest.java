@@ -1,6 +1,5 @@
 package com.saucelabs.simplesauce;
 
-import com.saucelabs.simplesauce.enums.MacVersion;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;

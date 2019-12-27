@@ -1,6 +1,5 @@
 package com.saucelabs.simplesauce;
 
-import com.saucelabs.simplesauce.enums.MacVersion;
 import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.chrome.ChromeOptions;

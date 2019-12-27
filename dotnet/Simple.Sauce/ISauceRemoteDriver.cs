@@ -2,7 +2,7 @@
 
 namespace Simple.Sauce
 {
-    public interface ISauceRemoteDriver
+    public interface ISauceRemoteDriver : IJavaScriptExecutor, IWebDriver
     {
         IWebDriver CreateRemoteWebDriver(DriverOptions options);
     }

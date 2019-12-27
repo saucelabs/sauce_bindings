@@ -1,6 +1,5 @@
 package com.saucelabs.simplesauce;
 
-import com.google.common.annotations.VisibleForTesting;
 import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.InvalidArgumentException;
@@ -19,11 +18,11 @@ import java.net.URL;
 
 public class SauceSession {
     @Getter @Setter private DataCenter dataCenter = DataCenter.US_WEST;
-    @Getter private final EnvironmentManager environmentManager;
     @Getter private final SauceOptions sauceOptions;
     @Getter private final SauceTimeout timeouts = new SauceTimeout();
+    @Getter @Setter private String username;
+    @Getter @Setter private String accessKey;
     @Setter private URL sauceUrl;
-
     private final String sauceOptionsTag = "sauce:options";
 
     //TODO 2 same variables being used differently
@@ -36,33 +35,19 @@ public class SauceSession {
     }
 
     public SauceSession() {
-        currentSessionCapabilities = new MutableCapabilities();
-        environmentManager = new EnvironmentManagerImpl();
-        sauceOptions = new SauceOptions();
-    }
-
-    public SauceSession(EnvironmentManager environmentManager) {
-        currentSessionCapabilities = new MutableCapabilities();
-        this.environmentManager = environmentManager;
-        sauceOptions = new SauceOptions();
+        this(new SauceOptions());
     }
 
     public SauceSession(SauceOptions options) {
         sauceOptions = options;
         currentSessionCapabilities = new MutableCapabilities();
-        environmentManager = new EnvironmentManagerImpl();
-    }
-
-    public SauceSession(SauceOptions options, EnvironmentManager environmentManager) {
-        sauceOptions = options;
-        currentSessionCapabilities = new MutableCapabilities();
-        this.environmentManager = environmentManager;
     }
 
     public WebDriver start() {
         mutableCapabilities = appendSauceCapabilities();
         setBrowserSpecificCapabilities(sauceOptions.getBrowserName());
         currentSessionCapabilities = setRemoteDriverCapabilities(mutableCapabilities);
+        sauceUrl = getSauceUrl();
         driver = createRemoteWebDriver();
         return driver;
 	}
@@ -119,7 +104,7 @@ public class SauceSession {
         if (sauceUrl != null) {
             return sauceUrl;
         } else {
-            String url = "https://" + getUserName() + ":" + getAccessKey() + "@" + dataCenter.getEndpoint() + "/wd/hub";
+            String url = "https://" + getSauceUsername() + ":" + getSauceAccessKey() + "@" + dataCenter.getEndpoint() + "/wd/hub";
             try {
                 return new URL(url);
             } catch (MalformedURLException e) {
@@ -137,22 +122,27 @@ public class SauceSession {
             driver.quit();
     }
 
-    @VisibleForTesting
-    String getUserName() throws SauceEnvironmentVariablesNotSetException{
-        String userName = environmentManager.getEnvironmentVariable("SAUCE_USERNAME");
-        return checkIfEmpty(userName);
+    protected String getEnvironmentVariable(String key) {
+        return System.getenv(key);
     }
 
-    @VisibleForTesting
-    String getAccessKey() throws SauceEnvironmentVariablesNotSetException {
-        String accessKey = environmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY");
-        return checkIfEmpty(accessKey);
-    }
-
-    private String checkIfEmpty(String variableToCheck) {
-        if (variableToCheck == null) {
-            throw new SauceEnvironmentVariablesNotSetException();
+    private String getSauceUsername() {
+        if (username != null) {
+            return username;
+        } else if (getEnvironmentVariable("SAUCE_USERNAME") != null) {
+            return getEnvironmentVariable("SAUCE_USERNAME");
+        } else {
+            throw new SauceEnvironmentVariablesNotSetException("Sauce Username was not provided");
         }
-        return variableToCheck;
+    }
+
+    private String getSauceAccessKey() {
+        if (accessKey != null) {
+            return accessKey;
+        } else if (getEnvironmentVariable("SAUCE_ACCESS_KEY") != null) {
+            return getEnvironmentVariable("SAUCE_ACCESS_KEY");
+        } else {
+            throw new SauceEnvironmentVariablesNotSetException("Sauce Access Key was not provided");
+        }
     }
 }

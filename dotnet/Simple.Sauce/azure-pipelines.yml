@@ -21,12 +21,14 @@ steps:
 
 - task: DotNetCoreCLI@2
   displayName: Restore
+  continueOnError: true
   inputs:
     command: restore
     projects: '**/*.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: Build
+  continueOnError: true
   inputs:
     command: build
     projects: '**/*.csproj'

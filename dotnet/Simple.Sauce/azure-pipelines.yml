@@ -7,9 +7,10 @@ trigger:
   branches:
     include:
     - master
-  paths:
-    exclude:
-    - DotnetFramework.Test\DotnetFramework.Test.csproj
+# This was meant to exclude DotnetFramework.Test from building, but I couldn't get it to work
+#  paths:
+#    exclude:
+#    - DotnetFramework.Test\DotnetFramework.Test.csproj
 
 pool:
   vmImage: 'windows-latest'

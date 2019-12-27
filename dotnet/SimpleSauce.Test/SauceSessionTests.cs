@@ -23,7 +23,7 @@ namespace SimpleSauce.Test
         {
             SauceOptions = new SauceOptions();
             SauceSession = new SauceSession(SauceOptions);
-            SauceSession.DriverImplementation.Should().BeOfType(typeof(SauceDriver));
+            SauceSession.Driver.Should().BeOfType(typeof(SauceDriver));
         }
         [TestMethod]
         public void SauceSession_NoConstructorParam_OptionsInitialized()
@@ -118,7 +118,7 @@ namespace SimpleSauce.Test
             configuredSauceOptions.SauceOptions.AccessKey.Should().NotBeNullOrEmpty();
         }
         //TODO need a test that will validate that
-        //DriverImplementation.CreateRemoteWebDriver(Options.ConfiguredSafariOptions);
+        //Driver.CreateRemoteWebDriver(Options.ConfiguredSafariOptions);
         //Calls the correct Options property on each of the Create driver methods
         [TestMethod]
         public void Stop_CallsQuit()

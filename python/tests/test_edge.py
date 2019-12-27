@@ -4,7 +4,7 @@ from simplesauce.options import SauceOptions
 class TestEdge(object):
 
     def test_defaults(self):
-        sauce = SauceOptions('edge')
+        sauce = SauceOptions('MicrosoftEdge')
 
         assert sauce.browser_name == 'MicrosoftEdge'
         assert sauce.browser_version == 'latest'

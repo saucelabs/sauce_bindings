@@ -17,7 +17,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class SauceSession {
-    @Getter private final String sauceDataCenter = DataCenter.US_WEST.getEndpoint();
+    @Getter @Setter private DataCenter dataCenter = DataCenter.US_WEST;
     @Getter private final SauceOptions sauceOptions;
     @Getter private final SauceTimeout timeouts = new SauceTimeout();
     @Getter @Setter private String username;
@@ -104,7 +104,7 @@ public class SauceSession {
         if (sauceUrl != null) {
             return sauceUrl;
         } else {
-            String url = "https://" + getSauceUsername() + ":" + getSauceAccessKey() + "@" + sauceDataCenter + "/wd/hub";
+            String url = "https://" + getSauceUsername() + ":" + getSauceAccessKey() + "@" + dataCenter.getEndpoint() + "/wd/hub";
             try {
                 return new URL(url);
             } catch (MalformedURLException e) {

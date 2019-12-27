@@ -40,8 +40,15 @@ public class SauceSessionTest {
 
     @Test
     public void startSession_defaultConfig_usWestDataCenter() {
-        String expectedDataCenterEndpoint = DataCenter.US_WEST.getEndpoint();
-        assertEquals(expectedDataCenterEndpoint, sauce.getSauceDataCenter());
+        DataCenter expectedDataCenter = DataCenter.US_WEST;
+        assertEquals(expectedDataCenter.getEndpoint(), sauce.getDataCenter().getEndpoint());
+    }
+
+    @Test
+    public void allowsChangingDefaultDataCenter() {
+        DataCenter expectedDataCenter = DataCenter.US_EAST;
+        sauce.setDataCenter(DataCenter.US_EAST);
+        assertEquals(expectedDataCenter.getEndpoint(), sauce.getDataCenter().getEndpoint());
     }
 
     @Test

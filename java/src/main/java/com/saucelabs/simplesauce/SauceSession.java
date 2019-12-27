@@ -2,6 +2,7 @@ package com.saucelabs.simplesauce;
 
 import com.google.common.annotations.VisibleForTesting;
 import lombok.Getter;
+import lombok.Setter;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
@@ -10,23 +11,25 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
 import java.net.MalformedURLException;
+import java.net.URL;
 
 public class SauceSession {
-    @Getter private final String sauceDataCenter = DataCenter.US_WEST.getEndpoint();
+    @Getter @Setter private DataCenter dataCenter = DataCenter.US_WEST;
     @Getter private final EnvironmentManager environmentManager;
     @Getter private final SauceOptions sauceOptions;
     @Getter private final SauceTimeout timeouts = new SauceTimeout();
+    @Setter private URL sauceUrl;
 
     private final String sauceOptionsTag = "sauce:options";
 
     //TODO 2 same variables being used differently
     private MutableCapabilities mutableCapabilities;
     @Getter private MutableCapabilities currentSessionCapabilities;
-    @Getter private final SauceRemoteDriver sauceDriver;
-    @Getter private WebDriver webDriver;
+    @Getter private WebDriver driver;
 
     public MutableCapabilities getSauceOptionsCapability(){
         return ((MutableCapabilities) currentSessionCapabilities.getCapability(sauceOptionsTag));
@@ -34,13 +37,11 @@ public class SauceSession {
 
     public SauceSession() {
         currentSessionCapabilities = new MutableCapabilities();
-        sauceDriver = new SauceDriverImpl();
         environmentManager = new EnvironmentManagerImpl();
         sauceOptions = new SauceOptions();
     }
 
-    public SauceSession(SauceRemoteDriver remoteManager, EnvironmentManager environmentManager) {
-        sauceDriver = remoteManager;
+    public SauceSession(EnvironmentManager environmentManager) {
         currentSessionCapabilities = new MutableCapabilities();
         this.environmentManager = environmentManager;
         sauceOptions = new SauceOptions();
@@ -50,12 +51,10 @@ public class SauceSession {
         sauceOptions = options;
         currentSessionCapabilities = new MutableCapabilities();
         environmentManager = new EnvironmentManagerImpl();
-        sauceDriver = new SauceDriverImpl();
     }
 
-    public SauceSession(SauceOptions options, SauceRemoteDriver remoteManager, EnvironmentManager environmentManager) {
+    public SauceSession(SauceOptions options, EnvironmentManager environmentManager) {
         sauceOptions = options;
-        sauceDriver = remoteManager;
         currentSessionCapabilities = new MutableCapabilities();
         this.environmentManager = environmentManager;
     }
@@ -64,14 +63,12 @@ public class SauceSession {
         mutableCapabilities = appendSauceCapabilities();
         setBrowserSpecificCapabilities(sauceOptions.getBrowserName());
         currentSessionCapabilities = setRemoteDriverCapabilities(mutableCapabilities);
-        tryToCreateRemoteWebDriver(sauceDataCenter);
-        return webDriver;
+        driver = createRemoteWebDriver();
+        return driver;
 	}
 
     private MutableCapabilities appendSauceCapabilities() {
         mutableCapabilities = new MutableCapabilities();
-        mutableCapabilities.setCapability("username", getUserName());
-        mutableCapabilities.setCapability("accessKey", getAccessKey());
         if (timeouts.getCommandTimeout() != 0) {
             mutableCapabilities.setCapability("commandTimeout", timeouts.getCommandTimeout());
         }
@@ -118,18 +115,26 @@ public class SauceSession {
         return currentSessionCapabilities;
     }
 
-    private void tryToCreateRemoteWebDriver(String sauceLabsUrl) {
-        try {
-            webDriver = this.sauceDriver.createRemoteWebDriver(sauceLabsUrl, currentSessionCapabilities);
-        }
-        catch (MalformedURLException e) {
-            throw new InvalidArgumentException("Invalid URL");
+    public URL getSauceUrl() {
+        if (sauceUrl != null) {
+            return sauceUrl;
+        } else {
+            String url = "https://" + getUserName() + ":" + getAccessKey() + "@" + dataCenter.getEndpoint() + "/wd/hub";
+            try {
+                return new URL(url);
+            } catch (MalformedURLException e) {
+                throw new InvalidArgumentException("Invalid URL");
+            }
         }
     }
 
+    protected RemoteWebDriver createRemoteWebDriver() {
+        return new RemoteWebDriver(getSauceUrl(), currentSessionCapabilities);
+    }
+
     public void stop() {
-        if(webDriver !=null)
-            webDriver.quit();
+        if(driver !=null)
+            driver.quit();
     }
 
     @VisibleForTesting

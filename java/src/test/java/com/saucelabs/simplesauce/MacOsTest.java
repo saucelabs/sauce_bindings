@@ -13,12 +13,12 @@ import static org.junit.Assert.assertEquals;
 public class MacOsTest extends BaseConfigurationTest {
     @DataProvider
     public static Object[][] expectedMacOsVersions() {
-        return new Object[][] {
-                { MacVersion.Mojave, "macOS 10.14" },
-                { MacVersion.HighSierra, "macOS 10.13" },
-                { MacVersion.Sierra, "macOS 10.12" },
-                { MacVersion.ElCapitan, "OS X 10.11" },
-                { MacVersion.Yosemite, "OS X 10.10" }
+        return new Object[][]{
+                {MacVersion.Mojave, "macOS 10.14"},
+                {MacVersion.HighSierra, "macOS 10.13"},
+                {MacVersion.Sierra, "macOS 10.12"},
+                {MacVersion.ElCapitan, "OS X 10.11"},
+                {MacVersion.Yosemite, "OS X 10.10"}
         };
     }
 
@@ -26,8 +26,7 @@ public class MacOsTest extends BaseConfigurationTest {
     @UseDataProvider("expectedMacOsVersions")
     public void withMacOs_returnsValidOsConfiguration(MacVersion version, String expectedMacOsVersion) {
         sauceOptions.withMac(version);
-        sauce = instantiateSauceSession();
-        sauce.start();
+        startSauceSession();
 
         String actualOsThatWasSet = getSessionPlatformString();
         assertEquals(expectedMacOsVersion, actualOsThatWasSet);
@@ -40,8 +39,7 @@ public class MacOsTest extends BaseConfigurationTest {
     @Test
     public void defaultSafari_browserVersionIs12_0() {
         sauceOptions.withSafari();
-        sauce = instantiateSauceSession();
-        sauce.start();
+        startSauceSession();
 
         //TODO mockSauceSession.sauceSessionCapabilities can be turned into a method, maybe on the session
         //class that allows easier access to the caps
@@ -52,8 +50,7 @@ public class MacOsTest extends BaseConfigurationTest {
     @Test
     public void defaultSafari_macOsVersionIsMojave() {
         sauceOptions.withSafari();
-        sauce = instantiateSauceSession();
-        sauce.start();
+        startSauceSession();
 
         String safariVersionSetThroughSauceSession = getSessionPlatformString();
         assertEquals(Platforms.MAC_OS.MOJAVE.getPlatform().getOsVersion(), safariVersionSetThroughSauceSession);
@@ -62,8 +59,7 @@ public class MacOsTest extends BaseConfigurationTest {
     @Test
     public void withSafari_browserName_setToSafariEnum() {
         sauceOptions.withSafari(SafariVersion._8);
-        sauce = instantiateSauceSession();
-        sauce.start();
+        startSauceSession();
 
         String actualBrowserNameSetThroughSauceSession = sauce.getCurrentSessionCapabilities().getBrowserName();
         assertEquals("safari", actualBrowserNameSetThroughSauceSession);
@@ -72,8 +68,7 @@ public class MacOsTest extends BaseConfigurationTest {
     @Test
     public void withSafari_browserName_setToSafariString() {
         sauceOptions.withSafari(SafariVersion._8.getVersion());
-        sauce = instantiateSauceSession();
-        sauce.start();
+        startSauceSession();
 
         String actualBrowserNameSetThroughSauceSession = sauce.getCurrentSessionCapabilities().getBrowserName();
         assertEquals("safari", actualBrowserNameSetThroughSauceSession);
@@ -82,17 +77,16 @@ public class MacOsTest extends BaseConfigurationTest {
     @Test
     public void withSafari_versionChangedFromDefault_returnsCorrectVersion() {
         sauceOptions.withSafari(SafariVersion._8);
-        sauce = instantiateSauceSession();
-        sauce.start();
+        startSauceSession();
 
         String actualBrowserVersionSetThroughSauceSession = sauce.getCurrentSessionCapabilities().getVersion();
         assertEquals("8.0", actualBrowserVersionSetThroughSauceSession);
     }
+
     @Test
     public void withSafari_versionNotSet_returnsLatest() {
         sauceOptions.withSafari("");
-        sauce = instantiateSauceSession();
-        sauce.start();
+        startSauceSession();
 
         String actualBrowserVersionSetThroughSauceSession =
                 sauce.getCurrentSessionCapabilities().getVersion();

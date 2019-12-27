@@ -21,18 +21,22 @@ steps:
 
 - task: DotNetCoreCLI@2
   displayName: Restore
-  continueOnError: true
+  paths:
+    exclude:
+    - '**/DotnetFramework.Test.csproj'
   inputs:
     command: restore
     projects: '**/*.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: Build
-  continueOnError: true
   inputs:
     command: build
     projects: '**/*.csproj'
     arguments: '--configuration Release' # Update this to match your need
+  paths:
+    exclude:
+    - '**/DotnetFramework.Test.csproj'
 
 #need to use the vso tasks so that the env variables persist trhough tasks in ADO
 - powershell: |

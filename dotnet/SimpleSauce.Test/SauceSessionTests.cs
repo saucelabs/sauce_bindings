@@ -120,6 +120,14 @@ namespace SimpleSauce.Test
         //TODO need a test that will validate that
         //DriverImplementation.CreateRemoteWebDriver(Options.ConfiguredSafariOptions);
         //Calls the correct Options property on each of the Create driver methods
+        [TestMethod]
+        public void Stop_CallsQuit()
+        {
+            SauceSession = new SauceSession(_dummyDriver.Object);
+            SauceSession.Start();
+            SauceSession.Stop(true);
+            _dummyDriver.Verify(driver => driver.Quit(), Times.Exactly(1));
+        }
     }
     public class Root
     {

@@ -87,5 +87,13 @@ namespace Simple.Sauce
             Options.ConfiguredEdgeOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
             return DriverImplementation.CreateRemoteWebDriver(Options.ConfiguredEdgeOptions);
         }
+
+        public void Stop(bool isPassed)
+        {
+            var script = "sauce:job-result=" + (isPassed ? "passed" : "failed");
+            DriverImplementation.ExecuteScript(script);
+
+            DriverImplementation?.Quit();
+        }
     }
 }

@@ -7,7 +7,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.remote.BrowserType;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
@@ -17,9 +17,11 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class SauceSessionTest {
+    private SauceOptions sauceOptions = spy(new SauceOptions());
     private SauceSession sauceSession = spy(new SauceSession());
     private RemoteWebDriver dummyRemoteDriver = mock(RemoteWebDriver.class);
     private JavascriptExecutor dummyJSExecutor = mock(JavascriptExecutor.class);
+    private MutableCapabilities dummyMutableCapabilities = mock(MutableCapabilities.class);
 
     @Rule
     public MockitoRule initRule = MockitoJUnit.rule();
@@ -31,21 +33,20 @@ public class SauceSessionTest {
 
     @Test
     public void sauceSessionDefaultsToLatestChromeOnWindows() {
-        String actualBrowser = sauceSession.getSauceOptions().getBrowserName();
+        Options.Browser actualBrowser = sauceSession.getSauceOptions().getBrowserName();
         String actualBrowserVersion = sauceSession.getSauceOptions().getBrowserVersion();
-        String actualPlatformName = sauceSession.getSauceOptions().getPlatformName();
+        Options.Platform actualPlatformName = sauceSession.getSauceOptions().getPlatformName();
 
-        assertEquals(BrowserType.CHROME, actualBrowser);
-        assertEquals("Windows 10", actualPlatformName);
+        assertEquals(Options.Browser.CHROME, actualBrowser);
+        assertEquals(Options.Platform.WINDOWS_10, actualPlatformName);
         assertEquals("latest", actualBrowserVersion);
     }
 
     @Test
     public void sauceSessionUsesProvidedSauceOptions() {
-        SauceOptions sauceOptions = spy(new SauceOptions());
-
         sauceSession = spy(new SauceSession(sauceOptions));
         doReturn(dummyRemoteDriver).when(sauceSession).createRemoteWebDriver();
+        doReturn(dummyMutableCapabilities).when(sauceOptions).toCapabilities();
 
         sauceSession.start();
 
@@ -54,15 +55,15 @@ public class SauceSessionTest {
 
     @Test
     public void defaultsToUSWestDataCenter() {
-        String expectedDataCenterEndpoint = DataCenter.US_WEST.getEndpoint();
-        assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().getEndpoint());
+        String expectedDataCenterEndpoint = DataCenter.US_WEST.getValue();
+        assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().getValue());
     }
 
     @Test
     public void setsDataCenter() {
-        String expectedDataCenterEndpoint = DataCenter.US_EAST.getEndpoint();
+        String expectedDataCenterEndpoint = DataCenter.US_EAST.getValue();
         sauceSession.setDataCenter(DataCenter.US_EAST);
-        assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().getEndpoint());
+        assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().getValue());
     }
 
     @Test
@@ -120,33 +121,33 @@ public class SauceSessionTest {
 
     @Test
     public void stopWithBooleanFalse() {
-        doReturn(dummyJSExecutor).when(sauceSession ).getJSExecutor();
-        sauceSession .start();
-        sauceSession .stop(false);
+        doReturn(dummyJSExecutor).when(sauceSession).getJSExecutor();
+        sauceSession.start();
+        sauceSession.stop(false);
         verify(dummyJSExecutor).executeScript("sauce:job-result=failed");
     }
 
     @Test
     public void stopWithStringPassed() {
-        doReturn(dummyJSExecutor).when(sauceSession ).getJSExecutor();
-        sauceSession .start();
-        sauceSession .stop("passed");
+        doReturn(dummyJSExecutor).when(sauceSession).getJSExecutor();
+        sauceSession.start();
+        sauceSession.stop("passed");
         verify(dummyJSExecutor).executeScript("sauce:job-result=passed");
     }
 
     @Test
     public void stopWithStringFailed() {
-        doReturn(dummyJSExecutor).when(sauceSession ).getJSExecutor();
-        sauceSession .start();
-        sauceSession .stop("failed");
+        doReturn(dummyJSExecutor).when(sauceSession).getJSExecutor();
+        sauceSession.start();
+        sauceSession.stop("failed");
         verify(dummyJSExecutor).executeScript("sauce:job-result=failed");
     }
 
     @Test
     public void stopWithNoParameters() {
-        doReturn(dummyJSExecutor).when(sauceSession ).getJSExecutor();
-        sauceSession .start();
-        sauceSession .stop();
+        doReturn(dummyJSExecutor).when(sauceSession).getJSExecutor();
+        sauceSession.start();
+        sauceSession.stop();
 
         verify(dummyJSExecutor, never()).executeScript(anyString());
     }

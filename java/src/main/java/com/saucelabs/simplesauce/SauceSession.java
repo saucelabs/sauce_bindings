@@ -5,7 +5,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import lombok.Setter;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
@@ -40,7 +39,7 @@ public class SauceSession {
         if (sauceUrl != null) {
             return sauceUrl;
         } else {
-            String url = "https://" + getSauceUsername() + ":" + getSauceAccessKey() + "@" + dataCenter.getEndpoint() + "/wd/hub";
+            String url = "https://" + getSauceUsername() + ":" + getSauceAccessKey() + "@" + dataCenter + "/wd/hub";
             try {
                 return new URL(url);
             } catch (MalformedURLException e) {

@@ -4,10 +4,12 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- master
+  branches:
+    include:
+    - master
   paths:
     exclude:
-    - **/DotnetFramework.Test.csproj
+    - **/DotnetFramework.Test*
 
 pool:
   vmImage: 'windows-latest'

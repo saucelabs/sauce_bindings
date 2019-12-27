@@ -7,6 +7,8 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.BrowserType;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
 import static org.openqa.selenium.UnexpectedAlertBehaviour.DISMISS;
 
 public class SauceOptionsTest extends BaseConfigurationTest{
@@ -68,13 +70,19 @@ public class SauceOptionsTest extends BaseConfigurationTest{
     }
 
     @Test
-    @Ignore("Not Implemented Yet")
     public void allowsBuildToBeSet() {
+        sauceOptions.setBuild("Manual Build Set");
+        assertEquals("Manual Build Set", sauceOptions.getBuild());
     }
 
     @Test
-    @Ignore("Not Implemented Yet")
     public void createsDefaultBuildName() {
+        SauceOptions sauceOptions = spy(new SauceOptions());
+        doReturn("Not Empty").when(sauceOptions).getEnvironmentVariable("BUILD_TAG");
+        doReturn("TEMP BUILD").when(sauceOptions).getEnvironmentVariable("BUILD_NAME");
+        doReturn("11").when(sauceOptions).getEnvironmentVariable("BUILD_NUMBER");
+
+        assertEquals("TEMP BUILD: 11", sauceOptions.getBuild());
     }
 
     @Test

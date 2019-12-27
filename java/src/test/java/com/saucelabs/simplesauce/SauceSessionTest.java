@@ -7,11 +7,13 @@ import org.openqa.selenium.MutableCapabilities;
 
 import org.openqa.selenium.WebDriver;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class SauceSessionTest {
-    //TODO duplication in 3 classes, excluding DataCenterTest
     private SauceSession sauce;
     private EnvironmentManager dummyEnvironmentManager;
     private SauceRemoteDriver dummyRemoteDriver;
@@ -43,15 +45,36 @@ public class SauceSessionTest {
 
     @Test
     public void startSession_defaultConfig_usWestDataCenter() {
-        String expectedDataCenterUrl = DataCenter.US_WEST.getEndpoint();
-        assertEquals(expectedDataCenterUrl, sauce.getSauceDataCenter());
+        DataCenter expectedDataCenter = DataCenter.US_WEST;
+        assertEquals(expectedDataCenter.getEndpoint(), sauce.getDataCenter().getEndpoint());
+    }
+
+    @Test
+    public void allowsChangingDefaultDataCenter() {
+        DataCenter expectedDataCenter = DataCenter.US_EAST;
+        sauce.setDataCenter(DataCenter.US_EAST);
+        assertEquals(expectedDataCenter.getEndpoint(), sauce.getDataCenter().getEndpoint());
+    }
+
+    @Test
+    public void defaultSauceURL() {
+        DataCenter dataCenter = DataCenter.US_WEST;
+        String expetedSauceUrl = "https://test-name:accessKey@" + dataCenter.getEndpoint() + "/wd/hub";
+        assertEquals(expetedSauceUrl, sauce.getSauceUrl().toString());
+    }
+
+    @Test
+    public void setsSauceURLDirectly() throws MalformedURLException {
+        sauce.setSauceUrl(new URL("http://example.com"));
+        String expetedSauceUrl = "http://example.com";
+        assertEquals(expetedSauceUrl, sauce.getSauceUrl().toString());
     }
 
     @Test
     public void getUserName_usernameSetInEnvironmentVariable_returnsValue() {
         when(dummyEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
         String actualUserName = sauce.getUserName();
-        assertNotEquals("",actualUserName);
+        assertNotEquals("", actualUserName);
     }
 
     @Test
@@ -98,13 +121,6 @@ public class SauceSessionTest {
     public void defaultIsWindows10() {
         String actualOs = sauce.getCurrentSessionCapabilities().getPlatform().name();
         assertEquals("WIN10", actualOs);
-    }
-
-    @Test
-    public void sauceOptions_defaultConfiguration_setsSauceOptions() {
-        MutableCapabilities sauceOptions = (MutableCapabilities) sauce.getCurrentSessionCapabilities().getCapability("sauce:options");
-        String accessKey = (String) sauceOptions.getCapability("accessKey");
-        assertEquals("You need to have Sauce Credentials set (SAUCE_USERNAME, SAUCE_ACCESSKEY) before this unit test will pass", "accessKey", accessKey);
     }
 
     @Test

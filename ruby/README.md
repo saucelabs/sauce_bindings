@@ -52,7 +52,7 @@ sauce_options = SimpleSauce::Options.new(screen_resolution: '1080x720',
 selenium_options = Selenium::WebDriver::Remote::Capabilities.new(accept_insecure_certs: false,
                                                                  page_load_strategy: 'eager'}
 
-browser_options = Selenium::WebDriver::Firefox::Options.new(args: ['-foo'])
+browser_options = Selenium::WebDriver::Firefox::Options.new('args' => ['-foo'])
 ```
 
 ### Session class

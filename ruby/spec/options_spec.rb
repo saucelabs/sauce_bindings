@@ -83,12 +83,12 @@ module SimpleSauce
       end
 
       it 'accepts Selenium Options and overrides default browser' do
-        browser_opts = Selenium::WebDriver::Firefox::Options.new(args: ['--foo'])
+        browser_opts = Selenium::WebDriver::Firefox::Options.new({args: ['--foo']})
         options = Options.new(selenium_options: browser_opts)
 
         expect(options.browser_name).to eq 'firefox'
         # Note - this is a bug in Selenium
-        expect(options.selenium_options['moz:firefoxOptions']).to eq(args: ['--foo'])
+        expect(options.selenium_options['moz:firefoxOptions']).to eq('args' => ['--foo'])
       end
 
       it 'accepts Selenium Capabilities and Options class instances' do
@@ -100,7 +100,7 @@ module SimpleSauce
         expect(options.selenium_options['pageLoadStrategy']).to eq 'eager'
         expect(options.selenium_options['acceptInsecureCerts']).to eq true
         # Note - this is a bug in Selenium
-        expect(options.selenium_options['goog:chromeOptions']).to eq(args: ['--foo'])
+        expect(options.selenium_options['goog:chromeOptions']).to eq('args' => ['--foo'])
       end
 
       it 'accepts W3C, Sauce, Browser Options and Capabilities at the same time' do
@@ -121,7 +121,7 @@ module SimpleSauce
 
         expect(options.selenium_options['pageLoadStrategy']).to eq 'eager'
         # Note - this is a bug in Selenium
-        expect(options.selenium_options['moz:firefoxOptions']).to eq(args: ['--foo'])
+        expect(options.selenium_options['moz:firefoxOptions']).to eq('args' => ['--foo'])
       end
 
       it 'creates a default build value' do
@@ -206,7 +206,7 @@ module SimpleSauce
                          'acceptInsecureCerts' => true,
                          'pageLoadStrategy' => 'eager',
                          'sauce:options' => {'build' => 'TEMP BUILD: 11'},
-                         'goog:chromeOptions' => {args: ['--foo']}}
+                         'goog:chromeOptions' => {'args' => ['--foo']}}
 
         expect(options.capabilities).to eq(jwp_defaults.merge(expected_caps))
       end

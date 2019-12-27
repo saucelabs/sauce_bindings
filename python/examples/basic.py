@@ -10,6 +10,6 @@ session = SauceSession()
 session.start()
 session.driver.get("https://www.saucedemo.com")
 
-assert "Swag" in session.driver.title
+result = "Swag" in session.driver.title
 
-session.stop()
+session.stop(result)

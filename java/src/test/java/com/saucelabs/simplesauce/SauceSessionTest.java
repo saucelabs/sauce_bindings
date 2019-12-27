@@ -5,7 +5,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import org.openqa.selenium.MutableCapabilities;
 
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -13,15 +12,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class SauceSessionTest {
     private SauceSession sauce;
-    private EnvironmentManager dummyEnvironmentManager;
     private RemoteWebDriver dummyRemoteDriver = mock(RemoteWebDriver.class);
     private SauceOptions options = new SauceOptions();
 
@@ -30,21 +27,12 @@ public class SauceSessionTest {
 
     @Before
     public void setUp() {
-        //TODO duplication in setup in BaseConfigurationTest. Can be moved out of here
-        //and combined into a single setup()
-        dummyEnvironmentManager = mock(EnvironmentManager.class);
-        when(dummyEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
-        when(dummyEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
-
-        sauce = spy(new SauceSession(options, dummyEnvironmentManager));
+        sauce = spy(new SauceSession());
         doReturn(dummyRemoteDriver).when(sauce).createRemoteWebDriver();
     }
 
     @Test
     public void sauceSession_defaultSauceOptions_returnsChromeBrowser() {
-        options = new SauceOptions();
-
-
         sauce.start();
         String actualBrowser = sauce.getCurrentSessionCapabilities().getCapability("browserName").toString();
         assertEquals("chrome", actualBrowser);
@@ -64,9 +52,11 @@ public class SauceSessionTest {
     }
 
     @Test
-    public void defaultSauceURL() {
-        DataCenter dataCenter = DataCenter.US_WEST;
-        String expetedSauceUrl = "https://test-name:accessKey@" + dataCenter.getEndpoint() + "/wd/hub";
+    public void defaultSauceURLUsesENVForUsernameAccessKey() {
+        doReturn("test-name").when(sauce).getEnvironmentVariable("SAUCE_USERNAME");
+        doReturn("accesskey").when(sauce).getEnvironmentVariable("SAUCE_ACCESS_KEY");
+
+        String expetedSauceUrl = "https://test-name:accesskey@ondemand.us-west-1.saucelabs.com/wd/hub";
         assertEquals(expetedSauceUrl, sauce.getSauceUrl().toString());
     }
 
@@ -75,20 +65,6 @@ public class SauceSessionTest {
         sauce.setSauceUrl(new URL("http://example.com"));
         String expetedSauceUrl = "http://example.com";
         assertEquals(expetedSauceUrl, sauce.getSauceUrl().toString());
-    }
-
-    @Test
-    public void getUserName_usernameSetInEnvironmentVariable_returnsValue() {
-        when(dummyEnvironmentManager.getEnvironmentVariable("SAUCE_USERNAME")).thenReturn("test-name");
-        String actualUserName = sauce.getUserName();
-        assertNotEquals("", actualUserName);
-    }
-
-    @Test
-    public void getAccessKey_keySetInEnvironmentVariable_returnsValue() {
-        when(dummyEnvironmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY")).thenReturn("accessKey");
-        String actualAccessKey = sauce.getAccessKey();
-        assertNotEquals("", actualAccessKey);
     }
 
     @Test
@@ -136,15 +112,26 @@ public class SauceSessionTest {
 
     @Test
     public void sauceOptions_startWithChrome_startsChrome() {
-        options = new SauceOptions();
         options.withChrome();
 
-        sauce = spy(new SauceSession(options, dummyEnvironmentManager));
+        sauce = spy(new SauceSession(options));
         doReturn(dummyRemoteDriver).when(sauce).createRemoteWebDriver();
         sauce.start();
 
         String actualBrowser = sauce.getCurrentSessionCapabilities().getBrowserName();
         assertEquals("chrome", actualBrowser);
+    }
+
+    @Test(expected = SauceEnvironmentVariablesNotSetException.class)
+    public void startThrowsErrorWithoutUsername() {
+        doReturn(null).when(sauce).getEnvironmentVariable("SAUCE_ACCESS_KEY");
+        sauce.start();
+    }
+
+    @Test(expected = SauceEnvironmentVariablesNotSetException.class)
+    public void startThrowsErrorWithoutAccessKey() {
+        doReturn(null).when(sauce).getEnvironmentVariable("SAUCE_ACCESS_KEY");
+        sauce.start();
     }
 
     @Test

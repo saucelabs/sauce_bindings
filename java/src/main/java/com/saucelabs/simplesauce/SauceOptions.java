@@ -9,7 +9,7 @@ import org.openqa.selenium.remote.BrowserType;
 public class SauceOptions {
     @Getter @Setter private String browserName = BrowserType.CHROME;
     @Getter @Setter private String browserVersion = "latest";
-    @Getter @Setter private String operatingSystem = Platforms.windowsLatest().getOsVersion();
+    @Getter @Setter private String platformName = Platforms.windowsLatest().getOsVersion();
     @Getter private ChromeOptions chromeOptions;
 
     public SauceOptions withChrome() {
@@ -19,8 +19,8 @@ public class SauceOptions {
         browserName = BrowserType.CHROME;
         return this;
     }
-    public SauceOptions withSafari()
-    {
+
+    public SauceOptions withSafari() {
         return withMac(MacVersion.Mojave);
     }
 
@@ -32,32 +32,36 @@ public class SauceOptions {
 
     public SauceOptions withSafari(final String version) {
         String _version = version;
-        if (_version.isEmpty()) { _version = "latest"; }
+        if (_version.isEmpty()) {
+            _version = "latest";
+        }
         browserName = BrowserType.SAFARI;
         browserVersion = _version;
         return this;
     }
 
     public SauceOptions withLinux() {
-        operatingSystem = "Linux";
+        platformName = "Linux";
         return this;
     }
 
     public SauceOptions withWindows10() {
-        operatingSystem = "windows 10";
+        platformName = "Windows 10";
         return this;
     }
+
     public SauceOptions withWindows8_1() {
-        operatingSystem = "Windows 8.1";
+        platformName = "Windows 8.1";
         return this;
     }
+
     public SauceOptions withWindows8() {
-        operatingSystem = "Windows 8";
+        platformName = "Windows 8";
         return this;
     }
 
     public SauceOptions withWindows7() {
-        operatingSystem = "Windows 7";
+        platformName = "Windows 7";
         return this;
     }
 
@@ -75,11 +79,13 @@ public class SauceOptions {
         browserVersion = "18.17763";
         return this;
     }
+
     public SauceOptions withEdge17() {
         withEdge();
         browserVersion = "17.17134";
         return this;
     }
+
     public SauceOptions withEdge16() {
         withEdge();
         browserVersion = "16.16299";
@@ -105,7 +111,7 @@ public class SauceOptions {
     }
 
     public SauceOptions withFirefox() {
-        browserName = "Firefox";
+        browserName = "firefox";
         return this;
     }
 
@@ -127,7 +133,7 @@ public class SauceOptions {
     }
 
     public SauceOptions withMac(MacVersion macVersion) {
-        operatingSystem = macVersion.label;
+        platformName = macVersion.label;
         browserName = "Safari";
         return this;
     }

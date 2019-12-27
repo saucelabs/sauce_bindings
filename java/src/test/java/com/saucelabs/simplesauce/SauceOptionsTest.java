@@ -20,7 +20,7 @@ public class SauceOptionsTest {
 
     @Test
     public void sauceOptions_defaultOS_setToWindows() {
-        assertEquals("Windows 10", options.getOperatingSystem());
+        assertEquals("Windows 10", options.getPlatformName());
     }
 
     @Test

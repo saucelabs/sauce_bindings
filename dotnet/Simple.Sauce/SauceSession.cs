@@ -9,33 +9,33 @@ namespace Simple.Sauce
     {
         public SauceSession()
         {
-            DriverImplementation = new SauceDriver();
+            Driver = new SauceDriver();
             Options = new SauceOptions();
         }
 
         public SauceSession(ISauceRemoteDriver driver)
         {
-            DriverImplementation = driver;
+            Driver = driver;
             Options = new SauceOptions();
         }
 
         public SauceSession(SauceOptions options)
         {
             Options = options;
-            DriverImplementation = new SauceDriver();
+            Driver = new SauceDriver();
         }
 
         public SauceSession(SauceOptions options, ISauceRemoteDriver driver)
         {
             Options = options;
-            DriverImplementation = driver;
+            Driver = driver;
         }
 
         public ChromeOptions ChromeOptions { get; private set; }
         public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
         public SauceOptions Options { get; }
 
-        public ISauceRemoteDriver DriverImplementation { get; set; }
+        public ISauceRemoteDriver Driver { get; set; }
 
         public IWebDriver Start()
         {
@@ -57,7 +57,7 @@ namespace Simple.Sauce
             };
 
             Options.ConfiguredSafariOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
-            return DriverImplementation.CreateRemoteWebDriver(Options.ConfiguredSafariOptions);
+            return Driver.CreateRemoteWebDriver(Options.ConfiguredSafariOptions);
         }
 
         private IWebDriver CreateChromeDriver()
@@ -71,7 +71,7 @@ namespace Simple.Sauce
             };
 
             Options.ConfiguredChromeOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
-            return DriverImplementation.CreateRemoteWebDriver(Options.ConfiguredChromeOptions);
+            return Driver.CreateRemoteWebDriver(Options.ConfiguredChromeOptions);
         }
 
         private IWebDriver CreateEdgeBrowser()
@@ -85,7 +85,16 @@ namespace Simple.Sauce
             };
 
             Options.ConfiguredEdgeOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
-            return DriverImplementation.CreateRemoteWebDriver(Options.ConfiguredEdgeOptions);
+            return Driver.CreateRemoteWebDriver(Options.ConfiguredEdgeOptions);
+        }
+
+        public void Stop(bool isPassed)
+        {
+            if (Driver is null)
+                return;
+            var script = "sauce:job-result=" + (isPassed ? "passed" : "failed");
+            Driver.ExecuteScript(script);
+            Driver.Quit();
         }
     }
 }

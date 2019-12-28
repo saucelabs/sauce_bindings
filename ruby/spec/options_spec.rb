@@ -62,7 +62,7 @@ module SimpleSauce
                          record_screenshots: false,
                          record_logs: false}
 
-        sauce_opts = Options.new(sauce_options)
+        sauce_opts = Options.new(**sauce_options)
 
         expected_options = default_options.merge('sauce:options' => {})
         sauce_options.each do |key, value|
@@ -83,7 +83,7 @@ module SimpleSauce
       end
 
       it 'accepts Selenium Options and overrides default browser' do
-        browser_opts = Selenium::WebDriver::Firefox::Options.new({args: ['--foo']})
+        browser_opts = Selenium::WebDriver::Firefox::Options.new(args: ['--foo'])
         options = Options.new(selenium_options: browser_opts)
 
         expect(options.browser_name).to eq 'firefox'

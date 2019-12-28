@@ -16,7 +16,7 @@ public class IETest extends BaseConfigurationTest {
 
     @Test
     public void withIE_validIeVersionString() {
-        sauceOptions.withIE(IEVersion._11.getVersion());
+        sauceOptions.withIE(IEVersion._11);
         startSauceSession();
 
         String actualBrowserSetInConfig = sauce.getCurrentSessionCapabilities().getVersion();

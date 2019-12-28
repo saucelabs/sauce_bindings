@@ -52,27 +52,6 @@ public class SauceSessionAcceptanceTest {
     }
 
     @Test
-    public void withSafari_default_isMojave() {
-        SauceOptions options = new SauceOptions();
-        options.withSafari();
-        sauce = new SauceSession(options);
-
-        webDriver = sauce.start();
-        String actualPlatform = (((RemoteWebDriver) webDriver).getCapabilities()).getPlatform().toString();
-        assertEquals("MAC", actualPlatform);
-    }
-
-    @Test
-    public void withSafari_default_isBrowserVersion12_0() {
-        SauceOptions options = new SauceOptions();
-        options.withSafari();
-        sauce = new SauceSession(options);
-
-        webDriver = sauce.start();
-        String actualBrowserVersion = (((RemoteWebDriver) webDriver).getCapabilities()).getVersion();
-        assertEquals("12.0", actualBrowserVersion);
-    }
-    @Test
     public void startSession_noSauceOptionsSet_returnsDriver() {
         sauce = new SauceSession();
         webDriver = sauce.start();

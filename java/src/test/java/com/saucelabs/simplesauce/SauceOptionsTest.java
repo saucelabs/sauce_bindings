@@ -22,10 +22,4 @@ public class SauceOptionsTest {
     public void sauceOptions_defaultOS_setToWindows() {
         assertEquals("Windows 10", options.getOperatingSystem());
     }
-
-    @Test
-    public void withChrome_browser_setToChrome() {
-        options.withChrome();
-        assertNotNull(options.getChromeOptions());
-    }
 }

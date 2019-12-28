@@ -48,15 +48,6 @@ public class MacOsTest extends BaseConfigurationTest {
     }
 
     @Test
-    public void defaultSafari_macOsVersionIsMojave() {
-        sauceOptions.withSafari();
-        startSauceSession();
-
-        String safariVersionSetThroughSauceSession = getSessionPlatformString();
-        assertEquals(Platforms.MAC_OS.MOJAVE.getPlatform().getOsVersion(), safariVersionSetThroughSauceSession);
-    }
-
-    @Test
     public void withSafari_browserName_setToSafariEnum() {
         sauceOptions.withSafari(SafariVersion._8);
         startSauceSession();
@@ -67,7 +58,7 @@ public class MacOsTest extends BaseConfigurationTest {
 
     @Test
     public void withSafari_browserName_setToSafariString() {
-        sauceOptions.withSafari(SafariVersion._8.getVersion());
+        sauceOptions.withSafari(SafariVersion._8);
         startSauceSession();
 
         String actualBrowserNameSetThroughSauceSession = sauce.getCurrentSessionCapabilities().getBrowserName();
@@ -85,11 +76,29 @@ public class MacOsTest extends BaseConfigurationTest {
 
     @Test
     public void withSafari_versionNotSet_returnsLatest() {
-        sauceOptions.withSafari("");
+        sauceOptions.withSafari();
         startSauceSession();
 
         String actualBrowserVersionSetThroughSauceSession =
                 sauce.getCurrentSessionCapabilities().getVersion();
         assertEquals("latest", actualBrowserVersionSetThroughSauceSession);
+    }
+
+    @Test
+    public void withChromeAndMac() {
+        sauceOptions.withChrome()
+                .withMac(MacVersion.HighSierra);
+
+        assertEquals("chrome", sauceOptions.getBrowserName());
+        assertEquals("macOS 10.13", sauceOptions.getOperatingSystem());
+    }
+
+    @Test
+    public void withMacVersionAndSafari() {
+        sauceOptions.withMac(MacVersion.HighSierra)
+                .withSafari();
+
+        assertEquals("safari", sauceOptions.getBrowserName());
+        assertEquals("macOS 10.13", sauceOptions.getOperatingSystem());
     }
 }

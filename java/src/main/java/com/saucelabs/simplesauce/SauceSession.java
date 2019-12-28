@@ -67,23 +67,23 @@ public class SauceSession {
     }
 
     private void setBrowserSpecificCapabilities(String browserName) {
-        if (browserName.equalsIgnoreCase("Chrome")) {
+        if (browserName.equalsIgnoreCase("chrome")) {
             ChromeOptions chromeOptions = new ChromeOptions();
             currentSessionCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         }
-        else if (browserName.equalsIgnoreCase("Firefox")) {
+        else if (browserName.equalsIgnoreCase("firefox")) {
             FirefoxOptions firefoxOptions = new FirefoxOptions();
             currentSessionCapabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
         }
-        else if(browserName.equalsIgnoreCase("Safari")) {
+        else if(browserName.equalsIgnoreCase("safari")) {
             SafariOptions safariOptions = new SafariOptions();
             currentSessionCapabilities.setCapability(SafariOptions.CAPABILITY, safariOptions);
         }
-        else if(browserName.equalsIgnoreCase("Edge")) {
+        else if(browserName.equalsIgnoreCase("MicrosoftEdge")) {
             EdgeOptions edgeOptions = new EdgeOptions();
             currentSessionCapabilities.setCapability("Edge", edgeOptions);
         }
-        else if(browserName.equalsIgnoreCase("IE")) {
+        else if(browserName.equalsIgnoreCase("internet explorer")) {
             InternetExplorerOptions ieOptions = new InternetExplorerOptions();
             currentSessionCapabilities.setCapability("se:ieOptions", ieOptions);
         }

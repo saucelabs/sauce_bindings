@@ -144,6 +144,15 @@ namespace SimpleSauce.Test
             SauceSession.Stop(false);
             _dummyDriver.Verify(driver => driver.ExecuteScript("sauce:job-result=failed"), Times.Exactly(1));
         }
+        [TestMethod]
+        [Ignore("fix this after")]
+        public void Stop_NullDriver_DoesntCallQuit()
+        {
+            SauceSession = new SauceSession();
+            SauceSession.Stop(false);
+            _dummyDriver.Verify(
+                driver => driver.Quit(), Times.Exactly(0));
+        }
     }
     public class Root
     {

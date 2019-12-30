@@ -124,9 +124,9 @@ namespace SimpleSauce.Test
         [TestMethod]
         public void Start_WithSafari_CreatesDriverWithSafariOptions()
         {
-            SauceOptions = new SauceOptions();
+            SauceOptions = new SauceOptions(_driverFactory.Object);
             SauceOptions.WithSafari();
-            SauceSession = new SauceSession(SauceOptions, _driverFactory.Object);
+            SauceSession = new SauceSession(SauceOptions);
 
             SauceSession.Start();
 

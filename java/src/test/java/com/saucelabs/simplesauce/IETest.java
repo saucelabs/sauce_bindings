@@ -8,27 +8,24 @@ public class IETest extends BaseConfigurationTest {
     @Test
     public void withIE_validIeVersionEnum() {
         sauceOptions.withIE(IEVersion._11);
-        startSauceSession();
 
-        String actualBrowserSetInConfig = sauce.getCurrentSessionCapabilities().getVersion();
+        String actualBrowserSetInConfig = sauceOptions.getBrowserVersion();
         assertEquals("11.285", actualBrowserSetInConfig);
     }
 
     @Test
     public void withIE_validIeVersionString() {
         sauceOptions.withIE(IEVersion._11.getVersion());
-        startSauceSession();
 
-        String actualBrowserSetInConfig = sauce.getCurrentSessionCapabilities().getVersion();
+        String actualBrowserSetInConfig = sauceOptions.getBrowserVersion();
         assertEquals("11.285", actualBrowserSetInConfig);
     }
 
     @Test
     public void withIE_default() {
         sauceOptions.withIE();
-        startSauceSession();
 
-        String actualBrowserSetInConfig = sauce.getCurrentSessionCapabilities().getVersion();
+        String actualBrowserSetInConfig = sauceOptions.getBrowserVersion();
         assertEquals("latest", actualBrowserSetInConfig);
     }
 }

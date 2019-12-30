@@ -3,19 +3,41 @@ package com.saucelabs.simplesauce;
 import com.saucelabs.simplesauce.enums.MacVersion;
 import lombok.Getter;
 import lombok.Setter;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.remote.BrowserType;
+import org.openqa.selenium.remote.CapabilityType;
+
+import java.util.HashMap;
 
 public class SauceOptions {
+    @Getter private MutableCapabilities seleniumCapabilities;
+
     @Getter @Setter private String browserName = BrowserType.CHROME;
     @Getter @Setter private String browserVersion = "latest";
     @Getter @Setter private String platformName = Platforms.windowsLatest().getOsVersion();
-    @Getter private ChromeOptions chromeOptions;
+    @Getter private final SauceTimeout sauceTimeout = new SauceTimeout();
+
+    public SauceOptions() {
+        this(new MutableCapabilities());
+    }
+
+    public SauceOptions(Capabilities capabilities) {
+        seleniumCapabilities = new MutableCapabilities(capabilities);
+        if (capabilities.getCapability("browserName") != null) {
+            browserName = (String) capabilities.getCapability("browserName");
+        }
+    }
+
+    public MutableCapabilities toCapabilities() {
+        seleniumCapabilities.setCapability(CapabilityType.BROWSER_NAME, browserName);
+        seleniumCapabilities.setCapability(CapabilityType.PLATFORM_NAME, platformName);
+        seleniumCapabilities.setCapability(CapabilityType.BROWSER_VERSION, browserVersion);
+        seleniumCapabilities.setCapability("sauce:options", new HashMap<>());
+        return seleniumCapabilities;
+    }
 
     public SauceOptions withChrome() {
-        chromeOptions = new ChromeOptions();
-        //TODO no longer needed with Chrome 75+
-        chromeOptions.setExperimentalOption("w3c", true);
         browserName = BrowserType.CHROME;
         return this;
     }

@@ -87,6 +87,19 @@ namespace Simple.Sauce
             ConfiguredSafariOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
             return DriverFactory.CreateRemoteWebDriver(ConfiguredSafariOptions);
         }
+        public IWebDriver CreateChromeDriver()
+        {
+            var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
+            var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
+            var sauceConfiguration = new Dictionary<string, object>
+            {
+                ["username"] = sauceUserName,
+                ["accessKey"] = sauceAccessKey
+            };
+
+            ConfiguredChromeOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
+            return DriverFactory.CreateRemoteWebDriver(ConfiguredChromeOptions);
+        }
 
         public void WithSafari()
         {

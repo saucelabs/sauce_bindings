@@ -144,11 +144,11 @@ namespace SimpleSauce.Test
             _driverFactory.Verify(f => f.CreateRemoteWebDriver(It.IsAny<EdgeOptions>()));
         }
         [TestMethod]
-        public void Start_WithChrome_CreatesDriverWithSafariOptions()
+        public void Start_WithChrome_CreatesDriverWithChromeOptions()
         {
-            SauceOptions = new SauceOptions();
+            SauceOptions = new SauceOptions(_driverFactory.Object);
             SauceOptions.WithChrome();
-            SauceSession = new SauceSession(SauceOptions, _driverFactory.Object);
+            SauceSession = new SauceSession(SauceOptions);
 
             SauceSession.Start();
 
@@ -164,7 +164,7 @@ namespace SimpleSauce.Test
             //    d => d.CreateRemoteWebDriver(new SauceOptions().ConfiguredChromeOptions)).Returns(It.IsAny<IWebDriver>());
             _driverFactory.Setup(
                 d => d.CreateRemoteWebDriver(It.IsAny<DriverOptions>())).Returns(It.IsAny<IWebDriver>());
-            SauceSession = new SauceSession(_driverFactory.Object, driver.Object);
+            SauceSession = new SauceSession(driver.Object);
             SauceSession.Start();
             SauceSession.Stop(true);
             driver.Verify(d => d.Quit(), Times.Once);
@@ -174,7 +174,7 @@ namespace SimpleSauce.Test
 
         public void Stop_TestPassed_UpdatesTestStatus()
         {
-            SauceSession = new SauceSession(_driverFactory.Object);
+            SauceSession = new SauceSession();
             SauceSession.Start();
             SauceSession.Stop(true);
             _driverFactory.Verify(driver => ((IJavaScriptExecutor)driver).ExecuteScript("sauce:job-result=passed"), Times.Exactly(1));
@@ -184,7 +184,7 @@ namespace SimpleSauce.Test
 
         public void Stop_TestFailed_UpdatesTestStatus()
         {
-            SauceSession = new SauceSession(_driverFactory.Object);
+            SauceSession = new SauceSession();
             SauceSession.Start();
             SauceSession.Stop(false);
             _driverFactory.Verify(driver => ((IJavaScriptExecutor)driver).ExecuteScript("sauce:job-result=failed"), Times.Exactly(1));

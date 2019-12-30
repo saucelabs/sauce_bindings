@@ -13,22 +13,10 @@ namespace Simple.Sauce
             Options = new SauceOptions();
         }
 
-        public SauceSession(IDriverFactory driverFactory)
-        {
-            DriverFactory = driverFactory;
-            Options = new SauceOptions();
-        }
-
         public SauceSession(SauceOptions options)
         {
             Options = options;
             DriverFactory = new DriverFactory();
-        }
-
-        public SauceSession(SauceOptions options, IDriverFactory driverFactory)
-        {
-            Options = options;
-            DriverFactory = driverFactory;
         }
 
         public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
@@ -37,11 +25,9 @@ namespace Simple.Sauce
         public IDriverFactory DriverFactory { get; set; }
         private IWebDriver _driver;
 
-        public SauceSession(IDriverFactory factory, IWebDriver driver)
+        public SauceSession(IWebDriver driver)
         {
-            DriverFactory = factory;
             _driver = driver;
-            Options = new SauceOptions();
         }
 
         public IWebDriver Start()
@@ -56,27 +42,8 @@ namespace Simple.Sauce
                 _driver = Options.CreateSafariDriver();
                 return _driver;
             }
-            return CreateChromeDriver();
+            return Options.CreateChromeDriver();
         }
-
-
-
-        private IWebDriver CreateChromeDriver()
-        {
-            var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
-            var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
-            var sauceConfiguration = new Dictionary<string, object>
-            {
-                ["username"] = sauceUserName,
-                ["accessKey"] = sauceAccessKey
-            };
-
-            Options.ConfiguredChromeOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
-            _driver = DriverFactory.CreateRemoteWebDriver(Options.ConfiguredChromeOptions);
-            return _driver;
-        }
-
-
 
         public void Stop(bool isPassed)
         {

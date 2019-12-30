@@ -161,6 +161,29 @@ module SimpleSauce
       end
     end
 
+    describe '#add_capabilities' do
+      it 'loads options from configuration' do
+        options = Options.new
+        yaml = YAML.load_file('spec/options.yml')
+        options.add_capabilities(yaml['chrome_windows_8_1'])
+
+        expect(options.capabilities).to eq('browserName' => 'chrome',
+                                           'browserVersion' => '79',
+                                           'platformName' => 'Windows 8.1',
+                                           'sauce:options' => {'build' => 'TEMP BUILD: 11',
+                                                               'extendedDebugging' => true,
+                                                               'capturePerformance' => true})
+      end
+
+      it 'raises exception if value not recognized' do
+        options = Options.new
+        yaml = YAML.load_file('spec/options.yml')
+
+        msg = 'foo is not a valid parameter for Options class'
+        expect { options.add_capabilities(yaml['invalid_option']) }.to raise_exception(ArgumentError, msg)
+      end
+    end
+
     describe '#capabilities' do
       it 'correctly generates capabilities for w3c values' do
         options = Options.new(browser_name: 'firefox',

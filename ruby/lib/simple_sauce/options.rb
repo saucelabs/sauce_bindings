@@ -43,6 +43,14 @@ module SimpleSauce
     end
     alias as_json capabilities
 
+    def add_capabilities(opts)
+      opts.each do |key, value|
+        raise ArgumentError, "#{key} is not a valid parameter for Options class" unless respond_to?("#{key}=")
+
+        send("#{key}=", value)
+      end
+    end
+
     private
 
     def parse_selenium_options(selenium_opts)

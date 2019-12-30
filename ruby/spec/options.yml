@@ -1,0 +1,22 @@
+safari_latest:
+  browser_name: "safari"
+  browser_version: "12.0"
+  platform_name: "macOS 10.14"
+  command_timeout: 450
+chrome_windows_8_1:
+  browser_name: "chrome"
+  browser_version: "79"
+  platform_name: "Windows 8.1"
+  extended_debugging: true
+  capture_performance: true
+mac_sierra_firefox:
+  browser_name: "firefox"
+  browser_version: "70"
+  platform_name: "MacOS 10.12"
+  record_screenshots: false
+invalid_option:
+  foo: "bar"
+  browser_name: "firefox"
+  browser_version: "70"
+  platform_name: "MacOS 10.12"
+  record_screenshots: false

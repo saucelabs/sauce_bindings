@@ -3,8 +3,12 @@ package com.saucelabs.simplesauce;
 import com.saucelabs.simplesauce.enums.MacVersion;
 import lombok.Getter;
 import lombok.Setter;
-import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.CapabilityType;
 
@@ -23,10 +27,30 @@ public class SauceOptions {
         this(new MutableCapabilities());
     }
 
-    public SauceOptions(Capabilities capabilities) {
-        seleniumCapabilities = new MutableCapabilities(capabilities);
-        if (capabilities.getCapability("browserName") != null) {
-            browserName = (String) capabilities.getCapability("browserName");
+    public SauceOptions(ChromeOptions options) {
+        this(new MutableCapabilities(options));
+    }
+
+    public SauceOptions(EdgeOptions options) {
+        this(new MutableCapabilities(options));
+    }
+
+    public SauceOptions(FirefoxOptions options) {
+        this(new MutableCapabilities(options));
+    }
+
+    public SauceOptions(InternetExplorerOptions options) {
+        this(new MutableCapabilities(options));
+    }
+
+    public SauceOptions(SafariOptions options) {
+        this(new MutableCapabilities(options));
+    }
+
+    private SauceOptions(MutableCapabilities options) {
+        seleniumCapabilities = new MutableCapabilities(options.asMap());
+        if (options.getCapability("browserName") != null) {
+            browserName = (String) options.getCapability("browserName");
         }
     }
 

@@ -42,7 +42,7 @@ namespace SimpleSauce.Test
         [TestMethod]
         public void Start_Default_IsChrome()
         {
-            SauceSession = new SauceSession(_driverFactory.Object);
+            SauceSession = new SauceSession();
 
             SauceSession.Start();
 
@@ -51,7 +51,7 @@ namespace SimpleSauce.Test
         [TestMethod]
         public void Start_Default_SetsSauceOptionsTag()
         {
-            SauceSession = new SauceSession(_driverFactory.Object);
+            SauceSession = new SauceSession();
 
             SauceSession.Start();
 
@@ -64,7 +64,7 @@ namespace SimpleSauce.Test
         {
             SauceOptions = new SauceOptions();
             SauceOptions.WithEdge();
-            SauceSession = new SauceSession(SauceOptions, _driverFactory.Object);
+            SauceSession = new SauceSession(SauceOptions);
 
             SauceSession.Start();
 
@@ -77,7 +77,7 @@ namespace SimpleSauce.Test
         {
             SauceOptions = new SauceOptions();
             SauceOptions.WithChrome();
-            SauceSession = new SauceSession(SauceOptions, _driverFactory.Object);
+            SauceSession = new SauceSession(SauceOptions);
 
             SauceSession.Start();
 
@@ -90,7 +90,7 @@ namespace SimpleSauce.Test
         {
             SauceOptions = new SauceOptions();
             SauceOptions.WithChrome("72");
-            SauceSession = new SauceSession(SauceOptions, _driverFactory.Object);
+            SauceSession = new SauceSession(SauceOptions);
 
             SauceSession.Start();
 
@@ -101,7 +101,7 @@ namespace SimpleSauce.Test
         {
             SauceOptions = new SauceOptions();
             SauceOptions.WithSafari();
-            SauceSession = new SauceSession(SauceOptions, _driverFactory.Object);
+            SauceSession = new SauceSession(SauceOptions);
 
             SauceSession.Start();
 

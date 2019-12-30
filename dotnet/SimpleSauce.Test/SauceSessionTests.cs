@@ -135,9 +135,9 @@ namespace SimpleSauce.Test
         [TestMethod]
         public void Start_WithEdge_CreatesDriverWithEdgeOptions()
         {
-            SauceOptions = new SauceOptions();
+            SauceOptions = new SauceOptions(_driverFactory.Object);
             SauceOptions.WithEdge();
-            SauceSession = new SauceSession(SauceOptions, _driverFactory.Object);
+            SauceSession = new SauceSession(SauceOptions);
 
             SauceSession.Start();
 

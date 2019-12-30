@@ -15,6 +15,11 @@ namespace SimpleSauce.Test
             SauceOptions = new SauceOptions();
         }
         [TestMethod]
+        public void DefaultConstructor_SetsDriverFactory()
+        {
+            SauceOptions.DriverFactory.Should().BeOfType(typeof(DriverFactory));
+        }
+        [TestMethod]
         public void WithEdge_SetsEdgeOptions()
         {
             SauceOptions.WithEdge();

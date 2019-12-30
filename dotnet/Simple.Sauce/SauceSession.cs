@@ -31,7 +31,6 @@ namespace Simple.Sauce
             DriverFactory = driverFactory;
         }
 
-        public ChromeOptions ChromeOptions { get; private set; }
         public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
         public SauceOptions Options { get; }
 

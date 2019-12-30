@@ -9,18 +9,19 @@ namespace Simple.Sauce
 {
     public class SauceOptions
     {
-        private IDriverFactory _driverFactory;
+        public IDriverFactory DriverFactory { get; private set; }
         private const string DefaultBrowserVersion = "latest";
         private const string DefaultPlatform = "Windows 10";
 
         public SauceOptions()
         {
+            DriverFactory = new DriverFactory();
             WithChrome();
         }
 
         public SauceOptions(IDriverFactory driverFactory)
         {
-            _driverFactory = driverFactory;
+            DriverFactory = driverFactory;
         }
         public EdgeOptions ConfiguredEdgeOptions { get; set; }
         public ChromeOptions ConfiguredChromeOptions { get; private set; }
@@ -71,7 +72,7 @@ namespace Simple.Sauce
             };
 
             ConfiguredEdgeOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
-            return _driverFactory.CreateRemoteWebDriver(ConfiguredEdgeOptions);
+            return DriverFactory.CreateRemoteWebDriver(ConfiguredEdgeOptions);
         }
 
         public void WithSafari()

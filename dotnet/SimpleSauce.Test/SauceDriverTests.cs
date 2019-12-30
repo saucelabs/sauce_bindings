@@ -12,7 +12,7 @@ namespace SimpleSauce.Test
         public void CreateRemoteWebDriver_WithEmptyChromeOptions_ThrowsException()
         {
             var browserOptions = new ChromeOptions();
-            var sauceDriver = new SauceDriver();
+            var sauceDriver = new DriverFactory();
             Assert.ThrowsException<WebDriverException>(
                 () => sauceDriver.CreateRemoteWebDriver(browserOptions));
         }

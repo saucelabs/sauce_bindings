@@ -5,7 +5,7 @@ using OpenQA.Selenium.Remote;
 
 namespace Simple.Sauce
 {
-    public class SauceDriver : ISauceRemoteDriver
+    public class DriverFactory : IDriverFactory
     {
         private IWebDriver _driver; 
         public IWebDriver CreateRemoteWebDriver(DriverOptions browserOptions)

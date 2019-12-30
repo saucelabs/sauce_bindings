@@ -9,33 +9,41 @@ namespace Simple.Sauce
     {
         public SauceSession()
         {
-            Driver = new SauceDriver();
+            DriverFactory = new DriverFactory();
             Options = new SauceOptions();
         }
 
-        public SauceSession(ISauceRemoteDriver driver)
+        public SauceSession(IDriverFactory driverFactory)
         {
-            Driver = driver;
+            DriverFactory = driverFactory;
             Options = new SauceOptions();
         }
 
         public SauceSession(SauceOptions options)
         {
             Options = options;
-            Driver = new SauceDriver();
+            DriverFactory = new DriverFactory();
         }
 
-        public SauceSession(SauceOptions options, ISauceRemoteDriver driver)
+        public SauceSession(SauceOptions options, IDriverFactory driverFactory)
         {
             Options = options;
-            Driver = driver;
+            DriverFactory = driverFactory;
         }
 
         public ChromeOptions ChromeOptions { get; private set; }
         public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
         public SauceOptions Options { get; }
 
-        public ISauceRemoteDriver Driver { get; set; }
+        public IDriverFactory DriverFactory { get; set; }
+        private IWebDriver _driver;
+
+        public SauceSession(IDriverFactory factory, IWebDriver driver)
+        {
+            DriverFactory = factory;
+            _driver = driver;
+            Options = new SauceOptions();
+        }
 
         public IWebDriver Start()
         {
@@ -57,7 +65,8 @@ namespace Simple.Sauce
             };
 
             Options.ConfiguredSafariOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
-            return Driver.CreateRemoteWebDriver(Options.ConfiguredSafariOptions);
+            _driver = DriverFactory.CreateRemoteWebDriver(Options.ConfiguredSafariOptions);
+            return _driver;
         }
 
         private IWebDriver CreateChromeDriver()
@@ -71,7 +80,8 @@ namespace Simple.Sauce
             };
 
             Options.ConfiguredChromeOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
-            return Driver.CreateRemoteWebDriver(Options.ConfiguredChromeOptions);
+            _driver = DriverFactory.CreateRemoteWebDriver(Options.ConfiguredChromeOptions);
+            return _driver;
         }
 
         private IWebDriver CreateEdgeBrowser()
@@ -85,16 +95,17 @@ namespace Simple.Sauce
             };
 
             Options.ConfiguredEdgeOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
-            return Driver.CreateRemoteWebDriver(Options.ConfiguredEdgeOptions);
+            _driver = DriverFactory.CreateRemoteWebDriver(Options.ConfiguredEdgeOptions);
+            return _driver;
         }
 
         public void Stop(bool isPassed)
         {
-            if (Driver is null)
+            if (_driver is null)
                 return;
             var script = "sauce:job-result=" + (isPassed ? "passed" : "failed");
-            Driver.ExecuteScript(script);
-            Driver.Quit();
+            ((IJavaScriptExecutor)_driver).ExecuteScript(script);
+            _driver.Quit();
         }
     }
 }

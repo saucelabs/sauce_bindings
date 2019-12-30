@@ -15,6 +15,5 @@ namespace Simple.Sauce
                 browserOptions.ToCapabilities(), TimeSpan.FromSeconds(600));
             return _driver;
         }
-
     }
 }

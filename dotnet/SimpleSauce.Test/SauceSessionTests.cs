@@ -177,7 +177,7 @@ namespace SimpleSauce.Test
             SauceSession = new SauceSession(_driverFactory.Object);
             SauceSession.Start();
             SauceSession.Stop(true);
-            _driverFactory.Verify(driver => driver.ExecuteScript("sauce:job-result=passed"), Times.Exactly(1));
+            _driverFactory.Verify(driver => ((IJavaScriptExecutor)driver).ExecuteScript("sauce:job-result=passed"), Times.Exactly(1));
         }
         [TestMethod]
         [Ignore("need to fix")]
@@ -187,7 +187,7 @@ namespace SimpleSauce.Test
             SauceSession = new SauceSession(_driverFactory.Object);
             SauceSession.Start();
             SauceSession.Stop(false);
-            _driverFactory.Verify(driver => driver.ExecuteScript("sauce:job-result=failed"), Times.Exactly(1));
+            _driverFactory.Verify(driver => ((IJavaScriptExecutor)driver).ExecuteScript("sauce:job-result=failed"), Times.Exactly(1));
         }
     }
     public class Root

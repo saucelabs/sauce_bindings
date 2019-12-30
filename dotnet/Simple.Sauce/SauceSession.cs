@@ -48,7 +48,10 @@ namespace Simple.Sauce
         public IWebDriver Start()
         {
             if (Options.ConfiguredEdgeOptions != null)
-                return CreateEdgeBrowser();
+            {
+                _driver = Options.CreateEdgeBrowser();
+                return _driver;
+            }
             if (Options.ConfiguredSafariOptions != null)
                 return CreateSafariDriver();
             return CreateChromeDriver();
@@ -84,20 +87,7 @@ namespace Simple.Sauce
             return _driver;
         }
 
-        private IWebDriver CreateEdgeBrowser()
-        {
-            var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
-            var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
-            var sauceConfiguration = new Dictionary<string, object>
-            {
-                ["username"] = sauceUserName,
-                ["accessKey"] = sauceAccessKey
-            };
 
-            Options.ConfiguredEdgeOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
-            _driver = DriverFactory.CreateRemoteWebDriver(Options.ConfiguredEdgeOptions);
-            return _driver;
-        }
 
         public void Stop(bool isPassed)
         {

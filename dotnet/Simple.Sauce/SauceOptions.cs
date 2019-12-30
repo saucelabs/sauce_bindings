@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Safari;
@@ -7,6 +9,7 @@ namespace Simple.Sauce
 {
     public class SauceOptions
     {
+        private IDriverFactory _driverFactory;
         private const string DefaultBrowserVersion = "latest";
         private const string DefaultPlatform = "Windows 10";
 
@@ -15,6 +18,10 @@ namespace Simple.Sauce
             WithChrome();
         }
 
+        public SauceOptions(IDriverFactory driverFactory)
+        {
+            _driverFactory = driverFactory;
+        }
         public EdgeOptions ConfiguredEdgeOptions { get; set; }
         public ChromeOptions ConfiguredChromeOptions { get; private set; }
         public SafariOptions ConfiguredSafariOptions { get; set; }
@@ -52,6 +59,19 @@ namespace Simple.Sauce
                 BrowserVersion = chromeVersion,
                 PlatformName = DefaultPlatform
             };
+        }
+        public IWebDriver CreateEdgeBrowser()
+        {
+            var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
+            var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
+            var sauceConfiguration = new Dictionary<string, object>
+            {
+                ["username"] = sauceUserName,
+                ["accessKey"] = sauceAccessKey
+            };
+
+            ConfiguredEdgeOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
+            return _driverFactory.CreateRemoteWebDriver(ConfiguredEdgeOptions);
         }
 
         public void WithSafari()

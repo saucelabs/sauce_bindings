@@ -8,14 +8,12 @@ namespace Simple.Sauce
 
         public SauceSession()
         {
-            DriverFactory = new DriverFactory();
             Options = new SauceOptions();
         }
 
         public SauceSession(SauceOptions options)
         {
             Options = options;
-            DriverFactory = new DriverFactory();
         }
 
         public SauceSession(IWebDriver driver)
@@ -25,8 +23,6 @@ namespace Simple.Sauce
 
         public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
         public SauceOptions Options { get; }
-
-        public IDriverFactory DriverFactory { get; set; }
 
         public IWebDriver Start()
         {

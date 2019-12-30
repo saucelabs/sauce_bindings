@@ -11,10 +11,18 @@ namespace Simple.Sauce
     {
         private const string DefaultBrowserVersion = "latest";
         private const string DefaultPlatform = "Windows 10";
+        private readonly string _sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
+        private readonly string _sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
+        private readonly Dictionary<string, object> _sauceConfiguration;
 
         public SauceOptions()
         {
             DriverFactory = new DriverFactory();
+            _sauceConfiguration = new Dictionary<string, object>
+            {
+                ["username"] = _sauceUserName,
+                ["accessKey"] = _sauceAccessKey
+            };
             WithChrome();
         }
 
@@ -65,43 +73,19 @@ namespace Simple.Sauce
 
         public IWebDriver CreateEdgeBrowser()
         {
-            var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
-            var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
-            var sauceConfiguration = new Dictionary<string, object>
-            {
-                ["username"] = sauceUserName,
-                ["accessKey"] = sauceAccessKey
-            };
-
-            ConfiguredEdgeOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
+            ConfiguredEdgeOptions.AddAdditionalOption("sauce:options", _sauceConfiguration);
             return DriverFactory.CreateRemoteWebDriver(ConfiguredEdgeOptions);
         }
 
         public IWebDriver CreateSafariDriver()
         {
-            var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
-            var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
-            var sauceConfiguration = new Dictionary<string, object>
-            {
-                ["username"] = sauceUserName,
-                ["accessKey"] = sauceAccessKey
-            };
-
-            ConfiguredSafariOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
+            ConfiguredSafariOptions.AddAdditionalOption("sauce:options", _sauceConfiguration);
             return DriverFactory.CreateRemoteWebDriver(ConfiguredSafariOptions);
         }
 
         public IWebDriver CreateChromeDriver()
         {
-            var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
-            var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
-            var sauceConfiguration = new Dictionary<string, object>
-            {
-                ["username"] = sauceUserName,
-                ["accessKey"] = sauceAccessKey
-            };
-
-            ConfiguredChromeOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
+            ConfiguredChromeOptions.AddAdditionalOption("sauce:options", _sauceConfiguration);
             return DriverFactory.CreateRemoteWebDriver(ConfiguredChromeOptions);
         }
 
@@ -119,13 +103,11 @@ namespace Simple.Sauce
             ConfiguredSafariOptions = new SafariOptions
             {
                 BrowserVersion = safariVersion,
-                //TODO temporarily fine, but I need the logic to determine what
-                //version is running and then set the correct PlatformName
                 PlatformName = SetCorrectPlatformVersion(safariVersion)
             };
         }
 
-        public string SetCorrectPlatformVersion(string safariBrowserVersion)
+        private string SetCorrectPlatformVersion(string safariBrowserVersion)
         {
             switch (safariBrowserVersion)
             {

@@ -6,15 +6,15 @@ using Simple.Sauce;
 namespace SimpleSauce.Test
 {
     [TestClass]
-    public class SauceDriverTests : BaseTest
+    public class DriverFactoryTests : BaseTest
     {
         [TestMethod]
         public void CreateRemoteWebDriver_WithEmptyChromeOptions_ThrowsException()
         {
             var browserOptions = new ChromeOptions();
-            var sauceDriver = new DriverFactory();
+            var driverFactory = new DriverFactory();
             Assert.ThrowsException<WebDriverException>(
-                () => sauceDriver.CreateRemoteWebDriver(browserOptions));
+                () => driverFactory.CreateRemoteWebDriver(browserOptions));
         }
     }
 }

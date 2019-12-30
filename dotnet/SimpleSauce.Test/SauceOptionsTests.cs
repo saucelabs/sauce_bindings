@@ -34,13 +34,13 @@ namespace SimpleSauce.Test
             SauceOptions.ConfiguredChromeOptions.Should().BeOfType(typeof(ChromeOptions));
         }
         [TestMethod]
-        public void WithChrome_DefaultBrowserVersion_Latest()
+        public void WithChrome_DefaultBrowserVersion_IsLatest()
         {
             SauceOptions.WithChrome();
             SauceOptions.ConfiguredChromeOptions.BrowserVersion.Should().Be("latest");
         }
         [TestMethod]
-        public void WithChrome_DefaultPlatform_Win10()
+        public void WithChrome_DefaultPlatform_IsWin10()
         {
             SauceOptions.WithChrome();
             SauceOptions.ConfiguredChromeOptions.PlatformName.Should().Be("Windows 10");

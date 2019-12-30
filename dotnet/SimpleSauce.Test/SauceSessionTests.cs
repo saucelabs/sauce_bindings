@@ -21,13 +21,6 @@ namespace SimpleSauce.Test
             _driverFactory = new Mock<IDriverFactory>();
         }
         [TestMethod]
-        public void SauceSession_OptionsPassedIn_SetsConcreteDriver()
-        {
-            SauceOptions = new SauceOptions();
-            SauceSession = new SauceSession(SauceOptions);
-            SauceSession.DriverFactory.Should().BeOfType(typeof(DriverFactory));
-        }
-        [TestMethod]
         public void SauceSession_NoConstructorParam_OptionsInitialized()
         {
             SauceSession = new SauceSession();

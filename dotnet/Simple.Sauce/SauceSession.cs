@@ -16,9 +16,10 @@ namespace Simple.Sauce
             Options = options;
         }
 
-        public SauceSession(IWebDriver driver)
+        public SauceSession(SauceOptions options, IWebDriver driver)
         {
             _driver = driver;
+            Options = options;
         }
 
         public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
@@ -40,7 +41,8 @@ namespace Simple.Sauce
                 return _driver;
             }
 
-            return Options.CreateChromeDriver();
+            _driver = Options.CreateChromeDriver();
+            return _driver;
         }
 
         public void Stop(bool isPassed)

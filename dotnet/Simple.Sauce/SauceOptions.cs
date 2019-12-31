@@ -15,20 +15,19 @@ namespace Simple.Sauce
         private readonly string _sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
         private readonly Dictionary<string, object> _sauceConfiguration;
 
-        public SauceOptions()
+        public SauceOptions() : this(new DriverFactory())
         {
-            DriverFactory = new DriverFactory();
+        }
+
+        public SauceOptions(IDriverFactory driverFactory)
+        {
+            DriverFactory = driverFactory;
             _sauceConfiguration = new Dictionary<string, object>
             {
                 ["username"] = _sauceUserName,
                 ["accessKey"] = _sauceAccessKey
             };
             WithChrome();
-        }
-
-        public SauceOptions(IDriverFactory driverFactory)
-        {
-            DriverFactory = driverFactory;
         }
 
         public IDriverFactory DriverFactory { get; }

@@ -19,24 +19,22 @@ namespace SimpleSauce.Test
         public void Setup()
         {
             _driverFactory = new Mock<IDriverFactory>();
+            SauceOptions = new SauceOptions(_driverFactory.Object);
+            SauceSession = new SauceSession(SauceOptions);
         }
         [TestMethod]
-        public void SauceSession_NoConstructorParam_OptionsInitialized()
+        public void SauceSession_DefaultConstructor_OptionsInitialized()
         {
-            SauceSession = new SauceSession();
             Assert.IsNotNull(SauceSession.Options);
         }
         [TestMethod]
         public void GetDataCenter_Default_IsWest()
         {
-            SauceSession = new SauceSession();
             SauceSession.DataCenter.Should().BeEquivalentTo(DataCenter.UsWest);
         }
         [TestMethod]
         public void Start_Default_IsChrome()
         {
-            SauceSession = new SauceSession();
-
             SauceSession.Start();
 
             SauceSession.Options.ConfiguredChromeOptions.Should().NotBeNull();
@@ -44,8 +42,6 @@ namespace SimpleSauce.Test
         [TestMethod]
         public void Start_Default_SetsSauceOptionsTag()
         {
-            SauceSession = new SauceSession();
-
             SauceSession.Start();
 
             var browserOptionsSetInSauceJson = SauceSession.Options.ConfiguredChromeOptions.ToString();
@@ -55,7 +51,6 @@ namespace SimpleSauce.Test
         [TestMethod]
         public void Start_WithEdge_SetsUsernameAndAccessKey()
         {
-            SauceOptions = new SauceOptions();
             SauceOptions.WithEdge();
             SauceSession = new SauceSession(SauceOptions);
 
@@ -68,7 +63,6 @@ namespace SimpleSauce.Test
         [TestMethod]
         public void Start_WithChrome_SetsUsernameAndAccessKey()
         {
-            SauceOptions = new SauceOptions();
             SauceOptions.WithChrome();
             SauceSession = new SauceSession(SauceOptions);
 
@@ -81,7 +75,6 @@ namespace SimpleSauce.Test
         [TestMethod]
         public void Start_WithChromeVersionSet_CreatesCorrectDriver()
         {
-            SauceOptions = new SauceOptions();
             SauceOptions.WithChrome("72");
             SauceSession = new SauceSession(SauceOptions);
 
@@ -92,7 +85,6 @@ namespace SimpleSauce.Test
         [TestMethod]
         public void Start_WithSafari_SetsUsernameAndAccessKey()
         {
-            SauceOptions = new SauceOptions();
             SauceOptions.WithSafari();
             SauceSession = new SauceSession(SauceOptions);
 
@@ -115,7 +107,6 @@ namespace SimpleSauce.Test
         [TestMethod]
         public void Start_WithSafari_CreatesDriverWithSafariOptions()
         {
-            SauceOptions = new SauceOptions(_driverFactory.Object);
             SauceOptions.WithSafari();
             SauceSession = new SauceSession(SauceOptions);
 
@@ -126,7 +117,6 @@ namespace SimpleSauce.Test
         [TestMethod]
         public void Start_WithEdge_CreatesDriverWithEdgeOptions()
         {
-            SauceOptions = new SauceOptions(_driverFactory.Object);
             SauceOptions.WithEdge();
             SauceSession = new SauceSession(SauceOptions);
 
@@ -137,7 +127,6 @@ namespace SimpleSauce.Test
         [TestMethod]
         public void Start_WithChrome_CreatesDriverWithChromeOptions()
         {
-            SauceOptions = new SauceOptions(_driverFactory.Object);
             SauceOptions.WithChrome();
             SauceSession = new SauceSession(SauceOptions);
 
@@ -150,12 +139,12 @@ namespace SimpleSauce.Test
         public void Stop_CallsQuit()
         {
             var driver = new Mock<IWebDriver>();
-            driver.Setup(d => d.Quit());
-            //_driverFactory.Setup(
-            //    d => d.CreateRemoteWebDriver(new SauceOptions().ConfiguredChromeOptions)).Returns(It.IsAny<IWebDriver>());
-            _driverFactory.Setup(
-                d => d.CreateRemoteWebDriver(It.IsAny<DriverOptions>())).Returns(It.IsAny<IWebDriver>());
-            SauceSession = new SauceSession(driver.Object);
+            var factory = new Mock<IDriverFactory>();
+            factory.Setup(f => f.CreateRemoteWebDriver(
+                It.IsAny<DriverOptions>())).Returns(It.IsAny<ChromeDriver>());
+            var options = new SauceOptions(factory.Object);
+
+            SauceSession = new SauceSession(options, driver.Object);
             SauceSession.Start();
             SauceSession.Stop(true);
             driver.Verify(d => d.Quit(), Times.Once);

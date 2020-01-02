@@ -46,7 +46,7 @@ public class Options {
 
         PageLoadStrategy(String value) {
             this.value = value;
-            PageLoadStrategyLookup.lookup.put(value.toString(), this.name());
+            PageLoadStrategyLookup.lookup.put(value, this.name());
         }
 
         public static String fromString(String value) {
@@ -73,7 +73,7 @@ public class Options {
 
         UnhandledPromptBehavior(String value) {
             this.value = value;
-            UnhandledPromptBehaviorLookup.lookup.put(value.toString(), this.name());
+            UnhandledPromptBehaviorLookup.lookup.put(value, this.name());
         }
 
         public static String fromString(String value) {
@@ -126,7 +126,7 @@ public class Options {
 
         JobVisibility(String value) {
             this.value = value;
-            JobVisibilityLookup.lookup.put(value.toString(), this.name());
+            JobVisibilityLookup.lookup.put(value, this.name());
         }
 
         public static String fromString(String value) {
@@ -228,11 +228,6 @@ public class Options {
             "platformName",
             "timeouts",
             "unhandledPromptBehavior"
-    );
-
-    public static final List<String> secondaryEnum = List.of(
-            "timeouts",
-            "prerun"
     );
 
     public static final List<String> w3c = List.of(

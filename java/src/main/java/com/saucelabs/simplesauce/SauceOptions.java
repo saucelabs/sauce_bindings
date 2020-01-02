@@ -168,9 +168,23 @@ public class SauceOptions {
     // This might be made public in future version; For now, no good reason to prefer it over direct accessor
     public void setCapability(String key, Object value) {
         if (Options.primaryEnum.contains(key) && value.getClass().equals(String.class)) {
-            setPrimaryEnumCapability(key, (String) value);
-        } else if (Options.secondaryEnum.contains(key) && ((HashMap) value).keySet().toArray()[0].getClass().equals(String.class)) {
-            setSecondaryEnumCapability(key, (HashMap) value);
+            setEnumCapability(key, (String) value);
+        } else if ("prerun".equals(key) && ((HashMap) value).keySet().toArray()[0].getClass().equals(String.class)) {
+            Map<Options.Prerun, Object> prerunMap = new HashMap<>();
+            HashMap mapValue = (HashMap) value;
+            mapValue.forEach((oldKey, val) -> {
+                String keyString = Options.Prerun.fromString((String) oldKey);
+                prerunMap.put(Options.Prerun.valueOf(keyString), val);
+            });
+            setPrerun(prerunMap);
+        } else if ("timeouts".equals(key) && ((HashMap) value).keySet().toArray()[0].getClass().equals(String.class)) {
+            Map<Options.Timeouts, Integer> timeoutsMap = new HashMap<>();
+            HashMap mapValue = (HashMap) value;
+            mapValue.forEach((oldKey, val) -> {
+                String keyString = Options.Timeouts.fromString((String) oldKey);
+                timeoutsMap.put(Options.Timeouts.valueOf(keyString), (Integer) val);
+            });
+            setTimeouts(timeoutsMap);
         } else {
             try {
                 Class<?> type = SauceOptions.class.getDeclaredField(key).getType();
@@ -183,14 +197,14 @@ public class SauceOptions {
         }
     }
 
-    private void setPrimaryEnumCapability(String key, String value) {
+    private void setEnumCapability(String key, String value) {
         switch (key) {
             case "browserName":
                 if (!Options.Browser.keys().contains(value)) {
                     String message = value + " is not a valid Browser, please choose from: " + Options.Browser.keys();
                     throw new InvalidSauceOptionsArguementException(message);
                 } else {
-                    this.browserName = Options.Browser.valueOf(Options.Browser.fromString(value));
+                    setBrowserName(Options.Browser.valueOf(Options.Browser.fromString(value)));
                 }
                 break;
             case "platformName":
@@ -198,7 +212,7 @@ public class SauceOptions {
                     String message = value + " is not a valid Platform, please choose from: " + Options.Platform.keys();
                     throw new InvalidSauceOptionsArguementException(message);
                 } else {
-                    this.platformName = Options.Platform.valueOf(Options.Platform.fromString(value));
+                    setPlatformName(Options.Platform.valueOf(Options.Platform.fromString(value)));
                 }
                 break;
             case "jobVisibility":
@@ -206,7 +220,7 @@ public class SauceOptions {
                     String message = value + " is not a valid Job Visibility, please choose from: " + Options.JobVisibility.keys();
                     throw new InvalidSauceOptionsArguementException(message);
                 } else {
-                    this.jobVisibility = Options.JobVisibility.valueOf(Options.JobVisibility.fromString(value));
+                    setJobVisibility(Options.JobVisibility.valueOf(Options.JobVisibility.fromString(value)));
                 }
                 break;
             case "pageLoadStrategy":
@@ -214,7 +228,7 @@ public class SauceOptions {
                     String message = value + " is not a valid Job Visibility, please choose from: " + Options.PageLoadStrategy.keys();
                     throw new InvalidSauceOptionsArguementException(message);
                 } else {
-                    this.pageLoadStrategy = Options.PageLoadStrategy.valueOf(Options.PageLoadStrategy.fromString(value));
+                    setPageLoadStrategy(Options.PageLoadStrategy.valueOf(Options.PageLoadStrategy.fromString(value)));
                 }
                 break;
             case "unhandledPromptBehavior":
@@ -222,29 +236,10 @@ public class SauceOptions {
                     String message = value + " is not a valid Job Visibility, please choose from: " + Options.UnhandledPromptBehavior.keys();
                     throw new InvalidSauceOptionsArguementException(message);
                 } else {
-                    this.unhandledPromptBehavior = Options.UnhandledPromptBehavior.valueOf(Options.UnhandledPromptBehavior.fromString(value));
+                    setUnhandledPromptBehavior(Options.UnhandledPromptBehavior.valueOf(Options.UnhandledPromptBehavior.fromString(value)));
                 }
                 break;
-        }
-    }
-
-    private void setSecondaryEnumCapability(String key, Map<String, Object> value) {
-        switch (key) {
-            case "prerun":
-                Map<Options.Prerun, Object> prerunMap = new HashMap<>();
-                value.forEach((oldKey, val) -> {
-                    String keyString = Options.Prerun.fromString((String) oldKey);
-                    prerunMap.put(Options.Prerun.valueOf(keyString), val);
-                });
-                this.prerun = prerunMap;
-                break;
-            case "timeouts":
-                Map<Options.Timeouts, Integer> timeoutsMap = new HashMap<>();
-                value.forEach((oldKey, val) -> {
-                    String keyString = Options.Timeouts.fromString((String) oldKey);
-                    timeoutsMap.put(Options.Timeouts.valueOf(keyString), (Integer) val);
-                });
-                this.timeouts = timeoutsMap;
+            default:
                 break;
         }
     }

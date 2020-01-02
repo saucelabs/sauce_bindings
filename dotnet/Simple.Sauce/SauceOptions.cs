@@ -34,6 +34,8 @@ namespace Simple.Sauce
         public EdgeOptions ConfiguredEdgeOptions { get; set; }
         public ChromeOptions ConfiguredChromeOptions { get; private set; }
         public SafariOptions ConfiguredSafariOptions { get; set; }
+        public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
+
 
         public void WithEdge()
         {

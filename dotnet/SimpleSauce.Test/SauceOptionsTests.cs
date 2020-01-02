@@ -20,6 +20,11 @@ namespace SimpleSauce.Test
             SauceOptions.DriverFactory.Should().BeOfType(typeof(DriverFactory));
         }
         [TestMethod]
+        public void GetDataCenter_Default_IsWest()
+        {
+            SauceOptions.DataCenter.Should().BeEquivalentTo(DataCenter.UsWest);
+        }
+        [TestMethod]
         public void WithEdge_SetsEdgeOptions()
         {
             SauceOptions.WithEdge();

@@ -27,11 +27,7 @@ namespace SimpleSauce.Test
         {
             Assert.IsNotNull(SauceSession.Options);
         }
-        [TestMethod]
-        public void GetDataCenter_Default_IsWest()
-        {
-            SauceSession.DataCenter.Should().BeEquivalentTo(DataCenter.UsWest);
-        }
+
         [TestMethod]
         public void Start_Default_IsChrome()
         {

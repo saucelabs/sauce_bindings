@@ -22,7 +22,6 @@ namespace Simple.Sauce
             Options = options;
         }
 
-        public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
         public SauceOptions Options { get; }
 
         public IWebDriver Start()

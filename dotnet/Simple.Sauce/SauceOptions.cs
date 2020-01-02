@@ -1,6 +1,7 @@
 ﻿using System;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
+using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Safari;
 
 namespace Simple.Sauce
@@ -18,6 +19,7 @@ namespace Simple.Sauce
         public EdgeOptions ConfiguredEdgeOptions { get; set; }
         public ChromeOptions ConfiguredChromeOptions { get; private set; }
         public SafariOptions ConfiguredSafariOptions { get; set; }
+        public FirefoxOptions ConfiguredFirefoxOptions { get; set; }
 
         public void WithEdge()
         {
@@ -101,6 +103,24 @@ namespace Simple.Sauce
                 default:
                     throw new IncorrectSafariVersionException();
             }
+        }
+
+        public void WithFirefox()
+        {
+            ConfiguredFirefoxOptions = new FirefoxOptions()
+            {
+                BrowserVersion = DefaultBrowserVersion,
+                PlatformName = DefaultPlatform
+            };
+        }
+
+        public void WithFirefox(string version)
+        {
+            ConfiguredFirefoxOptions = new FirefoxOptions()
+            {
+                BrowserVersion = version,
+                PlatformName = DefaultPlatform
+            };
         }
     }
 }

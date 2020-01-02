@@ -3,7 +3,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Simple.Sauce;
 
-namespace SimpleSauce.Test
+namespace SimpleSauce.Test.Browsers
 {
     [TestClass]
     public class SafariTests : BaseTest

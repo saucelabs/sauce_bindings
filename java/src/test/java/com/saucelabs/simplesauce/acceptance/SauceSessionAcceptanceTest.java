@@ -16,7 +16,7 @@ public class SauceSessionAcceptanceTest {
 
     @After
     public void cleanUp() {
-        sauce.stop();
+        sauce.stop(true);
     }
 
     @Test

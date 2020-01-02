@@ -2,8 +2,9 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0b21fa72ecaa4a3c92bf7ac9481f4d7d)](https://app.codacy.com/app/SauceLabs/simple_sauce?utm_source=github.com&utm_medium=referral&utm_content=saucelabs/simple_sauce&utm_campaign=Badge_Grade_Dashboard)
 [![Travis Status](https://travis-ci.org/saucelabs/simple_sauce.svg?branch=master)](https://travis-ci.org/saucelabs/simple_sauce)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![codecov](https://codecov.io/gh/saucelabs/simple_sauce/branch/master/graph/badge.svg)](https://codecov.io/gh/saucelabs/simple_sauce)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](https://github.com/saucelabs/simple_sauce/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/saucelabs/simple_sauce.svg)](http://isitmaintained.com/project/saucelabs/simple_sauce "Average time to resolve an issue")
 
 ## The Idea - Making Sauce Simple To Use

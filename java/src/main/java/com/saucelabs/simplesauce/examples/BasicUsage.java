@@ -11,6 +11,6 @@ public class BasicUsage {
 
         sauce.getDriver().get("https://www.saucedemo.com/");
 
-        sauce.stop();
+        sauce.stop(true);
     }
 }

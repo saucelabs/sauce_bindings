@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
@@ -21,6 +22,7 @@ public class SauceSessionTest {
     private SauceSession sauce;
     private RemoteWebDriver dummyRemoteDriver = mock(RemoteWebDriver.class);
     private SauceOptions options = new SauceOptions();
+    private JavascriptExecutor dummyJSExecutor = mock(JavascriptExecutor.class);
 
     @Rule
     public MockitoRule initRule = MockitoJUnit.rule();
@@ -124,7 +126,7 @@ public class SauceSessionTest {
 
     @Test(expected = SauceEnvironmentVariablesNotSetException.class)
     public void startThrowsErrorWithoutUsername() {
-        doReturn(null).when(sauce).getEnvironmentVariable("SAUCE_ACCESS_KEY");
+        doReturn(null).when(sauce).getEnvironmentVariable("SAUCE_USERNAME");
         sauce.start();
     }
 
@@ -135,10 +137,34 @@ public class SauceSessionTest {
     }
 
     @Test
-    public void stop_noParams_callsDriverQuit() {
+    public void stopWithBooleanTrue() {
+        doReturn(dummyJSExecutor).when(sauce).getJSExecutor();
         sauce.start();
-        sauce.stop();
+        sauce.stop(true);
+        verify(dummyJSExecutor).executeScript("sauce:job-result=passed");
+    }
 
-        verify(dummyRemoteDriver).quit();
+    @Test
+    public void stopWithBooleanFalse() {
+        doReturn(dummyJSExecutor).when(sauce).getJSExecutor();
+        sauce.start();
+        sauce.stop(false);
+        verify(dummyJSExecutor).executeScript("sauce:job-result=failed");
+    }
+
+    @Test
+    public void stopWithStringPassed() {
+        doReturn(dummyJSExecutor).when(sauce).getJSExecutor();
+        sauce.start();
+        sauce.stop("passed");
+        verify(dummyJSExecutor).executeScript("sauce:job-result=passed");
+    }
+
+    @Test
+    public void stopWithStringFailed() {
+        doReturn(dummyJSExecutor).when(sauce).getJSExecutor();
+        sauce.start();
+        sauce.stop("failed");
+        verify(dummyJSExecutor).executeScript("sauce:job-result=failed");
     }
 }

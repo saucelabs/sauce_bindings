@@ -85,7 +85,7 @@ public class Options {
         }
     }
 
-    public enum PreRun {
+    public enum Prerun {
         EXECUTABLE("executable"),
         ARGS("args"),
         BACKGROUND("background"),
@@ -97,7 +97,7 @@ public class Options {
             return PreRunLookup.lookup.keySet();
         }
 
-        PreRun(String value) {
+        Prerun(String value) {
             this.value = value;
             PreRunLookup.lookup.put(value, this.name());
         }

@@ -80,15 +80,15 @@ public class SauceOptionsTest {
         sauceOptions.setName("Test name");
         sauceOptions.setParentTunnel("Mommy");
         sauceOptions.setJobVisibility(Options.JobVisibility.SHARE);
-        Map<Options.PreRun, Object> prerun = new HashMap<>();
-        prerun.put(Options.PreRun.EXECUTABLE, "http://example.com");
+        Map<Options.Prerun, Object> prerun = new HashMap<>();
+        prerun.put(Options.Prerun.EXECUTABLE, "http://example.com");
         List<String> args = new ArrayList<>();
         args.add("--silent");
         args.add("-a");
         args.add("-q");
-        prerun.put(Options.PreRun.ARGS, args);
-        prerun.put(Options.PreRun.BACKGROUND, true);
-        prerun.put(Options.PreRun.TIMEOUT, 40);
+        prerun.put(Options.Prerun.ARGS, args);
+        prerun.put(Options.Prerun.BACKGROUND, true);
+        prerun.put(Options.Prerun.TIMEOUT, 40);
         sauceOptions.setPrerun(prerun);
         List<String> tags = new ArrayList<>();
         tags.add("Foo");
@@ -212,11 +212,11 @@ public class SauceOptionsTest {
         prerun.put("timeout", 40);
         map.put("prerun", prerun);
 
-        Map<Options.PreRun, Object> expectedPrerun = new HashMap<>();
-        expectedPrerun.put(Options.PreRun.ARGS, args);
-        expectedPrerun.put(Options.PreRun.BACKGROUND, true);
-        expectedPrerun.put(Options.PreRun.EXECUTABLE, "http://example.com");
-        expectedPrerun.put(Options.PreRun.TIMEOUT, 40);
+        Map<Options.Prerun, Object> expectedPrerun = new HashMap<>();
+        expectedPrerun.put(Options.Prerun.ARGS, args);
+        expectedPrerun.put(Options.Prerun.BACKGROUND, true);
+        expectedPrerun.put(Options.Prerun.EXECUTABLE, "http://example.com");
+        expectedPrerun.put(Options.Prerun.TIMEOUT, 40);
 
         List<String> tags = new ArrayList<>();
         tags.add("Foo");
@@ -298,15 +298,15 @@ public class SauceOptionsTest {
 
         sauceOptions.setJobVisibility(Options.JobVisibility.SHARE);
         sauceCapabilities.setCapability("public", Options.JobVisibility.SHARE);
-        Map<Options.PreRun, Object> prerun = new HashMap<>();
-        prerun.put(Options.PreRun.EXECUTABLE, "http://example.com");
+        Map<Options.Prerun, Object> prerun = new HashMap<>();
+        prerun.put(Options.Prerun.EXECUTABLE, "http://example.com");
         List<String> args = new ArrayList<>();
         args.add("--silent");
         args.add("-a");
         args.add("-q");
-        prerun.put(Options.PreRun.ARGS, args);
-        prerun.put(Options.PreRun.BACKGROUND, true);
-        prerun.put(Options.PreRun.TIMEOUT, 40);
+        prerun.put(Options.Prerun.ARGS, args);
+        prerun.put(Options.Prerun.BACKGROUND, true);
+        prerun.put(Options.Prerun.TIMEOUT, 40);
         sauceOptions.setPrerun(prerun);
         sauceCapabilities.setCapability("prerun", prerun);
         List<String> tags = new ArrayList<>();

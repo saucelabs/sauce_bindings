@@ -51,7 +51,7 @@ public class SauceOptions {
     private Integer maxDuration = null;
     private String name;
     private String parentTunnel;
-    private Map<Options.PreRun, Object> prerun;
+    private Map<Options.Prerun, Object> prerun;
     private URL prerunUrl;
     private Integer priority = null;
     private Options.JobVisibility jobVisibility; // the actual key for this is a Java reserved keyword "public"
@@ -231,10 +231,10 @@ public class SauceOptions {
     private void setSecondaryEnumCapability(String key, Map<String, Object> value) {
         switch (key) {
             case "prerun":
-                Map<Options.PreRun, Object> prerunMap = new HashMap<>();
+                Map<Options.Prerun, Object> prerunMap = new HashMap<>();
                 value.forEach((oldKey, val) -> {
-                    String keyString = Options.PreRun.fromString((String) oldKey);
-                    prerunMap.put(Options.PreRun.valueOf(keyString), val);
+                    String keyString = Options.Prerun.fromString((String) oldKey);
+                    prerunMap.put(Options.Prerun.valueOf(keyString), val);
                 });
                 this.prerun = prerunMap;
                 break;

@@ -6,3 +6,11 @@ We always welcome open source contributions from the community. Together we can 
 It will appear in a directory similar to this `C:\Source\SauceLabs\simple_sauce\dotnet\Simple.Sauce\bin\Debug`
 3. In a 2nd solution where you want to test the integration of the Simple Sauce Nuget package, you can install the local version of Simple Sauce following these instructions https://docs.microsoft.com/en-us/nuget/consume-packages/install-use-packages-dotnet-cli
 Excellent docs by MS on how to work with Nuget: https://docs.microsoft.com/en-us/nuget/create-packages/overview-and-workflow
+
+## How to run tests
+1. Clone the repo
+`git clone https://github.com/saucelabs/simple_sauce`
+2. Navigate to project directory
+`cd Simple.Sauce`
+3. Run tests
+`dotnet test Sauce.sln`

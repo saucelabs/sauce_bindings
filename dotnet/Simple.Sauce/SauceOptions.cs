@@ -40,43 +40,27 @@ namespace Simple.Sauce
 
         public void WithChrome()
         {
-            ConfiguredChromeOptions = new ChromeOptions
-            {
-                BrowserVersion = DefaultBrowserVersion,
-                PlatformName = DefaultPlatform
-            };
+            ConfiguredChromeOptions.BrowserVersion = DefaultBrowserVersion;
+            ConfiguredChromeOptions.PlatformName = DefaultPlatform;
         }
 
         public void WithChrome(string chromeVersion)
         {
-            ConfiguredChromeOptions = new ChromeOptions
-            {
-                BrowserVersion = chromeVersion,
-                PlatformName = DefaultPlatform
-            };
+            ConfiguredChromeOptions.BrowserVersion = chromeVersion;
         }
 
         public void WithSafari()
         {
-            ConfiguredSafariOptions = new SafariOptions
-            {
-                BrowserVersion = DefaultBrowserVersion,
-                PlatformName = Platforms.MacOsMojave.Value
-            };
+            WithSafari(DefaultBrowserVersion);
         }
 
         public void WithSafari(string safariVersion)
         {
-            ConfiguredSafariOptions = new SafariOptions
-            {
-                BrowserVersion = safariVersion,
-                //TODO temporarily fine, but I need the logic to determine what
-                //version is running and then set the correct PlatformName
-                PlatformName = SetCorrectPlatformVersion(safariVersion)
-            };
+            ConfiguredSafariOptions.BrowserVersion = safariVersion;
+            ConfiguredSafariOptions.PlatformName = MatchCorrectPlatformToBrowserVersion(safariVersion);
         }
 
-        public string SetCorrectPlatformVersion(string safariBrowserVersion)
+        public string MatchCorrectPlatformToBrowserVersion(string safariBrowserVersion)
         {
             switch (safariBrowserVersion)
             {

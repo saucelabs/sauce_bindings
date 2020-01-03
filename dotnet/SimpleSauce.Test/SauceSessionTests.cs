@@ -144,6 +144,19 @@ namespace SimpleSauce.Test
             SauceSession.Stop(false);
             _dummyDriver.Verify(driver => driver.ExecuteScript("sauce:job-result=failed"), Times.Exactly(1));
         }
+        [TestMethod]
+        public void Start_WithFirefox_SetsUsernameAndAccessKey()
+        {
+            SauceOptions = new SauceOptions();
+            SauceOptions.WithFirefox();
+            SauceSession = new SauceSession(SauceOptions, _dummyDriver.Object);
+
+            SauceSession.Start();
+
+            var browserOptionsSetInSauceJson = SauceSession.Options.ConfiguredFirefoxOptions.ToString();
+            var browserOptionsSetInSauce = DeserializeToObject(browserOptionsSetInSauceJson);
+            AssertUsernameAndAccessKeyExist(browserOptionsSetInSauce);
+        }
     }
     public class Root
     {

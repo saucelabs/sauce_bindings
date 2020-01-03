@@ -5,6 +5,52 @@ import lombok.Getter;
 import java.util.*;
 
 public class Options {
+    public static final List<String> primaryEnum = List.of(
+            "browserName",
+            "jobVisibility",
+            "pageLoadStrategy",
+            "platformName",
+            "timeouts",
+            "unhandledPromptBehavior"
+    );
+
+    public static final List<String> w3c = List.of(
+            "browserName",
+            "browserVersion",
+            "platformName",
+            "pageLoadStrategy",
+            "acceptInsecureCerts",
+            "proxy",
+            "setWindowRect",
+            "timeouts",
+            "strictFileInteractability",
+            "unhandledPromptBehavior");
+
+    public static final List<String> sauce = List.of(
+            "avoidProxy",
+            "build",
+            "capturePerformance",
+            "chromedriverVersion",
+            "commandTimeout",
+            "customData",
+            "extendedDebugging",
+            "idleTimeout",
+            "iedriverVersion",
+            "maxDuration",
+            "name",
+            "parentTunnel",
+            "prerun",
+            "priority",
+            "recordLogs",
+            "recordScreenshots",
+            "recordVideo",
+            "screenResolution",
+            "seleniumVersion",
+            "tags",
+            "timeZone",
+            "tunnelIdentifier",
+            "videoUploadOnPass");
+
     private static final class BrowserLookup {
         private static final Map<String, String> lookup = new HashMap<String, String>();
     }
@@ -54,7 +100,7 @@ public class Options {
         }
 
         public String toString() {
-            return this.value.toString();
+            return this.value;
         }
     }
 
@@ -81,7 +127,7 @@ public class Options {
         }
 
         public String toString() {
-            return this.value.toString();
+            return this.value;
         }
     }
 
@@ -107,7 +153,7 @@ public class Options {
         }
 
         public String toString() {
-            return this.value.toString();
+            return this.value;
         }
     }
 
@@ -134,7 +180,7 @@ public class Options {
         }
 
         public String toString() {
-            return this.value.toString();
+            return this.value;
         }
     }
 
@@ -220,50 +266,4 @@ public class Options {
             return this.value;
         }
     }
-
-    public static final List<String> primaryEnum = List.of(
-            "browserName",
-            "jobVisibility",
-            "pageLoadStrategy",
-            "platformName",
-            "timeouts",
-            "unhandledPromptBehavior"
-    );
-
-    public static final List<String> w3c = List.of(
-            "browserName",
-            "browserVersion",
-            "platformName",
-            "pageLoadStrategy",
-            "acceptInsecureCerts",
-            "proxy",
-            "setWindowRect",
-            "timeouts",
-            "strictFileInteractability",
-            "unhandledPromptBehavior");
-
-    public static final List<String> sauce = List.of(
-            "avoidProxy",
-            "build",
-            "capturePerformance",
-            "chromedriverVersion",
-            "commandTimeout",
-            "customData",
-            "extendedDebugging",
-            "idleTimeout",
-            "iedriverVersion",
-            "maxDuration",
-            "name",
-            "parentTunnel",
-            "prerun",
-            "priority",
-            "recordLogs",
-            "recordScreenshots",
-            "recordVideo",
-            "screenResolution",
-            "seleniumVersion",
-            "tags",
-            "timeZone",
-            "tunnelIdentifier",
-            "videoUploadOnPass");
 }

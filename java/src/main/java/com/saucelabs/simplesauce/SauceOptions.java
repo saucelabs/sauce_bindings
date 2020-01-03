@@ -3,24 +3,102 @@ package com.saucelabs.simplesauce;
 import com.saucelabs.simplesauce.enums.MacVersion;
 import lombok.Getter;
 import lombok.Setter;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.remote.BrowserType;
+import org.openqa.selenium.remote.CapabilityType;
+
+import java.util.HashMap;
 
 public class SauceOptions {
+    @Getter private MutableCapabilities seleniumCapabilities;
+
     @Getter @Setter private String browserName = BrowserType.CHROME;
     @Getter @Setter private String browserVersion = "latest";
-    @Getter @Setter private String operatingSystem = Platforms.windowsLatest().getOsVersion();
-    @Getter private ChromeOptions chromeOptions;
+    @Getter @Setter private String platformName = Platforms.windowsLatest().getOsVersion();
+    @Getter private final SauceTimeout sauceTimeout = new SauceTimeout();
+    @Setter private String build;
+
+    public SauceOptions() {
+        this(new MutableCapabilities());
+    }
+
+    public SauceOptions(ChromeOptions options) {
+        this(new MutableCapabilities(options));
+    }
+
+    public SauceOptions(EdgeOptions options) {
+        this(new MutableCapabilities(options));
+    }
+
+    public SauceOptions(FirefoxOptions options) {
+        this(new MutableCapabilities(options));
+    }
+
+    public SauceOptions(InternetExplorerOptions options) {
+        this(new MutableCapabilities(options));
+    }
+
+    public SauceOptions(SafariOptions options) {
+        this(new MutableCapabilities(options));
+    }
+
+    private SauceOptions(MutableCapabilities options) {
+        seleniumCapabilities = new MutableCapabilities(options.asMap());
+        if (options.getCapability("browserName") != null) {
+            browserName = (String) options.getCapability("browserName");
+        }
+    }
+
+    public MutableCapabilities toCapabilities() {
+        seleniumCapabilities.setCapability(CapabilityType.BROWSER_NAME, browserName);
+        seleniumCapabilities.setCapability(CapabilityType.PLATFORM_NAME, platformName);
+        seleniumCapabilities.setCapability(CapabilityType.BROWSER_VERSION, browserVersion);
+        seleniumCapabilities.setCapability("sauce:options", new HashMap<>());
+        return seleniumCapabilities;
+    }
+
+    public String getBuild() {
+        if (build != null) {
+            return build;
+            // Jenkins
+        } else if (getEnvironmentVariable("BUILD_TAG") != null) {
+            return getEnvironmentVariable("BUILD_NAME") + ": " + getEnvironmentVariable("BUILD_NUMBER");
+            // Bamboo
+        } else if (getEnvironmentVariable("bamboo_agentId") != null) {
+            return getEnvironmentVariable("bamboo_shortJobName") + ": " + getEnvironmentVariable("bamboo_buildNumber");
+            // Travis
+        } else if (getEnvironmentVariable("TRAVIS_JOB_ID") != null) {
+            return getEnvironmentVariable("TRAVIS_JOB_NAME") + ": " + getEnvironmentVariable("TRAVIS_JOB_NUMBER");
+            // CircleCI
+        } else if (getEnvironmentVariable("CIRCLE_JOB") != null) {
+            return getEnvironmentVariable("CIRCLE_JOB") + ": " + getEnvironmentVariable("CIRCLE_BUILD_NUM");
+            // Gitlab
+        } else if (getEnvironmentVariable("CI") != null) {
+            return getEnvironmentVariable("CI_JOB_NAME") + ": " + getEnvironmentVariable("CI_JOB_ID");
+            // Team City
+        } else if (getEnvironmentVariable("TEAMCITY_PROJECT_NAME") != null) {
+            return getEnvironmentVariable("TEAMCITY_PROJECT_NAME") + ": " + getEnvironmentVariable("BUILD_NUMBER");
+            // Default
+        } else {
+            return "Build Time: " + System.currentTimeMillis();
+        }
+    }
+
+    protected String getEnvironmentVariable(String key) {
+        return System.getenv(key);
+    }
 
     public SauceOptions withChrome() {
-        chromeOptions = new ChromeOptions();
-        //TODO no longer needed with Chrome 75+
-        chromeOptions.setExperimentalOption("w3c", true);
         browserName = BrowserType.CHROME;
         return this;
     }
-    public SauceOptions withSafari()
-    {
+
+    public SauceOptions withSafari() {
         return withMac(MacVersion.Mojave);
     }
 
@@ -32,32 +110,36 @@ public class SauceOptions {
 
     public SauceOptions withSafari(final String version) {
         String _version = version;
-        if (_version.isEmpty()) { _version = "latest"; }
+        if (_version.isEmpty()) {
+            _version = "latest";
+        }
         browserName = BrowserType.SAFARI;
         browserVersion = _version;
         return this;
     }
 
     public SauceOptions withLinux() {
-        operatingSystem = "Linux";
+        platformName = "Linux";
         return this;
     }
 
     public SauceOptions withWindows10() {
-        operatingSystem = "windows 10";
+        platformName = "Windows 10";
         return this;
     }
+
     public SauceOptions withWindows8_1() {
-        operatingSystem = "Windows 8.1";
+        platformName = "Windows 8.1";
         return this;
     }
+
     public SauceOptions withWindows8() {
-        operatingSystem = "Windows 8";
+        platformName = "Windows 8";
         return this;
     }
 
     public SauceOptions withWindows7() {
-        operatingSystem = "Windows 7";
+        platformName = "Windows 7";
         return this;
     }
 
@@ -75,11 +157,13 @@ public class SauceOptions {
         browserVersion = "18.17763";
         return this;
     }
+
     public SauceOptions withEdge17() {
         withEdge();
         browserVersion = "17.17134";
         return this;
     }
+
     public SauceOptions withEdge16() {
         withEdge();
         browserVersion = "16.16299";
@@ -105,7 +189,7 @@ public class SauceOptions {
     }
 
     public SauceOptions withFirefox() {
-        browserName = "Firefox";
+        browserName = "firefox";
         return this;
     }
 
@@ -127,7 +211,7 @@ public class SauceOptions {
     }
 
     public SauceOptions withMac(MacVersion macVersion) {
-        operatingSystem = macVersion.label;
+        platformName = macVersion.label;
         browserName = "Safari";
         return this;
     }

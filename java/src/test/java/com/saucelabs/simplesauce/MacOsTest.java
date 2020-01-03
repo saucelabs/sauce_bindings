@@ -26,70 +26,56 @@ public class MacOsTest extends BaseConfigurationTest {
     @UseDataProvider("expectedMacOsVersions")
     public void withMacOs_returnsValidOsConfiguration(MacVersion version, String expectedMacOsVersion) {
         sauceOptions.withMac(version);
-        startSauceSession();
 
-        String actualOsThatWasSet = getSessionPlatformString();
+        String actualOsThatWasSet = sauceOptions.getPlatformName();
         assertEquals(expectedMacOsVersion, actualOsThatWasSet);
-    }
-
-    private String getSessionPlatformString() {
-        return sauce.getCurrentSessionCapabilities().getPlatform().toString();
     }
 
     @Test
     public void defaultSafari_browserVersionIs12_0() {
         sauceOptions.withSafari();
-        startSauceSession();
 
-        //TODO mockSauceSession.sauceSessionCapabilities can be turned into a method, maybe on the session
-        //class that allows easier access to the caps
-        String safariVersionSetThroughSauceSession = sauce.getCurrentSessionCapabilities().getVersion();
-        assertEquals("latest", safariVersionSetThroughSauceSession);
+        String actualBrowserVersionSetInConfig = sauceOptions.getBrowserVersion();
+        assertEquals("latest", actualBrowserVersionSetInConfig);
     }
 
     @Test
     public void defaultSafari_macOsVersionIsMojave() {
         sauceOptions.withSafari();
-        startSauceSession();
 
-        String safariVersionSetThroughSauceSession = getSessionPlatformString();
-        assertEquals(Platforms.MAC_OS.MOJAVE.getPlatform().getOsVersion(), safariVersionSetThroughSauceSession);
+        String actualPlatformSetInConfig = sauceOptions.getPlatformName();
+        assertEquals(Platforms.MAC_OS.MOJAVE.getPlatform().getOsVersion(), actualPlatformSetInConfig);
     }
 
     @Test
     public void withSafari_browserName_setToSafariEnum() {
         sauceOptions.withSafari(SafariVersion._8);
-        startSauceSession();
 
-        String actualBrowserNameSetThroughSauceSession = sauce.getCurrentSessionCapabilities().getBrowserName();
+        String actualBrowserNameSetThroughSauceSession = sauceOptions.getBrowserName();
         assertEquals("safari", actualBrowserNameSetThroughSauceSession);
     }
 
     @Test
     public void withSafari_browserName_setToSafariString() {
         sauceOptions.withSafari(SafariVersion._8.getVersion());
-        startSauceSession();
 
-        String actualBrowserNameSetThroughSauceSession = sauce.getCurrentSessionCapabilities().getBrowserName();
+        String actualBrowserNameSetThroughSauceSession = sauceOptions.getBrowserName();
         assertEquals("safari", actualBrowserNameSetThroughSauceSession);
     }
 
     @Test
     public void withSafari_versionChangedFromDefault_returnsCorrectVersion() {
         sauceOptions.withSafari(SafariVersion._8);
-        startSauceSession();
 
-        String actualBrowserVersionSetThroughSauceSession = sauce.getCurrentSessionCapabilities().getVersion();
+        String actualBrowserVersionSetThroughSauceSession = sauceOptions.getBrowserVersion();
         assertEquals("8.0", actualBrowserVersionSetThroughSauceSession);
     }
 
     @Test
     public void withSafari_versionNotSet_returnsLatest() {
         sauceOptions.withSafari("");
-        startSauceSession();
 
-        String actualBrowserVersionSetThroughSauceSession =
-                sauce.getCurrentSessionCapabilities().getVersion();
+        String actualBrowserVersionSetThroughSauceSession = sauceOptions.getBrowserVersion();
         assertEquals("latest", actualBrowserVersionSetThroughSauceSession);
     }
 }

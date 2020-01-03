@@ -18,6 +18,6 @@ matrix:
       - "make ruby_tests"
 
     - language: java
-      jdk: openjdk8
+      jdk: openjdk9
       script:
       - "make java_tests"

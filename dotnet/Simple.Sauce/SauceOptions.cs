@@ -3,13 +3,14 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Safari;
+// ReSharper disable InconsistentNaming
 
 namespace Simple.Sauce
 {
     public class SauceOptions
     {
-        private const string DefaultBrowserVersion = "latest";
-        private const string DefaultPlatform = "Windows 10";
+        private const string DEFAULT_BROWSER_VERSION = "latest";
+        private const string DEFAULT_PLATFORM = "Windows 10";
 
         public SauceOptions()
         {
@@ -31,17 +32,14 @@ namespace Simple.Sauce
             if (edgeVersion == null)
                 throw new ArgumentNullException("Please supply a valid EdgeVersion. You suplied an invalid value=>" +
                                                 edgeVersion);
-            ConfiguredEdgeOptions = new EdgeOptions
-            {
-                BrowserVersion = edgeVersion.Value,
-                PlatformName = DefaultPlatform
-            };
+            ConfiguredEdgeOptions.BrowserVersion = edgeVersion.Value;
+            ConfiguredEdgeOptions.PlatformName = DEFAULT_PLATFORM;
         }
 
         public void WithChrome()
         {
-            ConfiguredChromeOptions.BrowserVersion = DefaultBrowserVersion;
-            ConfiguredChromeOptions.PlatformName = DefaultPlatform;
+            ConfiguredChromeOptions.BrowserVersion = DEFAULT_BROWSER_VERSION;
+            ConfiguredChromeOptions.PlatformName = DEFAULT_PLATFORM;
         }
 
         public void WithChrome(string chromeVersion)
@@ -51,7 +49,7 @@ namespace Simple.Sauce
 
         public void WithSafari()
         {
-            WithSafari(DefaultBrowserVersion);
+            WithSafari(DEFAULT_BROWSER_VERSION);
         }
 
         public void WithSafari(string safariVersion)
@@ -91,20 +89,13 @@ namespace Simple.Sauce
 
         public void WithFirefox()
         {
-            ConfiguredFirefoxOptions = new FirefoxOptions
-            {
-                BrowserVersion = DefaultBrowserVersion,
-                PlatformName = DefaultPlatform
-            };
+            WithFirefox(DEFAULT_BROWSER_VERSION);
         }
 
         public void WithFirefox(string version)
         {
-            ConfiguredFirefoxOptions = new FirefoxOptions
-            {
-                BrowserVersion = version,
-                PlatformName = DefaultPlatform
-            };
+            ConfiguredFirefoxOptions.BrowserVersion = version;
+            ConfiguredFirefoxOptions.PlatformName = DEFAULT_PLATFORM;
         }
     }
 }

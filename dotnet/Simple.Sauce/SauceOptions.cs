@@ -107,7 +107,7 @@ namespace Simple.Sauce
 
         public void WithFirefox()
         {
-            ConfiguredFirefoxOptions = new FirefoxOptions()
+            ConfiguredFirefoxOptions = new FirefoxOptions
             {
                 BrowserVersion = DefaultBrowserVersion,
                 PlatformName = DefaultPlatform
@@ -116,7 +116,7 @@ namespace Simple.Sauce
 
         public void WithFirefox(string version)
         {
-            ConfiguredFirefoxOptions = new FirefoxOptions()
+            ConfiguredFirefoxOptions = new FirefoxOptions
             {
                 BrowserVersion = version,
                 PlatformName = DefaultPlatform

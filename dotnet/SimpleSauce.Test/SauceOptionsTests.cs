@@ -1,7 +1,13 @@
+using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
+using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.IE;
+using OpenQA.Selenium.Safari;
 using Simple.Sauce;
 
 namespace SimpleSauce.Test
@@ -15,47 +21,130 @@ namespace SimpleSauce.Test
             SauceOptions = new SauceOptions();
         }
         [TestMethod]
-        public void DefaultConstructor_SetsDriverFactory()
+        public void UsesLatestChromeWindowsVersionsByDefault()
         {
-            SauceOptions.DriverFactory.Should().BeOfType(typeof(DriverFactory));
+            SauceOptions.BrowserName.Should().BeEquivalentTo("chrome");
+            SauceOptions.BrowserVersion.Should().BeEquivalentTo("latest");
+            SauceOptions.PlatformName.Should().BeEquivalentTo("Windows 10");
         }
+
         [TestMethod]
-        public void GetDataCenter_Default_IsWest()
+        public void UpdatesBrowserBrowserVersionPlatformVersionValues()
         {
-            SauceOptions.DataCenter.Should().BeEquivalentTo(DataCenter.UsWest);
+            SauceOptions.BrowserName = "firefox";
+            SauceOptions.BrowserVersion = "68";
+            SauceOptions.PlatformName = "macOS 10.13";
+            
+            SauceOptions.BrowserName.Should().BeEquivalentTo("firefox");
+            SauceOptions.BrowserVersion.Should().BeEquivalentTo("68");
+            SauceOptions.PlatformName.Should().BeEquivalentTo("macOS 10.13");
         }
+        
         [TestMethod]
-        public void WithEdge_SetsEdgeOptions()
+        public void AcceptsOtherW3CValues()
         {
-            SauceOptions.WithEdge();
-            SauceOptions.ConfiguredEdgeOptions.Should().NotBeNull();
-            SauceOptions.ConfiguredEdgeOptions.Should().BeOfType(typeof(EdgeOptions));
+            SauceOptions.PageLoadStrategy = "eager";
+            SauceOptions.AcceptInsecureCerts = true;
+            SauceOptions.SetWindowRect = true;
+            var timeouts = new Dictionary<string, TimeSpan>();
+            timeouts.Add("implicit", new TimeSpan(4));
+            timeouts.Add("pageLoad", new TimeSpan(44));
+            timeouts.Add("script", new TimeSpan(33));
+            SauceOptions.Timeouts = timeouts;
+            var proxy = new Proxy();
+            SauceOptions.Proxy = proxy;
+            SauceOptions.StrictFileInteractability = true;
+            SauceOptions.UnhandledPromptBehavior = "dismiss";
+            
+            SauceOptions.PageLoadStrategy.Should().BeEquivalentTo("eager");
+            SauceOptions.AcceptInsecureCerts.Should().BeTrue();
+            SauceOptions.SetWindowRect.Should().BeTrue();
+            SauceOptions.Proxy.Should().BeEquivalentTo(proxy);
+            SauceOptions.Timeouts.Should().BeEquivalentTo(timeouts);
+            SauceOptions.StrictFileInteractability.Should().BeTrue();
+            SauceOptions.UnhandledPromptBehavior.Should().BeEquivalentTo("dismiss");
         }
+
         [TestMethod]
-        public void WithChrome_SetsChromeOptions()
+        public void AcceptsSauceLabsSettings()
         {
-            SauceOptions.WithChrome();
-            SauceOptions.ConfiguredChromeOptions.Should().NotBeNull();
-            SauceOptions.ConfiguredChromeOptions.Should().BeOfType(typeof(ChromeOptions));
         }
+
         [TestMethod]
-        public void WithChrome_DefaultBrowserVersion_IsLatest()
+        public void AcceptsEdgeOptionsClass()
         {
-            SauceOptions.WithChrome();
-            SauceOptions.ConfiguredChromeOptions.BrowserVersion.Should().Be("latest");
+            var options = new EdgeOptions();
+            SauceOptions = new SauceOptions(options);
+            
+            SauceOptions.BrowserName.Should().BeEquivalentTo("MicrosoftEdge");
         }
+
         [TestMethod]
-        public void WithChrome_DefaultPlatform_IsWin10()
+        public void AcceptsFirefoxOptionsClass()
         {
-            SauceOptions.WithChrome();
-            SauceOptions.ConfiguredChromeOptions.PlatformName.Should().Be("Windows 10");
+            var options = new FirefoxOptions();
+            SauceOptions = new SauceOptions(options);
+            
+            SauceOptions.BrowserName.Should().BeEquivalentTo("firefox");
         }
+
         [TestMethod]
-        public void WithChrome_VersionChanged_SetsVersion()
+        public void AcceptsIEOptionsClass()
         {
-            SauceOptions.WithChrome("72");
-            SauceOptions.ConfiguredChromeOptions.BrowserVersion.Should().
-                Be("72", "we set a specific chrome version and this version should be passed to ChromeOptions");
+            var options = new InternetExplorerOptions();
+            SauceOptions = new SauceOptions(options);
+            
+            SauceOptions.BrowserName.Should().BeEquivalentTo("internet explorer");
         }
+
+        [TestMethod]
+        public void AcceptsSafariOptionsClass()
+        {
+            var options = new SafariOptions();
+            SauceOptions = new SauceOptions(options);
+            
+            SauceOptions.BrowserName.Should().BeEquivalentTo("safari");
+        }
+
+        [TestMethod]
+        public void AcceptsChromeOptionsClass()
+        {
+            var options = new ChromeOptions();
+            SauceOptions = new SauceOptions(options);
+            
+            SauceOptions.BrowserName.Should().BeEquivalentTo("chrome");
+        }
+
+        [TestMethod]
+        public void AllowsBuildToBeSet()
+        {
+        }
+
+        [TestMethod]
+        public void CreatesDefaultBuildName()
+        {
+        }
+
+        [TestMethod]
+        public void ParsesW3CAndSauceAndSeleniumSettings()
+        {
+            var firefoxOptions = new FirefoxOptions();
+            firefoxOptions.AddArgument("--foo");
+            firefoxOptions.SetPreference("foo", "bar");
+            firefoxOptions.UnhandledPromptBehavior = UnhandledPromptBehavior.Dismiss;
+            
+            var sauceOptions = new SauceOptions(firefoxOptions);
+
+            var expectedOptions = new FirefoxOptions();
+            expectedOptions.AddArgument("--foo");
+            expectedOptions.SetPreference("foo", "bar");
+            expectedOptions.UnhandledPromptBehavior = UnhandledPromptBehavior.Dismiss;
+            expectedOptions.BrowserVersion = "latest";
+            expectedOptions.PlatformName = "Windows 10";
+            expectedOptions.AddAdditionalOption("sauce:options", new Dictionary<string, object>());
+
+            sauceOptions.ToString().Should().BeEquivalentTo(expectedOptions.ToString());
+        }
+        
     }
 }

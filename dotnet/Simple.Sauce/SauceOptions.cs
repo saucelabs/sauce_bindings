@@ -16,10 +16,10 @@ namespace Simple.Sauce
             WithChrome();
         }
 
-        public EdgeOptions ConfiguredEdgeOptions { get; set; }
-        public ChromeOptions ConfiguredChromeOptions { get; private set; }
-        public SafariOptions ConfiguredSafariOptions { get; set; }
-        public FirefoxOptions ConfiguredFirefoxOptions { get; set; }
+        public EdgeOptions ConfiguredEdgeOptions { get; set; } = new EdgeOptions();
+        public ChromeOptions ConfiguredChromeOptions { get; private set; } = new ChromeOptions();
+        public SafariOptions ConfiguredSafariOptions { get; set; } = new SafariOptions();
+        public FirefoxOptions ConfiguredFirefoxOptions { get; set; } = new FirefoxOptions();
 
         public void WithEdge()
         {

@@ -1,4 +1,7 @@
-﻿using OpenQA.Selenium;
+﻿using System;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Remote;
 
 namespace Simple.Sauce
 {
@@ -15,33 +18,22 @@ namespace Simple.Sauce
         {
             Options = options;
         }
-
-        public SauceSession(SauceOptions options, IWebDriver driver)
-        {
-            _driver = driver;
-            Options = options;
-        }
-
+        
         public SauceOptions Options { get; }
+        public Uri SauceUrl { get; set; }
+        public string Username { get; set; }
+        public string AccessKey { get; set; }
+        public SauceDataCenter DataCenter { get; set; } = SauceDataCenter.UsWest;
 
         public IWebDriver Start()
         {
-            //TODO this should probably move to the DriverFactory and just let it handle the 
-            //construction of the drivers
-            if (Options.ConfiguredEdgeOptions != null)
-            {
-                _driver = Options.CreateEdgeBrowser();
-                return _driver;
-            }
-
-            if (Options.ConfiguredSafariOptions != null)
-            {
-                _driver = Options.CreateSafariDriver();
-                return _driver;
-            }
-
-            _driver = Options.CreateChromeDriver();
+            _driver = new RemoteWebDriver(GenerateUrl(), Options.ToCapabilities().ToCapabilities());
             return _driver;
+        }
+
+        public Uri GenerateUrl()
+        {
+            return SauceUrl != null ? SauceUrl : new Uri("https://" + SauceUsername() + ":" + SauceAccessKey() + "@" + DataCenter.Value);
         }
 
         public void Stop(bool isPassed)
@@ -52,5 +44,30 @@ namespace Simple.Sauce
             ((IJavaScriptExecutor) _driver).ExecuteScript(script);
             _driver.Quit();
         }
+        
+        private string SauceUsername() {
+            if (Username != null) {
+                return Username;
+            } else if (EnvironmentVariable("SAUCE_USERNAME") != null) {
+                return EnvironmentVariable("SAUCE_USERNAME");
+            } else {
+                throw new Exception();
+            }
+        }
+
+        private string SauceAccessKey() {
+            if (AccessKey != null) {
+                return AccessKey;
+            } else if (EnvironmentVariable("SAUCE_ACCESS_KEY") != null) {
+                return EnvironmentVariable("SAUCE_ACCESS_KEY");
+            } else {
+                throw new Exception();
+            }
+        }
+
+        private static string EnvironmentVariable(string key) {
+            return Environment.GetEnvironmentVariable(key);
+        }
+
     }
 }

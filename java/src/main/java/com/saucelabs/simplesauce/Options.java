@@ -14,6 +14,11 @@ public class Options {
             "unhandledPromptBehavior"
     );
 
+    public static final List<String> secondaryEnum = List.of(
+            "prerun",
+            "timeouts"
+    );
+
     public static final List<String> w3c = List.of(
             "browserName",
             "browserVersion",

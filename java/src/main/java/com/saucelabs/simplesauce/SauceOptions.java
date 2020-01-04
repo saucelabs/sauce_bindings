@@ -34,7 +34,8 @@ public class SauceOptions {
     private Boolean acceptInsecureCerts = null;
     private Proxy proxy;
     private Boolean setWindowRect = null;
-    private Map<Options.Timeouts, Integer> timeouts;
+    @Getter(AccessLevel.NONE) private Map<Options.Timeouts, Integer> timeouts;
+    @Setter(AccessLevel.NONE) private Timeout timeout;
     private Boolean strictFileInteractability = null;
     private Options.UnhandledPromptBehavior unhandledPromptBehavior;
 
@@ -89,6 +90,20 @@ public class SauceOptions {
         this(new MutableCapabilities(options));
     }
 
+    public Timeout setTimeout() {
+        if (timeout == null) {
+            timeout = new Timeout();
+        }
+        return timeout;
+    }
+
+    public Map<Options.Timeouts, Integer> getTimeouts() {
+        if (timeout != null) {
+            timeouts = timeout.convert();
+        }
+        return timeouts;
+    }
+
     private SauceOptions(MutableCapabilities options) {
         seleniumCapabilities = new MutableCapabilities(options.asMap());
         if (options.getCapability("browserName") != null) {
@@ -108,6 +123,8 @@ public class SauceOptions {
                     String key = "prerunUrl".equals(fieldName) ? "prerun" : fieldName;
                     if (value == null) {
                         continue;
+                    } else if ("timeout".equals(key)) {
+                        w3cCapabilities.setCapability("timeouts", timeout.convert());
                     } else if (Options.w3c.contains(key)) {
                         w3cCapabilities.setCapability(fieldName, value);
                     } else if (Options.sauce.contains(key)) {

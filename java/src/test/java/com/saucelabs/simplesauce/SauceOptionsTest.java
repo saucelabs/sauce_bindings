@@ -74,6 +74,20 @@ public class SauceOptionsTest {
     }
 
     @Test
+    public void setsTimeoutsDirectly() {
+        sauceOptions.timeout.setImplicitWait(1)
+                .setPageLoad(40)
+                .setScript(29);
+
+        Map<Timeouts, Integer> timeouts = new HashMap<>();
+        timeouts.put(Timeouts.IMPLICIT, 1);
+        timeouts.put(Timeouts.PAGE_LOAD, 40);
+        timeouts.put(Timeouts.SCRIPT, 29);
+
+        assertEquals(timeouts, sauceOptions.getTimeouts());
+    }
+
+    @Test
     public void acceptsSauceLabsSettings() {
         sauceOptions.setExtendedDebugging(true);
         sauceOptions.setName("Test name");
@@ -279,11 +293,13 @@ public class SauceOptionsTest {
         expectedCapabilities.setCapability("pageLoadStrategy", PageLoadStrategy.EAGER);
         sauceOptions.setAcceptInsecureCerts(true);
         expectedCapabilities.setCapability("acceptInsecureCerts", true);
+        sauceOptions.timeout.setImplicitWait(1)
+                .setPageLoad(100)
+                .setScript(10);
         Map<Timeouts, Integer> timeouts = new HashMap<>();
         timeouts.put(Timeouts.IMPLICIT, 1);
         timeouts.put(Timeouts.PAGE_LOAD, 100);
         timeouts.put(Timeouts.SCRIPT, 10);
-        sauceOptions.setTimeouts(timeouts);
         expectedCapabilities.setCapability("timeouts", timeouts);
         sauceOptions.setUnhandledPromptBehavior(UnhandledPromptBehavior.IGNORE);
         expectedCapabilities.setCapability("unhandledPromptBehavior", UnhandledPromptBehavior.IGNORE);

@@ -38,12 +38,12 @@ public class SauceSessionTest {
 
     @Test
     public void sauceSessionDefaultsToLatestChromeOnWindows() {
-        Options.Browser actualBrowser = sauceSession.getSauceOptions().getBrowserName();
+        Browser actualBrowser = sauceSession.getSauceOptions().getBrowserName();
         String actualBrowserVersion = sauceSession.getSauceOptions().getBrowserVersion();
-        Options.Platform actualPlatformName = sauceSession.getSauceOptions().getPlatformName();
+        SaucePlatform actualPlatformName = sauceSession.getSauceOptions().getPlatformName();
 
-        assertEquals(Options.Browser.CHROME, actualBrowser);
-        assertEquals(Options.Platform.WINDOWS_10, actualPlatformName);
+        assertEquals(Browser.CHROME, actualBrowser);
+        assertEquals(SaucePlatform.WINDOWS_10, actualPlatformName);
         assertEquals("latest", actualBrowserVersion);
     }
 

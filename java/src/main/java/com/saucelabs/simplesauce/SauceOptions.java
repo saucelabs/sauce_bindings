@@ -13,7 +13,6 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.safari.SafariOptions;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -27,16 +26,16 @@ public class SauceOptions {
     @Setter(AccessLevel.NONE) private MutableCapabilities seleniumCapabilities;
 
     // w3c Settings
-    private Options.Browser browserName = Options.Browser.CHROME;
+    private Browser browserName = Browser.CHROME;
     private String browserVersion = "latest";
-    private Options.Platform platformName = Options.Platform.WINDOWS_10;
-    private Options.PageLoadStrategy pageLoadStrategy;
+    private SaucePlatform platformName = SaucePlatform.WINDOWS_10;
+    private PageLoadStrategy pageLoadStrategy;
     private Boolean acceptInsecureCerts = null;
     private Proxy proxy;
     private Boolean setWindowRect = null;
-    private Map<Options.Timeouts, Integer> timeouts;
+    private Map<Timeouts, Integer> timeouts;
     private Boolean strictFileInteractability = null;
-    private Options.UnhandledPromptBehavior unhandledPromptBehavior;
+    private UnhandledPromptBehavior unhandledPromptBehavior;
 
     // Sauce Settings
     private Boolean avoidProxy = null;
@@ -51,10 +50,10 @@ public class SauceOptions {
     private Integer maxDuration = null;
     private String name;
     private String parentTunnel;
-    private Map<Options.Prerun, Object> prerun;
+    private Map<Prerun, Object> prerun;
     private URL prerunUrl;
     private Integer priority = null;
-    private Options.JobVisibility jobVisibility; // the actual key for this is a Java reserved keyword "public"
+    private JobVisibility jobVisibility; // the actual key for this is a Java reserved keyword "public"
     private Boolean recordLogs = null;
     private Boolean recordScreenshots = null;
     private Boolean recordVideo = null;
@@ -64,6 +63,58 @@ public class SauceOptions {
     private String timeZone;
     private String tunnelIdentifier;
     private Boolean videoUploadOnPass = null;
+
+    public static final List<String> primaryEnum = List.of(
+            "browserName",
+            "jobVisibility",
+            "pageLoadStrategy",
+            "platformName",
+            "timeouts",
+            "unhandledPromptBehavior"
+    );
+
+    public static final List<String> secondaryEnum = List.of(
+            "prerun",
+            "timeouts"
+    );
+
+    public static final List<String> w3cOptions = List.of(
+            "browserName",
+            "browserVersion",
+            "platformName",
+            "pageLoadStrategy",
+            "acceptInsecureCerts",
+            "proxy",
+            "setWindowRect",
+            "timeouts",
+            "strictFileInteractability",
+            "unhandledPromptBehavior");
+
+    public static final List<String> sauceOptions = List.of(
+            "avoidProxy",
+            "build",
+            "capturePerformance",
+            "chromedriverVersion",
+            "commandTimeout",
+            "customData",
+            "extendedDebugging",
+            "idleTimeout",
+            "iedriverVersion",
+            "maxDuration",
+            "name",
+            "parentTunnel",
+            "prerun",
+            "priority",
+            // public, do not use, reserved keyword, using jobVisibility
+            "recordLogs",
+            "recordScreenshots",
+            "recordVideo",
+            "screenResolution",
+            "seleniumVersion",
+            "tags",
+            "timeZone",
+            "tunnelIdentifier",
+            "videoUploadOnPass");
 
     public SauceOptions() {
         this(new MutableCapabilities());
@@ -100,29 +151,31 @@ public class SauceOptions {
         MutableCapabilities w3cCapabilities = getSeleniumCapabilities();
         MutableCapabilities sauceCapabilities = new MutableCapabilities();
 
-        for (Field field : this.getClass().getDeclaredFields()) {
-            try {
-                String fieldName = field.getName();
-                if (!"seleniumCapabilities".equals(fieldName)) {
-                    Object value = getCapability(fieldName);
-                    String key = "prerunUrl".equals(fieldName) ? "prerun" : fieldName;
-                    if (value == null) {
-                        continue;
-                    } else if (Options.w3c.contains(key)) {
-                        w3cCapabilities.setCapability(fieldName, value);
-                    } else if (Options.sauce.contains(key)) {
-                        sauceCapabilities.setCapability(fieldName, value);
-                    } else if ("jobVisibility".equals(key)) {
-                        sauceCapabilities.setCapability("public", value);
-                    }
-                }
-            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                e.printStackTrace();
-            }
+        if (getCapability("jobVisibility") != null) {
+            sauceCapabilities.setCapability("public", getCapability("jobVisibility"));
         }
+
+        if (getCapability("prerunUrl") != null) {
+            sauceCapabilities.setCapability("prerun", getCapability("prerunUrl"));
+        }
+
+        w3cOptions.forEach((capability) -> {
+            addCapabilityIfDefined(w3cCapabilities, capability);
+        });
+
+        sauceOptions.forEach((capability) -> {
+            addCapabilityIfDefined(sauceCapabilities, capability);
+        });
 
         w3cCapabilities.setCapability("sauce:options", sauceCapabilities);
         return w3cCapabilities;
+    }
+
+    private void addCapabilityIfDefined(MutableCapabilities capabilities, String capability) {
+        Object value = getCapability(capability);
+        if (value != null) {
+            capabilities.setCapability(capability, value);
+        }
     }
 
     public String getBuild() {
@@ -159,17 +212,23 @@ public class SauceOptions {
     }
 
     // This might be made public in future version; For now, no good reason to prefer it over direct accessor
-    private Object getCapability(String capability) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        String getter = "get" + capability.substring(0, 1).toUpperCase() + capability.substring(1);
-        Method declaredMethod = SauceOptions.class.getDeclaredMethod(getter);
-        return declaredMethod.invoke(this);
+    private Object getCapability(String capability) {
+        try {
+            String getter = "get" + capability.substring(0, 1).toUpperCase() + capability.substring(1);
+            Method declaredMethod = null;
+            declaredMethod = SauceOptions.class.getDeclaredMethod(getter);
+            return declaredMethod.invoke(this);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     // This might be made public in future version; For now, no good reason to prefer it over direct accessor
     public void setCapability(String key, Object value) {
-        if (Options.primaryEnum.contains(key) && value.getClass().equals(String.class)) {
+        if (primaryEnum.contains(key) && value.getClass().equals(String.class)) {
             setEnumCapability(key, (String) value);
-        } else if (Options.secondaryEnum.contains(key) && isKeyString((HashMap) value)) {
+        } else if (secondaryEnum.contains(key) && isKeyString((HashMap) value)) {
             setEnumCapability(key, (HashMap) value);
         } else {
             try {
@@ -189,17 +248,17 @@ public class SauceOptions {
 
     private void setEnumCapability(String key, HashMap value) {
         if ("prerun".equals(key)) {
-            Map<Options.Prerun, Object> prerunMap = new HashMap<>();
+            Map<Prerun, Object> prerunMap = new HashMap<>();
             value.forEach((oldKey, val) -> {
-                String keyString = Options.Prerun.fromString((String) oldKey);
-                prerunMap.put(Options.Prerun.valueOf(keyString), val);
+                String keyString = Prerun.fromString((String) oldKey);
+                prerunMap.put(Prerun.valueOf(keyString), val);
             });
             setPrerun(prerunMap);
         } else if ("timeouts".equals(key)) {
-            Map<Options.Timeouts, Integer> timeoutsMap = new HashMap<>();
+            Map<Timeouts, Integer> timeoutsMap = new HashMap<>();
             value.forEach((oldKey, val) -> {
-                String keyString = Options.Timeouts.fromString((String) oldKey);
-                timeoutsMap.put(Options.Timeouts.valueOf(keyString), (Integer) val);
+                String keyString = Timeouts.fromString((String) oldKey);
+                timeoutsMap.put(Timeouts.valueOf(keyString), (Integer) val);
             });
             setTimeouts(timeoutsMap);
         }
@@ -208,43 +267,43 @@ public class SauceOptions {
     private void setEnumCapability(String key, String value) {
         switch (key) {
             case "browserName":
-                if (!Options.Browser.keys().contains(value)) {
-                    String message = value + " is not a valid Browser, please choose from: " + Options.Browser.keys();
+                if (!Browser.keys().contains(value)) {
+                    String message = value + " is not a valid Browser, please choose from: " + Browser.keys();
                     throw new InvalidSauceOptionsArgumentException(message);
                 } else {
-                    setBrowserName(Options.Browser.valueOf(Options.Browser.fromString(value)));
+                    setBrowserName(Browser.valueOf(Browser.fromString(value)));
                 }
                 break;
             case "platformName":
-                if (!Options.Platform.keys().contains(value)) {
-                    String message = value + " is not a valid Platform, please choose from: " + Options.Platform.keys();
+                if (!SaucePlatform.keys().contains(value)) {
+                    String message = value + " is not a valid Platform, please choose from: " + SaucePlatform.keys();
                     throw new InvalidSauceOptionsArgumentException(message);
                 } else {
-                    setPlatformName(Options.Platform.valueOf(Options.Platform.fromString(value)));
+                    setPlatformName(SaucePlatform.valueOf(SaucePlatform.fromString(value)));
                 }
                 break;
             case "jobVisibility":
-                if (!Options.JobVisibility.keys().contains(value)) {
-                    String message = value + " is not a valid Job Visibility, please choose from: " + Options.JobVisibility.keys();
+                if (!JobVisibility.keys().contains(value)) {
+                    String message = value + " is not a valid Job Visibility, please choose from: " + JobVisibility.keys();
                     throw new InvalidSauceOptionsArgumentException(message);
                 } else {
-                    setJobVisibility(Options.JobVisibility.valueOf(Options.JobVisibility.fromString(value)));
+                    setJobVisibility(JobVisibility.valueOf(JobVisibility.fromString(value)));
                 }
                 break;
             case "pageLoadStrategy":
-                if (!Options.PageLoadStrategy.keys().contains(value)) {
-                    String message = value + " is not a valid Job Visibility, please choose from: " + Options.PageLoadStrategy.keys();
+                if (!PageLoadStrategy.keys().contains(value)) {
+                    String message = value + " is not a valid Job Visibility, please choose from: " + PageLoadStrategy.keys();
                     throw new InvalidSauceOptionsArgumentException(message);
                 } else {
-                    setPageLoadStrategy(Options.PageLoadStrategy.valueOf(Options.PageLoadStrategy.fromString(value)));
+                    setPageLoadStrategy(PageLoadStrategy.valueOf(PageLoadStrategy.fromString(value)));
                 }
                 break;
             case "unhandledPromptBehavior":
-                if (!Options.UnhandledPromptBehavior.keys().contains(value)) {
-                    String message = value + " is not a valid Job Visibility, please choose from: " + Options.UnhandledPromptBehavior.keys();
+                if (!UnhandledPromptBehavior.keys().contains(value)) {
+                    String message = value + " is not a valid Job Visibility, please choose from: " + UnhandledPromptBehavior.keys();
                     throw new InvalidSauceOptionsArgumentException(message);
                 } else {
-                    setUnhandledPromptBehavior(Options.UnhandledPromptBehavior.valueOf(Options.UnhandledPromptBehavior.fromString(value)));
+                    setUnhandledPromptBehavior(UnhandledPromptBehavior.valueOf(UnhandledPromptBehavior.fromString(value)));
                 }
                 break;
             default:

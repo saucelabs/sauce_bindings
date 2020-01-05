@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -30,48 +29,48 @@ public class SauceOptionsTest {
 
     @Test
     public void usesLatestChromeWindowsVersionsByDefault() {
-        assertEquals(Options.Browser.CHROME, sauceOptions.getBrowserName());
-        assertEquals(Options.Platform.WINDOWS_10, sauceOptions.getPlatformName());
+        assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
+        assertEquals(SaucePlatform.WINDOWS_10, sauceOptions.getPlatformName());
         assertEquals("latest", sauceOptions.getBrowserVersion());
     }
 
     @Test
     public void updatesBrowserBrowserVersionPlatformVersionValues() {
-        sauceOptions.setBrowserName(Options.Browser.FIREFOX);
-        sauceOptions.setPlatformName(Options.Platform.MAC_HIGH_SIERRA);
+        sauceOptions.setBrowserName(Browser.FIREFOX);
+        sauceOptions.setPlatformName(SaucePlatform.MAC_HIGH_SIERRA);
         sauceOptions.setBrowserVersion("68");
 
-        assertEquals(Options.Browser.FIREFOX, sauceOptions.getBrowserName());
+        assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
         assertEquals("68", sauceOptions.getBrowserVersion());
-        assertEquals(Options.Platform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
+        assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
     }
 
     @Test
     public void fluentPatternWorks() {
-        sauceOptions.setBrowserName(Options.Browser.FIREFOX)
+        sauceOptions.setBrowserName(Browser.FIREFOX)
                 .setBrowserVersion("68")
-                .setPlatformName(Options.Platform.MAC_HIGH_SIERRA);
+                .setPlatformName(SaucePlatform.MAC_HIGH_SIERRA);
 
-        assertEquals(Options.Browser.FIREFOX, sauceOptions.getBrowserName());
+        assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
         assertEquals("68", sauceOptions.getBrowserVersion());
-        assertEquals(Options.Platform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
+        assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
     }
 
     @Test
     public void acceptsOtherW3CValues() {
-        sauceOptions.setPageLoadStrategy(Options.PageLoadStrategy.EAGER);
+        sauceOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
         sauceOptions.setAcceptInsecureCerts(true);
-        Map<Options.Timeouts, Integer> timeouts = new HashMap<>();
-        timeouts.put(Options.Timeouts.IMPLICIT, 1);
-        timeouts.put(Options.Timeouts.PAGE_LOAD, 100);
-        timeouts.put(Options.Timeouts.SCRIPT, 10);
+        Map<Timeouts, Integer> timeouts = new HashMap<>();
+        timeouts.put(Timeouts.IMPLICIT, 1);
+        timeouts.put(Timeouts.PAGE_LOAD, 100);
+        timeouts.put(Timeouts.SCRIPT, 10);
         sauceOptions.setTimeouts(timeouts);
-        sauceOptions.setUnhandledPromptBehavior(Options.UnhandledPromptBehavior.IGNORE);
+        sauceOptions.setUnhandledPromptBehavior(UnhandledPromptBehavior.IGNORE);
 
-        assertEquals(Options.PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
+        assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
         assertEquals(true, sauceOptions.getAcceptInsecureCerts());
         assertEquals(timeouts, sauceOptions.getTimeouts());
-        assertEquals(Options.UnhandledPromptBehavior.IGNORE, sauceOptions.getUnhandledPromptBehavior());
+        assertEquals(UnhandledPromptBehavior.IGNORE, sauceOptions.getUnhandledPromptBehavior());
     }
 
     @Test
@@ -79,16 +78,16 @@ public class SauceOptionsTest {
         sauceOptions.setExtendedDebugging(true);
         sauceOptions.setName("Test name");
         sauceOptions.setParentTunnel("Mommy");
-        sauceOptions.setJobVisibility(Options.JobVisibility.SHARE);
-        Map<Options.Prerun, Object> prerun = new HashMap<>();
-        prerun.put(Options.Prerun.EXECUTABLE, "http://example.com");
+        sauceOptions.setJobVisibility(JobVisibility.SHARE);
+        Map<Prerun, Object> prerun = new HashMap<>();
+        prerun.put(Prerun.EXECUTABLE, "http://example.com");
         List<String> args = new ArrayList<>();
         args.add("--silent");
         args.add("-a");
         args.add("-q");
-        prerun.put(Options.Prerun.ARGS, args);
-        prerun.put(Options.Prerun.BACKGROUND, true);
-        prerun.put(Options.Prerun.TIMEOUT, 40);
+        prerun.put(Prerun.ARGS, args);
+        prerun.put(Prerun.BACKGROUND, true);
+        prerun.put(Prerun.TIMEOUT, 40);
         sauceOptions.setPrerun(prerun);
         List<String> tags = new ArrayList<>();
         tags.add("Foo");
@@ -99,7 +98,7 @@ public class SauceOptionsTest {
         assertEquals(true, sauceOptions.getExtendedDebugging());
         assertEquals("Test name", sauceOptions.getName());
         assertEquals("Mommy", sauceOptions.getParentTunnel());
-        assertEquals(Options.JobVisibility.SHARE, sauceOptions.getJobVisibility());
+        assertEquals(JobVisibility.SHARE, sauceOptions.getJobVisibility());
         assertEquals(prerun, sauceOptions.getPrerun());
         assertEquals(tags, sauceOptions.getTags());
     }
@@ -113,7 +112,7 @@ public class SauceOptionsTest {
 
         sauceOptions = new SauceOptions(firefoxOptions);
 
-        assertEquals(Options.Browser.FIREFOX, sauceOptions.getBrowserName());
+        assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
         assertEquals(firefoxOptions, sauceOptions.getSeleniumCapabilities());
     }
 
@@ -125,7 +124,7 @@ public class SauceOptionsTest {
 
         sauceOptions = new SauceOptions(chromeOptions);
 
-        assertEquals(Options.Browser.CHROME, sauceOptions.getBrowserName());
+        assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
         assertEquals(chromeOptions, sauceOptions.getSeleniumCapabilities());
     }
 
@@ -136,7 +135,7 @@ public class SauceOptionsTest {
 
         sauceOptions = new SauceOptions(edgeOptions);
 
-        assertEquals(Options.Browser.EDGE, sauceOptions.getBrowserName());
+        assertEquals(Browser.EDGE, sauceOptions.getBrowserName());
         assertEquals(edgeOptions, sauceOptions.getSeleniumCapabilities());
     }
 
@@ -149,7 +148,7 @@ public class SauceOptionsTest {
 
         sauceOptions = new SauceOptions(firefoxOptions);
 
-        assertEquals(Options.Browser.FIREFOX, sauceOptions.getBrowserName());
+        assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
         assertEquals(firefoxOptions, sauceOptions.getSeleniumCapabilities());
     }
 
@@ -157,12 +156,12 @@ public class SauceOptionsTest {
     public void acceptsInternetExplorerOptionsClass() {
         InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
         internetExplorerOptions.requireWindowFocus();
-        internetExplorerOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
+        internetExplorerOptions.setPageLoadStrategy(org.openqa.selenium.PageLoadStrategy.EAGER);
         internetExplorerOptions.setUnhandledPromptBehaviour(DISMISS);
 
         sauceOptions = new SauceOptions(internetExplorerOptions);
 
-        assertEquals(Options.Browser.INTERNET_EXPLORER, sauceOptions.getBrowserName());
+        assertEquals(Browser.INTERNET_EXPLORER, sauceOptions.getBrowserName());
         assertEquals(internetExplorerOptions, sauceOptions.getSeleniumCapabilities());
     }
 
@@ -174,7 +173,7 @@ public class SauceOptionsTest {
 
         sauceOptions = new SauceOptions(safariOptions);
 
-        assertEquals(Options.Browser.SAFARI, sauceOptions.getBrowserName());
+        assertEquals(Browser.SAFARI, sauceOptions.getBrowserName());
         assertEquals(safariOptions, sauceOptions.getSeleniumCapabilities());
     }
 
@@ -191,10 +190,10 @@ public class SauceOptionsTest {
         timeouts.put("pageLoad", 100);
         timeouts.put("script", 10);
 
-        Map<Options.Timeouts, Integer> expectedTimeouts = new HashMap<>();
-        expectedTimeouts.put(Options.Timeouts.IMPLICIT, 1);
-        expectedTimeouts.put(Options.Timeouts.PAGE_LOAD, 100);
-        expectedTimeouts.put(Options.Timeouts.SCRIPT, 10);
+        Map<Timeouts, Integer> expectedTimeouts = new HashMap<>();
+        expectedTimeouts.put(Timeouts.IMPLICIT, 1);
+        expectedTimeouts.put(Timeouts.PAGE_LOAD, 100);
+        expectedTimeouts.put(Timeouts.SCRIPT, 10);
 
         map.put("timeouts", timeouts);
         map.put("unhandledPromptBehavior", "ignore");
@@ -212,11 +211,11 @@ public class SauceOptionsTest {
         prerun.put("timeout", 40);
         map.put("prerun", prerun);
 
-        Map<Options.Prerun, Object> expectedPrerun = new HashMap<>();
-        expectedPrerun.put(Options.Prerun.ARGS, args);
-        expectedPrerun.put(Options.Prerun.BACKGROUND, true);
-        expectedPrerun.put(Options.Prerun.EXECUTABLE, "http://example.com");
-        expectedPrerun.put(Options.Prerun.TIMEOUT, 40);
+        Map<Prerun, Object> expectedPrerun = new HashMap<>();
+        expectedPrerun.put(Prerun.ARGS, args);
+        expectedPrerun.put(Prerun.BACKGROUND, true);
+        expectedPrerun.put(Prerun.EXECUTABLE, "http://example.com");
+        expectedPrerun.put(Prerun.TIMEOUT, 40);
 
         List<String> tags = new ArrayList<>();
         tags.add("Foo");
@@ -226,16 +225,16 @@ public class SauceOptionsTest {
 
         sauceOptions.setCapabilities(map);
 
-        assertEquals(Options.Browser.FIREFOX, sauceOptions.getBrowserName());
+        assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
         assertEquals("68", sauceOptions.getBrowserVersion());
-        assertEquals(Options.Platform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
-        assertEquals(Options.PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
+        assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
+        assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
         assertEquals(true, sauceOptions.getAcceptInsecureCerts());
         assertEquals(expectedTimeouts, sauceOptions.getTimeouts());
-        assertEquals(Options.UnhandledPromptBehavior.IGNORE, sauceOptions.getUnhandledPromptBehavior());
+        assertEquals(UnhandledPromptBehavior.IGNORE, sauceOptions.getUnhandledPromptBehavior());
         assertEquals(true, sauceOptions.getExtendedDebugging());
         assertEquals("Mommy", sauceOptions.getParentTunnel());
-        assertEquals(Options.JobVisibility.SHARE, sauceOptions.getJobVisibility());
+        assertEquals(JobVisibility.SHARE, sauceOptions.getJobVisibility());
         assertEquals(expectedPrerun, sauceOptions.getPrerun());
         assertEquals(tags, sauceOptions.getTags());
     }
@@ -276,18 +275,18 @@ public class SauceOptionsTest {
         sauceOptions.setBuild("CUSTOM BUILD: 12");
         sauceCapabilities.setCapability("build", "CUSTOM BUILD: 12");
 
-        sauceOptions.setPageLoadStrategy(Options.PageLoadStrategy.EAGER);
-        expectedCapabilities.setCapability("pageLoadStrategy", Options.PageLoadStrategy.EAGER);
+        sauceOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
+        expectedCapabilities.setCapability("pageLoadStrategy", PageLoadStrategy.EAGER);
         sauceOptions.setAcceptInsecureCerts(true);
         expectedCapabilities.setCapability("acceptInsecureCerts", true);
-        Map<Options.Timeouts, Integer> timeouts = new HashMap<>();
-        timeouts.put(Options.Timeouts.IMPLICIT, 1);
-        timeouts.put(Options.Timeouts.PAGE_LOAD, 100);
-        timeouts.put(Options.Timeouts.SCRIPT, 10);
+        Map<Timeouts, Integer> timeouts = new HashMap<>();
+        timeouts.put(Timeouts.IMPLICIT, 1);
+        timeouts.put(Timeouts.PAGE_LOAD, 100);
+        timeouts.put(Timeouts.SCRIPT, 10);
         sauceOptions.setTimeouts(timeouts);
         expectedCapabilities.setCapability("timeouts", timeouts);
-        sauceOptions.setUnhandledPromptBehavior(Options.UnhandledPromptBehavior.IGNORE);
-        expectedCapabilities.setCapability("unhandledPromptBehavior", Options.UnhandledPromptBehavior.IGNORE);
+        sauceOptions.setUnhandledPromptBehavior(UnhandledPromptBehavior.IGNORE);
+        expectedCapabilities.setCapability("unhandledPromptBehavior", UnhandledPromptBehavior.IGNORE);
 
         sauceOptions.setExtendedDebugging(true);
         sauceCapabilities.setCapability("extendedDebugging", true);
@@ -296,17 +295,17 @@ public class SauceOptionsTest {
         sauceOptions.setParentTunnel("Mommy");
         sauceCapabilities.setCapability("parentTunnel", "Mommy");
 
-        sauceOptions.setJobVisibility(Options.JobVisibility.SHARE);
-        sauceCapabilities.setCapability("public", Options.JobVisibility.SHARE);
-        Map<Options.Prerun, Object> prerun = new HashMap<>();
-        prerun.put(Options.Prerun.EXECUTABLE, "http://example.com");
+        sauceOptions.setJobVisibility(JobVisibility.SHARE);
+        sauceCapabilities.setCapability("public", JobVisibility.SHARE);
+        Map<Prerun, Object> prerun = new HashMap<>();
+        prerun.put(Prerun.EXECUTABLE, "http://example.com");
         List<String> args = new ArrayList<>();
         args.add("--silent");
         args.add("-a");
         args.add("-q");
-        prerun.put(Options.Prerun.ARGS, args);
-        prerun.put(Options.Prerun.BACKGROUND, true);
-        prerun.put(Options.Prerun.TIMEOUT, 40);
+        prerun.put(Prerun.ARGS, args);
+        prerun.put(Prerun.BACKGROUND, true);
+        prerun.put(Prerun.TIMEOUT, 40);
         sauceOptions.setPrerun(prerun);
         sauceCapabilities.setCapability("prerun", prerun);
         List<String> tags = new ArrayList<>();

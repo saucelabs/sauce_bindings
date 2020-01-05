@@ -24,6 +24,7 @@ import java.util.Map;
 @Setter @Getter
 public class SauceOptions {
     @Setter(AccessLevel.NONE) private MutableCapabilities seleniumCapabilities;
+    public TimeoutStore timeout = new TimeoutStore();
 
     // w3c Settings
     private Browser browserName = Browser.CHROME;
@@ -33,7 +34,7 @@ public class SauceOptions {
     private Boolean acceptInsecureCerts = null;
     private Proxy proxy;
     private Boolean setWindowRect = null;
-    private Map<Timeouts, Integer> timeouts;
+    @Getter(AccessLevel.NONE) private Map<Timeouts, Integer> timeouts;
     private Boolean strictFileInteractability = null;
     private UnhandledPromptBehavior unhandledPromptBehavior;
 
@@ -138,6 +139,13 @@ public class SauceOptions {
 
     public SauceOptions(SafariOptions options) {
         this(new MutableCapabilities(options));
+    }
+
+    public Map<Timeouts, Integer> getTimeouts() {
+        if (timeout.getTimeouts().isEmpty()) {
+            return timeouts;
+        }
+        return timeout.getTimeouts();
     }
 
     private SauceOptions(MutableCapabilities options) {

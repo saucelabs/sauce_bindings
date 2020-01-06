@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
+using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Safari;
+// ReSharper disable InconsistentNaming
 
 namespace Simple.Sauce
 {
     public class SauceOptions
     {
-        private const string DefaultBrowserVersion = "latest";
-        private const string DefaultPlatform = "Windows 10";
         private readonly string _sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
         private readonly string _sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
         private readonly Dictionary<string, object> _sauceConfiguration;
+        private const string DEFAULT_BROWSER_VERSION = "latest";
+        private const string DEFAULT_PLATFORM = "Windows 10";
 
         public SauceOptions() : this(new DriverFactory())
         {
@@ -31,11 +33,11 @@ namespace Simple.Sauce
         }
 
         public IDriverFactory DriverFactory { get; }
-        public EdgeOptions ConfiguredEdgeOptions { get; set; }
-        public ChromeOptions ConfiguredChromeOptions { get; private set; }
-        public SafariOptions ConfiguredSafariOptions { get; set; }
         public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
-
+        public EdgeOptions ConfiguredEdgeOptions { get; set; } = new EdgeOptions();
+        public ChromeOptions ConfiguredChromeOptions { get; private set; } = new ChromeOptions();
+        public SafariOptions ConfiguredSafariOptions { get; set; } = new SafariOptions();
+        public FirefoxOptions ConfiguredFirefoxOptions { get; set; } = new FirefoxOptions();
 
         public void WithEdge()
         {
@@ -47,29 +49,19 @@ namespace Simple.Sauce
             if (edgeVersion == null)
                 throw new ArgumentNullException("Please supply a valid EdgeVersion. You suplied an invalid value=>" +
                                                 edgeVersion);
-            ConfiguredEdgeOptions = new EdgeOptions
-            {
-                BrowserVersion = edgeVersion.Value,
-                PlatformName = DefaultPlatform
-            };
+            ConfiguredEdgeOptions.BrowserVersion = edgeVersion.Value;
+            ConfiguredEdgeOptions.PlatformName = DEFAULT_PLATFORM;
         }
 
         public void WithChrome()
         {
-            ConfiguredChromeOptions = new ChromeOptions
-            {
-                BrowserVersion = DefaultBrowserVersion,
-                PlatformName = DefaultPlatform
-            };
+            ConfiguredChromeOptions.BrowserVersion = DEFAULT_BROWSER_VERSION;
+            ConfiguredChromeOptions.PlatformName = DEFAULT_PLATFORM;
         }
 
         public void WithChrome(string chromeVersion)
         {
-            ConfiguredChromeOptions = new ChromeOptions
-            {
-                BrowserVersion = chromeVersion,
-                PlatformName = DefaultPlatform
-            };
+            ConfiguredChromeOptions.BrowserVersion = chromeVersion;
         }
 
         public IWebDriver CreateEdgeBrowser()
@@ -92,11 +84,7 @@ namespace Simple.Sauce
 
         public void WithSafari()
         {
-            ConfiguredSafariOptions = new SafariOptions
-            {
-                BrowserVersion = DefaultBrowserVersion,
-                PlatformName = Platforms.MacOsMojave.Value
-            };
+            WithSafari(DEFAULT_BROWSER_VERSION);
         }
 
         public void WithSafari(string safariVersion)
@@ -109,6 +97,11 @@ namespace Simple.Sauce
         }
 
         private string SetCorrectPlatformVersion(string safariBrowserVersion)
+            ConfiguredSafariOptions.BrowserVersion = safariVersion;
+            ConfiguredSafariOptions.PlatformName = MatchCorrectPlatformToBrowserVersion(safariVersion);
+        }
+
+        public string MatchCorrectPlatformToBrowserVersion(string safariBrowserVersion)
         {
             switch (safariBrowserVersion)
             {
@@ -135,6 +128,17 @@ namespace Simple.Sauce
                 default:
                     throw new IncorrectSafariVersionException();
             }
+        }
+
+        public void WithFirefox()
+        {
+            WithFirefox(DEFAULT_BROWSER_VERSION);
+        }
+
+        public void WithFirefox(string version)
+        {
+            ConfiguredFirefoxOptions.BrowserVersion = version;
+            ConfiguredFirefoxOptions.PlatformName = DEFAULT_PLATFORM;
         }
     }
 }

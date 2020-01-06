@@ -28,21 +28,67 @@ namespace Simple.Sauce
         {
             //TODO this should probably move to the DriverFactory and just let it handle the 
             //construction of the drivers
-            if (Options.ConfiguredEdgeOptions != null)
-            {
-                _driver = Options.CreateEdgeBrowser();
-                return _driver;
-            }
-
-            if (Options.ConfiguredSafariOptions != null)
-            {
-                _driver = Options.CreateSafariDriver();
-                return _driver;
-            }
-
-            _driver = Options.CreateChromeDriver();
-            return _driver;
+            if (!string.IsNullOrEmpty(Options.ConfiguredEdgeOptions.BrowserVersion))
+                return CreateEdgeBrowser();
+            if (!string.IsNullOrEmpty(Options.ConfiguredSafariOptions.BrowserVersion))
+                return CreateSafariDriver();
+            if (!string.IsNullOrEmpty(Options.ConfiguredFirefoxOptions.BrowserVersion))
+                return CreateFirefoxDriver();
+            return CreateChromeDriver();
         }
+         private IWebDriver CreateEdgeBrowser()
+        {
+            var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
+            var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
+            var sauceConfiguration = new Dictionary<string, object>
+            {
+                ["username"] = sauceUserName,
+                ["accessKey"] = sauceAccessKey
+            };
+
+            Options.ConfiguredEdgeOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
+            return Driver.CreateRemoteWebDriver(Options.ConfiguredEdgeOptions);
+        }
+        private IWebDriver CreateSafariDriver()
+        {
+            var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
+            var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
+            var sauceConfiguration = new Dictionary<string, object>
+            {
+                ["username"] = sauceUserName,
+                ["accessKey"] = sauceAccessKey
+            };
+
+            Options.ConfiguredSafariOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
+            return Driver.CreateRemoteWebDriver(Options.ConfiguredSafariOptions);
+        }
+        private IWebDriver CreateFirefoxDriver()
+        {
+            var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
+            var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
+            var sauceConfiguration = new Dictionary<string, object>
+            {
+                ["username"] = sauceUserName,
+                ["accessKey"] = sauceAccessKey
+            };
+
+            Options.ConfiguredFirefoxOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
+            return Driver.CreateRemoteWebDriver(Options.ConfiguredFirefoxOptions);
+        }
+        private IWebDriver CreateChromeDriver()
+        {
+            var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
+            var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
+            var sauceConfiguration = new Dictionary<string, object>
+            {
+                ["username"] = sauceUserName,
+                ["accessKey"] = sauceAccessKey
+            };
+
+            Options.ConfiguredChromeOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
+            return Driver.CreateRemoteWebDriver(Options.ConfiguredChromeOptions);
+        }
+      
 
         public void Stop(bool isPassed)
         {

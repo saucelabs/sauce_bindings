@@ -16,6 +16,12 @@ module SimpleSauce
                record_video screen_resolution selenium_version tags time_zone tunnel_identifier video_upload_on_pass
                capture_performance].freeze
 
+    attr_accessor :browser_name, :browser_version, :platform_name, :accept_insecure_certs, :page_load_strategy, :proxy,
+                  :set_window_rect, :timeouts, :unhandled_prompt_behavior, :strict_file_interactability, :avoid_proxy,
+                  :build, :chromedriver_version, :command_timeout, :custom_data, :extended_debugging, :idle_timeout,
+                  :iedriver_version, :max_duration, :name, :parent_tunnel, :prerun, :priority, :public, :record_logs,
+                  :record_screenshots, :record_video, :screen_resolution, :selenium_version, :tags, :time_zone,
+                  :tunnel_identifier, :video_upload_on_pass, :capture_performance
     attr_reader :selenium_options
 
     def initialize(**opts)
@@ -32,12 +38,37 @@ module SimpleSauce
       caps = selenium_options.dup
       W3C.each do |key|
         value = send(key)
-        caps[self.class.camel_case(key)] = value if value
+        key = self.class.camel_case(key)
+
+        if key == 'proxy' && value
+          value = value.as_json
+        elsif key == 'timeouts' && value
+          value = value.inject({}) do |updated, (old_key, val)|
+            updated[self.class.camel_case(old_key)] = val
+            updated
+          end
+        end
+
+        caps[key] = value if value
       end
       caps['sauce:options'] = {}
       SAUCE.each do |key|
         value = send(key)
-        caps['sauce:options'][self.class.camel_case(key)] = value unless value.nil?
+        key = self.class.camel_case(key)
+
+        if key == 'prerun' && value.is_a?(Hash)
+          value = value.inject({}) do |updated, (old_key, val)|
+            updated[self.class.camel_case(old_key)] = val
+            updated
+          end
+        elsif key == 'customData' && value.is_a?(Hash)
+          value = value.inject({}) do |updated, (old_key, val)|
+            updated[self.class.camel_case(old_key)] = val
+            updated
+          end
+        end
+
+        caps['sauce:options'][key] = value unless value.nil?
       end
       caps
     end
@@ -46,6 +77,13 @@ module SimpleSauce
     def add_capabilities(opts)
       opts.each do |key, value|
         raise ArgumentError, "#{key} is not a valid parameter for Options class" unless respond_to?("#{key}=")
+
+        if value.is_a?(Hash)
+          value = value.inject({}) do |updated, (key, val)|
+            updated[key.to_sym] = val
+            updated
+          end
+        end
 
         send("#{key}=", value)
       end
@@ -68,6 +106,10 @@ module SimpleSauce
           @browser_name = 'internet explorer'
         when Selenium::WebDriver::Safari::Options
           @browser_name = 'safari'
+        when Selenium::WebDriver::Remote::Capabilities
+          W3C.each { |capability|
+            send("#{capability}=", opt[capability]) if opt[capability]
+          }
         end
       end
 

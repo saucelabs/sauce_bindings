@@ -4,6 +4,6 @@ namespace Simple.Sauce
 {
     public interface IDriverFactory
     {
-        IWebDriver CreateRemoteWebDriver(DriverOptions options);
+        IWebDriver CreateRemoteWebDriver(SauceOptions options);
     }
 }

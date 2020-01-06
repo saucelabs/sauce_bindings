@@ -7,15 +7,18 @@ namespace Simple.Sauce
     public class SauceSession
     {
         private IWebDriver _driver;
+        private IDriverFactory _driverFactory;
 
         public SauceSession()
         {
             Options = new SauceOptions();
+            _driverFactory = new DriverFactory();
         }
 
         public SauceSession(SauceOptions options)
         {
             Options = options;
+            _driverFactory = new DriverFactory();
         }
 
         public SauceSession(SauceOptions options, IWebDriver driver)
@@ -24,19 +27,17 @@ namespace Simple.Sauce
             Options = options;
         }
 
+        public SauceSession(SauceOptions sauceOptions, IDriverFactory driverFactory)
+        {
+            Options = sauceOptions;
+            _driverFactory = driverFactory;
+        }
+
         public SauceOptions Options { get; }
 
         public IWebDriver Start()
         {
-            //TODO this should probably move to the DriverFactory and just let it handle the 
-            //construction of the drivers
-            if (!string.IsNullOrEmpty(Options.ConfiguredEdgeOptions.BrowserVersion))
-                return Options.CreateEdgeBrowser();
-            if (!string.IsNullOrEmpty(Options.ConfiguredSafariOptions.BrowserVersion))
-                return Options.CreateSafariDriver();
-            if (!string.IsNullOrEmpty(Options.ConfiguredFirefoxOptions.BrowserVersion))
-                return Options.CreateFirefoxDriver();
-            return Options.CreateChromeDriver();
+            return _driverFactory.CreateRemoteWebDriver(Options);
         }
       
 

@@ -13,17 +13,12 @@ namespace Simple.Sauce
     {
         private readonly string _sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
         private readonly string _sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
-        private readonly Dictionary<string, object> _sauceConfiguration;
+        public readonly Dictionary<string, object> _sauceConfiguration;
         private const string DEFAULT_BROWSER_VERSION = "latest";
         private const string DEFAULT_PLATFORM = "Windows 10";
 
-        public SauceOptions() : this(new DriverFactory())
+        public SauceOptions()
         {
-        }
-
-        public SauceOptions(IDriverFactory driverFactory)
-        {
-            DriverFactory = driverFactory;
             _sauceConfiguration = new Dictionary<string, object>
             {
                 ["username"] = _sauceUserName,
@@ -64,28 +59,6 @@ namespace Simple.Sauce
             ConfiguredChromeOptions.BrowserVersion = chromeVersion;
         }
 
-        public IWebDriver CreateEdgeBrowser()
-        {
-            ConfiguredEdgeOptions.AddAdditionalOption("sauce:options", _sauceConfiguration);
-            return DriverFactory.CreateRemoteWebDriver(ConfiguredEdgeOptions);
-        }
-
-        public IWebDriver CreateSafariDriver()
-        {
-            ConfiguredSafariOptions.AddAdditionalOption("sauce:options", _sauceConfiguration);
-            return DriverFactory.CreateRemoteWebDriver(ConfiguredSafariOptions);
-        }
-
-        public IWebDriver CreateChromeDriver()
-        {
-            ConfiguredChromeOptions.AddAdditionalOption("sauce:options", _sauceConfiguration);
-            return DriverFactory.CreateRemoteWebDriver(ConfiguredChromeOptions);
-        }
-        public IWebDriver CreateFirefoxDriver()
-        {
-            ConfiguredFirefoxOptions.AddAdditionalOption("sauce:options", _sauceConfiguration);
-            return DriverFactory.CreateRemoteWebDriver(ConfiguredFirefoxOptions);
-        }
         public void WithSafari()
         {
             WithSafari(DEFAULT_BROWSER_VERSION);

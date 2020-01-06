@@ -81,7 +81,11 @@ namespace Simple.Sauce
             ConfiguredChromeOptions.AddAdditionalOption("sauce:options", _sauceConfiguration);
             return DriverFactory.CreateRemoteWebDriver(ConfiguredChromeOptions);
         }
-
+        public IWebDriver CreateFirefoxDriver()
+        {
+            ConfiguredFirefoxOptions.AddAdditionalOption("sauce:options", _sauceConfiguration);
+            return DriverFactory.CreateRemoteWebDriver(ConfiguredFirefoxOptions);
+        }
         public void WithSafari()
         {
             WithSafari(DEFAULT_BROWSER_VERSION);
@@ -89,16 +93,13 @@ namespace Simple.Sauce
 
         public void WithSafari(string safariVersion)
         {
-            ConfiguredSafariOptions = new SafariOptions
-            {
-                BrowserVersion = safariVersion,
-                PlatformName = SetCorrectPlatformVersion(safariVersion)
-            };
+            SetPlatformBasedOnBrowserVersion(safariVersion);
         }
 
-        private string SetCorrectPlatformVersion(string safariBrowserVersion)
-            ConfiguredSafariOptions.BrowserVersion = safariVersion;
-            ConfiguredSafariOptions.PlatformName = MatchCorrectPlatformToBrowserVersion(safariVersion);
+        private void SetPlatformBasedOnBrowserVersion(string safariBrowserVersion)
+        {
+            ConfiguredSafariOptions.BrowserVersion = safariBrowserVersion;
+            ConfiguredSafariOptions.PlatformName = MatchCorrectPlatformToBrowserVersion(safariBrowserVersion);
         }
 
         public string MatchCorrectPlatformToBrowserVersion(string safariBrowserVersion)
@@ -140,5 +141,7 @@ namespace Simple.Sauce
             ConfiguredFirefoxOptions.BrowserVersion = version;
             ConfiguredFirefoxOptions.PlatformName = DEFAULT_PLATFORM;
         }
+
+
     }
 }

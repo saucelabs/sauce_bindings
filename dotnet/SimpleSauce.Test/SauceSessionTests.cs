@@ -170,7 +170,7 @@ namespace SimpleSauce.Test
         {
             SauceOptions = new SauceOptions();
             SauceOptions.WithFirefox();
-            SauceSession = new SauceSession(SauceOptions, _dummyDriver.Object);
+            SauceSession = new SauceSession(SauceOptions);
 
             SauceSession.Start();
 

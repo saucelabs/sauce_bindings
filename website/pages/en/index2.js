@@ -64,9 +64,7 @@ class HomeSplash extends React.Component {
         <div className="inner">
           <ProjectTitle siteConfig={siteConfig} />
           <PromoSection>
-            <Button href="#try">Try It Out</Button>
-            <Button href={docUrl('doc1.html')}>Example Link</Button>
-            <Button href={docUrl('doc2.html')}>Example Link 2</Button>
+            <Button href={docUrl('gettingstarted.html')}>Get Started</Button>
           </PromoSection>
         </div>
       </SplashContainer>
@@ -74,7 +72,7 @@ class HomeSplash extends React.Component {
   }
 }
 
-class Index extends React.Component {
+class Index2 extends React.Component {
   render() {
     const {config: siteConfig, language = ''} = this.props;
     const {baseUrl} = siteConfig;
@@ -92,6 +90,18 @@ class Index extends React.Component {
       </Container>
     );
 
+      const LeftBlock = props => (
+          <Container
+              padding={['bottom', 'top']}
+              id={props.id}
+              background={props.background}>
+              <GridBlock
+                  align="left"
+                  contents={props.children}
+                  layout={props.layout}
+              />
+          </Container>
+      );
     const FeatureCallout = () => (
       <div
         className="productShowcaseSection paddingBottom"
@@ -102,19 +112,25 @@ class Index extends React.Component {
     );
 
     const TryOut = () => (
-      <Block id="try">
+      <LeftBlock id="try">
         {[
           {
             content:
-              'To make your landing page more attractive, use illustrations! Check out ' +
-              '[**unDraw**](https://undraw.co/) which provides you with customizable illustrations which are free to use. ' +
-              'The illustrations you see on this page are from unDraw.',
+              'This project is a cross-language effort, with bindings available in the following languages:\n' +
+                '\n' +
+                '* [Java](https://github.com/saucelabs/simple_sauce/tree/master/java)\n' +
+                '* [C#](https://github.com/saucelabs/simple_sauce/tree/master/dotnet)\n' +
+                '* [Python](https://github.com/saucelabs/simple_sauce/tree/master/python)\n' +
+                '* [Ruby](https://github.com/saucelabs/simple_sauce/tree/master/ruby)\n' +
+                '\n' +
+                'Each binding balances having a shared API and feature set while being idiomatic to the language and ecosystem the binding is a part of. Each feature should be available in all language bindings.\n' +
+                '\n',
             image: `${baseUrl}img/undraw_code_review.svg`,
             imageAlign: 'left',
-            title: 'Wonderful SVG Illustrations',
+            title: 'Supported Language Bindings',
           },
         ]}
-      </Block>
+      </LeftBlock>
     );
 
     const Description = () => (
@@ -132,33 +148,42 @@ class Index extends React.Component {
     );
 
     const LearnHow = () => (
-      <Block background="light">
+      <LeftBlock background="light">
         {[
           {
             content:
-              'Each new Docusaurus project has **randomly-generated** theme colors.',
+              'Writing and maintaining automated good test frameworks is hard work. Sauce Labs wants to help make this work simpler.' +
+                ' We\'ve created Simple Sauce, a collection of tools to make connecting to and working with Sauce Labs simple.\n' +
+                '\n' +
+                'Simple Sauce has three main goals:\n' +
+                '* Providing test developers with a wrapper or binding in their preferred programming language\n' +
+                '* Providing a concise API for connecting to Sauce Labs and using Sauce features in test frameworks\n' +
+                '* Providing an excellent developer user experience for using Sauce Labs in a straightforward, intuitive way.\n' +
+                '\n' +
+                'The focus of this project is to make using Sauce Labs simple so that test developers can focus on developing the best automated test frameworks possible for their teams.\n' +
+                '\n',
             image: `${baseUrl}img/undraw_youtube_tutorial.svg`,
             imageAlign: 'right',
-            title: 'Randomly Generated Theme Colors',
+            title: 'Making Sauce Labs Simple To Use',
           },
         ]}
-      </Block>
+      </LeftBlock>
     );
 
     const Features = () => (
       <Block layout="fourColumn">
         {[
           {
-            content: 'This is the content of my feature',
+            content: 'An easy way to get the latest required syntax for Sauce Labs',
             image: `${baseUrl}img/undraw_react.svg`,
             imageAlign: 'top',
-            title: 'Feature One',
+            title: 'Selenium 4 Compatibility',
           },
           {
-            content: 'The content of my second feature',
+            content: 'This will make it easier for Sauce Labs to provide useful analytics',
             image: `${baseUrl}img/undraw_operating_system.svg`,
             imageAlign: 'top',
-            title: 'Feature Two',
+            title: 'Automatic Build Information',
           },
         ]}
       </Block>
@@ -198,15 +223,15 @@ class Index extends React.Component {
         <HomeSplash siteConfig={siteConfig} language={language} />
         <div className="mainContainer">
           <Features />
-          <FeatureCallout />
+          {/*<FeatureCallout />*/}
           <LearnHow />
           <TryOut />
-          <Description />
-          <Showcase />
+          {/*<Description />*/}
+          {/*<Showcase />*/}
         </div>
       </div>
     );
   }
 }
 
-module.exports = Index;
+module.exports = Index2;

@@ -1,0 +1,56 @@
+exampleValues:
+  browserName: 'firefox'
+  browserVersion: '68'
+  platformName: 'macOS 10.13'
+  acceptInsecureCerts: true
+  pageLoadStrategy: 'eager'
+  setWindowRect: true
+  unhandledPromptBehavior: "accept"
+  strictFileInteractability: true
+  timeouts:
+    implicit: 1
+    pageLoad: 59
+    script: 29
+  avoidProxy: true
+  build: 'Sample Build Name'
+  capturePerformance: true
+  chromedriverVersion: '71'
+  commandTimeout: 2
+  customData:
+    foo: 'foo'
+    bar: 'bar'
+  extendedDebugging: true
+  idleTimeout: 3
+  iedriverVersion: '3.141.0'
+  maxDuration: 300
+  name: 'Sample Test Name'
+  parentTunnel: 'Mommy'
+  prerun:
+    executable: "http://url.to/your/executable.exe"
+    args:
+      - --silent
+      - -a
+      - -q
+    background: false
+    timeout: 120
+  priority: 0
+  jobVisibility: 'team'
+  recordLogs: false
+  recordScreenshots: false
+  recordVideo: false
+  screenResolution: '10x10'
+  seleniumVersion: '3.141.59'
+  tags:
+    - foo
+    - bar
+    - foobar
+  timeZone: 'San Francisco'
+  tunnelIdentifier: 'tunnelname'
+  videoUploadOnPass: false
+
+invalidOption:
+  foo: "bar"
+  browser_Nme: "firefox"
+  browserVersion: "70"
+  platformName: "MacOS 10.12"
+  recordScreenshots: false

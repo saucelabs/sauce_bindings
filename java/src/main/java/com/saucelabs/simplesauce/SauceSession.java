@@ -11,10 +11,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class SauceSession {
+    private String username;
+    private String accessKey;
     @Getter @Setter private DataCenter dataCenter = DataCenter.US_WEST;
     @Getter private final SauceOptions sauceOptions;
-    @Getter @Setter private String username;
-    @Getter @Setter private String accessKey;
     @Setter private URL sauceUrl;
 
     @Getter private MutableCapabilities currentSessionCapabilities;
@@ -37,7 +37,7 @@ public class SauceSession {
         if (sauceUrl != null) {
             return sauceUrl;
         } else {
-            String url = "https://" + getSauceUsername() + ":" + getSauceAccessKey() + "@" + dataCenter + "/wd/hub";
+            String url = "https://" + getUsername() + ":" + getAccessKey() + "@" + dataCenter + "/wd/hub";
             try {
                 return new URL(url);
             } catch (MalformedURLException e) {
@@ -78,9 +78,15 @@ public class SauceSession {
         return System.getenv(key);
     }
 
-    private String getSauceUsername() {
+    protected String getSystemProperty(String key) {
+        return System.getProperty(key);
+    }
+
+    private String getUsername() {
         if (username != null) {
             return username;
+        } else if (!sauceOptions.isKnownCI() && getSystemProperty("SAUCE_USERNAME") != null) {
+            return getSystemProperty("SAUCE_USERNAME");
         } else if (getEnvironmentVariable("SAUCE_USERNAME") != null) {
             return getEnvironmentVariable("SAUCE_USERNAME");
         } else {
@@ -88,9 +94,11 @@ public class SauceSession {
         }
     }
 
-    private String getSauceAccessKey() {
+    private String getAccessKey() {
         if (accessKey != null) {
             return accessKey;
+        } else if (!sauceOptions.isKnownCI() && getSystemProperty("SAUCE_ACCESS_KEY") != null) {
+            return getSystemProperty("SAUCE_ACCESS_KEY");
         } else if (getEnvironmentVariable("SAUCE_ACCESS_KEY") != null) {
             return getEnvironmentVariable("SAUCE_ACCESS_KEY");
         } else {

@@ -82,8 +82,8 @@ public class SauceSessionTest {
 
     @Test
     public void setUserNameAndAccessKey() {
-        sauceSession.setUsername("test-username");
-        sauceSession.setAccessKey("test-accesskey");
+        doReturn("test-username").when(sauceSession).getSystemProperty("SAUCE_USERNAME");
+        doReturn("test-accesskey").when(sauceSession).getSystemProperty("SAUCE_ACCESS_KEY");
 
         String expetedSauceUrl = "https://test-username:test-accesskey@ondemand.us-west-1.saucelabs.com/wd/hub";
         assertEquals(expetedSauceUrl, sauceSession.getSauceUrl().toString());

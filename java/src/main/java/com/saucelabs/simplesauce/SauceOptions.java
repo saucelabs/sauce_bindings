@@ -117,6 +117,17 @@ public class SauceOptions {
             "tunnelIdentifier",
             "videoUploadOnPass");
 
+    public static final Map<String, String> knownCITools;
+    static {
+        knownCITools = new HashMap<>();
+        knownCITools.put("Jenkins", "BUILD_TAG");
+        knownCITools.put("Bamboo", "bamboo_agentId");
+        knownCITools.put("Travis", "TRAVIS_JOB_ID");
+        knownCITools.put("Circle", "CIRCLE_JOB");
+        knownCITools.put("GitLab", "CI");
+        knownCITools.put("TeamCity", "TEAMCITY_PROJECT_NAME");
+    }
+
     public SauceOptions() {
         this(new MutableCapabilities());
     }
@@ -189,28 +200,25 @@ public class SauceOptions {
     public String getBuild() {
         if (build != null) {
             return build;
-            // Jenkins
-        } else if (getEnvironmentVariable("BUILD_TAG") != null) {
+        } else if (getEnvironmentVariable(knownCITools.get("Jenkins")) != null) {
             return getEnvironmentVariable("BUILD_NAME") + ": " + getEnvironmentVariable("BUILD_NUMBER");
-            // Bamboo
-        } else if (getEnvironmentVariable("bamboo_agentId") != null) {
+        } else if (getEnvironmentVariable(knownCITools.get("Bamboo")) != null) {
             return getEnvironmentVariable("bamboo_shortJobName") + ": " + getEnvironmentVariable("bamboo_buildNumber");
-            // Travis
-        } else if (getEnvironmentVariable("TRAVIS_JOB_ID") != null) {
+        } else if (getEnvironmentVariable(knownCITools.get("Travis")) != null) {
             return getEnvironmentVariable("TRAVIS_JOB_NAME") + ": " + getEnvironmentVariable("TRAVIS_JOB_NUMBER");
-            // CircleCI
-        } else if (getEnvironmentVariable("CIRCLE_JOB") != null) {
+        } else if (getEnvironmentVariable(knownCITools.get("Circle")) != null) {
             return getEnvironmentVariable("CIRCLE_JOB") + ": " + getEnvironmentVariable("CIRCLE_BUILD_NUM");
-            // Gitlab
-        } else if (getEnvironmentVariable("CI") != null) {
+        } else if (getEnvironmentVariable(knownCITools.get("GitLab")) != null) {
             return getEnvironmentVariable("CI_JOB_NAME") + ": " + getEnvironmentVariable("CI_JOB_ID");
-            // Team City
-        } else if (getEnvironmentVariable("TEAMCITY_PROJECT_NAME") != null) {
+        } else if (getEnvironmentVariable(knownCITools.get("TeamCity")) != null) {
             return getEnvironmentVariable("TEAMCITY_PROJECT_NAME") + ": " + getEnvironmentVariable("BUILD_NUMBER");
-            // Default
         } else {
             return "Build Time: " + System.currentTimeMillis();
         }
+    }
+
+    public boolean isKnownCI() {
+        return !knownCITools.keySet().stream().allMatch((key) -> getEnvironmentVariable(key) == null);
     }
 
     // Use Case is pulling serialized information from JSON/YAML, converting it to a HashMap and passing it in

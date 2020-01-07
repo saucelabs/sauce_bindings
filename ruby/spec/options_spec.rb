@@ -47,7 +47,7 @@ module SimpleSauce
                               page_load_strategy: 'eager',
                               proxy: proxy,
                               set_window_rect: true,
-                              unhandled_prompt_behavior: "accept",
+                              unhandled_prompt_behavior: 'accept',
                               strict_file_interactability: true,
                               timeouts: timeouts)
 
@@ -63,36 +63,37 @@ module SimpleSauce
       it 'accepts Sauce Labs specific settings' do
         custom_data = {foo: 'foo',
                        bar: 'bar'}
-        prerun = {executable: "http://url.to/your/executable.exe",
-                  args: [ "--silent", "-a", "-q" ],
+        prerun = {executable: 'http://url.to/your/executable.exe',
+                  args: ['--silent', '-a', '-q'],
                   background: false,
-                  timeout: 120 }
-        tags = ['foo', 'bar', 'foobar']
+                  timeout: 120}
+        tags = %w[foo bar foobar]
         sauce_options = {
-            avoid_proxy: true,
-            build: 'Sample Build Name',
-            capture_performance: true,
-            chromedriver_version: '71',
-            command_timeout: 2,
-            custom_data: custom_data,
-            extended_debugging: true,
-            idle_timeout: 3,
-            iedriver_version: '3.141.0',
-            max_duration: 300,
-            name: 'Sample Test Name',
-            parent_tunnel: 'Mommy',
-            prerun: prerun,
-            priority: 0,
-            public: 'team',
-            record_logs: false,
-            record_screenshots: false,
-            record_video: false,
-            screen_resolution: '10x10',
-            selenium_version: '3.141.59',
-            tags: tags,
-            time_zone: 'San Francisco',
-            tunnel_identifier: 'tunnelname',
-            video_upload_on_pass: false}
+          avoid_proxy: true,
+          build: 'Sample Build Name',
+          capture_performance: true,
+          chromedriver_version: '71',
+          command_timeout: 2,
+          custom_data: custom_data,
+          extended_debugging: true,
+          idle_timeout: 3,
+          iedriver_version: '3.141.0',
+          max_duration: 300,
+          name: 'Sample Test Name',
+          parent_tunnel: 'Mommy',
+          prerun: prerun,
+          priority: 0,
+          public: 'team',
+          record_logs: false,
+          record_screenshots: false,
+          record_video: false,
+          screen_resolution: '10x10',
+          selenium_version: '3.141.59',
+          tags: tags,
+          time_zone: 'San Francisco',
+          tunnel_identifier: 'tunnelname',
+          video_upload_on_pass: false
+        }
 
         options = Options.new(**sauce_options)
 
@@ -198,7 +199,7 @@ module SimpleSauce
         options.page_load_strategy = 'eager'
         options.proxy = proxy
         options.set_window_rect = true
-        options.unhandled_prompt_behavior = "accept"
+        options.unhandled_prompt_behavior = 'accept'
         options.strict_file_interactability = true
         options.timeouts = timeouts
         options.platform_name
@@ -218,11 +219,11 @@ module SimpleSauce
       it 'parses Sauce values' do
         custom_data = {foo: 'foo',
                        bar: 'bar'}
-        prerun = {executable: "http://url.to/your/executable.exe",
-                  args: ["--silent", "-a", "-q"],
+        prerun = {executable: 'http://url.to/your/executable.exe',
+                  args: ['--silent', '-a', '-q'],
                   background: false,
                   timeout: 120}
-        tags = ['foo', 'bar', 'foobar']
+        tags = %w[foo bar foobar]
 
         options = Options.new
 
@@ -285,11 +286,11 @@ module SimpleSauce
                     script: 29}
         custom_data = {foo: 'foo',
                        bar: 'bar'}
-        prerun = {executable: "http://url.to/your/executable.exe",
-                  args: [ "--silent", "-a", "-q" ],
+        prerun = {executable: 'http://url.to/your/executable.exe',
+                  args: ['--silent', '-a', '-q'],
                   background: false,
-                  timeout: 120 }
-        tags = ['foo', 'bar', 'foobar']
+                  timeout: 120}
+        tags = %w[foo bar foobar]
 
         options = Options.new
         yaml = YAML.load_file('spec/options.yml')
@@ -361,7 +362,7 @@ module SimpleSauce
                                            'platformName' => 'Mac',
                                            'acceptInsecureCerts' => true,
                                            'pageLoadStrategy' => 'eager',
-                                           'proxy' => {"proxyType" => "MANUAL", "sslProxy" => "foo"},
+                                           'proxy' => {'proxyType' => 'MANUAL', 'sslProxy' => 'foo'},
                                            'setWindowRect' => true,
                                            'unhandledPromptBehavior' => 'accept',
                                            'strictFileInteractability' => true,
@@ -374,11 +375,11 @@ module SimpleSauce
       it 'correctly generates capabilities for sauce values' do
         custom_data = {foo: 'foo',
                        bar: 'bar'}
-        prerun = {'executable': "http://url.to/your/executable.exe",
-                  args: [ "--silent", "-a", "-q" ],
+        prerun = {'executable': 'http://url.to/your/executable.exe',
+                  args: ['--silent', '-a', '-q'],
                   background: false,
                   timeout: 120}
-        tags = ['foo', 'bar', 'foobar']
+        tags = %w[foo bar foobar]
         sauce_options = {avoid_proxy: true,
                          build: 'Sample Build Name',
                          capture_performance: true,
@@ -406,8 +407,8 @@ module SimpleSauce
 
         options = Options.new(**sauce_options)
 
-        prerun_caps = {'executable' => "http://url.to/your/executable.exe",
-                       'args' => [ "--silent", "-a", "-q" ],
+        prerun_caps = {'executable' => 'http://url.to/your/executable.exe',
+                       'args' => ['--silent', '-a', '-q'],
                        'background' => false,
                        'timeout' => 120}
 
@@ -420,7 +421,7 @@ module SimpleSauce
                                                                'chromedriverVersion' => '71',
                                                                'commandTimeout' => 2,
                                                                'customData' => {'foo' => 'foo',
-                                                                                 'bar' => 'bar'},
+                                                                                'bar' => 'bar'},
                                                                'extendedDebugging' => true,
                                                                'idleTimeout' => 3,
                                                                'iedriverVersion' => '3.141.0',
@@ -435,7 +436,7 @@ module SimpleSauce
                                                                'recordVideo' => false,
                                                                'screenResolution' => '10x10',
                                                                'seleniumVersion' => '3.141.59',
-                                                               'tags' => ['foo', 'bar', 'foobar'],
+                                                               'tags' => %w[foo bar foobar],
                                                                'timeZone' => 'San Francisco',
                                                                'tunnelIdentifier' => 'tunnelname',
                                                                'videoUploadOnPass' => false})

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'selenium-webdriver'
+
 module SimpleSauce
   class Options
     class << self
@@ -7,6 +9,12 @@ module SimpleSauce
         str.to_s.gsub(/_([a-z])/) { Regexp.last_match(1).upcase }
       end
     end
+
+    BROWSER_NAMES = {Selenium::WebDriver::Chrome::Options => 'chrome',
+                     Selenium::WebDriver::Edge::Options => 'MicrosoftEdge',
+                     Selenium::WebDriver::Firefox::Options => 'firefox',
+                     Selenium::WebDriver::IE::Options => 'internet explorer',
+                     Selenium::WebDriver::Safari::Options => 'safari'}.freeze
 
     W3C = %i[browser_name browser_version platform_name accept_insecure_certs page_load_strategy proxy
              set_window_rect timeouts unhandled_prompt_behavior strict_file_interactability].freeze
@@ -39,35 +47,14 @@ module SimpleSauce
       W3C.each do |key|
         value = send(key)
         key = self.class.camel_case(key)
-
-        if key == 'proxy' && value
-          value = value.as_json
-        elsif key == 'timeouts' && value
-          value = value.inject({}) do |updated, (old_key, val)|
-            updated[self.class.camel_case(old_key)] = val
-            updated
-          end
-        end
-
-        caps[key] = value if value
+        value = parse_w3c_key(key, value)
+        caps[key] = value unless value.nil?
       end
       caps['sauce:options'] = {}
       SAUCE.each do |key|
         value = send(key)
         key = self.class.camel_case(key)
-
-        if key == 'prerun' && value.is_a?(Hash)
-          value = value.inject({}) do |updated, (old_key, val)|
-            updated[self.class.camel_case(old_key)] = val
-            updated
-          end
-        elsif key == 'customData' && value.is_a?(Hash)
-          value = value.inject({}) do |updated, (old_key, val)|
-            updated[self.class.camel_case(old_key)] = val
-            updated
-          end
-        end
-
+        value = parse_sauce_key(key, value)
         caps['sauce:options'][key] = value unless value.nil?
       end
       caps
@@ -79,9 +66,8 @@ module SimpleSauce
         raise ArgumentError, "#{key} is not a valid parameter for Options class" unless respond_to?("#{key}=")
 
         if value.is_a?(Hash)
-          value = value.inject({}) do |updated, (key, val)|
-            updated[key.to_sym] = val
-            updated
+          value = value.each_with_object({}) do |(old_key, val), updated|
+            updated[old_key.to_sym] = val
           end
         end
 
@@ -91,25 +77,43 @@ module SimpleSauce
 
     private
 
+    def parse_w3c_key(key, value)
+      if key == 'proxy' && value
+        value.as_json
+      elsif key == 'timeouts' && value
+        value.each_with_object({}) do |(old_key, val), updated|
+          updated[self.class.camel_case(old_key)] = val
+        end
+      else
+        value
+      end
+    end
+
+    def parse_sauce_key(key, value)
+      if key == 'prerun' && value.is_a?(Hash)
+        value.each_with_object({}) do |(old_key, val), updated|
+          updated[self.class.camel_case(old_key)] = val
+        end
+      elsif key == 'customData' && value.is_a?(Hash)
+        value.each_with_object({}) do |(old_key, val), updated|
+          updated[self.class.camel_case(old_key)] = val
+        end
+      else
+        value
+      end
+    end
+
     def parse_selenium_options(selenium_opts)
       opts = Array(selenium_opts)
 
       opts.each do |opt|
-        case opt
-        when Selenium::WebDriver::Firefox::Options
-          @browser_name = 'firefox'
-        when Selenium::WebDriver::Chrome::Options
-          @browser_name = 'chrome'
-        when Selenium::WebDriver::Edge::Options
-          @browser_name = 'MicrosoftEdge'
-        when Selenium::WebDriver::IE::Options
-          @browser_name = 'internet explorer'
-        when Selenium::WebDriver::Safari::Options
-          @browser_name = 'safari'
-        when Selenium::WebDriver::Remote::Capabilities
-          W3C.each { |capability|
+        browser = BROWSER_NAMES[opt.class]
+        if browser
+          @browser_name = browser
+        else
+          W3C.each do |capability|
             send("#{capability}=", opt[capability]) if opt[capability]
-          }
+          end
         end
       end
 

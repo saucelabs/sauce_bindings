@@ -202,7 +202,6 @@ module SimpleSauce
         options.unhandled_prompt_behavior = 'accept'
         options.strict_file_interactability = true
         options.timeouts = timeouts
-        options.platform_name
 
         expect(options.browser_name).to eq 'firefox'
         expect(options.browser_version).to eq '7'
@@ -279,7 +278,7 @@ module SimpleSauce
       end
     end
 
-    describe '#add_capabilities' do
+    describe '#merge_capabilities' do
       it 'loads options from configuration' do
         timeouts = {implicit: 1,
                     page_load: 59,
@@ -294,7 +293,7 @@ module SimpleSauce
 
         options = Options.new
         yaml = YAML.load_file('spec/options.yml')
-        options.add_capabilities(yaml['example_values'])
+        options.merge_capabilities(yaml['example_values'])
 
         expect(options.browser_name).to eq 'firefox'
         expect(options.browser_version).to eq '123'
@@ -336,7 +335,7 @@ module SimpleSauce
         yaml = YAML.load_file('spec/options.yml')
 
         msg = 'foo is not a valid parameter for Options class'
-        expect { options.add_capabilities(yaml['invalid_option']) }.to raise_exception(ArgumentError, msg)
+        expect { options.merge_capabilities(yaml['invalid_option']) }.to raise_exception(ArgumentError, msg)
       end
     end
 
@@ -375,7 +374,7 @@ module SimpleSauce
       it 'correctly generates capabilities for sauce values' do
         custom_data = {foo: 'foo',
                        bar: 'bar'}
-        prerun = {'executable': 'http://url.to/your/executable.exe',
+        prerun = {executable: 'http://url.to/your/executable.exe',
                   args: ['--silent', '-a', '-q'],
                   background: false,
                   timeout: 120}

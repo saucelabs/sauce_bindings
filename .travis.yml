@@ -20,5 +20,6 @@ matrix:
     - language: java
       jdk: openjdk9
       script:
-      - "make java_tests"      after_success:
+      - "make java_tests"
+      after_success:
       - bash <(curl -s https://codecov.io/bash)

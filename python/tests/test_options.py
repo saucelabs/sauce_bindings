@@ -1,10 +1,10 @@
 import os
 
 import pytest
+import yaml
 
 from simplesauce.options import SauceOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
-from selenium.webdriver import DesiredCapabilities
 
 
 class TestInit(object):
@@ -134,9 +134,9 @@ class TestInit(object):
         custom_data = {'foo': 'foo',
                        'bar': 'bar'}
         prerun = {'executable': 'http://url.to/your/executable.exe',
-                   'args': ['--silent', '-a', '-q'],
-                   'background': False,
-                   'timeout': 120}
+                  'args': ['--silent', '-a', '-q'],
+                  'background': False,
+                  'timeout': 120}
         sauce = SauceOptions(avoidProxy=True,
                              build='bar',
                              capturePerformance=True,
@@ -245,7 +245,7 @@ class TestInit(object):
             SauceOptions(**options)
 
 
-class TestSauceSpecificOptions(object):
+class TestSettingSpecificOptions(object):
 
     def test_w3c_options(self):
         timeouts = {'implicit': 1,
@@ -309,6 +309,65 @@ class TestSauceSpecificOptions(object):
         options.tunnel_identifier = 'tunnelname'
         options.video_upload_on_pass = False
 
+        assert options.avoid_proxy is True
+        assert options.build == 'Sample Build Name'
+        assert options.capture_performance is True
+        assert options.chromedriver_version == '71'
+        assert options.command_timeout == 2
+        assert options.custom_data == custom_data
+        assert options.extended_debugging is True
+        assert options.idle_timeout == 3
+        assert options.iedriver_version == '3.141.0'
+        assert options.max_duration == 300
+        assert options.name == 'Sample Test Name'
+        assert options.parent_tunnel == 'Mommy'
+        assert options.prerun == prerun
+        assert options.priority == 0
+        assert options.public == 'team'
+        assert options.record_logs is False
+        assert options.record_screenshots is False
+        assert options.record_video is False
+        assert options.screen_resolution == '10x10'
+        assert options.selenium_version == '3.141.59'
+        assert options.tags == tags
+        assert options.time_zone == 'San Francisco'
+        assert options.tunnel_identifier == 'tunnelname'
+        assert options.video_upload_on_pass is False
+
+
+class TestAddingCapabilities(object):
+
+    def test_setting_capabilities(self):
+        #  TODO create a conditional for this:
+        file_location = r'./tests/options.yml'  # if running on CI
+        #  file_location = r'options.yml'  # If running locally
+        with open(file_location) as file:
+            yml = yaml.safe_load(file)
+
+        prerun = {'executable': 'http://url.to/your/executable.exe',
+                  'args': ['--silent', '-a', '-q'],
+                  'background': False,
+                  'timeout': 120}
+        custom_data = {'foo': 'foo',
+                       'bar': 'bar'}
+        tags = ['foo', 'bar', 'foobar']
+
+        timeouts = {'implicit': 1,
+                    'pageLoad': 59,
+                    'script': 29}
+
+        options = SauceOptions()
+        options.merge_capabilities(yml.get("exampleValues"))
+
+        assert options.browser_name == 'firefox'
+        assert options.browser_version == '68'
+        assert options.platform_name == 'macOS 10.13'
+        assert options.accept_insecure_certs is True
+        assert options.page_load_strategy == 'eager'
+        assert options.set_window_rect is True
+        assert options.unhandled_prompt_behavior == 'accept'
+        assert options.strict_file_interactability is True
+        assert options.timeouts == timeouts
         assert options.avoid_proxy is True
         assert options.build == 'Sample Build Name'
         assert options.capture_performance is True

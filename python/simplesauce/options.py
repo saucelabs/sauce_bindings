@@ -127,6 +127,10 @@ class SauceOptions:
         except KeyError:
             return None
 
+    def merge_capabilities(self, capabilities):
+        for key, value in capabilities.items():
+            self.set_capability(key, value)
+
     # Sets with camelCase
     def set_capability(self, key, value):
         if key in sauce_configs.values():

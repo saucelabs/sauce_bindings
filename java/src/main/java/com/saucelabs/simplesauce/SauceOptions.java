@@ -215,7 +215,7 @@ public class SauceOptions {
 
     // Use Case is pulling serialized information from JSON/YAML, converting it to a HashMap and passing it in
     // This is a preferred pattern as it avoids conditionals in code
-    public void setCapabilities(Map<String, Object> capabilities) {
+    public void mergeCapabilities(Map<String, Object> capabilities) {
         capabilities.forEach(this::setCapability);
     }
 

@@ -237,7 +237,7 @@ public class SauceOptionsTest {
         tags.add("Foobar");
         map.put("tags", tags);
 
-        sauceOptions.setCapabilities(map);
+        sauceOptions.mergeCapabilities(map);
 
         assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
         assertEquals("68", sauceOptions.getBrowserVersion());

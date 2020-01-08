@@ -7,7 +7,7 @@ module SimpleSauce
   describe Session do
     let(:valid_response) do
       {status: 200,
-       body: {value: {sessionId: 0, capabilities: Selenium::WebDriver::Remote::Capabilities.chrome}}.to_json,
+       body: {value: {sessionId: '0', capabilities: Selenium::WebDriver::Remote::Capabilities.chrome}}.to_json,
        headers: {"content_type": 'application/json'}}
     end
     let(:default_capabilities) do

@@ -3,9 +3,9 @@ package com.saucelabs.simplesauce;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.internal.util.reflection.Whitebox;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -13,13 +13,9 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class SauceSessionTest {
     private SauceOptions sauceOptions = spy(new SauceOptions());
@@ -73,19 +69,22 @@ public class SauceSessionTest {
 
     @Test
     public void defaultSauceURLUsesENVForUsernameAccessKey() {
-        doReturn("test-name").when(sauceSession).getEnvironmentVariable("SAUCE_USERNAME");
-        doReturn("accesskey").when(sauceSession).getEnvironmentVariable("SAUCE_ACCESS_KEY");
+        Whitebox.setInternalState(sauceSession, "username", "test-name");
+        Whitebox.setInternalState(sauceSession, "accessKey", "accesskey");
 
         String expetedSauceUrl = "https://test-name:accesskey@ondemand.us-west-1.saucelabs.com/wd/hub";
         assertEquals(expetedSauceUrl, sauceSession.getSauceUrl().toString());
     }
 
     @Test
-    public void setUserNameAndAccessKey() {
-        doReturn("test-username").when(sauceSession).getSystemProperty("SAUCE_USERNAME");
-        doReturn("test-accesskey").when(sauceSession).getSystemProperty("SAUCE_ACCESS_KEY");
+    public void sauceURLUsersSystemPropertiesForUsernameAccessKey() {
+        Whitebox.setInternalState(sauceSession, "username", null);
+        Whitebox.setInternalState(sauceSession, "accessKey", null);
 
-        String expetedSauceUrl = "https://test-username:test-accesskey@ondemand.us-west-1.saucelabs.com/wd/hub";
+        System.setProperty("SAUCE_USERNAME", "test-name");
+        System.setProperty("SAUCE_ACCESS_KEY", "accesskey");
+
+        String expetedSauceUrl = "https://test-name:accesskey@ondemand.us-west-1.saucelabs.com/wd/hub";
         assertEquals(expetedSauceUrl, sauceSession.getSauceUrl().toString());
     }
 
@@ -98,13 +97,19 @@ public class SauceSessionTest {
 
     @Test(expected = SauceEnvironmentVariablesNotSetException.class)
     public void startThrowsErrorWithoutUsername() {
-        doReturn(null).when(sauceSession).getEnvironmentVariable("SAUCE_USERNAME");
+        System.clearProperty("SAUCE_USERNAME");
+        System.clearProperty("SAUCE_ACCESS_KEY");
+
+        Whitebox.setInternalState(sauceSession, "username", null);
         sauceSession.start();
     }
 
     @Test(expected = SauceEnvironmentVariablesNotSetException.class)
     public void startThrowsErrorWithoutAccessKey() {
-        doReturn(null).when(sauceSession).getEnvironmentVariable("SAUCE_ACCESS_KEY");
+        System.clearProperty("SAUCE_USERNAME");
+        System.clearProperty("SAUCE_ACCESS_KEY");
+
+        Whitebox.setInternalState(sauceSession, "accessKey", null);
         sauceSession.start();
     }
 

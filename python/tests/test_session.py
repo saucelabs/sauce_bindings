@@ -36,22 +36,6 @@ class TestInit(object):
         assert session.options.browser_version == 'latest'
         assert session.options.platform_name == 'Windows 10'
 
-    def test_uses_username_and_access_key_if_environment_variables_are_defined(self):
-        session = SauceSession()
-
-        assert session.username == os.environ['SAUCE_USERNAME']
-        assert session.access_key == os.environ['SAUCE_ACCESS_KEY']
-
-    def test_accepts_provided_username_and_access_key(self):
-        user = 'alice.smith'
-        access_key = 'abce-defg-hijk'
-
-        session = SauceSession(username=user, access_key=access_key)
-
-        assert session.username == user
-        assert session.access_key == access_key
-
-
 class TestDataCenter(object):
 
     def test_overrides_default_value_for_data_center(self):
@@ -67,26 +51,6 @@ class TestDataCenter(object):
         with pytest.raises(ValueError):
             session.data_center = 'invalid'
 
-class TestUsername(object):
-
-    def test_accepts_provided_username(self):
-        user = 'bob.smith'
-        session = SauceSession()
-
-        session.username = user
-
-        assert session.username == user
-
-
-class TestAccessKey(object):
-
-    def test_accepts_provided_access_key(self):
-        key = 'abcd-1234-5678'
-        session = SauceSession()
-
-        session.access_key = key
-
-        assert session.access_key == key
 
 
 class TestStart(object):
@@ -99,17 +63,15 @@ class TestStart(object):
         assert session.driver.session_id
 
     def test_raises_exception_if_no_username_set(self):
+        del os.environ['SAUCE_USERNAME']
         session = SauceSession()
-
-        session.username = None
 
         with pytest.raises(KeyError):
             session.start()
 
     def test_raises_exception_if_no_access_key_set(self):
+        del os.environ['SAUCE_ACCESS_KEY']
         session = SauceSession()
-
-        session.access_key = None
 
         with pytest.raises(KeyError):
             session.start()

@@ -15,29 +15,13 @@ data_centers = {
 
 class SauceSession():
 
-    def __init__(self, options=None, data_center='us-west', username=None, access_key=None):
+    def __init__(self, options=None, data_center='us-west'):
         self.options = options if options else SauceOptions()
-        self._username = username if username else SAUCE_USERNAME
-        self._access_key = access_key if access_key else SAUCE_ACCESS_KEY
+        self._username = SAUCE_USERNAME
+        self._access_key = SAUCE_ACCESS_KEY
         self.data_center = data_center if data_center else 'us-west'
         self._remote_url = None
         self.driver = None
-
-    @property
-    def username(self):
-        return self._username
-
-    @username.setter
-    def username(self, username):
-        self._username = username
-
-    @property
-    def access_key(self):
-        return self._access_key
-
-    @access_key.setter
-    def access_key(self, access_key):
-        self._access_key = access_key
 
     @property
     def data_center(self):

@@ -3,7 +3,6 @@ package com.saucelabs.simplesauce;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.internal.util.reflection.Whitebox;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.openqa.selenium.JavascriptExecutor;
@@ -73,23 +72,19 @@ public class SauceSessionTest {
 
     @Test
     public void defaultSauceURLUsesENVForUsernameAccessKey() {
-        Whitebox.setInternalState(sauceSession, "username", "test-name");
-        Whitebox.setInternalState(sauceSession, "accessKey", "accesskey");
+        doReturn("test-name").when(sauceSession).getEnvironmentVariable("SAUCE_USERNAME");
+        doReturn("test-accesskey").when(sauceSession).getEnvironmentVariable("SAUCE_ACCESS_KEY");
 
-        String expetedSauceUrl = "https://test-name:accesskey@ondemand.us-west-1.saucelabs.com/wd/hub";
+        String expetedSauceUrl = "https://test-name:test-accesskey@ondemand.us-west-1.saucelabs.com/wd/hub";
         assertEquals(expetedSauceUrl, sauceSession.getSauceUrl().toString());
     }
 
     @Test
-    public void sauceURLUsersSystemPropertiesForUsernameAccessKey() {
-        SauceSession sauceSession = new SauceSession();
-        Whitebox.setInternalState(sauceSession, "username", null);
-        Whitebox.setInternalState(sauceSession, "accessKey", null);
+    public void setUserNameAndAccessKeyWithSystemProperties() {
+        doReturn("test-name").when(sauceSession).getSystemProperty("SAUCE_USERNAME");
+        doReturn("test-accesskey").when(sauceSession).getSystemProperty("SAUCE_ACCESS_KEY");
 
-        System.setProperty("SAUCE_USERNAME", "test-name");
-        System.setProperty("SAUCE_ACCESS_KEY", "accesskey");
-
-        String expetedSauceUrl = "https://test-name:accesskey@ondemand.us-west-1.saucelabs.com/wd/hub";
+        String expetedSauceUrl = "https://test-name:test-accesskey@ondemand.us-west-1.saucelabs.com/wd/hub";
         assertEquals(expetedSauceUrl, sauceSession.getSauceUrl().toString());
     }
 
@@ -102,21 +97,13 @@ public class SauceSessionTest {
 
     @Test(expected = SauceEnvironmentVariablesNotSetException.class)
     public void startThrowsErrorWithoutUsername() {
-        SauceSession sauceSession = new SauceSession();
-        System.clearProperty("SAUCE_USERNAME");
-        System.clearProperty("SAUCE_ACCESS_KEY");
-
-        Whitebox.setInternalState(sauceSession, "username", null);
+        doReturn(null).when(sauceSession).getEnvironmentVariable("SAUCE_USERNAME");
         sauceSession.start();
     }
 
     @Test(expected = SauceEnvironmentVariablesNotSetException.class)
     public void startThrowsErrorWithoutAccessKey() {
-        SauceSession sauceSession = new SauceSession();
-        System.clearProperty("SAUCE_USERNAME");
-        System.clearProperty("SAUCE_ACCESS_KEY");
-
-        Whitebox.setInternalState(sauceSession, "accessKey", null);
+        doReturn(null).when(sauceSession).getEnvironmentVariable("SAUCE_ACCESS_KEY");
         sauceSession.start();
     }
 

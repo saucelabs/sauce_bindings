@@ -82,7 +82,7 @@ public class SauceSession {
     private String getUsername() {
         if (username != null) {
             return username;
-        } else if (!sauceOptions.isKnownCI() && System.getProperty("SAUCE_USERNAME") != null) {
+        } else if (System.getProperty("SAUCE_USERNAME") != null) {
             return System.getProperty("SAUCE_USERNAME");
         } else {
             throw new SauceEnvironmentVariablesNotSetException("Sauce Username was not provided");
@@ -92,7 +92,7 @@ public class SauceSession {
     private String getAccessKey() {
         if (accessKey != null) {
             return accessKey;
-        } else if (!sauceOptions.isKnownCI() && System.getProperty("SAUCE_ACCESS_KEY") != null) {
+        } else if (System.getProperty("SAUCE_ACCESS_KEY") != null) {
             return System.getProperty("SAUCE_ACCESS_KEY");
         } else {
             throw new SauceEnvironmentVariablesNotSetException("Sauce Access Key was not provided");

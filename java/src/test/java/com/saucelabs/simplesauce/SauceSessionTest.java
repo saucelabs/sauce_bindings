@@ -78,6 +78,7 @@ public class SauceSessionTest {
 
     @Test
     public void sauceURLUsersSystemPropertiesForUsernameAccessKey() {
+        SauceSession sauceSession = new SauceSession();
         Whitebox.setInternalState(sauceSession, "username", null);
         Whitebox.setInternalState(sauceSession, "accessKey", null);
 

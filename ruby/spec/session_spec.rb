@@ -73,7 +73,7 @@ module SimpleSauce
       end
 
       it 'uses provided Data Center' do
-        session = Session.new(data_center: :EU_VDC,)
+        session = Session.new(data_center: :EU_VDC)
 
         expected_results = {url: 'https://foo:123@ondemand.eu-central-1.saucelabs.com:443/wd/hub',
                             desired_capabilities: {'browserName' => 'chrome',

@@ -78,7 +78,6 @@ public class SauceSessionTest {
 
     @Test
     public void sauceURLUsersSystemPropertiesForUsernameAccessKey() {
-        SauceSession sauceSession = new SauceSession();
         Whitebox.setInternalState(sauceSession, "username", null);
         Whitebox.setInternalState(sauceSession, "accessKey", null);
 
@@ -98,6 +97,7 @@ public class SauceSessionTest {
 
     @Test(expected = SauceEnvironmentVariablesNotSetException.class)
     public void startThrowsErrorWithoutUsername() {
+        SauceSession sauceSession = new SauceSession();
         System.clearProperty("SAUCE_USERNAME");
         System.clearProperty("SAUCE_ACCESS_KEY");
 
@@ -107,6 +107,7 @@ public class SauceSessionTest {
 
     @Test(expected = SauceEnvironmentVariablesNotSetException.class)
     public void startThrowsErrorWithoutAccessKey() {
+        SauceSession sauceSession = new SauceSession();
         System.clearProperty("SAUCE_USERNAME");
         System.clearProperty("SAUCE_ACCESS_KEY");
 

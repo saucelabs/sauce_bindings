@@ -39,6 +39,7 @@ class TestInit(object):
         assert session.options.browser_version == 'latest'
         assert session.options.platform_name == 'Windows 10'
 
+
 class TestDataCenter(object):
 
     def test_overrides_default_value_for_data_center(self):
@@ -53,7 +54,6 @@ class TestDataCenter(object):
 
         with pytest.raises(ValueError):
             session.data_center = 'invalid'
-
 
 
 class TestStart(object):

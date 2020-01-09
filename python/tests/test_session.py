@@ -3,6 +3,9 @@ import os
 from simplesauce.options import SauceOptions
 from simplesauce.session import SauceSession
 
+SAUCE_USERNAME_HOLDER = os.getenv('SAUCE_USERNAME', None)
+SAUCE_ACCESS_KEY_HOLDER = os.getenv('SAUCE_ACCESS_KEY', None)
+
 
 class TestInit(object):
 
@@ -69,12 +72,16 @@ class TestStart(object):
         with pytest.raises(KeyError):
             session.start()
 
+        os.environ['SAUCE_USERNAME'] = SAUCE_USERNAME_HOLDER
+
     def test_raises_exception_if_no_access_key_set(self):
         del os.environ['SAUCE_ACCESS_KEY']
         session = SauceSession()
 
         with pytest.raises(KeyError):
             session.start()
+
+        os.environ['SAUCE_ACCESS_KEY'] = SAUCE_ACCESS_KEY_HOLDER
 
 
 class TestURL(object):

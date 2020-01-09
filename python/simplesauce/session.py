@@ -4,21 +4,19 @@ from selenium.webdriver.remote.remote_connection import RemoteConnection
 from simplesauce.options import SauceOptions
 
 
-SAUCE_USERNAME = os.getenv('SAUCE_USERNAME', None)
-SAUCE_ACCESS_KEY = os.getenv('SAUCE_ACCESS_KEY', None)
-
 data_centers = {
     'us-west': 'ondemand.us-west-1.saucelabs.com',
     'us-east': 'ondemand.us-east-1.saucelabs.com',
     'eu': 'ondemand.eu-central-1.saucelabs.com'
 }
 
+
 class SauceSession():
 
     def __init__(self, options=None, data_center='us-west'):
         self.options = options if options else SauceOptions()
-        self._username = SAUCE_USERNAME
-        self._access_key = SAUCE_ACCESS_KEY
+        self._username = os.getenv('SAUCE_USERNAME', None)
+        self._access_key = os.getenv('SAUCE_ACCESS_KEY', None)
         self.data_center = data_center if data_center else 'us-west'
         self._remote_url = None
         self.driver = None

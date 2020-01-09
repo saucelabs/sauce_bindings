@@ -11,13 +11,18 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class SauceSession {
+
+    /**
+     * Defaults for username and access key are environment variables
+     */
+    private String username = System.getenv("SAUCE_USERNAME");
+    private String accessKey = System.getenv("SAUCE_ACCESS_KEY");
+
+
     @Getter @Setter private DataCenter dataCenter = DataCenter.US_WEST;
     @Getter private final SauceOptions sauceOptions;
-    @Getter @Setter private String username;
-    @Getter @Setter private String accessKey;
     @Setter private URL sauceUrl;
 
-    @Getter private MutableCapabilities currentSessionCapabilities;
     @Getter private RemoteWebDriver driver;
 
     public SauceSession() {
@@ -37,7 +42,7 @@ public class SauceSession {
         if (sauceUrl != null) {
             return sauceUrl;
         } else {
-            String url = "https://" + getSauceUsername() + ":" + getSauceAccessKey() + "@" + dataCenter + "/wd/hub";
+            String url = "https://" + getUsername() + ":" + getAccessKey() + "@" + dataCenter + "/wd/hub";
             try {
                 return new URL(url);
             } catch (MalformedURLException e) {
@@ -74,25 +79,21 @@ public class SauceSession {
         }
     }
 
-    protected String getEnvironmentVariable(String key) {
-        return System.getenv(key);
-    }
-
-    private String getSauceUsername() {
+    private String getUsername() {
         if (username != null) {
             return username;
-        } else if (getEnvironmentVariable("SAUCE_USERNAME") != null) {
-            return getEnvironmentVariable("SAUCE_USERNAME");
+        } else if (System.getProperty("SAUCE_USERNAME") != null) {
+            return System.getProperty("SAUCE_USERNAME");
         } else {
             throw new SauceEnvironmentVariablesNotSetException("Sauce Username was not provided");
         }
     }
 
-    private String getSauceAccessKey() {
+    private String getAccessKey() {
         if (accessKey != null) {
             return accessKey;
-        } else if (getEnvironmentVariable("SAUCE_ACCESS_KEY") != null) {
-            return getEnvironmentVariable("SAUCE_ACCESS_KEY");
+        } else if (System.getProperty("SAUCE_ACCESS_KEY") != null) {
+            return System.getProperty("SAUCE_ACCESS_KEY");
         } else {
             throw new SauceEnvironmentVariablesNotSetException("Sauce Access Key was not provided");
         }

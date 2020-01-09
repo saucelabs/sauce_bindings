@@ -9,20 +9,20 @@ module SimpleSauce
                     US_EAST: 'ondemand.us-east-1.saucelabs.com',
                     EU_VDC: 'ondemand.eu-central-1.saucelabs.com'}.freeze
 
-    attr_writer :username, :access_key, :url
+    attr_writer :url
     attr_reader :driver, :options, :data_center
 
-    def initialize(options = nil, username: nil, access_key: nil, data_center: nil)
+    def initialize(options = nil, data_center: nil)
       @options = options || Options.new
 
-      @username = username || ENV['SAUCE_USERNAME']
-      @access_key = access_key || ENV['SAUCE_ACCESS_KEY']
+      @username = ENV['SAUCE_USERNAME']
+      @access_key = ENV['SAUCE_ACCESS_KEY']
       self.data_center = data_center || :US_WEST
     end
 
     def start
-      raise ArgumentError, "needs username; use `ENV['SAUCE_USERNAME']` or `Session#username=`" unless @username
-      raise ArgumentError, "needs access_key; use `ENV['SAUCE_ACCESS_KEY']` or `Session#access_key=`" unless @access_key
+      raise ArgumentError, "needs username; use `ENV['SAUCE_USERNAME']`" unless @username
+      raise ArgumentError, "needs access_key; use `ENV['SAUCE_ACCESS_KEY']`" unless @access_key
 
       @driver = Selenium::WebDriver.for :remote, to_selenium
     end

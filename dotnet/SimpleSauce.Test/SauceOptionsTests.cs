@@ -41,6 +41,76 @@ namespace SimpleSauce.Test
             SauceOptions.PlatformName.Should().BeEquivalentTo("macOS 10.13");
         }
 
+        /*
+         * Safari is an intersting and frustrating animal because you can only use
+         * a specific safariVersion with a specific platformVersion
+         * In a previous iteration, I created something that I really like.
+         * A good way for the user to avoid having to know which PlatformName needs to
+         * go with which BrowserVersion. I really like that protection and that API.
+         * However, I'm cool with simplifying the API and allowing 
+         *   SauceOptions.BrowserVersion = "68";
+         *   SauceOptions.BrowserName = Browsers.Safari;
+         *   SauceOptions.PlatformName = Platforms.Mac.HighSierra;
+         *
+         * But that does leave more possibility to mess up the BrowserVersion with PlatformName.
+         * I wonder if there's a way to get both advantages and not require the setting of
+         * BrowserVersion if Platforms.Mac.HighSierra is set for example?
+         */
+
+        [TestMethod]
+        [DynamicData(nameof(SafariAndMacConfigurations), typeof(SafariTests))]
+        public void WithSafari_SpecificVersion_SetsCorrectBrowser(string safariVersion, Platforms expectedPlatform)
+        {
+            SauceOptions.WithSafari(safariVersion);
+            SauceOptions.ConfiguredSafariOptions.PlatformName.Should().Be(expectedPlatform.Value);
+        }
+        public static IEnumerable<object[]> SafariAndMacConfigurations => new[]
+        {
+            new object[] {"12.0", Platforms.MacOsMojave },
+            new object[] {"13.0", Platforms.MacOsHighSierra },
+            new object[] {"12.1", Platforms.MacOsHighSierra },
+            new object[] {"11.1", Platforms.MacOsHighSierra },
+            new object[] {"11.0", Platforms.MacOsSierra },
+            new object[] { "10.1", Platforms.MacOsSierra },
+            new object[] {"9.0", Platforms.MacOsxElCapitan },
+            new object[] { "10.0", Platforms.MacOsxElCapitan },
+            new object[] { "8.0", Platforms.MacOsxYosemite },
+        };
+        public void WithSafari(string safariVersion)
+        {
+            ConfiguredSafariOptions.BrowserVersion = safariVersion;
+            ConfiguredSafariOptions.PlatformName = MatchCorrectPlatformToBrowserVersion(safariVersion);
+        }
+
+        public string MatchCorrectPlatformToBrowserVersion(string safariBrowserVersion)
+        {
+            switch (safariBrowserVersion)
+            {
+                case "latest":
+                    return Platforms.MacOsMojave.Value;
+                case "12.0":
+                    return Platforms.MacOsMojave.Value;
+                case "13.0":
+                    return Platforms.MacOsHighSierra.Value;
+                case "12.1":
+                    return Platforms.MacOsHighSierra.Value;
+                case "11.1":
+                    return Platforms.MacOsHighSierra.Value;
+                case "11.0":
+                    return Platforms.MacOsSierra.Value;
+                case "10.1":
+                    return Platforms.MacOsSierra.Value;
+                case "9.0":
+                    return Platforms.MacOsxElCapitan.Value;
+                case "10.0":
+                    return Platforms.MacOsxElCapitan.Value;
+                case "8.0":
+                    return Platforms.MacOsxYosemite.Value;
+                default:
+                    throw new IncorrectSafariVersionException();
+            }
+        }
+
         [TestMethod]
         public void AcceptsAllW3CValues()
         {

@@ -56,16 +56,16 @@ namespace SimpleSauce.Test
             SauceOptions.StrictFileInteractability = true;
             SauceOptions.UnhandledPromptBehavior = UnhandledPromptBehavior.Dismiss;
 
-            var timeouts = new Dictionary<string, int>();
-            timeouts.Add("implicit", 4);
-            timeouts.Add("pageLoad", 44);
-            timeouts.Add("script", 33);
+            var expectedTimeouts = new Dictionary<string, int>();
+            expectedTimeouts.Add("implicit", 4);
+            expectedTimeouts.Add("pageLoad", 44);
+            expectedTimeouts.Add("script", 33);
 
             SauceOptions.AcceptInsecureCerts.Should().BeTrue();
             SauceOptions.PageLoadStrategy.Should().BeEquivalentTo("eager");
             SauceOptions.Proxy.Should().BeEquivalentTo(proxy);
             SauceOptions.SetWindowRect.Should().BeTrue();
-            SauceOptions.Timeouts.Should().BeEquivalentTo(timeouts);
+            SauceOptions.Timeouts.Should().BeEquivalentTo(expectedTimeouts);
             SauceOptions.StrictFileInteractability.Should().BeTrue();
             SauceOptions.UnhandledPromptBehavior.Should().BeEquivalentTo("dismiss");
         }

@@ -21,6 +21,10 @@ Metrics/CyclomaticComplexity:
 Metrics/PerceivedComplexity:
   Max: 8
 
+Metrics/ClassLength:
+  Exclude:
+    - 'lib/simple_sauce/options.rb'
+
 Metrics/LineLength:
   Max: 120
 

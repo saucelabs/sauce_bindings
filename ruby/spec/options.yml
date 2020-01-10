@@ -1,0 +1,56 @@
+example_values:
+  browser_name: 'firefox'
+  browser_version: '123'
+  platform_name: 'Mac'
+  accept_insecure_certs: true
+  page_load_strategy: 'eager'
+  set_window_rect: true
+  unhandled_prompt_behavior: "accept"
+  strict_file_interactability: true
+  timeouts:
+    implicit: 1
+    page_load: 59
+    script: 29
+  avoid_proxy: true
+  build: 'Sample Build Name'
+  capture_performance: true
+  chromedriver_version: '71'
+  command_timeout: 2
+  custom_data:
+    foo: 'foo'
+    bar: 'bar'
+  extended_debugging: true
+  idle_timeout: 3
+  iedriver_version: '3.141.0'
+  max_duration: 300
+  name: 'Sample Test Name'
+  parent_tunnel: 'Mommy'
+  prerun:
+    executable: "http://url.to/your/executable.exe"
+    args:
+      - --silent
+      - -a
+      - -q
+    background: false
+    timeout: 120
+  priority: 0
+  public: 'team'
+  record_logs: false
+  record_screenshots: false
+  record_video: false
+  screen_resolution: '10x10'
+  selenium_version: '3.141.59'
+  tags:
+    - foo
+    - bar
+    - foobar
+  time_zone: 'San Francisco'
+  tunnel_identifier: 'tunnelname'
+  video_upload_on_pass: false
+
+invalid_option:
+  foo: "bar"
+  browser_name: "firefox"
+  browser_version: "70"
+  platform_name: "MacOS 10.12"
+  record_screenshots: false

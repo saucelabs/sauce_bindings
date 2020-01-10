@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'selenium-webdriver'
+
 module SimpleSauce
   class Options
     class << self
@@ -7,6 +9,12 @@ module SimpleSauce
         str.to_s.gsub(/_([a-z])/) { Regexp.last_match(1).upcase }
       end
     end
+
+    BROWSER_NAMES = {Selenium::WebDriver::Chrome::Options => 'chrome',
+                     Selenium::WebDriver::Edge::Options => 'MicrosoftEdge',
+                     Selenium::WebDriver::Firefox::Options => 'firefox',
+                     Selenium::WebDriver::IE::Options => 'internet explorer',
+                     Selenium::WebDriver::Safari::Options => 'safari'}.freeze
 
     W3C = %i[browser_name browser_version platform_name accept_insecure_certs page_load_strategy proxy
              set_window_rect timeouts unhandled_prompt_behavior strict_file_interactability].freeze
@@ -16,6 +24,12 @@ module SimpleSauce
                record_video screen_resolution selenium_version tags time_zone tunnel_identifier video_upload_on_pass
                capture_performance].freeze
 
+    attr_accessor :browser_name, :browser_version, :platform_name, :accept_insecure_certs, :page_load_strategy, :proxy,
+                  :set_window_rect, :timeouts, :unhandled_prompt_behavior, :strict_file_interactability, :avoid_proxy,
+                  :build, :chromedriver_version, :command_timeout, :custom_data, :extended_debugging, :idle_timeout,
+                  :iedriver_version, :max_duration, :name, :parent_tunnel, :prerun, :priority, :public, :record_logs,
+                  :record_screenshots, :record_video, :screen_resolution, :selenium_version, :tags, :time_zone,
+                  :tunnel_identifier, :video_upload_on_pass, :capture_performance
     attr_reader :selenium_options
 
     def initialize(**opts)
@@ -32,34 +46,74 @@ module SimpleSauce
       caps = selenium_options.dup
       W3C.each do |key|
         value = send(key)
-        caps[self.class.camel_case(key)] = value if value
+        key = self.class.camel_case(key)
+        value = parse_w3c_key(key, value)
+        caps[key] = value unless value.nil?
       end
       caps['sauce:options'] = {}
       SAUCE.each do |key|
         value = send(key)
-        caps['sauce:options'][self.class.camel_case(key)] = value unless value.nil?
+        key = self.class.camel_case(key)
+        value = parse_sauce_key(key, value)
+        caps['sauce:options'][key] = value unless value.nil?
       end
       caps
     end
     alias as_json capabilities
 
+    def merge_capabilities(opts)
+      opts.each do |key, value|
+        raise ArgumentError, "#{key} is not a valid parameter for Options class" unless respond_to?("#{key}=")
+
+        if value.is_a?(Hash)
+          value = value.each_with_object({}) do |(old_key, val), updated|
+            updated[old_key.to_sym] = val
+          end
+        end
+
+        send("#{key}=", value)
+      end
+    end
+
     private
+
+    def parse_w3c_key(key, value)
+      if key == 'proxy' && value
+        value.as_json
+      elsif key == 'timeouts' && value
+        value.each_with_object({}) do |(old_key, val), updated|
+          updated[self.class.camel_case(old_key)] = val
+        end
+      else
+        value
+      end
+    end
+
+    def parse_sauce_key(key, value)
+      if key == 'prerun' && value.is_a?(Hash)
+        value.each_with_object({}) do |(old_key, val), updated|
+          updated[self.class.camel_case(old_key)] = val
+        end
+      elsif key == 'customData' && value.is_a?(Hash)
+        value.each_with_object({}) do |(old_key, val), updated|
+          updated[self.class.camel_case(old_key)] = val
+        end
+      else
+        value
+      end
+    end
 
     def parse_selenium_options(selenium_opts)
       opts = Array(selenium_opts)
 
       opts.each do |opt|
-        case opt
-        when Selenium::WebDriver::Firefox::Options
-          @browser_name = 'firefox'
-        when Selenium::WebDriver::Chrome::Options
-          @browser_name = 'chrome'
-        when Selenium::WebDriver::Edge::Options
-          @browser_name = 'MicrosoftEdge'
-        when Selenium::WebDriver::IE::Options
-          @browser_name = 'internet explorer'
-        when Selenium::WebDriver::Safari::Options
-          @browser_name = 'safari'
+        browser = BROWSER_NAMES[opt.class]
+        if browser
+          @browser_name = browser
+        else
+          W3C.each do |capability|
+            send("#{capability}=", opt[capability]) if opt[capability]
+          end
         end
       end
 

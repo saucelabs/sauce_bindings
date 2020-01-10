@@ -7,7 +7,7 @@ module SimpleSauce
   describe Session do
     let(:valid_response) do
       {status: 200,
-       body: {value: {sessionId: 0, capabilities: Selenium::WebDriver::Remote::Capabilities.chrome}}.to_json,
+       body: {value: {sessionId: '0', capabilities: Selenium::WebDriver::Remote::Capabilities.chrome}}.to_json,
        headers: {"content_type": 'application/json'}}
     end
     let(:default_capabilities) do
@@ -72,12 +72,10 @@ module SimpleSauce
         expect(session.data_center).to eq :US_WEST
       end
 
-      it 'uses provided Data Center, Username, Access Key' do
-        session = Session.new(data_center: :EU_VDC,
-                              username: 'bar',
-                              access_key: '321')
+      it 'uses provided Data Center' do
+        session = Session.new(data_center: :EU_VDC)
 
-        expected_results = {url: 'https://bar:321@ondemand.eu-central-1.saucelabs.com:443/wd/hub',
+        expected_results = {url: 'https://foo:123@ondemand.eu-central-1.saucelabs.com:443/wd/hub',
                             desired_capabilities: {'browserName' => 'chrome',
                                                    'browserVersion' => 'latest',
                                                    'platformName' => 'Windows 10',
@@ -96,6 +94,12 @@ module SimpleSauce
 
         driver = Session.new.start
         expect(driver).to be_a Selenium::WebDriver::Driver
+      end
+
+      it 'uses username and access key from ENV' do
+        session = Session.new
+
+        expect(session.url).to include('foo:123')
       end
 
       it 'raises exception if no username set' do
@@ -139,24 +143,6 @@ module SimpleSauce
         session = Session.new
 
         expect { session.data_center = :FOO }.to raise_exception(ArgumentError)
-      end
-    end
-
-    describe '#username=' do
-      it 'accepts provided username' do
-        session = Session.new
-        session.username = 'name'
-
-        expect(session.url).to eq('https://name:123@ondemand.us-west-1.saucelabs.com:443/wd/hub')
-      end
-    end
-
-    describe '#access_key=' do
-      it 'accepts provided access key' do
-        session = Session.new
-        session.access_key = '456'
-
-        expect(session.url).to eq('https://foo:456@ondemand.us-west-1.saucelabs.com:443/wd/hub')
       end
     end
 

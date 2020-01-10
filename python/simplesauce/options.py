@@ -4,7 +4,7 @@ from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.webdriver.ie.options import Options as IEOptions
 from datetime import datetime
 import os
-import re
+
 
 w3c_configs = {
     'browser_name': 'browserName',
@@ -85,7 +85,7 @@ class SauceOptions:
         super(SauceOptions, self).__setattr__('seleniumOptions', {})
 
         for key, value in kwargs.items():
-            if key is 'seleniumOptions':
+            if key == 'seleniumOptions':
                 if isinstance(value, tuple(browser_names)):
                     self.set_capability('browserName', browser_names[type(value)])
 
@@ -112,7 +112,7 @@ class SauceOptions:
         self.set_option(key, value)
 
     def __getattr__(self, key):
-        if key is 'selenium_options':
+        if key == 'selenium_options':
             if 'caps' in self.seleniumOptions.keys():
                 return self.seleniumOptions['caps']
             else:
@@ -126,6 +126,10 @@ class SauceOptions:
                 raise AttributeError
         except KeyError:
             return None
+
+    def merge_capabilities(self, capabilities):
+        for key, value in capabilities.items():
+            self.set_capability(key, value)
 
     # Sets with camelCase
     def set_capability(self, key, value):

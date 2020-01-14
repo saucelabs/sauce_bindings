@@ -1,3 +1,5 @@
+using System;
+
 namespace Simple.Sauce
 {
     public class Platforms
@@ -14,5 +16,6 @@ namespace Simple.Sauce
         public static Platforms MacOsSierra => new Platforms("macOS 10.12");
         public static Platforms MacOsxElCapitan => new Platforms("OS X 10.11");
         public static Platforms MacOsxYosemite => new Platforms("OS X 10.10");
+        public static Platforms Windows10 => new Platforms("Windows 10");
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
@@ -24,6 +25,13 @@ namespace Simple.Sauce
         public Browser BrowserName { get; set; } = Browser.Chrome;
         public String BrowserVersion { get; set; } = DEFAULT_BROWSER_VERSION;
         public Platforms PlatformName { get; set; } = Platforms.Windows10;
+        public PageLoadStrategy PageLoadStrategy { get; set; }
+        public bool AcceptInsecureCerts { get; set; }
+        public bool SetWindowRect { get; set; }
+        public Timeout Timeout => new Timeout();
+        public Proxy Proxy { get; set; }
+        public bool StrictFileInteractability { get; set; }
+        public UnhandledPromptBehavior UnhandledPromptBehavior { get; set; }
 
         public void WithEdge()
         {

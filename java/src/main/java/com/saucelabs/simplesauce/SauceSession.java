@@ -5,10 +5,15 @@ import org.openqa.selenium.JavascriptExecutor;
 import lombok.Setter;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.MutableCapabilities;
+import org.openqa.selenium.remote.CommandExecutor;
+import org.openqa.selenium.remote.CommandInfo;
+import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.http.HttpClient;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Map;
 
 public class SauceSession {
 
@@ -21,6 +26,7 @@ public class SauceSession {
 
     @Getter @Setter private DataCenter dataCenter = DataCenter.US_WEST;
     @Getter private final SauceOptions sauceOptions;
+    @Getter private CommandExecutor commandExecutor;
     @Setter private URL sauceUrl;
 
     @Getter private RemoteWebDriver driver;
@@ -51,8 +57,20 @@ public class SauceSession {
         }
     }
 
+    public void setCommandExecutor(Map<String, CommandInfo> commandInfoMap) {
+        commandExecutor = new HttpCommandExecutor(commandInfoMap, getSauceUrl());
+    }
+
+    public void setCommandExecutor(Map<String, CommandInfo> commandInfoMap, HttpClient.Factory factory) {
+        commandExecutor = new HttpCommandExecutor(commandInfoMap, getSauceUrl(), factory);
+    }
+
     protected RemoteWebDriver createRemoteWebDriver(URL url, MutableCapabilities capabilities) {
-        return new RemoteWebDriver(url, capabilities);
+        if (commandExecutor != null) {
+            return new RemoteWebDriver(commandExecutor, capabilities);
+        } else {
+            return new RemoteWebDriver(url, capabilities);
+        }
     }
 
     protected JavascriptExecutor getJSExecutor() {

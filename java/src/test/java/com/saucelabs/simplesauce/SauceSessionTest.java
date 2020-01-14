@@ -8,10 +8,14 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.MutableCapabilities;
+import org.openqa.selenium.remote.CommandInfo;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.http.HttpClient;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -158,5 +162,35 @@ public class SauceSessionTest {
         sauceSession.start();
         sauceSession.stop("failed");
         verify(dummyJSExecutor).executeScript("sauce:job-result=failed");
+    }
+
+    @Test
+    public void setsCommandExecutorWithMap(){
+        Map<String, CommandInfo> commandInfoMap = new HashMap<>();
+        sauceSession.setCommandExecutor(commandInfoMap);
+        RemoteWebDriver driver = sauceSession.start();
+
+        // TODO: Verify something
+    }
+    @Test
+    public void setsCommandExecutorWithFactory(){
+        Map<String, CommandInfo> commandInfoMap = new HashMap<>();
+
+        HttpClient.Factory factory = new HttpClient.Factory() {
+            @Override
+            public HttpClient.Builder builder() {
+                return null;
+            }
+
+            @Override
+            public void cleanupIdleClients() {
+
+            }
+        };
+
+        sauceSession.setCommandExecutor(commandInfoMap, factory);
+        RemoteWebDriver driver = sauceSession.start();
+
+        // TODO: Verify something
     }
 }

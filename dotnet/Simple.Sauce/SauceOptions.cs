@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
@@ -16,6 +17,7 @@ namespace Simple.Sauce
         public SauceOptions()
         {
             WithChrome();
+            Timeout = new Timeout();
         }
 
         public EdgeOptions ConfiguredEdgeOptions { get; set; } = new EdgeOptions();
@@ -28,10 +30,32 @@ namespace Simple.Sauce
         public PageLoadStrategy PageLoadStrategy { get; set; }
         public bool AcceptInsecureCerts { get; set; }
         public bool SetWindowRect { get; set; }
-        public Timeout Timeout => new Timeout();
+        public Timeout Timeout { get; set; }
+
         public Proxy Proxy { get; set; }
         public bool StrictFileInteractability { get; set; }
         public UnhandledPromptBehavior UnhandledPromptBehavior { get; set; }
+        public bool AvoidProxy { get; set; }
+        public string BuildName { get; set; }
+        public bool CapturePerformance { get; set; }
+        public string ChromedriverVersion { get; set; }
+        public Dictionary<string,string> CustomData { get; set; }
+        public bool ExtendedDebugging { get; set; }
+        public string IeDriverVersion { get; set; }
+        public string TestName { get; set; }
+        public string ParentTunnel { get; set; }
+        public Dictionary<string, object> Prerun { get; set; }
+        public int Priority { get; set; }
+        public TestVisibility TestVisibility { get; set; }
+        public bool RecordLogs { get; set; }
+        public bool RecordScreenshots { get; set; }
+        public bool RecordVideo { get; set; }
+        public string ScreenResolution { get; set; }
+        public string SeleniumVersion { get; set; }
+        public IList<string> Tags { get; set; }
+        public string TimeZone { get; set; }
+        public string TunnelIdentifier { get; set; }
+        public bool VideoUploadOnPass { get; set; }
 
         public void WithEdge()
         {

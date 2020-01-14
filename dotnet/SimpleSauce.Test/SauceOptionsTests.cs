@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,7 +22,7 @@ namespace SimpleSauce.Test
         public void UsesLatestChromeWindowsVersionsByDefault()
         {
             SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.Chrome);
-            SauceOptions.BrowserVersion.Should().BeEquivalentTo("latest");
+            SauceOptions.BrowserVersion.Should().Be("latest");
             SauceOptions.PlatformName.Should().BeEquivalentTo(Platforms.Windows10);
         }
         [TestMethod]
@@ -32,7 +33,7 @@ namespace SimpleSauce.Test
             SauceOptions.PlatformName = Platforms.MacOsHighSierra;
 
             SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.Firefox);
-            SauceOptions.BrowserVersion.Should().BeEquivalentTo("68");
+            SauceOptions.BrowserVersion.Should().Be("68");
             SauceOptions.PlatformName.Should().BeEquivalentTo(Platforms.MacOsHighSierra);
         }
         [TestMethod]
@@ -54,13 +55,79 @@ namespace SimpleSauce.Test
                 {{"implicit", 4}, {"pageLoad", 44}, {"script", 33}};
 
             SauceOptions.AcceptInsecureCerts.Should().BeTrue();
-            SauceOptions.PageLoadStrategy.ToString().Should().BeEquivalentTo("eager");
-            SauceOptions.Proxy.Should().BeEquivalentTo(proxy);
+            SauceOptions.PageLoadStrategy.Should().Be(PageLoadStrategy.Eager);
+            SauceOptions.Proxy.Should().Be(proxy);
             SauceOptions.SetWindowRect.Should().BeTrue();
-            //SauceOptions.Timeout.Should().BeEquivalentTo(expectedTimeouts, options =>
-            //    options.ExcludingMissingMembers());
+            //SauceOptions.Timeout.Should().Be(expectedTimeouts);
             SauceOptions.StrictFileInteractability.Should().BeTrue();
-            SauceOptions.UnhandledPromptBehavior.ToString().Should().BeEquivalentTo("dismiss");
+            SauceOptions.UnhandledPromptBehavior.Should().Be(UnhandledPromptBehavior.Dismiss);
+        }
+        [TestMethod]
+        public void AcceptsAllSauceLabsValues()
+        {
+            var customData = new Dictionary<string, string> { { "foo", "foo" }, { "bar", "bar" } };
+
+            var args = new List<string> { "--silent", "-a", "-q" };
+
+            var prerun = new Dictionary<string, object>
+            {
+                {"executable", "http://url.to/your/executable.exe"},
+                {"args", args},
+                {"background", false},
+                {"timeout", new TimeSpan(120)}
+            };
+
+            var tags = new List<string> { "foo", "bar" };
+
+            SauceOptions.AvoidProxy = true;
+            SauceOptions.BuildName = "Sample Build Name";
+            SauceOptions.CapturePerformance = true;
+            SauceOptions.ChromedriverVersion = "71";
+            SauceOptions.Timeout.CommandTimeout = 2;
+            SauceOptions.CustomData = customData;
+            SauceOptions.ExtendedDebugging = true;
+            SauceOptions.Timeout.IdleTimeout = 3;
+            SauceOptions.IeDriverVersion = "3.141.0";
+            SauceOptions.Timeout.MaxDuration = 300;
+            SauceOptions.TestName = "Sample Test Name";
+            SauceOptions.ParentTunnel = "Mommy";
+            SauceOptions.Prerun = prerun;
+            SauceOptions.Priority = 0;
+            SauceOptions.TestVisibility = TestVisibility.Public;
+            SauceOptions.RecordLogs = false;
+            SauceOptions.RecordScreenshots = false;
+            SauceOptions.RecordVideo = false;
+            SauceOptions.ScreenResolution = "10x10";
+            SauceOptions.SeleniumVersion = "3.141.59";
+            SauceOptions.Tags = tags;
+            SauceOptions.TimeZone = "San Francisco";
+            SauceOptions.TunnelIdentifier = "My Tunnel ID";
+            SauceOptions.VideoUploadOnPass = false;
+
+            SauceOptions.AvoidProxy.Should().BeTrue();
+            SauceOptions.BuildName.Should().Be("Sample Build Name");
+            SauceOptions.CapturePerformance.Should().BeTrue();
+            SauceOptions.ChromedriverVersion.Should().Be("71");
+            SauceOptions.Timeout.CommandTimeout.Should().Be(2);
+            SauceOptions.CustomData.Should().BeEquivalentTo(customData);
+            SauceOptions.ExtendedDebugging.Should().BeTrue();
+            SauceOptions.Timeout.IdleTimeout.Should().Be(3);
+            SauceOptions.IeDriverVersion.Should().Be("3.141.0");
+            SauceOptions.Timeout.MaxDuration.Should().Be(300);
+            SauceOptions.TestName.Should().Be("Sample Test Name");
+            SauceOptions.ParentTunnel.Should().Be("Mommy");
+            SauceOptions.Prerun.Should().BeEquivalentTo(prerun);
+            SauceOptions.Priority.Should().Be(0);
+            SauceOptions.TestVisibility.Should().Be(TestVisibility.Public);
+            SauceOptions.RecordLogs.Should().BeFalse();
+            SauceOptions.RecordScreenshots.Should().BeFalse();
+            SauceOptions.RecordVideo.Should().BeFalse();
+            SauceOptions.ScreenResolution.Should().Be("10x10");
+            SauceOptions.SeleniumVersion.Should().Be("3.141.59");
+            SauceOptions.Tags.Should().BeEquivalentTo(tags);
+            SauceOptions.TimeZone.Should().Be("San Francisco");
+            SauceOptions.TunnelIdentifier.Should().Be("My Tunnel ID");
+            SauceOptions.VideoUploadOnPass.Should().BeFalse();
         }
     }
 }

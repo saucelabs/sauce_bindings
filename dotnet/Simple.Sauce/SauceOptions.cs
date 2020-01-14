@@ -21,9 +21,9 @@ namespace Simple.Sauce
         public ChromeOptions ConfiguredChromeOptions { get; private set; } = new ChromeOptions();
         public SafariOptions ConfiguredSafariOptions { get; set; } = new SafariOptions();
         public FirefoxOptions ConfiguredFirefoxOptions { get; set; } = new FirefoxOptions();
-        public String BrowserName { get; set; } = "chrome";
+        public Browser BrowserName { get; set; } = Browser.Chrome;
         public String BrowserVersion { get; set; } = DEFAULT_BROWSER_VERSION;
-        public String PlatformName { get; set; } = DEFAULT_PLATFORM;
+        public Platforms PlatformName { get; set; } = Platforms.Windows10;
 
         public void WithEdge()
         {

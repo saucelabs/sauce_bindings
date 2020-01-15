@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
@@ -51,14 +52,16 @@ namespace SimpleSauce.Test
             SauceOptions.StrictFileInteractability = true;
             SauceOptions.UnhandledPromptBehavior = UnhandledPromptBehavior.Dismiss;
 
-            var expectedTimeouts = new Dictionary<string, int> 
-                {{"implicit", 4}, {"pageLoad", 44}, {"script", 33}};
+            var impl = new KeyValuePair<string, int>("implicit", 4);
+            var page = new KeyValuePair<string, int>("pageload", 44);
+            var script = new KeyValuePair<string, int>("script", 33);
+
 
             SauceOptions.AcceptInsecureCerts.Should().BeTrue();
             SauceOptions.PageLoadStrategy.Should().Be(PageLoadStrategy.Eager);
             SauceOptions.Proxy.Should().Be(proxy);
             SauceOptions.SetWindowRect.Should().BeTrue();
-            //SauceOptions.Timeout.Should().Be(expectedTimeouts);
+            SauceOptions.Timeout.ToDictionary().Should().Contain(impl, page, script);
             SauceOptions.StrictFileInteractability.Should().BeTrue();
             SauceOptions.UnhandledPromptBehavior.Should().Be(UnhandledPromptBehavior.Dismiss);
         }

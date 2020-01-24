@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const React = require('react');
+const React = require("react");
 
-const CompLibrary = require('../../core/CompLibrary.js');
+const CompLibrary = require("../../core/CompLibrary.js");
 
 const MarkdownBlock = CompLibrary.MarkdownBlock; /* Used to read markdown */
 const Container = CompLibrary.Container;
@@ -15,10 +15,10 @@ const GridBlock = CompLibrary.GridBlock;
 
 class HomeSplash extends React.Component {
   render() {
-    const {siteConfig, language = ''} = this.props;
+    const {siteConfig, language = ""} = this.props;
     const {baseUrl, docsUrl} = siteConfig;
-    const docsPart = `${docsUrl ? `${docsUrl}/` : ''}`;
-    const langPart = `${language ? `${language}/` : ''}`;
+    const docsPart = `${docsUrl ? `${docsUrl}/` : ""}`;
+    const langPart = `${language ? `${language}/` : ""}`;
     const docUrl = doc => `${baseUrl}${docsPart}${langPart}${doc}`;
 
     const SplashContainer = props => (
@@ -64,7 +64,7 @@ class HomeSplash extends React.Component {
         <div className="inner">
           <ProjectTitle siteConfig={siteConfig} />
           <PromoSection>
-            <Button href={docUrl('gettingstarted.html')}>Get Started</Button>
+            <Button href={docUrl("gettingstarted.html")}>Get Started</Button>
           </PromoSection>
         </div>
       </SplashContainer>
@@ -74,12 +74,12 @@ class HomeSplash extends React.Component {
 
 class Index2 extends React.Component {
   render() {
-    const {config: siteConfig, language = ''} = this.props;
+    const {config: siteConfig, language = ""} = this.props;
     const {baseUrl} = siteConfig;
 
     const Block = props => (
       <Container
-        padding={['bottom', 'top']}
+        padding={["bottom", "top"]}
         id={props.id}
         background={props.background}>
         <GridBlock
@@ -92,7 +92,7 @@ class Index2 extends React.Component {
 
       const LeftBlock = props => (
           <Container
-              padding={['bottom', 'top']}
+              padding={["bottom", "top"]}
               id={props.id}
               background={props.background}>
               <GridBlock
@@ -105,7 +105,7 @@ class Index2 extends React.Component {
     const FeatureCallout = () => (
       <div
         className="productShowcaseSection paddingBottom"
-        style={{textAlign: 'center'}}>
+        style={{textAlign: "center"}}>
         <h2>Feature Callout</h2>
         <MarkdownBlock>These are features of this project</MarkdownBlock>
       </div>
@@ -116,18 +116,18 @@ class Index2 extends React.Component {
         {[
           {
             content:
-              'This project is a cross-language effort, with bindings available in the following languages:\n' +
-                '\n' +
-                '* [Java](https://github.com/saucelabs/simple_sauce/tree/master/java)\n' +
-                '* [C#](https://github.com/saucelabs/simple_sauce/tree/master/dotnet)\n' +
-                '* [Python](https://github.com/saucelabs/simple_sauce/tree/master/python)\n' +
-                '* [Ruby](https://github.com/saucelabs/simple_sauce/tree/master/ruby)\n' +
-                '\n' +
-                'Each binding balances having a shared API and feature set while being idiomatic to the language and ecosystem the binding is a part of. Each feature should be available in all language bindings.\n' +
-                '\n',
+              "This project is a cross-language effort, with bindings available in the following languages:\n" +
+                "\n" +
+                "* [Java](https://github.com/saucelabs/simple_sauce/tree/master/java)\n" +
+                "* [C#](https://github.com/saucelabs/simple_sauce/tree/master/dotnet)\n" +
+                "* [Python](https://github.com/saucelabs/simple_sauce/tree/master/python)\n" +
+                "* [Ruby](https://github.com/saucelabs/simple_sauce/tree/master/ruby)\n" +
+                "\n" +
+                "Each binding balances having a shared API and feature set while being idiomatic to the language and ecosystem the binding is a part of. Each feature should be available in all language bindings.\n" +
+                "\n",
             image: `${baseUrl}img/undraw_code_review.svg`,
-            imageAlign: 'left',
-            title: 'Supported Language Bindings',
+            imageAlign: "left",
+            title: "Supported Language Bindings",
           },
         ]}
       </LeftBlock>
@@ -138,10 +138,10 @@ class Index2 extends React.Component {
         {[
           {
             content:
-              'This is another description of how this project is useful',
+              "This is another description of how this project is useful",
             image: `${baseUrl}img/undraw_note_list.svg`,
-            imageAlign: 'right',
-            title: 'Description',
+            imageAlign: "right",
+            title: "Description",
           },
         ]}
       </Block>
@@ -152,19 +152,19 @@ class Index2 extends React.Component {
         {[
           {
             content:
-              'Writing and maintaining automated good test frameworks is hard work. Sauce Labs wants to help make this work simpler.' +
-                ' We\'ve created Simple Sauce, a collection of tools to make connecting to and working with Sauce Labs simple.\n' +
-                '\n' +
-                'Simple Sauce has three main goals:\n' +
-                '* Providing test developers with a wrapper or binding in their preferred programming language\n' +
-                '* Providing a concise API for connecting to Sauce Labs and using Sauce features in test frameworks\n' +
-                '* Providing an excellent developer user experience for using Sauce Labs in a straightforward, intuitive way.\n' +
-                '\n' +
-                'The focus of this project is to make using Sauce Labs simple so that test developers can focus on developing the best automated test frameworks possible for their teams.\n' +
-                '\n',
+              "Writing and maintaining automated good test frameworks is hard work. Sauce Labs wants to help make this work simpler." +
+                " We\'ve created Simple Sauce, a collection of tools to make connecting to and working with Sauce Labs simple.\n" +
+                "\n" +
+                "Simple Sauce has three main goals:\n" +
+                "* Providing test developers with a wrapper or binding in their preferred programming language\n" +
+                "* Providing a concise API for connecting to Sauce Labs and using Sauce features in test frameworks\n" +
+                "* Providing an excellent developer user experience for using Sauce Labs in a straightforward, intuitive way.\n" +
+                "\n" +
+                "The focus of this project is to make using Sauce Labs simple so that test developers can focus on developing the best automated test frameworks possible for their teams.\n" +
+                "\n",
             image: `${baseUrl}img/undraw_youtube_tutorial.svg`,
-            imageAlign: 'right',
-            title: 'Making Sauce Labs Simple To Use',
+            imageAlign: "right",
+            title: "Making Sauce Labs Simple To Use",
           },
         ]}
       </LeftBlock>
@@ -174,16 +174,16 @@ class Index2 extends React.Component {
       <Block layout="fourColumn">
         {[
           {
-            content: 'An easy way to get the latest required syntax for Sauce Labs',
+            content: "An easy way to get the latest required syntax for Sauce Labs",
             image: `${baseUrl}img/undraw_react.svg`,
-            imageAlign: 'top',
-            title: 'Selenium 4 Compatibility',
+            imageAlign: "top",
+            title: "Selenium 4 Compatibility",
           },
           {
-            content: 'This will make it easier for Sauce Labs to provide useful analytics',
+            content: "This will make it easier for Sauce Labs to provide useful analytics",
             image: `${baseUrl}img/undraw_operating_system.svg`,
-            imageAlign: 'top',
-            title: 'Automatic Build Information',
+            imageAlign: "top",
+            title: "Automatic Build Information",
           },
         ]}
       </Block>
@@ -202,7 +202,7 @@ class Index2 extends React.Component {
           </a>
         ));
 
-      const pageUrl = page => baseUrl + (language ? `${language}/` : '') + page;
+      const pageUrl = page => baseUrl + (language ? `${language}/` : "") + page;
 
       return (
         <div className="productShowcaseSection paddingBottom">
@@ -210,7 +210,7 @@ class Index2 extends React.Component {
           <p>This project is used by all these people</p>
           <div className="logos">{showcase}</div>
           <div className="more-users">
-            <a className="button" href={pageUrl('users.html')}>
+            <a className="button" href={pageUrl("users.html")}>
               More {siteConfig.title} Users
             </a>
           </div>

@@ -38,37 +38,37 @@ const siteConfig = {
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    {doc: "gettingstarted", label: "Docs"},
-    {page: "help", label: "Help"},
+    { doc: "gettingstarted", label: "Docs" },
+    { page: "help", label: "Help" },
+    { href: "https://saucelabs.com/sign-up", label: "Try it free", external: true },
+    { href: "https://app.saucelabs.com/login", label: "Sign in", external: true }
   ],
 
   // If you have users set above, you add it here:
   users,
 
   /* path to images for header/footer */
-  headerIcon: "img/sauce-badge.png",
+  headerIcon: "img/logo-saucelabs.png",
   footerIcon: "img/favicon.ico",
-  favicon: "img/favicon.ico",
+  favicon: "img/favicon.png",
 
   /* Colors for website */
   colors: {
-    primaryColor: "#6b3a40",
+    primaryColor: "#E12219",
     secondaryColor: "#4a282c",
+    textColor: "#464b54"
   },
 
   /* Custom fonts for website */
-  /*
+  
   fonts: {
-    myFont: [
-      "Times New Roman",
+    saucelabsFont: [
+      "museo-sans", 
+      "HelveticaNeue",
+      "Helvetica Neue",
       "Serif"
-    ],
-    myOtherFont: [
-      "-apple-system",
-      "system-ui"
     ]
   },
-  */
 
   // This copyright info is used in /core/Footer.js and blog RSS/Atom feeds.
   copyright: `Copyright © 2020-${new Date().getFullYear()} Sauce Labs`,
@@ -79,7 +79,13 @@ const siteConfig = {
   },
 
   // Add custom scripts here that would be placed in <script> tags.
-  scripts: ["https://buttons.github.io/buttons.js"],
+  scripts: [
+     "https://buttons.github.io/buttons.js"
+  ],
+
+  stylesheets: [
+    "https://use.typekit.net/zmt8tam.css"
+  ],
 
   // On page navigation for the current documentation page.
   onPageNav: "separate",
@@ -101,7 +107,7 @@ const siteConfig = {
   // enableUpdateTime: true,
 
   // You may provide arbitrary config keys to be used as needed by your
-  // template. For example, if you need your repo"s URL...
+  // template. For example, if you need your repo's URL...
      repoUrl: "https://github.com/saucelabs/simple_sauce",
 };
 

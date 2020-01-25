@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
@@ -9,14 +11,24 @@ namespace Simple.Sauce
 {
     public class SauceOptions
     {
+        private readonly string _sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
+        private readonly string _sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
+        public readonly Dictionary<string, object> _sauceConfiguration;
         private const string DEFAULT_BROWSER_VERSION = "latest";
         private const string DEFAULT_PLATFORM = "Windows 10";
 
         public SauceOptions()
         {
+            _sauceConfiguration = new Dictionary<string, object>
+            {
+                ["username"] = _sauceUserName,
+                ["accessKey"] = _sauceAccessKey
+            };
             WithChrome();
         }
 
+        public IDriverFactory DriverFactory { get; }
+        public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
         public EdgeOptions ConfiguredEdgeOptions { get; set; } = new EdgeOptions();
         public ChromeOptions ConfiguredChromeOptions { get; private set; } = new ChromeOptions();
         public SafariOptions ConfiguredSafariOptions { get; set; } = new SafariOptions();
@@ -54,8 +66,13 @@ namespace Simple.Sauce
 
         public void WithSafari(string safariVersion)
         {
-            ConfiguredSafariOptions.BrowserVersion = safariVersion;
-            ConfiguredSafariOptions.PlatformName = MatchCorrectPlatformToBrowserVersion(safariVersion);
+            SetPlatformBasedOnBrowserVersion(safariVersion);
+        }
+
+        private void SetPlatformBasedOnBrowserVersion(string safariBrowserVersion)
+        {
+            ConfiguredSafariOptions.BrowserVersion = safariBrowserVersion;
+            ConfiguredSafariOptions.PlatformName = MatchCorrectPlatformToBrowserVersion(safariBrowserVersion);
         }
 
         public string MatchCorrectPlatformToBrowserVersion(string safariBrowserVersion)
@@ -97,5 +114,7 @@ namespace Simple.Sauce
             ConfiguredFirefoxOptions.BrowserVersion = version;
             ConfiguredFirefoxOptions.PlatformName = DEFAULT_PLATFORM;
         }
+
+
     }
 }

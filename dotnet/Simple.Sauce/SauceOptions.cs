@@ -78,29 +78,29 @@ namespace Simple.Sauce
             get {
                 if (_buildName != null)
                     return _buildName;
-                else if (getEnvironmentVariable(knownCITools["Jenkins"]) != null)
+                else if (GetEnvironmentVariable(knownCITools["Jenkins"]) != null)
                 {
-                    return getEnvironmentVariable("BUILD_NAME") + ": " + getEnvironmentVariable("BUILD_NUMBER");
+                    return GetEnvironmentVariable("BUILD_NAME") + ": " + GetEnvironmentVariable("BUILD_NUMBER");
                 }
-                else if (getEnvironmentVariable(knownCITools["Bamboo"]) != null)
+                else if (GetEnvironmentVariable(knownCITools["Bamboo"]) != null)
                 {
-                    return getEnvironmentVariable("bamboo_shortJobName") + ": " + getEnvironmentVariable("bamboo_buildNumber");
+                    return GetEnvironmentVariable("bamboo_shortJobName") + ": " + GetEnvironmentVariable("bamboo_buildNumber");
                 }
-                else if (getEnvironmentVariable(knownCITools["Travis"]) != null)
+                else if (GetEnvironmentVariable(knownCITools["Travis"]) != null)
                 {
-                    return getEnvironmentVariable("TRAVIS_JOB_NAME") + ": " + getEnvironmentVariable("TRAVIS_JOB_NUMBER");
+                    return GetEnvironmentVariable("TRAVIS_JOB_NAME") + ": " + GetEnvironmentVariable("TRAVIS_JOB_NUMBER");
                 }
-                else if (getEnvironmentVariable(knownCITools["Circle"]) != null)
+                else if (GetEnvironmentVariable(knownCITools["Circle"]) != null)
                 {
-                    return getEnvironmentVariable("CIRCLE_JOB") + ": " + getEnvironmentVariable("CIRCLE_BUILD_NUM");
+                    return GetEnvironmentVariable("CIRCLE_JOB") + ": " + GetEnvironmentVariable("CIRCLE_BUILD_NUM");
                 }
-                else if (getEnvironmentVariable(knownCITools["GitLab"]) != null)
+                else if (GetEnvironmentVariable(knownCITools["GitLab"]) != null)
                 {
-                    return getEnvironmentVariable("CI_JOB_NAME") + ": " + getEnvironmentVariable("CI_JOB_ID");
+                    return GetEnvironmentVariable("CI_JOB_NAME") + ": " + GetEnvironmentVariable("CI_JOB_ID");
                 }
-                else if (getEnvironmentVariable(knownCITools["TeamCity"]) != null)
+                else if (GetEnvironmentVariable(knownCITools["TeamCity"]) != null)
                 {
-                    return getEnvironmentVariable("TEAMCITY_PROJECT_NAME") + ": " + getEnvironmentVariable("BUILD_NUMBER");
+                    return GetEnvironmentVariable("TEAMCITY_PROJECT_NAME") + ": " + GetEnvironmentVariable("BUILD_NUMBER");
                 }
                 else
                 {
@@ -129,12 +129,12 @@ namespace Simple.Sauce
         public string TunnelIdentifier { get; set; }
         public bool VideoUploadOnPass { get; set; }
         public DriverOptions SeleniumOptions { get; set; }
-        protected string getEnvironmentVariable(string key)
+        protected string GetEnvironmentVariable(string key)
         {
             return Environment.GetEnvironmentVariable(key);
         }
         //TODO could probably store this into an enum
-        private readonly Dictionary<string, string> knownCITools = new Dictionary<string, string>() 
+        private readonly Dictionary<string, string> knownCITools = new Dictionary<string, string>()
         {
             { "Jenkins", "BUILD_TAG" },
             { "Bamboo", "bamboo_agentId" },

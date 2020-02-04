@@ -26,7 +26,7 @@ namespace SimpleSauce.Test
         [TestMethod]
         public void UsesLatestChromeWindowsVersionsByDefault()
         {
-            SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.Chrome);
+            Assert.AreEqual(Browser.Chrome, SauceOptions.BrowserName);
             SauceOptions.BrowserVersion.Should().Be("latest");
             SauceOptions.PlatformName.Should().BeEquivalentTo(Platforms.Windows10);
         }
@@ -37,7 +37,7 @@ namespace SimpleSauce.Test
             SauceOptions.BrowserName = Browser.Firefox;
             SauceOptions.PlatformName = Platforms.MacOsHighSierra;
 
-            SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.Firefox);
+            SauceOptions.BrowserName.Should().Be(Browser.Firefox);
             SauceOptions.BrowserVersion.Should().Be("68");
             SauceOptions.PlatformName.Should().BeEquivalentTo(Platforms.MacOsHighSierra);
         }
@@ -183,6 +183,16 @@ namespace SimpleSauce.Test
 
             SauceOptions.BrowserName.ToString().ToLowerInvariant().Should().BeEquivalentTo("safari");
             SauceOptions.SeleniumOptions.Should().BeEquivalentTo(options);
+        }
+
+        [TestMethod]
+        public void CreatesDefaultBuildName()
+        {
+            Environment.SetEnvironmentVariable("BUILD_TAG", "Not Empty");
+            Environment.SetEnvironmentVariable("BUILD_NAME", "TEMP BUILD");
+            Environment.SetEnvironmentVariable("BUILD_NUMBER", "11");
+
+            SauceOptions.BuildName.Should().BeEquivalentTo("TEMP BUILD: 11");
         }
     }
 }

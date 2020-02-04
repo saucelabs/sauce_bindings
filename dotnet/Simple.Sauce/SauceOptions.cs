@@ -13,12 +13,13 @@ namespace Simple.Sauce
     {
         private const string DEFAULT_BROWSER_VERSION = "latest";
         private const string DEFAULT_PLATFORM = "Windows 10";
-        private Browser _browserName;
+        private Browser _browserName = Browser.Chrome;
+        private string _buildName;
 
         public SauceOptions()
         {
-            WithChrome();
             Timeout = new Timeout();
+            SeleniumOptions = new ChromeOptions();
         }
 
         public SauceOptions(DriverOptions options)
@@ -30,7 +31,8 @@ namespace Simple.Sauce
         public ChromeOptions ConfiguredChromeOptions { get; private set; } = new ChromeOptions();
         public SafariOptions ConfiguredSafariOptions { get; set; } = new SafariOptions();
         public FirefoxOptions ConfiguredFirefoxOptions { get; set; } = new FirefoxOptions();
-        public Browser BrowserName { 
+        public Browser BrowserName 
+        { 
             get
             {
                 switch (SeleniumOptions.BrowserName)
@@ -71,7 +73,42 @@ namespace Simple.Sauce
         public bool StrictFileInteractability { get; set; }
         public UnhandledPromptBehavior UnhandledPromptBehavior { get; set; }
         public bool AvoidProxy { get; set; }
-        public string BuildName { get; set; }
+        public string BuildName 
+        { 
+            get {
+                if (_buildName != null)
+                    return _buildName;
+                else if (getEnvironmentVariable(knownCITools["Jenkins"]) != null)
+                {
+                    return getEnvironmentVariable("BUILD_NAME") + ": " + getEnvironmentVariable("BUILD_NUMBER");
+                }
+                else if (getEnvironmentVariable(knownCITools["Bamboo"]) != null)
+                {
+                    return getEnvironmentVariable("bamboo_shortJobName") + ": " + getEnvironmentVariable("bamboo_buildNumber");
+                }
+                else if (getEnvironmentVariable(knownCITools["Travis"]) != null)
+                {
+                    return getEnvironmentVariable("TRAVIS_JOB_NAME") + ": " + getEnvironmentVariable("TRAVIS_JOB_NUMBER");
+                }
+                else if (getEnvironmentVariable(knownCITools["Circle"]) != null)
+                {
+                    return getEnvironmentVariable("CIRCLE_JOB") + ": " + getEnvironmentVariable("CIRCLE_BUILD_NUM");
+                }
+                else if (getEnvironmentVariable(knownCITools["GitLab"]) != null)
+                {
+                    return getEnvironmentVariable("CI_JOB_NAME") + ": " + getEnvironmentVariable("CI_JOB_ID");
+                }
+                else if (getEnvironmentVariable(knownCITools["TeamCity"]) != null)
+                {
+                    return getEnvironmentVariable("TEAMCITY_PROJECT_NAME") + ": " + getEnvironmentVariable("BUILD_NUMBER");
+                }
+                else
+                {
+                    return "Build Time: " + DateTime.Now;
+                }
+            } 
+            set { _buildName = value; } 
+        }
         public bool CapturePerformance { get; set; }
         public string ChromedriverVersion { get; set; }
         public Dictionary<string,string> CustomData { get; set; }
@@ -92,7 +129,21 @@ namespace Simple.Sauce
         public string TunnelIdentifier { get; set; }
         public bool VideoUploadOnPass { get; set; }
         public DriverOptions SeleniumOptions { get; set; }
-
+        protected string getEnvironmentVariable(string key)
+        {
+            return Environment.GetEnvironmentVariable(key);
+        }
+        //TODO could probably store this into an enum
+        private readonly Dictionary<string, string> knownCITools = new Dictionary<string, string>() 
+        {
+            { "Jenkins", "BUILD_TAG" },
+            { "Bamboo", "bamboo_agentId" },
+            { "Travis", "TRAVIS_JOB_ID" },
+            { "Circle", "CIRCLE_JOB" },
+            { "GitLab", "CI" },
+            { "TeamCity", "TEAMCITY_PROJECT_NAME" },
+            { "ADO", "NEEDS_DEFINITION" },
+        };
         public void WithEdge()
         {
             WithEdge(EdgeVersion.Latest);

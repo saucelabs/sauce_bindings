@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Runtime.InteropServices.ComTypes;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
+using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.IE;
+using OpenQA.Selenium.Safari;
 using Simple.Sauce;
 
 namespace SimpleSauce.Test
@@ -55,7 +59,6 @@ namespace SimpleSauce.Test
             var impl = new KeyValuePair<string, int>("implicit", 4);
             var page = new KeyValuePair<string, int>("pageload", 44);
             var script = new KeyValuePair<string, int>("script", 33);
-
 
             SauceOptions.AcceptInsecureCerts.Should().BeTrue();
             SauceOptions.PageLoadStrategy.Should().Be(PageLoadStrategy.Eager);
@@ -131,6 +134,55 @@ namespace SimpleSauce.Test
             SauceOptions.TimeZone.Should().Be("San Francisco");
             SauceOptions.TunnelIdentifier.Should().Be("My Tunnel ID");
             SauceOptions.VideoUploadOnPass.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void AcceptsChromeOptionsClass()
+        {
+            var options = new ChromeOptions();
+            SauceOptions = new SauceOptions(options);
+
+            SauceOptions.BrowserName.ToString().ToLowerInvariant().Should().BeEquivalentTo("chrome");
+            SauceOptions.SeleniumOptions.Should().BeEquivalentTo(options);
+        }
+        [TestMethod]
+        public void AcceptsEdgeOptionsClass()
+        {
+            var options = new EdgeOptions();
+            SauceOptions = new SauceOptions(options);
+
+            SauceOptions.BrowserName.ToString().ToLowerInvariant().Should().BeEquivalentTo("MicrosoftEdge");
+            SauceOptions.SeleniumOptions.Should().BeEquivalentTo(options);
+        }
+
+        [TestMethod]
+        public void AcceptsFirefoxOptionsClass()
+        {
+            var options = new FirefoxOptions();
+            SauceOptions = new SauceOptions(options);
+
+            SauceOptions.BrowserName.ToString().ToLowerInvariant().Should().BeEquivalentTo("firefox");
+            SauceOptions.SeleniumOptions.Should().BeEquivalentTo(options);
+        }
+
+        [TestMethod]
+        public void AcceptsInternetExplorerOptionsClass()
+        {
+            var options = new InternetExplorerOptions();
+            SauceOptions = new SauceOptions(options);
+
+            SauceOptions.BrowserName.ToString().ToLowerInvariant().Should().BeEquivalentTo("internet explorer");
+            SauceOptions.SeleniumOptions.Should().BeEquivalentTo(options);
+        }
+
+        [TestMethod]
+        public void AcceptsSafariOptionsClass()
+        {
+            var options = new SafariOptions();
+            SauceOptions = new SauceOptions(options);
+
+            SauceOptions.BrowserName.ToString().ToLowerInvariant().Should().BeEquivalentTo("safari");
+            SauceOptions.SeleniumOptions.Should().BeEquivalentTo(options);
         }
     }
 }

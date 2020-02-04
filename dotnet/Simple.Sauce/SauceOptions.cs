@@ -13,6 +13,7 @@ namespace Simple.Sauce
     {
         private const string DEFAULT_BROWSER_VERSION = "latest";
         private const string DEFAULT_PLATFORM = "Windows 10";
+        private Browser _browserName;
 
         public SauceOptions()
         {
@@ -20,11 +21,45 @@ namespace Simple.Sauce
             Timeout = new Timeout();
         }
 
+        public SauceOptions(DriverOptions options)
+        {
+            SeleniumOptions = options;
+        }
+
         public EdgeOptions ConfiguredEdgeOptions { get; set; } = new EdgeOptions();
         public ChromeOptions ConfiguredChromeOptions { get; private set; } = new ChromeOptions();
         public SafariOptions ConfiguredSafariOptions { get; set; } = new SafariOptions();
         public FirefoxOptions ConfiguredFirefoxOptions { get; set; } = new FirefoxOptions();
-        public Browser BrowserName { get; set; } = Browser.Chrome;
+        public Browser BrowserName { 
+            get
+            {
+                switch (SeleniumOptions.BrowserName)
+                {
+                    case "chrome":
+                        _browserName = Browser.Chrome;
+                        return _browserName;
+                    case "MicrosoftEdge":
+                        _browserName = Browser.Edge;
+                        return _browserName;
+                    case "firefox":
+                        _browserName = Browser.Firefox;
+                        return _browserName;
+                    case "safari":
+                        _browserName = Browser.Safari;
+                        return _browserName;
+                    case "internet explorer":
+                        _browserName = Browser.IE;
+                        return _browserName;
+                    default:
+                        _browserName = Browser.Chrome;
+                        return _browserName;
+                }
+            }
+            set 
+            {
+                _browserName = value;
+            }
+        }
         public String BrowserVersion { get; set; } = DEFAULT_BROWSER_VERSION;
         public Platforms PlatformName { get; set; } = Platforms.Windows10;
         public PageLoadStrategy PageLoadStrategy { get; set; }
@@ -56,6 +91,7 @@ namespace Simple.Sauce
         public string TimeZone { get; set; }
         public string TunnelIdentifier { get; set; }
         public bool VideoUploadOnPass { get; set; }
+        public DriverOptions SeleniumOptions { get; set; }
 
         public void WithEdge()
         {

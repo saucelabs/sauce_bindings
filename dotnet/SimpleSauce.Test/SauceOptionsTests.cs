@@ -26,7 +26,7 @@ namespace SimpleSauce.Test
         [TestMethod]
         public void UsesLatestChromeWindowsVersionsByDefault()
         {
-            Assert.AreEqual(Browser.Chrome, SauceOptions.BrowserName);
+            SauceOptions.BrowserName.Should().Be(Browser.Chrome);
             SauceOptions.BrowserVersion.Should().Be("latest");
             SauceOptions.PlatformName.Should().BeEquivalentTo(Platforms.Windows10);
         }

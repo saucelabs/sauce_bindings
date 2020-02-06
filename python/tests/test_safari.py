@@ -1,4 +1,4 @@
-from simplesauce.options import SauceOptions
+from saucebindings.options import SauceOptions
 
 
 class TestSafari(object):

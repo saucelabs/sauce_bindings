@@ -1,11 +1,11 @@
 # Sauce Bindings
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0b21fa72ecaa4a3c92bf7ac9481f4d7d)](https://app.codacy.com/app/saucelabs-training/simple_sauce?utm_source=github.com&utm_medium=referral&utm_content=saucelabs/simple_sauce&utm_campaign=Badge_Grade_Dashboard)
-[![Travis Status](https://travis-ci.org/saucelabs-training/simple_sauce.svg?branch=master)](https://travis-ci.org/saucelabs-training/simple_sauce)
-[![codecov](https://codecov.io/gh/saucelabs-training/simple_sauce/branch/master/graph/badge.svg)](https://codecov.io/gh/saucelabs-training/simple_sauce)
-[![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](https://github.com/saucelabs-training/simple_sauce/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0b21fa72ecaa4a3c92bf7ac9481f4d7d)](https://app.codacy.com/app/saucelabs-training/sauce_bindings?utm_source=github.com&utm_medium=referral&utm_content=saucelabs/sauce_bindings&utm_campaign=Badge_Grade_Dashboard)
+[![Travis Status](https://travis-ci.org/saucelabs-training/sauce_bindings.svg?branch=master)](https://travis-ci.org/saucelabs-training/sauce_bindings)
+[![codecov](https://codecov.io/gh/saucelabs-training/sauce_bindings/branch/master/graph/badge.svg)](https://codecov.io/gh/saucelabs-training/sauce_bindings)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](https://github.com/saucelabs-training/sauce_bindings/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/saucelabs-training/simple_sauce.svg)](http://isitmaintained.com/project/saucelabs-training/simple_sauce "Average time to resolve an issue")
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/saucelabs-training/sauce_bindings.svg)](http://isitmaintained.com/project/saucelabs-training/sauce_bindings "Average time to resolve an issue")
 
 ## The Idea - Making Sauce Simple To Use
 
@@ -23,10 +23,10 @@ The focus of this project is to make using Sauce Labs _simple_ so that test deve
 
 This project is a cross-language effort, with bindings available in the following languages:
 
--   [Java](https://github.com/saucelabs/sauce_bindings/tree/master/java),
--   [C#](https://github.com/saucelabs/sauce_bindings/tree/master/dotnet),
--   [Python](https://github.com/saucelabs/sauce_bindings/tree/master/python),
--   [Ruby](https://github.com/saucelabs/sauce_bindings/tree/master/ruby).
+-   [Java](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/java),
+-   [C#](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/dotnet),
+-   [Python](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/python),
+-   [Ruby](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/ruby).
 
 Each binding balances having a shared API and feature set while being idiomatic to the language and ecosystem of the binding. Features should be available in all language bindings. 
 
@@ -34,10 +34,10 @@ Each binding balances having a shared API and feature set while being idiomatic 
 
 To get started using Sauce Bindings, install your preferred language binding(s) based on these language documentation:
 
--   [Java](https://github.com/saucelabs/sauce_bindings/tree/master/java/README.md),
--   [C#](https://github.com/saucelabs/sauce_bindings/tree/master/dotnet/README.md),
--   [Python](https://github.com/saucelabs/sauce_bindings/tree/master/python/README.md),
--   [Ruby](https://github.com/saucelabs/sauce_bindings/tree/master/ruby/README.md).
+-   [Java](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/java/README.md),
+-   [C#](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/dotnet/README.md),
+-   [Python](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/python/README.md),
+-   [Ruby](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/ruby/README.md).
 
 For all bindings, the following is required:
 
@@ -73,27 +73,27 @@ This creates a new `sauce` object that uses reasonable defaults for browser opti
 
 Currently each binding follows its own language-specific build process for building and installing each language binding.
 
--   [Java](https://github.com/saucelabs/sauce_bindings/tree/master/java/README.md#building),
--   [C#](https://github.com/saucelabs/sauce_bindings/tree/master/dotnet/README.md),
--   [Python](https://github.com/saucelabs/sauce_bindings/tree/master/python#installation),
--   [Ruby](https://github.com/saucelabs/sauce_bindings/tree/master/ruby#installation).
+-   [Java](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/java/README.md#building),
+-   [C#](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/dotnet/README.md),
+-   [Python](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/python#installation),
+-   [Ruby](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/ruby#installation).
 
 ## Tests
 
 Currently each binding has tests that can be executed in a language-specific way. 
 
--   [Java](https://github.com/saucelabs/sauce_bindings/tree/master/java/README.md#testing),
--   [C#](https://github.com/saucelabs/sauce_bindings/tree/master/dotnet/README.md),
--   [Python](https://github.com/saucelabs/sauce_bindings/tree/master/python#testing),
--   [Ruby](https://github.com/saucelabs/sauce_bindings/tree/master/ruby#installation).
+-   [Java](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/java/README.md#testing),
+-   [C#](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/dotnet/README.md),
+-   [Python](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/python#testing),
+-   [Ruby](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/ruby#installation).
 
 
 ## Contributing
 
 Sauce Labs is proudly based on open source technologies and encourages open source projects like Sauce Bindings. If you would like to contribute there are several ways of doing so:
 
--   **Development**: Bug fixes and implementing new features are welcome. There are also [good first issues](https://github.com/saucelabs/sauce_bindings/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) labeled if you'd like to get started on development but don't know how. Please fork this this repository and open a pull request if you'd like to contribute this way.
--   **Features and Issues**: See something you'd like fixed? Have a good idea for how to improve Sauce Bindings? [Create an issue](https://github.com/saucelabs/sauce_bindings/issues) or add to an existing issue. 
+-   **Development**: Bug fixes and implementing new features are welcome. There are also [good first issues](https://github.com/saucelabs/sauce-training/sauce_bindings/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) labeled if you'd like to get started on development but don't know how. Please fork this this repository and open a pull request if you'd like to contribute this way.
+-   **Features and Issues**: See something you'd like fixed? Have a good idea for how to improve Sauce Bindings? [Create an issue](https://github.com/saucelabs/sauce-training/sauce_bindings/issues) or add to an existing issue. 
 -   **Documentation**: A great way to start working with any open source project is through improving documentation. You can add or edit doc strings, either in a pull request or directly from GitHub. You can edit a file in GitHub as long as you're signed in and create a pull request from those edits. 
 
 ## Special Thanks

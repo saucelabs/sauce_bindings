@@ -306,7 +306,7 @@ namespace SimpleSauce.Test
                 {"acceptInsecureCerts", true }
             };
 
-            SauceOptions.ToCapabilities.Should().BeEquivalentTo(expectedCapabilities);
+            SauceOptions.ToDriverOptions().Should().BeEquivalentTo(expectedCapabilities);
         }
     }
 }

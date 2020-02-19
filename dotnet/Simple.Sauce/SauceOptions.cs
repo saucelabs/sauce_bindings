@@ -26,7 +26,7 @@ namespace Simple.Sauce
             SeleniumOptions = options;
             if (options.BrowserName != null)
             {
-                BrowserName = ToBrowserType(options.BrowserName);
+                BrowserName = ToBrowserEnum(options.BrowserName);
             }
         }
 
@@ -216,7 +216,7 @@ namespace Simple.Sauce
             { "TeamCity", "TEAMCITY_PROJECT_NAME" },
             { "ADO", "NEEDS_DEFINITION" },
         };
-        private Browser ToBrowserType(string browserName)
+        private Browser ToBrowserEnum(string browserName)
         {
             Browser browser;
             switch (browserName)

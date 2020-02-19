@@ -140,7 +140,7 @@ namespace SimpleSauce.Test
             var options = new ChromeOptions();
             SauceOptions = new SauceOptions(options);
 
-            SauceOptions.BrowserName.ToString().ToLowerInvariant().Should().BeEquivalentTo("chrome");
+            SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.Chrome);
             SauceOptions.SeleniumOptions.Should().BeEquivalentTo(options);
         }
         [TestMethod]
@@ -159,7 +159,7 @@ namespace SimpleSauce.Test
             var options = new FirefoxOptions();
             SauceOptions = new SauceOptions(options);
 
-            SauceOptions.BrowserName.ToString().ToLowerInvariant().Should().BeEquivalentTo("firefox");
+            SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.Firefox);
             SauceOptions.SeleniumOptions.Should().BeEquivalentTo(options);
         }
 
@@ -169,7 +169,7 @@ namespace SimpleSauce.Test
             var options = new InternetExplorerOptions();
             SauceOptions = new SauceOptions(options);
 
-            SauceOptions.BrowserName.ToString().ToLowerInvariant().Should().BeEquivalentTo("internet explorer");
+            SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.IE);
             SauceOptions.SeleniumOptions.Should().BeEquivalentTo(options);
         }
 
@@ -179,7 +179,7 @@ namespace SimpleSauce.Test
             var options = new SafariOptions();
             SauceOptions = new SauceOptions(options);
 
-            SauceOptions.BrowserName.ToString().ToLowerInvariant().Should().BeEquivalentTo("safari");
+            SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.Safari);
             SauceOptions.SeleniumOptions.Should().BeEquivalentTo(options);
         }
 

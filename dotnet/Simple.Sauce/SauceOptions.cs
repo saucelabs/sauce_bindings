@@ -5,6 +5,7 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Safari;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 // ReSharper disable InconsistentNaming
 
 namespace Simple.Sauce
@@ -18,7 +19,6 @@ namespace Simple.Sauce
         public SauceOptions()
         {
             Timeout = new Timeout();
-            SeleniumOptions = new ChromeOptions();
         }
 
         public SauceOptions(DriverOptions options)
@@ -95,6 +95,45 @@ namespace Simple.Sauce
             }
             set { _buildName = value; }
         }
+
+        internal DriverOptions ToDriverOptions()
+        {
+            var w3cCapabilities = SeleniumOptions;
+            //TODO temporary solution to get the code working
+            var sauceConfiguration = new Dictionary<string, object>
+            {
+                ["username"] = Environment.GetEnvironmentVariable("SAUCE_USERNAME"),
+                ["accessKey"] = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY")
+            };
+            //TODO add if logic from the toCapabilities() in Java
+
+            w3cOptions.ForEach(capability => AddCapabilityIfDefined(sauceConfiguration, capability));
+
+            w3cCapabilities.AddAdditionalOption("sauce:options", sauceConfiguration);
+            return w3cCapabilities;
+        }
+
+        private void AddCapabilityIfDefined(Dictionary<string, object> sauceConfiguration, string capability)
+        {
+            var capabilityValue = GetCapabilityValue(capability);
+            if (capabilityValue != null)
+                sauceConfiguration.Add(capability, capabilityValue);
+        }
+
+        private object GetCapabilityValue(string capability)
+        {
+            try
+            {
+                return GetType().GetProperty(capability).GetValue(this, null);
+            }
+            catch (NullReferenceException)
+            {
+                return null;
+            }
+            //PropertyInfo pinfo = typeof(SauceOptions).GetProperty(capability);
+            //return  pinfo.GetValue(YourInstantiatedObject, null);
+        }
+
         public bool CapturePerformance { get; set; }
         public string ChromedriverVersion { get; set; }
         public Dictionary<string, string> CustomData { get; set; }
@@ -116,6 +155,49 @@ namespace Simple.Sauce
         public bool VideoUploadOnPass { get; set; }
         public DriverOptions SeleniumOptions { get; set; }
         public Browser BrowserName { get; set; } = Browser.Chrome;
+        public static List<string> w3cOptions = new List<string>(new string[]
+            {
+                "browserName",
+                "browserVersion",
+                "platformName",
+                "pageLoadStrategy",
+                "acceptInsecureCerts",
+                "proxy",
+                "setWindowRect",
+                "timeouts",
+                "strictFileInteractability",
+                "unhandledPromptBehavior"
+            }
+        );
+        public static List<string> sauceOptions = new List<string>(new string[]
+        {
+            "avoidProxy",
+            "build",
+            "capturePerformance",
+            "chromedriverVersion",
+            "commandTimeout",
+            "customData",
+            "extendedDebugging",
+            "idleTimeout",
+            "iedriverVersion",
+            "maxDuration",
+            "name",
+            "parentTunnel",
+            "prerun",
+            "priority",
+            // public, do not use, reserved keyword, using jobVisibility
+            "recordLogs",
+            "recordScreenshots",
+            "recordVideo",
+            "screenResolution",
+            "seleniumVersion",
+            "tags",
+            "timeZone",
+            "tunnelIdentifier",
+            "videoUploadOnPass"
+        }
+        );
+
 
         protected string GetEnvironmentVariable(string key)
         {

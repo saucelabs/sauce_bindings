@@ -9,7 +9,7 @@
 
         public string Value { get; set; }
 
-        public static DataCenter UsWest => new DataCenter("https://ondemand.saucelabs.com/wd/hub");
+        public static DataCenter UsWest => new DataCenter("ondemand.us-west-1.saucelabs.com");
 
         public static DataCenter UsEast => new DataCenter("https://ondemand.us-east-1.saucelabs.com/wd/hub");
 

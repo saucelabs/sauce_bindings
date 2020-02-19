@@ -11,7 +11,14 @@ namespace Simple.Sauce
         public IWebDriver CreateRemoteWebDriver(DriverOptions browserOptions)
         {
             _driver = new RemoteWebDriver(new Uri("https://ondemand.saucelabs.com/wd/hub"),
-                browserOptions.ToCapabilities(), TimeSpan.FromSeconds(600));
+                browserOptions.ToCapabilities(), TimeSpan.FromSeconds(30));
+            return _driver;
+        }
+
+        public IWebDriver CreateRemoteWebDriver(Uri sauceUri, DriverOptions browserOptions)
+        {
+            _driver = new RemoteWebDriver(sauceUri,
+                browserOptions.ToCapabilities(), TimeSpan.FromSeconds(30));
             return _driver;
         }
 

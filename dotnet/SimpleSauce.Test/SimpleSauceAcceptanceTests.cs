@@ -34,8 +34,11 @@ namespace SimpleSauce.Test
         [TestMethod]
         public void RunTestWithEdge()
         {
-            _sauceOptions = new SauceOptions();
-            _sauceOptions.WithEdge();
+            _sauceOptions = new SauceOptions
+            {
+                BrowserName = Browser.Edge
+            };
+
             _session = new SauceSession(_sauceOptions);
             _driver = _session.Start();
             ((IJavaScriptExecutor)_driver).ExecuteScript("sauce:job-name=" + TestContext.TestName);

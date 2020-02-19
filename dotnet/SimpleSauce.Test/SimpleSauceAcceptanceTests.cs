@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
 using Simple.Sauce;
 
@@ -29,6 +26,8 @@ namespace SimpleSauce.Test
         {
             _session = new SauceSession();
             _driver = _session.Start();
+            ((IJavaScriptExecutor)_driver).ExecuteScript("sauce:job-name=" + TestContext.TestName);
+
             var capabilities = ((RemoteWebDriver)_driver).Capabilities;
             capabilities.GetCapability("browserName").Should().Be("chrome");
         }
@@ -39,6 +38,7 @@ namespace SimpleSauce.Test
             _sauceOptions.WithEdge();
             _session = new SauceSession(_sauceOptions);
             _driver = _session.Start();
+            ((IJavaScriptExecutor)_driver).ExecuteScript("sauce:job-name=" + TestContext.TestName);
             var capabilities = ((RemoteWebDriver)_driver).Capabilities;
             capabilities.GetCapability("browserName").Should().Be("MicrosoftEdge");
         }
@@ -50,6 +50,8 @@ namespace SimpleSauce.Test
             _sauceOptions.WithEdge(EdgeVersion._15);
             _session = new SauceSession(_sauceOptions);
             _driver = _session.Start();
+            ((IJavaScriptExecutor)_driver).ExecuteScript("sauce:job-name=" + TestContext.TestName);
+
             var capabilities = ((RemoteWebDriver)_driver).Capabilities;
             capabilities.GetCapability("browserName").Should().Be("MicrosoftEdge");
         }
@@ -60,6 +62,8 @@ namespace SimpleSauce.Test
             _sauceOptions.WithSafari();
             _session = new SauceSession(_sauceOptions);
             _driver = _session.Start();
+            ((IJavaScriptExecutor)_driver).ExecuteScript("sauce:job-name=" + TestContext.TestName);
+
             var capabilities = ((RemoteWebDriver)_driver).Capabilities;
             capabilities.GetCapability("browserName").Should().Be("Safari");
         }

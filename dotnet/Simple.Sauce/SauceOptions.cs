@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Safari;
+using System;
+using System.Collections.Generic;
 // ReSharper disable InconsistentNaming
 
 namespace Simple.Sauce
@@ -13,7 +13,6 @@ namespace Simple.Sauce
     {
         private const string DEFAULT_BROWSER_VERSION = "latest";
         private const string DEFAULT_PLATFORM = "Windows 10";
-        private Browser _browserName = Browser.Chrome;
         private string _buildName;
 
         public SauceOptions()
@@ -25,43 +24,29 @@ namespace Simple.Sauce
         public SauceOptions(DriverOptions options)
         {
             SeleniumOptions = options;
+            if (options.BrowserName != null)
+            {
+                BrowserName = ToBrowserType(options.BrowserName);
+            }
         }
 
         public EdgeOptions ConfiguredEdgeOptions { get; set; } = new EdgeOptions();
         public ChromeOptions ConfiguredChromeOptions { get; private set; } = new ChromeOptions();
         public SafariOptions ConfiguredSafariOptions { get; set; } = new SafariOptions();
         public FirefoxOptions ConfiguredFirefoxOptions { get; set; } = new FirefoxOptions();
-        public Browser BrowserName 
-        { 
-            get
-            {
-                switch (SeleniumOptions.BrowserName)
-                {
-                    case "chrome":
-                        _browserName = Browser.Chrome;
-                        return _browserName;
-                    case "MicrosoftEdge":
-                        _browserName = Browser.Edge;
-                        return _browserName;
-                    case "firefox":
-                        _browserName = Browser.Firefox;
-                        return _browserName;
-                    case "safari":
-                        _browserName = Browser.Safari;
-                        return _browserName;
-                    case "internet explorer":
-                        _browserName = Browser.IE;
-                        return _browserName;
-                    default:
-                        _browserName = Browser.Chrome;
-                        return _browserName;
-                }
-            }
-            set 
-            {
-                _browserName = value;
-            }
-        }
+        //public Browser BrowserName
+        //{
+        //    get
+        //    {
+        //        if (_browserName == null)
+        //            return Browser.Chrome;
+        //        return ToBrowserType(SeleniumOptions.BrowserName);
+        //    }
+        //    set
+        //    {
+        //        _browserName = value;
+        //    }
+        //}
         public String BrowserVersion { get; set; } = DEFAULT_BROWSER_VERSION;
         public Platforms PlatformName { get; set; } = Platforms.Windows10;
         public PageLoadStrategy PageLoadStrategy { get; set; }
@@ -73,9 +58,10 @@ namespace Simple.Sauce
         public bool StrictFileInteractability { get; set; }
         public UnhandledPromptBehavior UnhandledPromptBehavior { get; set; }
         public bool AvoidProxy { get; set; }
-        public string BuildName 
-        { 
-            get {
+        public string BuildName
+        {
+            get
+            {
                 if (_buildName != null)
                     return _buildName;
                 else if (GetEnvironmentVariable(knownCITools["Jenkins"]) != null)
@@ -106,12 +92,12 @@ namespace Simple.Sauce
                 {
                     return "Build Time: " + DateTime.Now;
                 }
-            } 
-            set { _buildName = value; } 
+            }
+            set { _buildName = value; }
         }
         public bool CapturePerformance { get; set; }
         public string ChromedriverVersion { get; set; }
-        public Dictionary<string,string> CustomData { get; set; }
+        public Dictionary<string, string> CustomData { get; set; }
         public bool ExtendedDebugging { get; set; }
         public string IeDriverVersion { get; set; }
         public string TestName { get; set; }
@@ -129,6 +115,8 @@ namespace Simple.Sauce
         public string TunnelIdentifier { get; set; }
         public bool VideoUploadOnPass { get; set; }
         public DriverOptions SeleniumOptions { get; set; }
+        public Browser BrowserName { get; set; } = Browser.Chrome;
+
         protected string GetEnvironmentVariable(string key)
         {
             return Environment.GetEnvironmentVariable(key);
@@ -144,6 +132,31 @@ namespace Simple.Sauce
             { "TeamCity", "TEAMCITY_PROJECT_NAME" },
             { "ADO", "NEEDS_DEFINITION" },
         };
+        private Browser ToBrowserType(string browserName)
+        {
+            Browser browser;
+            switch (browserName)
+            {
+                case "chrome":
+                    browser = Browser.Chrome;
+                    break;
+                case "MicrosoftEdge":
+                    browser = Browser.Edge;
+                    break;
+                case "firefox":
+                    browser = Browser.Firefox;
+                    break;
+                case "safari":
+                    browser = Browser.Safari;
+                    break;
+                case "internet explorer":
+                    browser = Browser.IE;
+                    break;
+                default:
+                    throw new ArgumentException("No such browser exists.");
+            }
+            return browser;
+        }
         public void WithEdge()
         {
             WithEdge(EdgeVersion.Latest);

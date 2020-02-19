@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Runtime.InteropServices.ComTypes;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
@@ -11,6 +7,8 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Safari;
 using Simple.Sauce;
+using System;
+using System.Collections.Generic;
 
 namespace SimpleSauce.Test
 {
@@ -31,7 +29,7 @@ namespace SimpleSauce.Test
             SauceOptions.PlatformName.Should().BeEquivalentTo(Platforms.Windows10);
         }
         [TestMethod]
-        public void UpdatesBrowserBrowserVersionPlatformVersion()
+        public void UpdatesBrowserVersionPlatformVersion()
         {
             SauceOptions.BrowserVersion = "68";
             SauceOptions.BrowserName = Browser.Firefox;
@@ -151,7 +149,7 @@ namespace SimpleSauce.Test
             var options = new EdgeOptions();
             SauceOptions = new SauceOptions(options);
 
-            SauceOptions.BrowserName.ToString().ToLowerInvariant().Should().BeEquivalentTo("MicrosoftEdge");
+            SauceOptions.BrowserName.Should().Be(Browser.Edge);
             SauceOptions.SeleniumOptions.Should().BeEquivalentTo(options);
         }
 

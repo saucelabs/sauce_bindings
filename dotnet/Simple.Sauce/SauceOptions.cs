@@ -95,7 +95,7 @@ namespace Simple.Sauce
             set { _buildName = value; }
         }
 
-        internal DriverOptions ToDriverOptions()
+        public DriverOptions ToDriverOptions()
         {
             var w3cCapabilities = SeleniumOptions;
             //TODO temporary solution to get the code working

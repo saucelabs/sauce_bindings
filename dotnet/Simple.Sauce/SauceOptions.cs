@@ -110,20 +110,20 @@ namespace Simple.Sauce
             if (BrowserName == Browser.Edge)
                 w3cCapabilities = new EdgeOptions();
 
-            w3cOptions.ForEach(capability => AddCapabilityIfDefined(sauceConfiguration, capability));
+            w3cOptions.ForEach(capability => AppendCapabilityIfDefined(sauceConfiguration, capability));
 
             w3cCapabilities.AddAdditionalOption("sauce:options", sauceConfiguration);
             return w3cCapabilities;
         }
 
-        private void AddCapabilityIfDefined(Dictionary<string, object> sauceConfiguration, string capability)
+        private void AppendCapabilityIfDefined(Dictionary<string, object> sauceConfiguration, string capability)
         {
-            var capabilityValue = GetCapabilityValue(capability);
+            var capabilityValue = TryToGetCapabilityValue(capability);
             if (capabilityValue != null)
                 sauceConfiguration.Add(capability, capabilityValue);
         }
 
-        private object GetCapabilityValue(string capability)
+        private object TryToGetCapabilityValue(string capability)
         {
             try
             {

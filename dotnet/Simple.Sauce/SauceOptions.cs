@@ -30,7 +30,6 @@ namespace Simple.Sauce
             }
         }
 
-        public EdgeOptions ConfiguredEdgeOptions { get; set; } = new EdgeOptions();
         public ChromeOptions ConfiguredChromeOptions { get; private set; } = new ChromeOptions();
         public SafariOptions ConfiguredSafariOptions { get; set; } = new SafariOptions();
         public FirefoxOptions ConfiguredFirefoxOptions { get; set; } = new FirefoxOptions();
@@ -241,19 +240,6 @@ namespace Simple.Sauce
                     throw new ArgumentException("No such browser exists.");
             }
             return browser;
-        }
-        public void WithEdge()
-        {
-            WithEdge(EdgeVersion.Latest);
-        }
-
-        public void WithEdge(EdgeVersion edgeVersion)
-        {
-            if (edgeVersion == null)
-                throw new ArgumentNullException("Please supply a valid EdgeVersion. You suplied an invalid value=>" +
-                                                edgeVersion);
-            ConfiguredEdgeOptions.BrowserVersion = edgeVersion.Value;
-            ConfiguredEdgeOptions.PlatformName = DEFAULT_PLATFORM;
         }
 
         public void WithChrome()

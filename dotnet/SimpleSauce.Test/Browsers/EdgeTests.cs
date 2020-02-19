@@ -15,23 +15,11 @@ namespace SimpleSauce.Test.Browsers
             SauceOptions = new SauceOptions();
         }
         [TestMethod]
-        public void WithEdge_DefaultPlatform_Windows10()
-        {
-            SauceOptions.WithEdge();
-            SauceOptions.ConfiguredEdgeOptions.PlatformName.Should().Be("Windows 10");
-        }
-        [TestMethod]
-        public void WithEdge_DefaultBrowserVersion_latest()
-        {
-            SauceOptions.WithEdge();
-            SauceOptions.ConfiguredEdgeOptions.BrowserVersion.Should().Be("latest");
-        }
-        [TestMethod]
         [DynamicData(nameof(PossibleEdgeConfigurations), typeof(EdgeTests))]
         public void WithEdge_SetVersion_SetsCorrectVersion(string expectedVersion, EdgeVersion edgeVersion)
         {
-            SauceOptions.WithEdge(edgeVersion);
-            SauceOptions.ConfiguredEdgeOptions.BrowserVersion.Should().Be(expectedVersion);
+            SauceOptions.BrowserVersion = edgeVersion.Value;
+            SauceOptions.BrowserVersion.Should().Be(expectedVersion);
         }
         public static IEnumerable<object[]> PossibleEdgeConfigurations => new[]
         {
@@ -42,11 +30,5 @@ namespace SimpleSauce.Test.Browsers
             new object[] {"14.14393", EdgeVersion._14 },
             new object[] { "13.10586", EdgeVersion._13 }
         };
-
-        [TestMethod]
-        public void WithEdge_NullBrowserVersion_ThrowsException()
-        {
-            Assert.ThrowsException<ArgumentNullException>(() => SauceOptions.WithEdge(null));
-        }
     }
 }

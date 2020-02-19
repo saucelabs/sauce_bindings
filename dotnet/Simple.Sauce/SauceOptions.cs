@@ -107,6 +107,9 @@ namespace Simple.Sauce
             };
             //TODO add if logic from the toCapabilities() in Java
 
+            if (BrowserName == Browser.Edge)
+                w3cCapabilities = new EdgeOptions();
+
             w3cOptions.ForEach(capability => AddCapabilityIfDefined(sauceConfiguration, capability));
 
             w3cCapabilities.AddAdditionalOption("sauce:options", sauceConfiguration);
@@ -124,7 +127,7 @@ namespace Simple.Sauce
         {
             try
             {
-                return GetType().GetProperty(capability).GetValue(this, null);
+                return GetType().GetProperty(capability).GetValue(this);
             }
             catch (NullReferenceException)
             {

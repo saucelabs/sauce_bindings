@@ -1,5 +1,6 @@
 # Sauce Bindings
 
+
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0b21fa72ecaa4a3c92bf7ac9481f4d7d)](https://app.codacy.com/app/sauce_bindings?utm_source=github.com&utm_medium=referral&utm_content=saucelabs/sauce_bindings&utm_campaign=Badge_Grade_Dashboard)
 [![Travis Status](https://travis-ci.org/sauce_bindings.svg?branch=master)](https://travis-ci.org/sauce_bindings)
 [![codecov](https://codecov.io/gh/sauce_bindings/branch/master/graph/badge.svg)](https://codecov.io/gh/sauce_bindings)
@@ -34,10 +35,10 @@ Each binding balances having a shared API and feature set while being idiomatic 
 
 To get started using Sauce Bindings, install your preferred language binding(s) based on these language documentation:
 
--   [Java](https://github.com/saucelabs/sauce_bindings/tree/master/java/README.md),
--   [C#](https://github.com/saucelabs/sauce_bindings/tree/master/dotnet/README.md),
--   [Python](https://github.com/saucelabs/sauce_bindings/tree/master/python/README.rst),
--   [Ruby](https://github.com/saucelabs/sauce_bindings/tree/master/ruby/README.md).
+-   [Java](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/java/README.md),
+-   [C#](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/dotnet/README.md),
+-   [Python](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/python/README.md),
+-   [Ruby](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/ruby/README.md).
 
 For all bindings, the following is required:
 

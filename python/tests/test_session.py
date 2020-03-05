@@ -1,7 +1,7 @@
 import pytest
 import os
-from simplesauce.options import SauceOptions
-from simplesauce.session import SauceSession
+from saucebindings.options import SauceOptions
+from saucebindings.session import SauceSession
 
 SAUCE_USERNAME_HOLDER = os.getenv('SAUCE_USERNAME', None)
 SAUCE_ACCESS_KEY_HOLDER = os.getenv('SAUCE_ACCESS_KEY', None)

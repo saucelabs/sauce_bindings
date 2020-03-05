@@ -1,7 +1,7 @@
 import os
 from selenium import webdriver
 from selenium.webdriver.remote.remote_connection import RemoteConnection
-from simplesauce.options import SauceOptions
+from .options import SauceOptions
 
 
 data_centers = {

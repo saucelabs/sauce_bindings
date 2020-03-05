@@ -19,6 +19,12 @@ Or install it yourself as:
 
     $ gem install simple_sauce
 
+## Running Tests
+
+To run tests for the Ruby Sauce Bindings, execute
+
+    $ bundle exec rake
+
 ## Usage
 
 `SimpleSauce` is broken into two main components, `Options` and `Session`

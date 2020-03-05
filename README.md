@@ -2,11 +2,11 @@
 
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0b21fa72ecaa4a3c92bf7ac9481f4d7d)](https://app.codacy.com/app/sauce_bindings?utm_source=github.com&utm_medium=referral&utm_content=saucelabs/sauce_bindings&utm_campaign=Badge_Grade_Dashboard)
-[![Travis Status](https://travis-ci.org/sauce_bindings.svg?branch=master)](https://travis-ci.org/sauce_bindings)
-[![codecov](https://codecov.io/gh/sauce_bindings/branch/master/graph/badge.svg)](https://codecov.io/gh/sauce_bindings)
+[![Travis Status](https://travis-ci.org/saucelabs/sauce_bindings.svg?branch=master)](https://travis-ci.org/saucelabs/sauce_bindings)
+[![codecov](https://codecov.io/gh/saucelabs/sauce_bindings/branch/master/graph/badge.svg)](https://codecov.io/gh/saucelabs/sauce_bindings)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](https://github.com/sauce_bindings/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/sauce_bindings.svg)](http://isitmaintained.com/project/sauce_bindings "Average time to resolve an issue")
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/sauce_bindings.svg)](http://isitmaintained.com/project/saucelabs/sauce_bindings "Average time to resolve an issue")
 
 ## The Idea - Making Sauce Simple To Use
 
@@ -35,10 +35,10 @@ Each binding balances having a shared API and feature set while being idiomatic 
 
 To get started using Sauce Bindings, install your preferred language binding(s) based on these language documentation:
 
--   [Java](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/java/README.md),
--   [C#](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/dotnet/README.md),
--   [Python](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/python/README.md),
--   [Ruby](https://github.com/saucelabs/sauce-training/sauce_bindings/tree/master/ruby/README.md).
+-   [Java](https://github.com/saucelabs/sauce_bindings/tree/master/java/README.md),
+-   [C#](https://github.com/saucelabs/sauce_bindings/tree/master/dotnet/README.md),
+-   [Python](https://github.com/saucelabs/sauce_bindings/tree/master/python/README.rst),
+-   [Ruby](https://github.com/saucelabs/sauce_bindings/tree/master/ruby/README.md).
 
 For all bindings, the following is required:
 
@@ -70,12 +70,12 @@ sauce.stop();
 
 This creates a new `sauce` object that uses reasonable defaults for browser options, starts a session on Sauce Labs, visits the Sauce Labs website then closes the browser session. This pseudocode sample idealizes the goals of Sauce Bindings: starting a session on Sauce with reasonable defaults in a few lines of code. It is simple, straightforward, readable and translates well across multiple programming languages. 
 
-## Building
+## Building and Installing
 
 Currently each binding follows its own language-specific build process for building and installing each language binding.
 
 -   [Java](https://github.com/saucelabs/sauce_bindings/tree/master/java/README.md#building),
--   [C#](https://github.com/saucelabs/sauce_bindings/tree/master/dotnet/README.md),
+-   [C#](https://github.com/saucelabs/sauce_bindings/tree/master/dotnet/README.md#migrating-to-simple-sauce),
 -   [Python](https://github.com/saucelabs/sauce_bindings/tree/master/python/README.rst#installation),
 -   [Ruby](https://github.com/saucelabs/sauce_bindings/tree/master/ruby#installation).
 
@@ -85,7 +85,7 @@ Currently each binding has tests that can be executed in a language-specific way
 
 -   [Java](https://github.com/saucelabs/sauce_bindings/tree/master/java/README.md#testing),
 -   [C#](https://github.com/saucelabs/sauce_bindings/tree/master/dotnet/README.md),
--   [Python](https://github.com/saucelabs/sauce_bindings/tree/master/README.rstpython#testing),
+-   [Python](https://github.com/saucelabs/sauce_bindings/tree/master/python/README.rst#testing),
 -   [Ruby](https://github.com/saucelabs/sauce_bindings/tree/master/ruby#installation).
 
 

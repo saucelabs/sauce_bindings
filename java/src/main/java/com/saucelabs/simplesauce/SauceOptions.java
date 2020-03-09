@@ -79,7 +79,7 @@ public class SauceOptions {
             "timeouts"
     );
 
-    public static final List<String> w3cOptions = List.of(
+    public static final List<String> w3cDefinedOptions = List.of(
             "browserName",
             "browserVersion",
             "platformName",
@@ -91,7 +91,7 @@ public class SauceOptions {
             "strictFileInteractability",
             "unhandledPromptBehavior");
 
-    public static final List<String> sauceOptions = List.of(
+    public static final List<String> sauceDefinedOptions = List.of(
             "avoidProxy",
             "build",
             "capturePerformance",
@@ -167,7 +167,6 @@ public class SauceOptions {
     }
 
     public MutableCapabilities toCapabilities() {
-        MutableCapabilities w3cCapabilities = getSeleniumCapabilities();
         MutableCapabilities sauceCapabilities = new MutableCapabilities();
 
         if (getCapability("jobVisibility") != null) {
@@ -178,16 +177,16 @@ public class SauceOptions {
             sauceCapabilities.setCapability("prerun", getCapability("prerunUrl"));
         }
 
-        w3cOptions.forEach((capability) -> {
-            addCapabilityIfDefined(w3cCapabilities, capability);
+        w3cDefinedOptions.forEach((capability) -> {
+            addCapabilityIfDefined(seleniumCapabilities, capability);
         });
 
-        sauceOptions.forEach((capability) -> {
+        sauceDefinedOptions.forEach((capability) -> {
             addCapabilityIfDefined(sauceCapabilities, capability);
         });
 
-        w3cCapabilities.setCapability("sauce:options", sauceCapabilities);
-        return w3cCapabilities;
+        seleniumCapabilities.setCapability("sauce:options", sauceCapabilities);
+        return seleniumCapabilities;
     }
 
     private void addCapabilityIfDefined(MutableCapabilities capabilities, String capability) {

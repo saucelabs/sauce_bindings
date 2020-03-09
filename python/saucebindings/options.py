@@ -104,7 +104,12 @@ class SauceOptions:
             self.set_capability('browserName', 'chrome')
 
         if self.platform_name is None:
-            self.set_capability('platformName', 'Windows 10')
+            # Special Case: Safari is selected as the browserName
+            # In this case, default to MacOS 10.14
+            if browserName and browserName.lower() == 'safari':
+                self.set_capability('platformName', 'MacOS 10.14')
+            else:
+                self.set_capability('platformName', 'Windows 10')
 
         self._set_default_build_name()
 

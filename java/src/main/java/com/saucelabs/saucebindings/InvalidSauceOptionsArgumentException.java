@@ -1,4 +1,4 @@
-package com.saucelabs.simplesauce;
+package com.saucelabs.saucebindings;
 
 class InvalidSauceOptionsArgumentException extends RuntimeException {
     public InvalidSauceOptionsArgumentException(String message) {

@@ -1,6 +1,6 @@
-package com.saucelabs.simplesauce.examples;
+package com.saucelabs.saucebindings.examples;
 
-import com.saucelabs.simplesauce.SauceSession;
+import com.saucelabs.saucebindings.SauceSession;
 
 public class BasicUsage {
 

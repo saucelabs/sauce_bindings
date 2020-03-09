@@ -1,6 +1,6 @@
-package com.saucelabs.simplesauce.examples;
+package com.saucelabs.saucebindings.examples;
 
-import com.saucelabs.simplesauce.SauceSession;
+import com.saucelabs.saucebindings.SauceSession;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

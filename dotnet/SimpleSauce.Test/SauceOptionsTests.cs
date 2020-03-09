@@ -295,13 +295,15 @@ namespace SimpleSauce.Test
             firefoxOptions.AddArguments("--foo");
             firefoxOptions.UnhandledPromptBehavior = UnhandledPromptBehavior.Dismiss;
 
-            SauceOptions = new SauceOptions(firefoxOptions);
+            SauceOptions = new SauceOptions(firefoxOptions)
+            {
+                PageLoadStrategy = PageLoadStrategy.Eager,
+                AcceptInsecureCerts = true,
+                AvoidProxy = true,
+                BuildName = "Sample Build Name",
+                CapturePerformance = true
+            };
 
-            SauceOptions.PageLoadStrategy = PageLoadStrategy.Eager;
-            SauceOptions.AcceptInsecureCerts = true;
-            SauceOptions.AvoidProxy = true;
-            SauceOptions.BuildName = "Sample Build Name";
-            SauceOptions.CapturePerformance = true;
 
             var impl = new KeyValuePair<string, int>("implicit", 4);
             var page = new KeyValuePair<string, int>("pageload", 44);

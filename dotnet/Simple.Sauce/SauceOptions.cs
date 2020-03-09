@@ -170,7 +170,7 @@ namespace Simple.Sauce
                 throw new ArgumentOutOfRangeException("The desired browser configuration is not yet set.");
 
 
-            W3CAllowedOptionsList.ForEach(capability => AppendCapabilityToSeleniumOptions(capability));
+            W3CAllowedOptionsList.ForEach(AppendCapabilityToSeleniumOptions);
 
             SeleniumOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
             return SeleniumOptions;
@@ -187,7 +187,7 @@ namespace Simple.Sauce
         {
             try
             {
-                return GetType().GetProperty(capability).GetValue(this);
+                return GetType().GetProperty(capability)?.GetValue(this);
             }
             catch (NullReferenceException)
             {

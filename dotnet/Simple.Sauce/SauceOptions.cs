@@ -24,6 +24,7 @@ namespace Simple.Sauce
         public SauceOptions(DriverOptions options)
         {
             SeleniumOptions = options;
+            Timeout = new Timeout();
             if (options.BrowserName != null)
             {
                 BrowserName = ToBrowserEnum(options.BrowserName);
@@ -97,7 +98,6 @@ namespace Simple.Sauce
 
         public DriverOptions ToDriverOptions()
         {
-            var w3cCapabilities = SeleniumOptions;
             //TODO temporary solution to get the code working
             var sauceConfiguration = new Dictionary<string, object>
             {
@@ -107,19 +107,23 @@ namespace Simple.Sauce
             //TODO add if logic from the toCapabilities() in Java
 
             if (BrowserName == Browser.Edge)
-                w3cCapabilities = new EdgeOptions();
+                SeleniumOptions = new EdgeOptions();
+            else if (BrowserName == Browser.Firefox)
+                SeleniumOptions = new FirefoxOptions();
+            else
+                throw new ArgumentOutOfRangeException("The desired browser configuration is not yet set.");
 
-            w3cOptions.ForEach(capability => AppendCapabilityIfDefined(sauceConfiguration, capability));
 
-            w3cCapabilities.AddAdditionalOption("sauce:options", sauceConfiguration);
-            return w3cCapabilities;
+            W3CAllowedOptionsList.ForEach(capability => AppendCapabilityToSeleniumOptions(capability));
+
+            SeleniumOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
+            return SeleniumOptions;
         }
-
-        private void AppendCapabilityIfDefined(Dictionary<string, object> sauceConfiguration, string capability)
+        private void AppendCapabilityToSeleniumOptions(string capability)
         {
             var capabilityValue = TryToGetCapabilityValue(capability);
             if (capabilityValue != null)
-                sauceConfiguration.Add(capability, capabilityValue);
+                SeleniumOptions.AddAdditionalOption(capability, capabilityValue);
         }
 
         private object TryToGetCapabilityValue(string capability)
@@ -157,46 +161,47 @@ namespace Simple.Sauce
         public bool VideoUploadOnPass { get; set; }
         public DriverOptions SeleniumOptions { get; set; }
         public Browser BrowserName { get; set; } = Browser.Chrome;
-        public static List<string> w3cOptions = new List<string>(new string[]
+        //TODO not fond of this name
+        public static List<string> W3CAllowedOptionsList = new List<string>(new string[]
             {
-                "browserName",
-                "browserVersion",
-                "platformName",
-                "pageLoadStrategy",
-                "acceptInsecureCerts",
-                "proxy",
-                "setWindowRect",
-                "timeouts",
-                "strictFileInteractability",
-                "unhandledPromptBehavior"
+                "BrowserName",
+                "BrowserVersion",
+                "PlatformName",
+                "PageLoadStrategy",
+                "AcceptInsecureCerts",
+                "Proxy",
+                "SetWindowRect",
+                "Timeouts",
+                "StrictFileInteractability",
+                "UnhandledPromptBehavior"
             }
         );
-        public static List<string> sauceOptions = new List<string>(new string[]
+        private static readonly List<string> _sauceAllowedOptions = new List<string>(new string[]
         {
-            "avoidProxy",
-            "build",
-            "capturePerformance",
-            "chromedriverVersion",
-            "commandTimeout",
-            "customData",
-            "extendedDebugging",
-            "idleTimeout",
-            "iedriverVersion",
-            "maxDuration",
-            "name",
-            "parentTunnel",
-            "prerun",
-            "priority",
+            "AvoidProxy",
+            "Build",
+            "CapturePerformance",
+            "ChromedriverVersion",
+            "CommandTimeout",
+            "CustomData",
+            "ExtendedDebugging",
+            "IdleTimeout",
+            "IedriverVersion",
+            "MaxDuration",
+            "Name",
+            "ParentTunnel",
+            "Prerun",
+            "Priority",
             // public, do not use, reserved keyword, using jobVisibility
-            "recordLogs",
-            "recordScreenshots",
-            "recordVideo",
-            "screenResolution",
-            "seleniumVersion",
-            "tags",
-            "timeZone",
-            "tunnelIdentifier",
-            "videoUploadOnPass"
+            "RecordLogs",
+            "RecordScreenshots",
+            "RecordVideo",
+            "ScreenResolution",
+            "SeleniumVersion",
+            "Tags",
+            "TimeZone",
+            "TunnelIdentifier",
+            "VideoUploadOnPass"
         }
         );
 

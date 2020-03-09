@@ -197,29 +197,37 @@ namespace SimpleSauce.Test
         public void ParsesCapabilitiesFromW3CValues()
         {
             SauceOptions.BrowserName = Browser.Firefox;
-            SauceOptions.BrowserVersion = "68";
             SauceOptions.PlatformName = Platforms.MacOsHighSierra;
+            SauceOptions.BrowserVersion = "77";
             SauceOptions.PageLoadStrategy = PageLoadStrategy.Eager;
             SauceOptions.AcceptInsecureCerts = true;
             SauceOptions.SetWindowRect = true;
             SauceOptions.Timeout.Implicit = 4;
             SauceOptions.Timeout.PageLoad = 44;
             SauceOptions.Timeout.Script = 33;
-            var proxy = new Proxy();
-            SauceOptions.Proxy = proxy;
-            SauceOptions.StrictFileInteractability = true;
-            SauceOptions.UnhandledPromptBehavior = UnhandledPromptBehavior.Dismiss;
+            SauceOptions.BuildName = "Build Name";
 
             var timeouts = new Dictionary<string, int>
             {
-                { "implicit", 4 },
-                { "pageLoad", 44 },
-                { "script", 33 }
+                { "Implicit", 4 },
+                { "PageLoad", 44 },
+                { "Script", 33 }
             };
 
-            var expectedCapabilities = new Dictionary<string, object>();
+            var expectedCapabilities = new Dictionary<string, object>
+            {
+                { "BrowserName", "firefox" },
+                { "BrowserVersion", "77" },
+                { "PlatformName", "macOS 10.13" },
+                { "AcceptInsecureCerts", true },
+                { "SetWindowRect", true },
+                { "StrictFileInteractability", true },
+                { "PageLoadStrategy", PageLoadStrategy.Eager },
+                { "Timeouts", timeouts },
+                { "UnhandledPromptBehavior", UnhandledPromptBehavior.Ignore }
+            };
 
-            SauceOptions.ToDriverOptions().Should().BeEquivalentTo(expectedCapabilities);
+            SauceOptions.ToDriverOptions().Should().Be(expectedCapabilities);
         }
 
         [TestMethod]

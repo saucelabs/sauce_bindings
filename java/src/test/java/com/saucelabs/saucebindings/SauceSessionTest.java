@@ -1,4 +1,4 @@
-package com.saucelabs.simplesauce;
+package com.saucelabs.saucebindings;
 
 import org.junit.Before;
 import org.junit.Rule;

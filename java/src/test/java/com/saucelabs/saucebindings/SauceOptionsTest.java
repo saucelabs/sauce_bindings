@@ -1,4 +1,4 @@
-package com.saucelabs.simplesauce;
+package com.saucelabs.saucebindings;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -232,7 +232,7 @@ public class SauceOptionsTest {
 
     @Test
     public void setsCapabilitiesFromMap() throws FileNotFoundException {
-        InputStream input = new FileInputStream(new File("src/test/java/com/saucelabs/simplesauce/options.yml"));
+        InputStream input = new FileInputStream(new File("src/test/java/com/saucelabs/saucebindings/options.yml"));
         Yaml yaml = new Yaml();
         Map<String, Object> data = yaml.load(input);
         Map<String, Object> map = (Map<String, Object>) data.get("exampleValues");

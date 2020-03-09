@@ -1,7 +1,7 @@
-package com.saucelabs.simplesauce.acceptance;
+package com.saucelabs.saucebindings.acceptance;
 
-import com.saucelabs.simplesauce.SauceOptions;
-import com.saucelabs.simplesauce.SauceSession;
+import com.saucelabs.saucebindings.SauceOptions;
+import com.saucelabs.saucebindings.SauceSession;
 import org.junit.After;
 import org.junit.Test;
 import org.openqa.selenium.By;

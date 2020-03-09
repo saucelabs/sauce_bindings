@@ -1,4 +1,4 @@
-package com.saucelabs.simplesauce;
+package com.saucelabs.saucebindings;
 
 import lombok.Getter;
 import org.openqa.selenium.JavascriptExecutor;

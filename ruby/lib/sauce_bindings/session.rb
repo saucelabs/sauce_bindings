@@ -3,7 +3,7 @@
 require 'sauce_whisk'
 require 'selenium-webdriver'
 
-module SimpleSauce
+module SauceBindings
   class Session
     DATA_CENTERS = {US_WEST: 'ondemand.us-west-1.saucelabs.com',
                     US_EAST: 'ondemand.us-east-1.saucelabs.com',

@@ -3,7 +3,7 @@
 require 'spec_helper'
 require 'webmock/rspec'
 
-module SimpleSauce
+module SauceBindings
   describe Session do
     let(:valid_response) do
       {status: 200,

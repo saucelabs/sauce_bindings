@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'simple_sauce'
+require 'sauce_bindings'
 require 'capybara'
 
-module SimpleSauce
+module SauceBindings
   class CapybaraSession < Session
     def initialize(*)
       super

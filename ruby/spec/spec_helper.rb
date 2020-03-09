@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'simple_sauce'
+require 'sauce_bindings'
 require 'rspec'
 
 RSpec.configure do |config|

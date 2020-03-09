@@ -2,17 +2,17 @@
 
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift lib unless $LOAD_PATH.include?(lib)
-require 'simple_sauce/version'
+require 'sauce_bindings/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'simple_sauce'
-  spec.version       = SimpleSauce::VERSION
+  spec.name          = 'sauce_bindings'
+  spec.version       = SauceBindings::VERSION
   spec.authors       = ['Titus Fortner']
   spec.email         = ['titusfortner@gmail.com']
 
   spec.summary       = 'Simple interface for interacting with Sauce Labs.'
   spec.description   = 'Reduces complexity in user code for running Selenium tests on Sauce Labs'
-  spec.homepage      = 'https://github.com/saucelabs/simple_sauce'
+  spec.homepage      = 'https://github.com/saucelabs/sauce_bindings'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files`.split("\n")

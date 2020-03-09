@@ -2,9 +2,9 @@
 
 require 'spec_helper'
 require 'webmock/rspec'
-require 'simple_sauce/capybara_session'
+require 'sauce_bindings/capybara_session'
 
-module SimpleSauce
+module SauceBindings
   describe CapybaraSession do
     let(:valid_response) do
       {status: 200,

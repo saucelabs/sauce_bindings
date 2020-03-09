@@ -2,7 +2,7 @@
 
 require 'selenium-webdriver'
 
-module SimpleSauce
+module SauceBindings
   class Options
     class << self
       def camel_case(str)

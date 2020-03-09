@@ -13,12 +13,13 @@ data_centers = {
 
 class SauceSession():
 
-    def __init__(self, options=None, data_center='us-west'):
+    def __init__(self, options=None, data_center='us-west', resolve_ip=False):
         self.options = options if options else SauceOptions()
         self._username = os.getenv('SAUCE_USERNAME', None)
         self._access_key = os.getenv('SAUCE_ACCESS_KEY', None)
         self.data_center = data_center if data_center else 'us-west'
         self._remote_url = None
+        self._resolve_ip = resolve_ip if resolve_ip else False
         self.driver = None
 
     @property
@@ -50,7 +51,7 @@ class SauceSession():
         elif not self._access_key:
             raise KeyError("Cannot start session, Sauce Access Key is not set.")
 
-        executor = RemoteConnection(self.remote_url, resolve_ip=False)
+        executor = RemoteConnection(self.remote_url, self._resolve_ip)
         self.driver = webdriver.Remote(
             command_executor=executor,
             desired_capabilities=self.options.to_capabilities(),

@@ -11,9 +11,12 @@ module SauceBindings
 
     attr_writer :url
     attr_reader :driver, :options, :data_center
+    attr_accessor :http_client, :listener
 
-    def initialize(options = nil, data_center: nil)
+    def initialize(options = nil, data_center: nil, http_client: nil, listener: nil)
       @options = options || Options.new
+      @http_client = http_client
+      @listener = listener
 
       @username = ENV['SAUCE_USERNAME']
       @access_key = ENV['SAUCE_ACCESS_KEY']
@@ -49,7 +52,10 @@ module SauceBindings
     end
 
     def to_selenium
-      {url: url, desired_capabilities: options.capabilities}
+      caps = {url: url, desired_capabilities: options.capabilities}
+      caps[:listener] = listener if listener
+      caps[:http_client] = http_client if http_client
+      caps
     end
   end
 end

@@ -83,6 +83,20 @@ module SauceBindings
         expect(session.to_selenium).to eq expected_results
       end
 
+      it 'uses provided Event Listener' do
+        listener = instance_double(Selenium::WebDriver::Support::AbstractEventListener)
+        session = Session.new(listener: listener)
+
+        expect(session.to_selenium[:listener]).to eq listener
+      end
+
+      it 'uses provided HTTP Client' do
+        http_client = instance_double(Selenium::WebDriver::Remote::Http::Default)
+        session = Session.new(http_client: http_client)
+
+        expect(session.to_selenium[:http_client]).to eq http_client
+      end
+
       it 'raises exception if data center is invalid' do
         expect { Session.new(data_center: :FOO) }.to raise_exception(ArgumentError)
       end
@@ -143,6 +157,26 @@ module SauceBindings
         session = Session.new
 
         expect { session.data_center = :FOO }.to raise_exception(ArgumentError)
+      end
+    end
+
+    describe '#http_client=' do
+      it 'uses provided HTTP Client' do
+        http_client = instance_double(Selenium::WebDriver::Remote::Http::Default)
+        session = Session.new
+        session.http_client = http_client
+
+        expect(session.to_selenium[:http_client]).to eq http_client
+      end
+    end
+
+    describe '#listner=' do
+      it 'uses provided Event Listener' do
+        listener = instance_double(Selenium::WebDriver::Support::AbstractEventListener)
+        session = Session.new
+        session.listener = listener
+
+        expect(session.to_selenium[:listener]).to eq listener
       end
     end
 

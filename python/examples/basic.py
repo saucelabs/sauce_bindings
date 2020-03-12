@@ -2,7 +2,7 @@
 
 Here we start a session on Sauce, perform some actions then close the session.
 """
-from simplesauce.session import SauceSession
+from saucebindings.session import SauceSession
 
 
 session = SauceSession()

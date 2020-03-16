@@ -274,7 +274,7 @@ namespace SimpleSauce.Test
 
             var expectedCapabilities = new Dictionary<string, object>();
 
-            SauceOptions.ToDriverOptions().Should().BeEquivalentTo(expectedCapabilities);
+            SauceOptions.ToDriverOptions().Should().BeEquivalentTo(expectedCapabilities, options => options.WithAutoConversion());
         }
         [TestMethod]
         public void ParsesCapabilitiesFromSeleniumValues()

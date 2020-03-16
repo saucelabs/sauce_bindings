@@ -4,6 +4,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Safari;
 
 // ReSharper disable InconsistentNaming
@@ -162,25 +163,36 @@ namespace Simple.Sauce
             };
             //TODO add if logic from the toCapabilities() in Java
 
-            if (BrowserName == Browser.Edge)
-                SeleniumOptions = new EdgeOptions();
-            else if (BrowserName == Browser.Firefox)
-                SeleniumOptions = new FirefoxOptions();
-            else
-                throw new ArgumentOutOfRangeException("The desired browser configuration is not yet set.");
-
-
+            SetDriverOptions();
             W3CAllowedOptionsList.ForEach(AppendCapabilityToSeleniumOptions);
 
             SeleniumOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
             return SeleniumOptions;
         }
 
+        private void SetDriverOptions()
+        {
+            if (BrowserName == Browser.Edge)
+                SeleniumOptions = new EdgeOptions();
+            else if (BrowserName == Browser.Firefox)
+                SeleniumOptions = new FirefoxOptions();
+            else if(BrowserName == Browser.Chrome)
+                SeleniumOptions = new ChromeOptions();
+            else if(BrowserName == Browser.IE)
+                SeleniumOptions = new InternetExplorerOptions();
+            else if(BrowserName == Browser.Safari)
+                SeleniumOptions = new SafariOptions();
+            else
+                throw new ArgumentOutOfRangeException("The desired browser configuration is not yet set.");
+        }
+
         private void AppendCapabilityToSeleniumOptions(string capability)
         {
             var capabilityValue = TryToGetCapabilityValue(capability);
             if (capabilityValue != null)
+            {
                 SeleniumOptions.AddAdditionalOption(capability, capabilityValue);
+            }
         }
 
         private object TryToGetCapabilityValue(string capability)

@@ -1,9 +1,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using Simple.Sauce;
+using Sauce.Bindings;
 
-namespace SimpleSauce.Test
+namespace SauceBindings.Test
 {
     [TestClass]
     public class SauceDriverTests : BaseTest

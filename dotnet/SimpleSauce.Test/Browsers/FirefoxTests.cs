@@ -1,10 +1,9 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
-using Simple.Sauce;
+using Sauce.Bindings;
 
-namespace SimpleSauce.Test.Browsers
+namespace SauceBindings.Test.Browsers
 {
     [TestClass]
     public class FirefoxTests : BaseTest

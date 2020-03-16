@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Edge;
-using Simple.Sauce;
+using Sauce.Bindings;
 
-namespace SimpleSauce.Test
+namespace SauceBindings.Test
 {
     [TestClass]
     public class SauceOptionsTests : BaseTest

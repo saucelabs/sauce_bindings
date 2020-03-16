@@ -21,16 +21,16 @@ const users = [
 ];
 
 const siteConfig = {
-  title: "Simple Sauce", // Title for your website.
-  tagline: "Makes Using Sauce Labs Simple",
-  url: "https://saucelabs.github.io/", // Your website URL
+  title: "Sauce Bindings", // Title for your website.
+  tagline: "Provide Convenient Way to Use Sauce Labs",
+  url: "https://saucelabs.github.io/sauce_bindings", // Your website URL
   baseUrl: "/", // Base URL for your project */
   // For github.io type URLs, you would set the url and baseUrl like:
   //   url: "https://facebook.github.io",
   //   baseUrl: "/test-site/",
 
   // Used for publishing and more
-  projectName: "simple_sauce",
+  projectName: "sauce_bindings",
   organizationName: "Sauce Labs",
   // For top-level user or org sites, the organization is still the same.
   // e.g., for the https://JoelMarcey.github.io site, it would be set like...
@@ -108,7 +108,7 @@ const siteConfig = {
 
   // You may provide arbitrary config keys to be used as needed by your
   // template. For example, if you need your repo's URL...
-     repoUrl: "https://github.com/saucelabs/simple_sauce",
+     repoUrl: "https://github.com/saucelabs/sauce_bindings",
 };
 
 module.exports = siteConfig;

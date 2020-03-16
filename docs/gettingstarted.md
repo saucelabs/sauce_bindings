@@ -34,7 +34,7 @@ Add the following to your .pom file:
 ```xml
 <dependency>
     <groupId>com.saucelabs</groupId>
-    <artifactId>simple-sauce</artifactId>
+    <artifactId>sauce-bindings</artifactId>
     <version>1.0.0</version>
 </dependency>
 ```
@@ -44,18 +44,18 @@ Alternately, you can download the Jar from \<HERE\> and load it into your IDE.
 <!--Python-->
 1. Install the package:
 ```bash
-pip install simplesauce
+pip install saucebindings
 ```
 2. Import it into your project
 ```python
-from simplesauce.options import SauceOptions
-from simplesauce.session import SauceSession
+from saucebindings.options import SauceOptions
+from saucebindings.session import SauceSession
 ```
 
 To build from source:
 ```bash
-git clone https://github.com/saucelabs/simple_sauce
-cd simple_sauce
+git clone https://github.com/saucelabs/sauce_bindings
+cd sauce_bindings
 python setup.py install
 ```
 <!--C#-->
@@ -72,16 +72,16 @@ Install-Package Selenium.WebDriver -Version 4.0.0-alpha03
 
 1. Add it to your Gemfile:
 ```ruby
-gem 'simple_sauce'
+gem 'sauce_bindings'
 ```
 2. Require it in your project:
 ```ruby
-require 'simple_sauce'
+require 'sauce_bindings'
 ```
 
 Alternately, to try it out you can install it on your system:
 ```bash
-gem install simple_sauce
+gem install sauce_bindings
 ```
 <!--END_DOCUSAURUS_CODE_TABS-->
 

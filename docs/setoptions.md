@@ -20,8 +20,8 @@ Here's how to set these values with Simple Sauce:
 <!--Java-->
 
 ```java
-import com.saucelabs.simplesauce.options;
-import com.saucelabs.simplesauce.session;
+import com.saucelabs.saucebindings.options;
+import com.saucelabs.saucebindings.session;
 
 public class HelloSauce {
     public static void main(String[] args) {
@@ -40,8 +40,8 @@ public class HelloSauce {
 
 <!--Python-->
 ```python
-from simplesauce.options import SauceOptions
-from simplesauce.session import SauceSession
+from saucebindings.options import SauceOptions
+from saucebindings.session import SauceSession
 
 sauceOptions = SauceOptions(browserName='firefox', 
                             browserVersion='77.0', 
@@ -69,7 +69,7 @@ SauceSession.Stop(true);
 ```
 <!--Ruby-->
 ```ruby
-require 'simple_sauce'
+require 'sauce_bindings'
 
 sauceOptions = SauceOptions.new(browser_name: 'firefox',
                                 browser_version: '77',
@@ -95,8 +95,8 @@ All of these configurations can now be easily set with the `SauceOptions` class
 <!--Java-->
 
 ```java
-import com.saucelabs.simplesauce.options;
-import com.saucelabs.simplesauce.session;
+import com.saucelabs.saucebindings.options;
+import com.saucelabs.saucebindings.session;
 
 
 public class HelloSauce {
@@ -116,8 +116,8 @@ public class HelloSauce {
 
 <!--Python-->
 ```python
-from simplesauce.options import SauceOptions
-from simplesauce.session import SauceSession
+from saucebindings.options import SauceOptions
+from saucebindings.session import SauceSession
 
 sauceOptions = SauceOptions(extendedDebugging=true, 
                             parentTunnel='Mommy', 
@@ -145,7 +145,7 @@ SauceSession.Stop(true);
 ```
 <!--Ruby-->
 ```ruby
-require 'simple_sauce'
+require 'sauce_bindings'
 
 sauceOptions = SauceOptions.new(extended_debugging: true,
                                 parent_tunnel: 'Mommy',
@@ -170,8 +170,8 @@ one of these objects:
 <!--Java-->
 
 ```java
-import com.saucelabs.simplesauce.options;
-import com.saucelabs.simplesauce.session;
+import com.saucelabs.saucebindings.options;
+import com.saucelabs.saucebindings.session;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class HelloSauce {
@@ -191,8 +191,8 @@ public class HelloSauce {
 
 <!--Python-->
 ```python
-from simplesauce.options import SauceOptions
-from simplesauce.session import SauceSession
+from saucebindings.options import SauceOptions
+from saucebindings.session import SauceSession
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
 browserOptions = FirefoxOptions()
@@ -221,7 +221,7 @@ SauceSession.Stop(true);
 ```
 <!--Ruby-->
 ```ruby
-require 'simple_sauce'
+require 'sauce_bindings'
 
 browser_options = Selenium::WebDriver::Firefox::Options.new(args: ['--foo'])
 

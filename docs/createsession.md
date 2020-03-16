@@ -12,7 +12,7 @@ this is all you need to do:
 <!--Java-->
 
 ```java
-import com.saucelabs.simplesauce.session;
+import com.saucelabs.saucebindings.session;
 
 public class HelloSauce {
     public static void main(String[] args) {
@@ -26,7 +26,7 @@ public class HelloSauce {
 
 <!--Python-->
 ```python
-from simplesauce.session import SauceSession
+from saucebindings.session import SauceSession
 
 sauceSession = SauceSession()
 driver = sauceSession.start()
@@ -45,7 +45,7 @@ SauceSession.Stop(true);
 ```
 <!--Ruby-->
 ```ruby
-require 'simple_sauce'
+require 'sauce_bindings'
 
 sauceSession = SauceSession.new
 driver = sauceSession.start

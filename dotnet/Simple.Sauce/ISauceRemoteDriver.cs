@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace Simple.Sauce
+namespace Sauce.Bindings
 {
     public interface ISauceRemoteDriver : IJavaScriptExecutor, IWebDriver
     {

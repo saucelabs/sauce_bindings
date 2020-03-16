@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageId>Simple.Sauce</PackageId>
+    <PackageId>Sauce.Bindings</PackageId>
     <description>An API wrapper arounds the Sauce Labs API to make test automation extremely easy</description>
     <PackageTags>Sauce Labs, Simple Sauce, Selenium</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

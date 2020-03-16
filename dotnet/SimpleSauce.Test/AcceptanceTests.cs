@@ -1,17 +1,14 @@
-using System;
-using System.Collections.Generic;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
-using Simple.Sauce;
+using Sauce.Bindings;
 
-namespace SimpleSauce.Test
+namespace SauceBindings.Test
 {
     [TestClass]
     [TestCategory("Acceptance")]
-    public class SimpleSauceAcceptanceTests
+    public class AcceptanceTests
     {
         private SauceOptions _sauceOptions;
         private IWebDriver _driver;
@@ -40,7 +37,7 @@ namespace SimpleSauce.Test
             _session = new SauceSession(_sauceOptions);
             _driver = _session.Start();
             var capabilities = ((RemoteWebDriver)_driver).Capabilities;
-            capabilities.GetCapability("browserName").Should().Be("MicrosoftEdge");
+            capabilities.GetCapability("browserName").Should().Be("msedge");
         }
         [TestMethod]
         [Ignore("Getting an infrastructure error")]

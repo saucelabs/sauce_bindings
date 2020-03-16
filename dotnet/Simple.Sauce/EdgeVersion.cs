@@ -1,4 +1,4 @@
-﻿namespace Simple.Sauce
+﻿namespace Sauce.Bindings
 {
     public class EdgeVersion
     {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Simple.Sauce;
+using Sauce.Bindings;
 
 [assembly: Parallelize(Workers = 100, Scope = ExecutionScope.MethodLevel)]
 
-namespace SimpleSauce.Test
+namespace SauceBindings.Test
 {
     public class BaseTest
     {

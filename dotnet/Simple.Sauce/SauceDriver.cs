@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 
-namespace Simple.Sauce
+namespace Sauce.Bindings
 {
     public class SauceDriver : ISauceRemoteDriver
     {

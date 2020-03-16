@@ -1,6 +1,4 @@
-using System;
-
-namespace Simple.Sauce
+namespace Sauce.Bindings
 {
     public class Platforms
     {

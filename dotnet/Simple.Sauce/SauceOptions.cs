@@ -5,9 +5,10 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Safari;
+
 // ReSharper disable InconsistentNaming
 
-namespace Simple.Sauce
+namespace Sauce.Bindings
 {
     public class SauceOptions
     {

@@ -3,7 +3,7 @@ import os
 import pytest
 import yaml
 
-from simplesauce.options import SauceOptions
+from saucebindings.options import SauceOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
 
@@ -338,8 +338,7 @@ class TestSettingSpecificOptions(object):
 class TestAddingCapabilities(object):
 
     def test_setting_capabilities(self):
-        #  TODO create a conditional for this:
-        file_location = r'./tests/options.yml'  # if running on CI
+        file_location = r'./tests/options.yml'
         #  file_location = r'options.yml'  # If running locally
         with open(file_location) as file:
             yml = yaml.safe_load(file)

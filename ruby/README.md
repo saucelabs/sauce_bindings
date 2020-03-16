@@ -8,7 +8,7 @@ This gem is intended as a way to easily interact with Sauce Labs in an obvious a
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'simple_sauce'
+gem 'sauce_bindings'
 ```
 
 And then execute:
@@ -17,7 +17,13 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install simple_sauce
+    $ gem install sauce_bindings
+
+## Running Tests
+
+To run tests for the Ruby Sauce Bindings, execute
+
+    $ bundle exec rake
 
 ## Usage
 
@@ -60,30 +66,30 @@ browser_options = Selenium::WebDriver::Firefox::Options.new('args' => ['-foo'])
 `Session` class gets initialized with an `Options` instance. If you want the
 default settings (latest Chrome version on Windows 10), you don't even need to use an `Options` instance:
 ```ruby
-@session = SimpleSauce::Session.new
+@session = SauceBindings::Session.new
 ```
 If you want something other than the default, create a Sauce `Option` instance (as generated in the section above,
 then pass it into the constructor:
 ```ruby
-@session = SimpleSauce::Session.new(sauce_opts)
+@session = SauceBindings::Session.new(sauce_opts)
 ```
 If you also have Selenium or Browser options as described above, then you pass them in with an `Array` like so:
 ```ruby
-@session = SimpleSauce::Session.new([sauce_opts, se_opts, browser_opts])
+@session = SauceBindings::Session.new([sauce_opts, se_opts, browser_opts])
 ```
 
 #### Creating a driver instance
 The `#start` method is required, and will return a `Selenium::WebDriver::<Browser>::Driver` instance,
 and the `#stop` method will automatically quit the driver as well as ending the Sauce Labs session.
 ```ruby
-session = SimpleSauce::Session.new
+session = SauceBindings::Session.new
 driver = session.start
 # Use the driver
 session.stop
 ```
 Note that the `Driver` instance can also be obtained at any time with the `#driver` method:
 ```ruby
-session = SimpleSauce::Session.new
+session = SauceBindings::Session.new
 session.start
 driver = session.driver
 # Use the driver
@@ -95,7 +101,7 @@ have any request, please contact the Sauce Labs Solution Architect team.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/sauce/simple_sauce. 
+Bug reports and pull requests are welcome on GitHub at https://github.com/sauce/sauce_bindings. 
 This project is intended to be a safe, welcoming space for collaboration, 
 and contributors are expected to adhere to the 
 [Contributor Covenant](http://contributor-covenant.org) code of conduct.
@@ -107,4 +113,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 ## Code of Conduct
 
 Everyone interacting in the SimpleSauce project’s codebases, issue trackers, chat rooms and mailing lists 
-is expected to follow the [code of conduct](https://github.com/saucelabs/simple_sauce/blob/master/CODE_OF_CONDUCT.md).
+is expected to follow the [code of conduct](https://github.com/saucelabs/sauce_bindings/blob/master/CODE_OF_CONDUCT.md).

@@ -15,5 +15,7 @@ Can I force the installation of the latest Selenium to happen with a Nuget insta
 2. 
 
 ### Issues that you might face migrating to Simple Sauce
-1. DesiredCapabilities is depracated in Selenium 4.0+.
+1. DesiredCapabilities is deprecated in Selenium 4.0+.
 However, this is not a big deal as we need to replace this with Simple Sauce anyways
+
+### Tests

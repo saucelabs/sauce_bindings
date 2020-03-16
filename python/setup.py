@@ -1,14 +1,20 @@
 from distutils.core import setup
+
+with open('./README.rst', 'r') as f:
+  readme = f.read()
+
 setup(
-  name = 'simplesauce',
-  packages = ['simplesauce'],
-  version = '0.1.0',
+  name = 'saucebindings',
+  packages = ['saucebindings'],
+  version = '0.1.2',
   license='MIT',
-  description = 'Python bindings of the simple_sauce library',
+  description = 'Sauce Labs Python bindings library',
+  long_description=readme,
+  long_description_content_type="text/x-rst",
   author = 'josh.grant',
   author_email = 'josh.grant@saucelabs.com',
-  url = 'https://github.com/saucelabs/simple_sauce/',
-  download_url = 'https://github.com/saucelabs/simple_sauce/archive/v_010.tar.gz', # based on GitHub releases
+  url = 'https://github.com/saucelabs/sauce_bindings/',
+  download_url = 'https://github.com/saucelabs/sauce_bindings/archive/v_012.tar.gz', # based on GitHub releases
   keywords = ['Sauce Labs', 'testing', 'selenium'],
   install_requires=[
           'selenium',

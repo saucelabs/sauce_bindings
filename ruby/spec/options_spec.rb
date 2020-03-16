@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-module SimpleSauce
+module SauceBindings
   describe Options do
     before do
       ENV['BUILD_TAG'] = ''

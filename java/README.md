@@ -105,7 +105,7 @@ in the `java/` directory. This will allow you to import Sauce Bindings as a Mave
 ```xml
 <dependency>
     <groupId>com.saucelabs</groupId>
-    <artifactId>sauce_bindings</artifactId>
+    <artifactId>sauce-bindings</artifactId>
     <version>1.0-SNAPSHOT</version>
 </dependency>
 ```

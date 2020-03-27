@@ -6,7 +6,7 @@ with open('./README.rst', 'r') as f:
 setup(
   name = 'saucebindings',
   packages = ['saucebindings'],
-  version = '0.1.2',
+  version = '1.0.0b1',
   license='MIT',
   description = 'Sauce Labs Python bindings library',
   long_description=readme,
@@ -14,14 +14,14 @@ setup(
   author = 'josh.grant',
   author_email = 'josh.grant@saucelabs.com',
   url = 'https://github.com/saucelabs/sauce_bindings/',
-  download_url = 'https://github.com/saucelabs/sauce_bindings/archive/v_012.tar.gz', # based on GitHub releases
+  download_url = 'https://github.com/saucelabs/sauce_bindings/archive/v_100b1.tar.gz', # based on GitHub releases
   keywords = ['Sauce Labs', 'testing', 'selenium'],
   install_requires=[
           'selenium',
           'pytest'
       ],
   classifiers=[
-    'Development Status :: 3 - Alpha',
+    'Development Status :: 4 - Beta',
     'Intended Audience :: Developers',
     'Topic :: Software Development :: Testing',
     'License :: OSI Approved :: MIT License',

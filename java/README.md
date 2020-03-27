@@ -70,7 +70,17 @@ webDriver = new SauceSession(options).start();
 
 ## Installation
 
-Sauce Bindings will be available via Maven soon but for now please follow the [Building](#building) instructions for local development.
+The Sauce Bindings beta are now available on MavenCentral. You can install these bindings via Maven by adding
+
+```xml
+<dependency>
+    <groupId>com.saucelabs</groupId>
+    <artifactId>sauce_bindings</artifactId>
+    <version>1.0-beta-5</version>
+</dependency>
+```
+
+to your `pom.xml` file.
 
 ## Building
 

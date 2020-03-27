@@ -1,7 +1,7 @@
-# SimpleSauce 
-## Ruby's Sauce Labs Bindings!
+# Sauce Bindings 
+## A library for interacting with Sauce Labs using Ruby
 
-This gem is intended as a way to easily interact with Sauce Labs in an obvious and straightforward way. 
+This gem is intended as a way to interact with Sauce Labs in an obvious and straightforward way. 
 
 ## Installation
 
@@ -27,7 +27,7 @@ To run tests for the Ruby Sauce Bindings, execute
 
 ## Usage
 
-`SimpleSauce` is broken into two main components, `Options` and `Session`
+`SauceBindings` is broken into two main components, `Options` and `Session`
 
 ### Options class
 `Options` provides an easy interface to the Sauce Labs specific settings you want in your tests.
@@ -35,7 +35,7 @@ To run tests for the Ruby Sauce Bindings, execute
 If you want the default settings (the latest Chrome version on Windows 10) with no other settings,
 this is all the code you need:
 ```
-sauce_opts = SimpleSauce::Options.new
+sauce_opts = SauceBindings::Options.new
 ```
 To specify additional 
 [Sauce Labs supported settings](https://wiki.saucelabs.com/display/DOCS/Test+Configuration+Options),
@@ -44,14 +44,14 @@ simply pass these in as a `Hash`, or use an accessor:
 sauce_options = {screen_resolution: '1080x720',
                  browser_name: 'Firefox',
                  platform_name: 'Mac OS'}
-sauce_opts = SimpleSauce::Options.new(sauce_options)
+sauce_opts = SauceBindings::Options.new(sauce_options)
 sauce_opts.idle_timeout = 100
 ```
 if you have additional browser specific settings, or 
 [webdriver w3c spec compliant settings](http://w3c.github.io/webdriver/webdriver-spec.html#capabilities), in 
 Selenium 3.x you need to generate each of these separately; see the `Session` class below for how to use it:
 ```
-sauce_options = SimpleSauce::Options.new(screen_resolution: '1080x720',
+sauce_options = SauceBindings::Options.new(screen_resolution: '1080x720',
                                          browser_name: 'Firefox',
                                          platform_name: 'Mac OS')
 
@@ -112,5 +112,5 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the SimpleSauce project’s codebases, issue trackers, chat rooms and mailing lists 
+Everyone interacting in the SauceBindings project’s codebases, issue trackers, chat rooms and mailing lists 
 is expected to follow the [code of conduct](https://github.com/saucelabs/sauce_bindings/blob/master/CODE_OF_CONDUCT.md).

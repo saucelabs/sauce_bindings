@@ -11,6 +11,8 @@ matrix:
       python: 3.6
       script:
       - "make python_tests"
+      after_success:
+      - codecov
 
     - language: ruby
       rvm: 2.5.3

@@ -60,8 +60,8 @@ public class SauceSession {
     }
 
     private void stop() {
-        if(driver !=null) {
-            driver.quit();
+        if(getDriver() !=null) {
+            getDriver().quit();
         }
     }
 }

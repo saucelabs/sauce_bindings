@@ -195,7 +195,7 @@ public class SauceOptions {
         return seleniumCapabilities;
     }
 
-    private void addCapabilityIfDefined(MutableCapabilities capabilities, String capability) {
+    protected void addCapabilityIfDefined(MutableCapabilities capabilities, String capability) {
         Object value = getCapability(capability);
         if (value != null) {
             capabilities.setCapability(capability, value);
@@ -233,11 +233,11 @@ public class SauceOptions {
     }
 
     // This might be made public in future version; For now, no good reason to prefer it over direct accessor
-    private Object getCapability(String capability) {
+    protected Object getCapability(String capability) {
         try {
             String getter = "get" + capability.substring(0, 1).toUpperCase() + capability.substring(1);
             Method declaredMethod = null;
-            declaredMethod = SauceOptions.class.getDeclaredMethod(getter);
+            declaredMethod = this.getClass().getMethod(getter);
             return declaredMethod.invoke(this);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
@@ -246,7 +246,7 @@ public class SauceOptions {
     }
 
     // This might be made public in future version; For now, no good reason to prefer it over direct accessor
-    public void setCapability(String key, Object value) {
+    protected void setCapability(String key, Object value) {
         if (primaryEnum.contains(key) && value.getClass().equals(String.class)) {
             setEnumCapability(key, (String) value);
         } else if (secondaryEnum.contains(key) && isKeyString((HashMap) value)) {
@@ -332,7 +332,7 @@ public class SauceOptions {
         }
     }
 
-    private MutableCapabilities addAuthentication() {
+    protected MutableCapabilities addAuthentication() {
         MutableCapabilities caps = new MutableCapabilities();
         caps.setCapability("username", getSauceUsername());
         caps.setCapability("accessKey", getSauceAccessKey());

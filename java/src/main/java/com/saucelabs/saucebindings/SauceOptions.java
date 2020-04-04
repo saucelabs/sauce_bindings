@@ -167,7 +167,7 @@ public class SauceOptions {
     }
 
     public MutableCapabilities toCapabilities() {
-        MutableCapabilities sauceCapabilities = new MutableCapabilities();
+        MutableCapabilities sauceCapabilities = addAuthentication();
 
         if (getCapability("jobVisibility") != null) {
             sauceCapabilities.setCapability("public", getCapability("jobVisibility"));
@@ -324,6 +324,37 @@ public class SauceOptions {
             default:
                 break;
         }
+    }
+
+    private MutableCapabilities addAuthentication() {
+        MutableCapabilities caps = new MutableCapabilities();
+        caps.setCapability("username", getSauceUsername());
+        caps.setCapability("accessKey", getSauceAccessKey());
+        return caps;
+    }
+
+    protected String getSauceUsername() {
+        if (getSystemProperty("SAUCE_USERNAME") != null) {
+            return getSystemProperty("SAUCE_USERNAME");
+        } else if (getEnvironmentVariable("SAUCE_USERNAME") != null) {
+            return getEnvironmentVariable("SAUCE_USERNAME");
+        } else {
+            throw new SauceEnvironmentVariablesNotSetException("Sauce Username was not provided");
+        }
+    }
+
+    protected String getSauceAccessKey() {
+        if (getSystemProperty("SAUCE_ACCESS_KEY") != null) {
+            return getSystemProperty("SAUCE_ACCESS_KEY");
+        } else if (getEnvironmentVariable("SAUCE_ACCESS_KEY") != null) {
+            return getEnvironmentVariable("SAUCE_ACCESS_KEY");
+        } else {
+            throw new SauceEnvironmentVariablesNotSetException("Sauce Access Key was not provided");
+        }
+    }
+
+    protected String getSystemProperty(String key) {
+        return System.getProperty(key);
     }
 
     protected String getEnvironmentVariable(String key) {

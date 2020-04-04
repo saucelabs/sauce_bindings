@@ -27,7 +27,7 @@ import static org.mockito.Mockito.spy;
 import static org.openqa.selenium.UnexpectedAlertBehaviour.DISMISS;
 
 public class SauceOptionsTest {
-    protected SauceOptions sauceOptions = new SauceOptions();
+    private SauceOptions sauceOptions = spy(new SauceOptions());
 
     @Rule
     public MockitoRule initRule = MockitoJUnit.rule();
@@ -222,7 +222,6 @@ public class SauceOptionsTest {
 
     @Test
     public void createsDefaultBuildName() {
-        SauceOptions sauceOptions = spy(new SauceOptions());
         doReturn("Not Empty").when(sauceOptions).getEnvironmentVariable("BUILD_TAG");
         doReturn("TEMP BUILD").when(sauceOptions).getEnvironmentVariable("BUILD_NAME");
         doReturn("11").when(sauceOptions).getEnvironmentVariable("BUILD_NUMBER");
@@ -301,6 +300,9 @@ public class SauceOptionsTest {
 
     @Test
     public void parsesCapabilitiesFromW3CValues() {
+        doReturn("test-name").when(sauceOptions).getEnvironmentVariable("SAUCE_USERNAME");
+        doReturn("test-accesskey").when(sauceOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
+
         sauceOptions.setBrowserName(Browser.FIREFOX);
         sauceOptions.setPlatformName(SaucePlatform.MAC_HIGH_SIERRA);
         sauceOptions.setBrowserVersion("77");
@@ -316,8 +318,8 @@ public class SauceOptionsTest {
 
         Map<Timeouts, Integer> timeouts = new HashMap<>();
         timeouts.put(Timeouts.IMPLICIT, 1);
-        timeouts.put(Timeouts.PAGE_LOAD, 100);
         timeouts.put(Timeouts.SCRIPT, 10);
+        timeouts.put(Timeouts.PAGE_LOAD, 100);
 
         MutableCapabilities expectedCapabilities = new MutableCapabilities();
         expectedCapabilities.setCapability("browserName", "firefox");
@@ -332,6 +334,8 @@ public class SauceOptionsTest {
 
         MutableCapabilities sauceCapabilities = new MutableCapabilities();
         sauceCapabilities.setCapability("build", "Build Name");
+        sauceCapabilities.setCapability("username", "test-name");
+        sauceCapabilities.setCapability("accessKey", "test-accesskey");
         expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
         MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
 
@@ -340,6 +344,9 @@ public class SauceOptionsTest {
 
     @Test
     public void parsesCapabilitiesFromSauceValues() {
+        doReturn("test-name").when(sauceOptions).getEnvironmentVariable("SAUCE_USERNAME");
+        doReturn("test-accesskey").when(sauceOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
+
         Map<String, Object> customData = new HashMap<>();
         customData.put("foo", "foo");
         customData.put("bar", "bar");
@@ -410,6 +417,8 @@ public class SauceOptionsTest {
         sauceCapabilities.setCapability("timeZone", "San Francisco");
         sauceCapabilities.setCapability("tunnelIdentifier", "tunnelname");
         sauceCapabilities.setCapability("videoUploadOnPass", false);
+        sauceCapabilities.setCapability("username", "test-name");
+        sauceCapabilities.setCapability("accessKey", "test-accesskey");
 
         MutableCapabilities expectedCapabilities = new MutableCapabilities();
         expectedCapabilities.setCapability("browserName", "chrome");
@@ -429,7 +438,11 @@ public class SauceOptionsTest {
         firefoxOptions.addArguments("--foo");
         firefoxOptions.addPreference("foo", "bar");
         firefoxOptions.setUnhandledPromptBehaviour(DISMISS);
-        sauceOptions = new SauceOptions(firefoxOptions);
+
+        sauceOptions = spy(new SauceOptions(firefoxOptions));
+        doReturn("test-name").when(sauceOptions).getEnvironmentVariable("SAUCE_USERNAME");
+        doReturn("test-accesskey").when(sauceOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
+
         sauceOptions.setBuild("Build Name");
 
         MutableCapabilities expectedCapabilities = new MutableCapabilities();
@@ -440,12 +453,15 @@ public class SauceOptionsTest {
 
         MutableCapabilities sauceCapabilities = new MutableCapabilities();
         sauceCapabilities.setCapability("build", "Build Name");
+        sauceCapabilities.setCapability("username", "test-name");
+        sauceCapabilities.setCapability("accessKey", "test-accesskey");
         expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
         MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
 
         assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
     }
-        @Test
+
+    @Test
     public void parsesW3CAndSauceAndSeleniumSettings() {
         MutableCapabilities expectedCapabilities = new MutableCapabilities();
         MutableCapabilities sauceCapabilities = new MutableCapabilities();
@@ -454,7 +470,10 @@ public class SauceOptionsTest {
         firefoxOptions.addArguments("--foo");
         firefoxOptions.setUnhandledPromptBehaviour(DISMISS);
 
-        sauceOptions = new SauceOptions(firefoxOptions);
+        sauceOptions = spy(new SauceOptions(firefoxOptions));
+
+        doReturn("test-name").when(sauceOptions).getEnvironmentVariable("SAUCE_USERNAME");
+        doReturn("test-accesskey").when(sauceOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
 
         expectedCapabilities.merge(firefoxOptions);
         expectedCapabilities.setCapability("browserVersion", "latest");
@@ -473,8 +492,8 @@ public class SauceOptionsTest {
                 .setScript(10);
         Map<Timeouts, Integer> timeouts = new HashMap<>();
         timeouts.put(Timeouts.IMPLICIT, 1);
-        timeouts.put(Timeouts.PAGE_LOAD, 100);
         timeouts.put(Timeouts.SCRIPT, 10);
+        timeouts.put(Timeouts.PAGE_LOAD, 100);
         expectedCapabilities.setCapability("timeouts", timeouts);
         sauceOptions.setUnhandledPromptBehavior(UnhandledPromptBehavior.IGNORE);
         expectedCapabilities.setCapability("unhandledPromptBehavior", UnhandledPromptBehavior.IGNORE);
@@ -488,10 +507,12 @@ public class SauceOptionsTest {
 
         sauceOptions.setJobVisibility(JobVisibility.SHARE);
         sauceCapabilities.setCapability("public", JobVisibility.SHARE);
+        sauceCapabilities.setCapability("username", "test-name");
+        sauceCapabilities.setCapability("accessKey", "test-accesskey");
 
         expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
         MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
 
         assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
-        }
+    }
 }

@@ -23,6 +23,7 @@ import static org.mockito.Mockito.verify;
 public class SauceSessionTest {
     private SauceOptions sauceOptions = spy(new SauceOptions());
     private SauceSession sauceSession = spy(new SauceSession());
+    private SauceSession sauceOptsSession = spy(new SauceSession(sauceOptions));
     private RemoteWebDriver dummyRemoteDriver = mock(RemoteWebDriver.class);
     private JavascriptExecutor dummyJSExecutor = mock(JavascriptExecutor.class);
     private MutableCapabilities dummyMutableCapabilities = mock(MutableCapabilities.class);
@@ -48,11 +49,10 @@ public class SauceSessionTest {
 
     @Test
     public void sauceSessionUsesProvidedSauceOptions() {
-        sauceSession = spy(new SauceSession(sauceOptions));
         doReturn(dummyMutableCapabilities).when(sauceOptions).toCapabilities();
-        doReturn(dummyRemoteDriver).when(sauceSession).createRemoteWebDriver(any(URL.class), eq(dummyMutableCapabilities));
+        doReturn(dummyRemoteDriver).when(sauceOptsSession).createRemoteWebDriver(any(URL.class), eq(dummyMutableCapabilities));
 
-        sauceSession.start();
+        sauceOptsSession.start();
 
         verify(sauceOptions).toCapabilities();
     }
@@ -71,24 +71,6 @@ public class SauceSessionTest {
     }
 
     @Test
-    public void defaultSauceURLUsesENVForUsernameAccessKey() {
-        doReturn("test-name").when(sauceSession).getEnvironmentVariable("SAUCE_USERNAME");
-        doReturn("test-accesskey").when(sauceSession).getEnvironmentVariable("SAUCE_ACCESS_KEY");
-
-        String expetedSauceUrl = "https://test-name:test-accesskey@ondemand.us-west-1.saucelabs.com/wd/hub";
-        assertEquals(expetedSauceUrl, sauceSession.getSauceUrl().toString());
-    }
-
-    @Test
-    public void setUserNameAndAccessKeyWithSystemProperties() {
-        doReturn("test-name").when(sauceSession).getSystemProperty("SAUCE_USERNAME");
-        doReturn("test-accesskey").when(sauceSession).getSystemProperty("SAUCE_ACCESS_KEY");
-
-        String expetedSauceUrl = "https://test-name:test-accesskey@ondemand.us-west-1.saucelabs.com/wd/hub";
-        assertEquals(expetedSauceUrl, sauceSession.getSauceUrl().toString());
-    }
-
-    @Test
     public void setsSauceURLDirectly() throws MalformedURLException {
         sauceSession.setSauceUrl(new URL("http://example.com"));
         String expetedSauceUrl = "http://example.com";
@@ -97,14 +79,14 @@ public class SauceSessionTest {
 
     @Test(expected = SauceEnvironmentVariablesNotSetException.class)
     public void startThrowsErrorWithoutUsername() {
-        doReturn(null).when(sauceSession).getEnvironmentVariable("SAUCE_USERNAME");
-        sauceSession.start();
+        doReturn(null).when(sauceOptions).getEnvironmentVariable("SAUCE_USERNAME");
+        sauceOptsSession.start();
     }
 
     @Test(expected = SauceEnvironmentVariablesNotSetException.class)
     public void startThrowsErrorWithoutAccessKey() {
-        doReturn(null).when(sauceSession).getEnvironmentVariable("SAUCE_ACCESS_KEY");
-        sauceSession.start();
+        doReturn(null).when(sauceOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
+        sauceOptsSession.start();
     }
 
     @Test

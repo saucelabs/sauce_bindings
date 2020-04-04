@@ -34,9 +34,8 @@ public class SauceSession {
         if (sauceUrl != null) {
             return sauceUrl;
         } else {
-            String url = "https://" + getSauceUsername() + ":" + getSauceAccessKey() + "@" + dataCenter + "/wd/hub";
             try {
-                return new URL(url);
+                return new URL(dataCenter.getValue());
             } catch (MalformedURLException e) {
                 throw new InvalidArgumentException("Invalid URL");
             }
@@ -69,33 +68,5 @@ public class SauceSession {
         if(driver !=null) {
             driver.quit();
         }
-    }
-
-    private String getSauceUsername() {
-        if (getSystemProperty("SAUCE_USERNAME") != null) {
-            return getSystemProperty("SAUCE_USERNAME");
-        } else if (getEnvironmentVariable("SAUCE_USERNAME") != null) {
-            return getEnvironmentVariable("SAUCE_USERNAME");
-        } else {
-            throw new SauceEnvironmentVariablesNotSetException("Sauce Username was not provided");
-        }
-    }
-
-    private String getSauceAccessKey() {
-        if (getSystemProperty("SAUCE_ACCESS_KEY") != null) {
-            return getSystemProperty("SAUCE_ACCESS_KEY");
-        } else if (getEnvironmentVariable("SAUCE_ACCESS_KEY") != null) {
-            return getEnvironmentVariable("SAUCE_ACCESS_KEY");
-        } else {
-            throw new SauceEnvironmentVariablesNotSetException("Sauce Access Key was not provided");
-        }
-    }
-
-    protected String getSystemProperty(String key) {
-        return System.getProperty(key);
-    }
-
-    protected String getEnvironmentVariable(String key) {
-        return System.getenv(key);
     }
 }

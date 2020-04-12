@@ -19,7 +19,7 @@ public class SauceMobileSessionTest {
     private SauceMobileOptions sauceMobileOptions = spy(new SauceMobileOptions());
     private SauceMobileSession sauceMobileOptsSession = spy(new SauceMobileSession(sauceMobileOptions));
     private AppiumDriver dummyAppiumDriver = mock(AppiumDriver.class);
-    private MutableCapabilities dummyMutableCapabilities = mock(MutableCapabilities.class);
+    private MutableCapabilities dummyMutableCapabilities = spy(new MutableCapabilities());
 
     @Rule
     public MockitoRule initRule = MockitoJUnit.rule();
@@ -27,10 +27,11 @@ public class SauceMobileSessionTest {
     @Before
     public void setUp() {
         doReturn(dummyAppiumDriver).when(sauceMobileSession).createAppiumDriver(any(URL.class), any(MutableCapabilities.class));
+        doReturn(dummyAppiumDriver).when(sauceMobileOptsSession).createAppiumDriver(any(URL.class), any(MutableCapabilities.class));
     }
 
     @Test
-    public void sauceMObileSessionCreatesDefaultOptions() {
+    public void createsDefaultOptions() {
         SauceMobileOptions sauceOptions = sauceMobileSession.getSauceOptions();
 
         assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
@@ -42,12 +43,26 @@ public class SauceMobileSessionTest {
     }
 
     @Test
-    public void sauceMobileSessionUsesProvidedSauceOptions() {
-        doReturn(dummyMutableCapabilities).when(sauceMobileOptions).toCapabilities();
-        doReturn(dummyAppiumDriver).when(sauceMobileOptsSession).createAppiumDriver(any(URL.class), eq(dummyMutableCapabilities));
+    public void usesProvidedSauceOptions() {
+        doReturn(dummyMutableCapabilities).when(sauceMobileOptions).toCapabilities(true);
 
         sauceMobileOptsSession.start();
 
-        verify(sauceMobileOptions).toCapabilities();
+        verify(sauceMobileOptions).toCapabilities(true);
+        verify(sauceMobileOptsSession).getSauceUrl();
+        verify(sauceMobileOptsSession).createAppiumDriver(any(URL.class), eq(dummyMutableCapabilities));
+    }
+
+    @Test
+    public void supportsJWPEndpoints() {
+        sauceMobileOptsSession.setDataCenter(DataCenter.US_WEST);
+        dummyMutableCapabilities.setCapability("username", "username");
+        dummyMutableCapabilities.setCapability("accessKey", "accessKey");
+        doReturn(dummyMutableCapabilities).when(sauceMobileOptions).toCapabilities(false);
+
+        sauceMobileOptsSession.start();
+
+        verify(sauceMobileOptions).toCapabilities(false);
+        verify(sauceMobileOptsSession).getSauceUrl(eq("username"), eq("accessKey"));
     }
 }

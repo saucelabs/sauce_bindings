@@ -1,10 +1,9 @@
 package com.saucelabs.saucebindings;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.AccessLevel;
 import lombok.experimental.Accessors;
-
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -173,7 +172,8 @@ public class SauceOptions {
     }
 
     public MutableCapabilities toCapabilities() {
-        MutableCapabilities sauceCapabilities = addAuthentication();
+        MutableCapabilities sauceCapabilities = new MutableCapabilities();
+        addAuthentication(sauceCapabilities);
 
         if (getCapability("jobVisibility") != null) {
             sauceCapabilities.setCapability("public", getCapability("jobVisibility"));
@@ -332,11 +332,9 @@ public class SauceOptions {
         }
     }
 
-    protected MutableCapabilities addAuthentication() {
-        MutableCapabilities caps = new MutableCapabilities();
+    protected void addAuthentication(MutableCapabilities caps) {
         caps.setCapability("username", getSauceUsername());
         caps.setCapability("accessKey", getSauceAccessKey());
-        return caps;
     }
 
     protected String getSauceUsername() {

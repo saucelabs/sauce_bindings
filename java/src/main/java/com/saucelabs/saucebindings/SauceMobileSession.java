@@ -3,7 +3,10 @@ package com.saucelabs.saucebindings;
 import io.appium.java_client.AppiumDriver;
 import lombok.Getter;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.InvalidArgumentException;
+import org.openqa.selenium.MutableCapabilities;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class SauceMobileSession extends SauceSession {
@@ -19,12 +22,32 @@ public class SauceMobileSession extends SauceSession {
     }
 
     public AppiumDriver start() {
-        AppiumDriver appiumDriver = createAppiumDriver(getSauceUrl(), sauceOptions.toCapabilities());
-        this.driver = appiumDriver;
-        return appiumDriver;
+        MutableCapabilities capabilities;
+        URL url;
+        if (dataCenter.supportsW3C()) {
+            capabilities = sauceOptions.toCapabilities(true);
+            url = getSauceUrl();
+        } else {
+            capabilities = sauceOptions.toCapabilities(false);
+            String username = (String) capabilities.getCapability("username");
+            String key = (String) capabilities.getCapability("accessKey");
+            url = getSauceUrl(username, key);
+        }
+
+        driver = createAppiumDriver(url, capabilities);
+        return driver;
     }
 
     public AppiumDriver createAppiumDriver(URL url, Capabilities caps) {
         return new AppiumDriver<>(url, caps);
+    }
+
+    public URL getSauceUrl(String username, String key) {
+        String url = dataCenter.getValue().replace("://", "://" + username + ":" + key + "@");
+        try {
+            return new URL(url);
+        } catch (MalformedURLException e) {
+            throw new InvalidArgumentException("Invalid URL");
+        }
     }
 }

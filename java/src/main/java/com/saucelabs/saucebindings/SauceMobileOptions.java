@@ -13,12 +13,17 @@ import java.util.List;
 public class SauceMobileOptions extends SauceOptions {
     @Setter(AccessLevel.NONE) private MutableCapabilities appiumCapabilities;
 
+    // Defined in W3C
     private Browser browserName = Browser.CHROME;
-    private String appiumVersion = "1.15.0";
+    private SaucePlatform platformName = SaucePlatform.ANDROID;
+
+    // Defined in Appium
     private String deviceName = "Android GoogleAPI Emulator";
     private String deviceOrientation = "portrait";
     private String platformVersion = "8.1";
-    private SaucePlatform platformName = SaucePlatform.ANDROID;
+
+    // Supported by Sauce
+    private String appiumVersion = "1.15.0";
 
     public static final List<String> mobileW3COptions = List.of(
             "browserName",
@@ -40,12 +45,22 @@ public class SauceMobileOptions extends SauceOptions {
         appiumCapabilities = new MutableCapabilities(options.asMap());
     }
 
-    public MutableCapabilities toCapabilities() {
-        MutableCapabilities sauceCapabilities = addAuthentication();
-
+    public MutableCapabilities toCapabilities(boolean w3c) {
         mobileW3COptions.forEach((capability) -> {
             addCapabilityIfDefined(appiumCapabilities, capability);
         });
+
+        if (w3c) {
+            useW3cCapabilities();
+        } else {
+            useJwpCapabilities();
+        }
+        return appiumCapabilities;
+    }
+
+    private void useW3cCapabilities() {
+        MutableCapabilities sauceCapabilities = new MutableCapabilities();
+        addAuthentication(sauceCapabilities);
 
         appiumDefinedOptions.forEach((capability) -> {
             addAppiumCapabilityIfDefined(appiumCapabilities, capability);
@@ -56,11 +71,21 @@ public class SauceMobileOptions extends SauceOptions {
         });
 
         appiumCapabilities.setCapability("sauce:options", sauceCapabilities);
-
-        return appiumCapabilities;
     }
 
-    void addAppiumCapabilityIfDefined(MutableCapabilities capabilities, String capability) {
+    private void useJwpCapabilities() {
+        addAuthentication(appiumCapabilities);
+
+        appiumDefinedOptions.forEach((capability) -> {
+            addCapabilityIfDefined(appiumCapabilities, capability);
+        });
+
+        mobileSauceDefinedOptions.forEach((capability) -> {
+            addCapabilityIfDefined(appiumCapabilities, capability);
+        });
+    }
+
+    private void addAppiumCapabilityIfDefined(MutableCapabilities capabilities, String capability) {
         Object value = getCapability(capability);
         if (value != null) {
             capabilities.setCapability("appium:" + capability, value);

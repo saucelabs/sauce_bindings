@@ -15,6 +15,10 @@ public enum DataCenter {
         this.value = value;
     }
 
+    public boolean supportsW3C() {
+        return value.equals("https://ondemand.saucelabs.com/wd/hub");
+    }
+
     public String toString() {
         return value;
     }

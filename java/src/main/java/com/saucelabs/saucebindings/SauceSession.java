@@ -11,7 +11,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class SauceSession {
-    @Getter @Setter private DataCenter dataCenter = DataCenter.US_WEST;
+    @Getter @Setter private DataCenter dataCenter = DataCenter.US_LEGACY;
     @Getter private final SauceOptions sauceOptions;
     @Setter private URL sauceUrl;
 

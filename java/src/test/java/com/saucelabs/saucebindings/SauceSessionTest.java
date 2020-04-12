@@ -58,8 +58,8 @@ public class SauceSessionTest {
     }
 
     @Test
-    public void defaultsToUSWestDataCenter() {
-        String expectedDataCenterEndpoint = DataCenter.US_WEST.getValue();
+    public void defaultsToUSLegacyDataCenter() {
+        String expectedDataCenterEndpoint = DataCenter.US_LEGACY.getValue();
         assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().getValue());
     }
 

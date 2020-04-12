@@ -128,6 +128,12 @@ public class SauceOptions {
         knownCITools.put("TeamCity", "TEAMCITY_PROJECT_NAME");
     }
 
+    public static SauceOptions headless() {
+        SauceOptions headlessOptions = new SauceOptions();
+        headlessOptions.setPlatformName(SaucePlatform.LINUX);
+        return headlessOptions;
+    }
+
     public SauceOptions() {
         this(new MutableCapabilities());
     }

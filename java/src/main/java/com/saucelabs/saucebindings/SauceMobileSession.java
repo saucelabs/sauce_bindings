@@ -22,13 +22,12 @@ public class SauceMobileSession extends SauceSession {
     }
 
     public AppiumDriver start() {
-        MutableCapabilities capabilities;
+        MutableCapabilities capabilities = sauceOptions.toCapabilities(getDataCenter());
+
         URL url;
-        if (dataCenter.supportsW3C()) {
-            capabilities = sauceOptions.toCapabilities(true);
+        if (dataCenter.supportsW3C() || dataCenter.isTestObject()) {
             url = getSauceUrl();
         } else {
-            capabilities = sauceOptions.toCapabilities(false);
             String username = (String) capabilities.getCapability("username");
             String key = (String) capabilities.getCapability("accessKey");
             url = getSauceUrl(username, key);

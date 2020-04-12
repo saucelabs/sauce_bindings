@@ -11,7 +11,6 @@ import org.openqa.selenium.MutableCapabilities;
 import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 public class SauceMobileSessionTest {
@@ -44,11 +43,11 @@ public class SauceMobileSessionTest {
 
     @Test
     public void usesProvidedSauceOptions() {
-        doReturn(dummyMutableCapabilities).when(sauceMobileOptions).toCapabilities(true);
+        doReturn(dummyMutableCapabilities).when(sauceMobileOptions).toCapabilities(sauceMobileOptsSession.getDataCenter());
 
         sauceMobileOptsSession.start();
 
-        verify(sauceMobileOptions).toCapabilities(true);
+        verify(sauceMobileOptions).toCapabilities(sauceMobileOptsSession.getDataCenter());
         verify(sauceMobileOptsSession).getSauceUrl();
         verify(sauceMobileOptsSession).createAppiumDriver(any(URL.class), eq(dummyMutableCapabilities));
     }
@@ -58,11 +57,11 @@ public class SauceMobileSessionTest {
         sauceMobileOptsSession.setDataCenter(DataCenter.US_WEST);
         dummyMutableCapabilities.setCapability("username", "username");
         dummyMutableCapabilities.setCapability("accessKey", "accessKey");
-        doReturn(dummyMutableCapabilities).when(sauceMobileOptions).toCapabilities(false);
+        doReturn(dummyMutableCapabilities).when(sauceMobileOptions).toCapabilities(sauceMobileOptsSession.getDataCenter());
 
         sauceMobileOptsSession.start();
 
-        verify(sauceMobileOptions).toCapabilities(false);
+        verify(sauceMobileOptions).toCapabilities(sauceMobileOptsSession.getDataCenter());
         verify(sauceMobileOptsSession).getSauceUrl(eq("username"), eq("accessKey"));
     }
 }

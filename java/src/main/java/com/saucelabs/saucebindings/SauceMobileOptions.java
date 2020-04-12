@@ -18,9 +18,9 @@ public class SauceMobileOptions extends SauceOptions {
     private SaucePlatform platformName = SaucePlatform.ANDROID;
 
     // Defined in Appium
-    private String deviceName = "Android GoogleAPI Emulator";
+    private String deviceName;
     private String deviceOrientation = "portrait";
-    private String platformVersion = "8.1";
+    private String platformVersion = "9";
 
     // Supported by Sauce
     private String appiumVersion = "1.15.0";
@@ -45,22 +45,22 @@ public class SauceMobileOptions extends SauceOptions {
         appiumCapabilities = new MutableCapabilities(options.asMap());
     }
 
-    public MutableCapabilities toCapabilities(boolean w3c) {
+    public MutableCapabilities toCapabilities(DataCenter dataCenter) {
         mobileW3COptions.forEach((capability) -> {
             addCapabilityIfDefined(appiumCapabilities, capability);
         });
 
-        if (w3c) {
+        if (dataCenter.supportsW3C()) {
             useW3cCapabilities();
         } else {
-            useJwpCapabilities();
+            useJwpCapabilities(dataCenter.isTestObject());
         }
         return appiumCapabilities;
     }
 
     private void useW3cCapabilities() {
         MutableCapabilities sauceCapabilities = new MutableCapabilities();
-        addAuthentication(sauceCapabilities);
+        useSaucePlatform(sauceCapabilities);
 
         appiumDefinedOptions.forEach((capability) -> {
             addAppiumCapabilityIfDefined(appiumCapabilities, capability);
@@ -73,8 +73,15 @@ public class SauceMobileOptions extends SauceOptions {
         appiumCapabilities.setCapability("sauce:options", sauceCapabilities);
     }
 
-    private void useJwpCapabilities() {
-        addAuthentication(appiumCapabilities);
+    private void useJwpCapabilities(boolean to) {
+        if (to) {
+            appiumCapabilities.setCapability("testobject_api_key", getTestObjectKey());
+            if (deviceName == null) {
+                this.deviceName = "Google Pixel XL";
+            }
+        } else {
+            useSaucePlatform(appiumCapabilities);
+        }
 
         appiumDefinedOptions.forEach((capability) -> {
             addCapabilityIfDefined(appiumCapabilities, capability);
@@ -85,10 +92,27 @@ public class SauceMobileOptions extends SauceOptions {
         });
     }
 
+    private void useSaucePlatform(MutableCapabilities capabilities) {
+        if (deviceName == null) {
+            this.deviceName = "Android GoogleAPI Emulator";
+        }
+        addAuthentication(capabilities);
+    }
+
     private void addAppiumCapabilityIfDefined(MutableCapabilities capabilities, String capability) {
         Object value = getCapability(capability);
         if (value != null) {
             capabilities.setCapability("appium:" + capability, value);
+        }
+    }
+
+    String getTestObjectKey() {
+        if (getSystemProperty("TEST_OBJECT_KEY") != null) {
+            return getSystemProperty("TEST_OBJECT_KEY");
+        } else if (getEnvironmentVariable("TEST_OBJECT_KEY") != null) {
+            return getEnvironmentVariable("TEST_OBJECT_KEY");
+        } else {
+            throw new SauceEnvironmentVariablesNotSetException("Test Object API Key was not provided");
         }
     }
 }

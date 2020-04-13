@@ -18,6 +18,7 @@ public class SauceMobileOptions extends SauceOptions {
     private SaucePlatform platformName = SaucePlatform.ANDROID;
 
     // Defined in Appium
+    private String app;
     private String deviceName;
     private String deviceOrientation = "portrait";
     private String platformVersion = "9";
@@ -33,6 +34,7 @@ public class SauceMobileOptions extends SauceOptions {
             "appiumVersion");
 
     public static final List<String> appiumDefinedOptions = List.of(
+            "app",
             "deviceName",
             "platformVersion",
             "deviceOrientation");
@@ -41,11 +43,15 @@ public class SauceMobileOptions extends SauceOptions {
         this(new MutableCapabilities());
     }
 
-    private SauceMobileOptions(MutableCapabilities options) {
+    public SauceMobileOptions(MutableCapabilities options) {
         appiumCapabilities = new MutableCapabilities(options.asMap());
     }
 
     public MutableCapabilities toCapabilities(DataCenter dataCenter) {
+        if (app != null) {
+            browserName = null;
+        }
+
         mobileW3COptions.forEach((capability) -> {
             addCapabilityIfDefined(appiumCapabilities, capability);
         });

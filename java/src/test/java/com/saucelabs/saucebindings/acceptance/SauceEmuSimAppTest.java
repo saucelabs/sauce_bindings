@@ -13,7 +13,6 @@ import static org.junit.Assert.assertTrue;
 
 // TODO: Convert these into unit tests; Integration tests are not unique
 public class SauceEmuSimAppTest {
-    private SauceMobileOptions options;
     private SauceMobileSession session;
     private AppiumDriver webDriver;
 
@@ -22,7 +21,7 @@ public class SauceEmuSimAppTest {
         MutableCapabilities appiumOptions = new MutableCapabilities();
         appiumOptions.setCapability("appWaitActivity", "com.swaglabsmobileapp.MainActivity");
 
-        options = new SauceMobileOptions(appiumOptions);
+        SauceMobileOptions options = new SauceMobileOptions(appiumOptions);
         String app = "https://github.com/saucelabs/sample-app-mobile/releases/download/2.3.0/Android.SauceLabs.Mobile.Sample.app.2.3.0.apk";
         options.setApp(app);
 

@@ -20,7 +20,7 @@ public enum DataCenter {
     }
 
     public boolean supportsW3C() {
-        return value.equals("https://ondemand.saucelabs.com/wd/hub");
+        return ("https://ondemand.saucelabs.com/wd/hub".equals(value));
     }
 
     public boolean isTestObject() {

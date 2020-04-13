@@ -5,6 +5,7 @@ import com.saucelabs.saucebindings.SauceMobileOptions;
 import com.saucelabs.saucebindings.SauceMobileSession;
 import io.appium.java_client.AppiumDriver;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -50,7 +51,7 @@ public class SauceRealDeviceBrowserTest {
         assertTrue(webDriver.getRemoteAddress().toString().contains("//appium.testobject"));
     }
 
-    @Test
+    @Ignore
     public void runsUnifiedPlatform() {
         SauceMobileOptions sauceMobileOptions = new SauceMobileOptions();
         sauceMobileOptions.setDeviceName("Google Pixel XL Real");

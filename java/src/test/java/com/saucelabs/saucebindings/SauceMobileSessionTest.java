@@ -11,7 +11,12 @@ import org.openqa.selenium.MutableCapabilities;
 import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 public class SauceMobileSessionTest {
     private SauceMobileSession sauceMobileSession = spy(new SauceMobileSession());

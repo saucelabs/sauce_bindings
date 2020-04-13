@@ -163,7 +163,7 @@ public class SauceMobileOptions extends SauceOptions {
         }
     }
 
-    String getTestObjectKey() {
+    protected String getTestObjectKey() {
         if (getSystemProperty("TEST_OBJECT_KEY") != null) {
             return getSystemProperty("TEST_OBJECT_KEY");
         } else if (getEnvironmentVariable("TEST_OBJECT_KEY") != null) {

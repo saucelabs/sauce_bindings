@@ -3,8 +3,9 @@ id: overview
 title: Overview
 sidebar_label: Overview
 ---
+# Sauce Bindings
 
-## Making the Use Of Sauce Labs Even Simpler
+### Making test automation with Sauce Labs intuitively simple
 
 Writing and maintaining automated test frameworks is hard work. 
 Sauce Labs wants to help make this work simpler. We've created Sauce Bindings, a collection of tools to make connecting to and working with Sauce Labs simple.

@@ -18,31 +18,74 @@ public class SauceMobileOptions extends SauceOptions {
     private SaucePlatform platformName = SaucePlatform.ANDROID;
 
     // Defined in Appium
+    // These are the only values that are handled by Sauce Labs by default
+    // Additional values will be populated by Appium's IOSOptions & AndroidOptions class instances
     private String app;
     private String deviceName;
     private String deviceOrientation = "portrait";
-    private String platformVersion = "9";
+    private String platformVersion = "10";
+    private String automationName;
 
     // Supported by Sauce
     private String appiumVersion = "1.15.0";
+    private String deviceType; // "table" or "phone"
+
+    // Supported by Sauce for Real Devices
+    private String testobject_app_id;
+    private String privateDeviceOnly;
+    private String tabletOnly;
+    private String phoneOnly;
+    private String carrierConnectivityOnly;
+    private String recordDeviceVitals;
+    private String cacheId;
+    private String testobject_test_live_view_url;
+    private String testobject_test_report_url;
+    private String testobject_test_report_api_url;
+    private String testobject_session_creation_timeout;
+    private String commandTimeouts;
+    private String crosswalkApplication;
+    private String autoGrantPermissions;
+    private String enableAnimations;
+    private String name;
 
     public static final List<String> mobileW3COptions = List.of(
             "browserName",
             "platformName");
 
     public static final List<String> mobileSauceDefinedOptions = List.of(
-            "appiumVersion");
+            "appiumVersion",
+            "deviceType");
 
     public static final List<String> appiumDefinedOptions = List.of(
             "app",
+            "automationName",
             "deviceName",
             "platformVersion",
             "deviceOrientation");
+
+    public static final List<String> realDeviceSauceDefinedOptions = List.of(
+            "testobject_app_id",
+            "privateDeviceOnly",
+            "tabletOnly",
+            "phoneOnly",
+            "carrierConnectivityOnly",
+            "recordDeviceVitals",
+            "cacheId",
+            "testobject_test_live_view_url",
+            "testobject_test_report_url",
+            "testobject_test_report_api_url",
+            "testobject_session_creation_timeout",
+            "commandTimeouts",
+            "crosswalkApplication",
+            "autoGrantPermissions",
+            "enableAnimations",
+            "name");
 
     public SauceMobileOptions() {
         this(new MutableCapabilities());
     }
 
+    // TODO: require users to work with Appium's MobileOptions class similar to Selenium
     public SauceMobileOptions(MutableCapabilities options) {
         appiumCapabilities = new MutableCapabilities(options.asMap());
     }
@@ -76,6 +119,10 @@ public class SauceMobileOptions extends SauceOptions {
             addCapabilityIfDefined(sauceCapabilities, capability);
         });
 
+        sauceDefinedOptions.forEach((capability) -> {
+            addCapabilityIfDefined(appiumCapabilities, capability);
+        });
+
         appiumCapabilities.setCapability("sauce:options", sauceCapabilities);
     }
 
@@ -83,7 +130,7 @@ public class SauceMobileOptions extends SauceOptions {
         if (to) {
             appiumCapabilities.setCapability("testobject_api_key", getTestObjectKey());
             if (deviceName == null) {
-                this.deviceName = "Google Pixel XL";
+                this.deviceName = "Google Pixel 2";
             }
         } else {
             useSaucePlatform(appiumCapabilities);
@@ -94,6 +141,10 @@ public class SauceMobileOptions extends SauceOptions {
         });
 
         mobileSauceDefinedOptions.forEach((capability) -> {
+            addCapabilityIfDefined(appiumCapabilities, capability);
+        });
+
+        realDeviceSauceDefinedOptions.forEach((capability) -> {
             addCapabilityIfDefined(appiumCapabilities, capability);
         });
     }

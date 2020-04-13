@@ -5,7 +5,6 @@ import com.saucelabs.saucebindings.SauceMobileOptions;
 import com.saucelabs.saucebindings.SauceMobileSession;
 import io.appium.java_client.AppiumDriver;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -19,7 +18,7 @@ public class SauceRealDeviceBrowserTest {
         session.stop(true);
     }
 
-    @Ignore
+    @Test
     public void runsUSMobile() {
         session.setDataCenter(DataCenter.US_MOBILE);
         webDriver = session.start();
@@ -35,7 +34,7 @@ public class SauceRealDeviceBrowserTest {
         assertTrue(webDriver.getRemoteAddress().toString().contains("eu1.appium.testobject"));
     }
 
-    @Ignore
+    @Test
     public void runsUSTestObject() {
         session.setDataCenter(DataCenter.US_TEST_OBJECT);
         webDriver = session.start();
@@ -51,7 +50,7 @@ public class SauceRealDeviceBrowserTest {
         assertTrue(webDriver.getRemoteAddress().toString().contains("//appium.testobject"));
     }
 
-    @Ignore
+    @Test
     public void runsUnifiedPlatform() {
         SauceMobileOptions sauceMobileOptions = new SauceMobileOptions();
         sauceMobileOptions.setDeviceName("Google Pixel XL Real");

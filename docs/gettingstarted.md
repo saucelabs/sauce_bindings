@@ -39,8 +39,6 @@ Add the following to your .pom file:
 </dependency>
 ```
 
-Alternately, you can download the Jar from \<HERE\> and load it into your IDE.
-
 <!--Python-->
 1. Install the package:
 ```bash
@@ -60,14 +58,8 @@ python setup.py install
 ```
 <!--C#-->
 
-1. Install the Simple Sauce Nuget package
-```bash
-Install-Package ????
-```
-2. Install the most recent version of Selenium 4
-```bash
-Install-Package Selenium.WebDriver -Version 4.0.0-alpha03
-```
+**C# bindings are coming soon...**
+
 <!--Ruby-->
 
 1. Add it to your Gemfile:

@@ -20,12 +20,13 @@ function Help(props) {
   const docUrl = (doc) => `${baseUrl}${docsPart}${langPart}${doc}`;
 
   const supportLinks = [
-    {
-      content: `Learn more using the [documentation on this site.](${docUrl(
-        "gettingstarted.html",
-      )})`,
-      title: "Browse Docs",
-    },
+    // Commenting out until a future time
+    // {
+    //   content: `Learn more using the [documentation on this site.](${docUrl(
+    //     "/getting-started",
+    //   )})`,
+    //   title: "Browse Docs",
+    // },
     {
       content: "Ask questions about the documentation and project",
       title: "Join the community",

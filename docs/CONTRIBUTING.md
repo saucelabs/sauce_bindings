@@ -1,13 +1,9 @@
 ---
 id: contributing
-title: Become an OSS Contributor
+title: Become a Contributor
 sidebar_label: Contribute
 ---
 Sauce Labs is proudly based on open source technologies and encourages open source projects like Sauce Bindings. If you would like to contribute there are several ways of doing so.
-
-## Code of Conduct
-
-## Requirements
 
 ## Find a Way To Contribute
 

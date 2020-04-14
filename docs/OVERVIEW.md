@@ -3,8 +3,6 @@ id: overview
 title: Overview
 sidebar_label: Overview
 ---
-# Sauce Bindings
-
 ### Making test automation with Sauce Labs intuitively simple
 
 Writing and maintaining automated test frameworks is hard work. 
@@ -20,9 +18,9 @@ Sauce Bindings has three main goals:
 
 We support the most popular automation programming languages:
 
--   [Java](https://github.com/saucelabs/sauce_bindings/tree/master/java),
--   [C#](https://github.com/saucelabs/sauce_bindings/tree/master/dotnet),
--   [Python](https://github.com/saucelabs/sauce_bindings/tree/master/python),
--   [Ruby](https://github.com/saucelabs/sauce_bindings/tree/master/ruby)
+-   Java,
+-   C#,
+-   Python,
+-   Ruby
 
 We're here for you if you [have questions](/help.html).

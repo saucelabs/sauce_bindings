@@ -38,7 +38,7 @@ const siteConfig = {
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    { doc: "gettingstarted", label: "Docs" },
+    { doc: "getting-started", label: "Docs" },
     { page: "help", label: "Help" },
     { href: "https://saucelabs.com/sign-up", label: "Try it free", external: true },
     { href: "https://app.saucelabs.com/login", label: "Sign in", external: true }

@@ -1,6 +1,6 @@
 {
   "docs": {
-    "Introduction": ["overview","gettingstarted", "createsession", "setoptions"],
-    "Support": ["contributing"]
+    "Introduction": ["overview","getting-started", "create-session", "set-options"],
+    "Support": ["contributing","code-of-conduct"]
   }
 }

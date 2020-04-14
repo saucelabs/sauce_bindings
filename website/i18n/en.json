@@ -5,15 +5,19 @@
     "previous": "Previous",
     "tagline": "Provide Convenient Way to Use Sauce Labs",
     "docs": {
+      "code-of-conduct": {
+        "title": "Code of Conduct",
+        "sidebar_label": "Code of Conduct"
+      },
       "contributing": {
         "title": "Become an OSS Contributor",
         "sidebar_label": "Contribute"
       },
-      "createsession": {
+      "create-session": {
         "title": "Creating a Session",
         "sidebar_label": "Create Session"
       },
-      "gettingstarted": {
+      "getting-started": {
         "title": "Getting Started",
         "sidebar_label": "Getting Started"
       },
@@ -21,7 +25,7 @@
         "title": "Overview",
         "sidebar_label": "Overview"
       },
-      "setoptions": {
+      "set-options": {
         "title": "Setting Options",
         "sidebar_label": "Set Options"
       }

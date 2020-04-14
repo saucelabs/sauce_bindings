@@ -1,5 +1,5 @@
 ---
-id: createsession
+id: create-session
 title: Creating a Session
 sidebar_label: Create Session
 ---

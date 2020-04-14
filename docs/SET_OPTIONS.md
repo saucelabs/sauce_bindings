@@ -1,5 +1,5 @@
 ---
-id: setoptions
+id: set-options
 title: Setting Options
 sidebar_label: Set Options
 ---

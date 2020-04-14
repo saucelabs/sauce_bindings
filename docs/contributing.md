@@ -22,11 +22,11 @@ The project offers a variety of ways to contribute:
 
 -   **Development**: Bug fixes and implementing new features are welcome. There are also [good first issues](https://github.com/saucelabs/sauce_bindings/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) labeled if you'd like to get started on development but don't know how. Please fork this this repository and open a pull request if you'd like to contribute this way.
 
-## Contributing Docs
+### Contributing Docs
 
 A great way to start working with any open source project is through improving documentation. You can add or edit doc strings, either in a pull request or directly from GitHub. You can edit a file in GitHub as long as you're signed in and create a pull request from those edits.
 
-## Contributing Code
+### Contributing Code
 
 We love and welcome contributions from the community! We have several language bindings that we support. 
 For all of the bindings you need to do the following first
@@ -39,30 +39,36 @@ For all of the bindings you need to do the following first
 git clone https://github.com/saucelabs/sauce_bindings.git
 ``` 
 
-3.Navigate to project directory
+3.Navigate to project directory (root/sauce_bindings)
 
-### Java
+4.Run tests
+<!--DOCUSAURUS_CODE_TABS-->
+<!--Java-->
 
-Run tests with `make java_tests`. All of the tests should pass.
-
-### Python
-
-Run tests with `make python_tests`. All of the tests should pass.
-
-### C#
-
-1.Open the solution, build, and run the tests. 
-You can do this using the IDE or you can do this using command line:
 ```bash
-cd YOUR REPO LOCATION\dotnet\SimpleSauce.Test
-dotnet test -v n
+make java_tests
 ```
-All tests should pass
 
-### Ruby
+<!--Python-->
 
-Run tests with `make ruby_tests`. All of the tests should pass.
+```python
+make python_tests
+```
 
-2.Implement your feature and make sure you add tests
+<!--C#-->
 
-3.Submit a pull request
+```c#
+make dotnet_tests
+```
+
+<!--Ruby-->
+
+```ruby
+make ruby_tests
+```
+
+<!--END_DOCUSAURUS_CODE_TABS-->
+
+5.Implement your feature and make sure you add tests
+
+6.Submit a pull request

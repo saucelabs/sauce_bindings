@@ -1,5 +1,6 @@
 {
   "docs": {
-    "Introduction": ["overview","gettingstarted", "createsession", "setoptions"]
+    "Introduction": ["overview","gettingstarted", "createsession", "setoptions"],
+    "Support": ["contributing"]
   }
 }

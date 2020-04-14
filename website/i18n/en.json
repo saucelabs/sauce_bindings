@@ -5,6 +5,10 @@
     "previous": "Previous",
     "tagline": "Provide Convenient Way to Use Sauce Labs",
     "docs": {
+      "contributing": {
+        "title": "Become an OSS Contributor",
+        "sidebar_label": "Contribute"
+      },
       "createsession": {
         "title": "Creating a Session",
         "sidebar_label": "Create Session"
@@ -29,7 +33,8 @@
       "Sign in": "Sign in"
     },
     "categories": {
-      "Introduction": "Introduction"
+      "Introduction": "Introduction",
+      "Support": "Support"
     }
   },
   "pages-strings": {

@@ -2,7 +2,7 @@ run_all_tests:
 	make -j java_tests python_tests dotnet_tests ruby_tests
 
 dotnet_tests:
-	echo "run dotnet tests"
+	cd dotnet/SimpleSauce.Test/ && dotnet test -v n
 
 java_tests:
 	cd java && mvn clean test -Dmaven.javadoc.skip=true;

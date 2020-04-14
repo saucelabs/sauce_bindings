@@ -36,12 +36,10 @@ session.stop(True)
 <!--C#-->
 
 ```c#
-using Simple.Sauce;
-
 SauceSession = new SauceSession();
 var driver = SauceSession.Start();
 // use the driver to drive the browser as desired
-SauceSession.Stop(true);
+SauceSession.Stop("passed");
 ```
 <!--Ruby-->
 ```ruby
@@ -54,4 +52,5 @@ sauceSession.stop(true);
 ```
 <!--END_DOCUSAURUS_CODE_TABS-->
 
+Congratulations, you just started a new session in Sauce Labs.
 ___

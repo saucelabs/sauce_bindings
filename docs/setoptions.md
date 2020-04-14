@@ -6,7 +6,7 @@ sidebar_label: Set Options
 
 ## Setting Basic Options
 
-Simple Sauce supports setting all of the [W3C WebDriver Standard](https://www.w3.org/TR/webdriver/)
+Sauce Bindings supports setting all of the [W3C WebDriver Standard](https://www.w3.org/TR/webdriver/)
 capabilities. The three that matter most to Sauce Labs users are: 
 * `browserName`
 * `browserVersion`
@@ -14,7 +14,8 @@ capabilities. The three that matter most to Sauce Labs users are:
 
 To see what values are supported by Sauce Labs for these capabilities, take a look at our
 [Platform Configurator](https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/)
-Here's how to set these values with Simple Sauce:
+
+Here's an example of running a test on Firefox and Windows 8.0.
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Java-->

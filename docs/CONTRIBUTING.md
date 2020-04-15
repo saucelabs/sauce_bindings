@@ -66,4 +66,6 @@ make ruby_tests
 
 5.Implement your feature and make sure you add tests
 
+* For Java, you need to install [Lombok plugin](https://plugins.jetbrains.com/plugin/6317-lombok)
+
 6.Submit a pull request

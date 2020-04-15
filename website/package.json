@@ -6,10 +6,12 @@
     "publish-gh-pages": "docusaurus-publish",
     "write-translations": "docusaurus-write-translations",
     "version": "docusaurus-version",
-    "rename-version": "docusaurus-rename-version"
+    "rename-version": "docusaurus-rename-version",
+    "test-screener": "screener-runner --conf screener.sauce.config.js"
   },
   "devDependencies": {
-    "docusaurus": "^1.14.3"
+    "docusaurus": "^1.14.3",
+    "screener-runner": "^0.11.3"
   },
   "dependencies": {
     "@docusaurus/mdx-loader": "^2.0.0-alpha.37"

@@ -1,7 +1,9 @@
 package com.saucelabs.saucebindings;
 
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.ios.IOSDriver;
 import lombok.Getter;
-import org.openqa.selenium.JavascriptExecutor;
 import lombok.Setter;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.MutableCapabilities;
@@ -11,32 +13,46 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class SauceSession {
-    @Getter @Setter private DataCenter dataCenter = DataCenter.US_WEST;
-    @Getter private final SauceOptions sauceOptions;
+    @Getter @Setter protected DataCenter dataCenter = DataCenter.US_LEGACY;
+    @Getter private SauceOptions sauceOptions;
     @Setter private URL sauceUrl;
-
-    @Getter private RemoteWebDriver driver;
+    @Getter private RemoteWebDriver webDriver;
+    @Getter private AppiumDriver appDriver;
 
     public SauceSession() {
         this(new SauceOptions());
     }
 
     public SauceSession(SauceOptions options) {
-        sauceOptions = options;
+        this.sauceOptions = options;
     }
 
     public RemoteWebDriver start() {
-        driver = createRemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities());
-        return driver;
+        String environment = sauceOptions.toCapabilities().getCapability("platformName").toString();
+        String browserName = sauceOptions.toCapabilities().getBrowserName();
+
+        if (browserName.equals("")){
+            if (environment.toLowerCase().equals("android")){
+                return createAndroidDriver(getSauceUrl(), sauceOptions.toCapabilities());
+            }
+            else if (environment.toLowerCase().equals("ios")) {
+                return createIOSDriver(getSauceUrl(), sauceOptions.toCapabilities());
+            }
+            else {
+                throw new InvalidArgumentException("Invalid Sauce Labs capabilities. Please set a browser name or set platformName as \"Android\" or \"IOS\".");
+            }
+        }
+        else {
+           return createRemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities());
+        }
 	}
 
     public URL getSauceUrl() {
         if (sauceUrl != null) {
             return sauceUrl;
         } else {
-            String url = "https://" + getSauceUsername() + ":" + getSauceAccessKey() + "@" + dataCenter + "/wd/hub";
             try {
-                return new URL(url);
+                return new URL(dataCenter.getValue());
             } catch (MalformedURLException e) {
                 throw new InvalidArgumentException("Invalid URL");
             }
@@ -47,8 +63,12 @@ public class SauceSession {
         return new RemoteWebDriver(url, capabilities);
     }
 
-    protected JavascriptExecutor getJSExecutor() {
-        return driver;
+    protected AppiumDriver createIOSDriver(URL url, MutableCapabilities capabilities) {
+       return new IOSDriver<>(url, capabilities);
+    }
+
+    protected AppiumDriver createAndroidDriver(URL url, MutableCapabilities capabilities) {
+        return new AndroidDriver<>(url, capabilities);
     }
 
     public void stop(Boolean passed) {
@@ -62,40 +82,20 @@ public class SauceSession {
     }
 
     private void updateResult(String result) {
-        getJSExecutor().executeScript("sauce:job-result=" + result);
+        if (webDriver != null)
+            getWebDriver().executeScript("sauce:job-result=" + result);
+        else {
+            System.out.println("use API for mobile case");
+        }
+
     }
 
     private void stop() {
-        if(driver !=null) {
-            driver.quit();
+        if(getWebDriver() !=null) {
+            getWebDriver().quit();
         }
-    }
-
-    private String getSauceUsername() {
-        if (getSystemProperty("SAUCE_USERNAME") != null) {
-            return getSystemProperty("SAUCE_USERNAME");
-        } else if (getEnvironmentVariable("SAUCE_USERNAME") != null) {
-            return getEnvironmentVariable("SAUCE_USERNAME");
-        } else {
-            throw new SauceEnvironmentVariablesNotSetException("Sauce Username was not provided");
+        if(getAppDriver() != null){
+            getAppDriver().quit();
         }
-    }
-
-    private String getSauceAccessKey() {
-        if (getSystemProperty("SAUCE_ACCESS_KEY") != null) {
-            return getSystemProperty("SAUCE_ACCESS_KEY");
-        } else if (getEnvironmentVariable("SAUCE_ACCESS_KEY") != null) {
-            return getEnvironmentVariable("SAUCE_ACCESS_KEY");
-        } else {
-            throw new SauceEnvironmentVariablesNotSetException("Sauce Access Key was not provided");
-        }
-    }
-
-    protected String getSystemProperty(String key) {
-        return System.getProperty(key);
-    }
-
-    protected String getEnvironmentVariable(String key) {
-        return System.getenv(key);
     }
 }

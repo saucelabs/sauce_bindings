@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Set;
 
 public enum SaucePlatform {
+    ANDROID("Android"),
+    IOS("iOS"),
     WINDOWS_10("Windows 10"),
     WINDOWS_8_1("Windows 8.1"),
     WINDOWS_8("Windows 8"),
@@ -14,6 +16,7 @@ public enum SaucePlatform {
     MAC_HIGH_SIERRA("macOS 10.13"),
     MAC_SIERRA("macOS 10.12"),
     MAC_EL_CAPITAN("OS X 10.11"),
+    LINUX("Linux"),
     MAC_YOSEMITE("OS X 10.10");
 
     @Getter

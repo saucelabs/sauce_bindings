@@ -1,10 +1,9 @@
 package com.saucelabs.saucebindings;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.AccessLevel;
 import lombok.experimental.Accessors;
-
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -26,10 +25,12 @@ public class SauceOptions {
     @Setter(AccessLevel.NONE) private MutableCapabilities seleniumCapabilities;
     public TimeoutStore timeout = new TimeoutStore();
 
-    // w3c Settings
-    private Browser browserName = Browser.CHROME;
-    private String browserVersion = "latest";
-    private SaucePlatform platformName = SaucePlatform.WINDOWS_10;
+    // w3c settings - applies to any sauce session
+    protected Browser browserName = Browser.CHROME;
+    protected SaucePlatform platformName = SaucePlatform.WINDOWS_10;
+    protected String browserVersion = "latest";
+
+    // w3c settings - applies only to VDC
     private PageLoadStrategy pageLoadStrategy;
     private Boolean acceptInsecureCerts = null;
     private Proxy proxy;
@@ -128,6 +129,12 @@ public class SauceOptions {
         knownCITools.put("TeamCity", "TEAMCITY_PROJECT_NAME");
     }
 
+    public static SauceOptions headless() {
+        SauceOptions headlessOptions = new SauceOptions();
+        headlessOptions.setPlatformName(SaucePlatform.LINUX);
+        return headlessOptions;
+    }
+
     public SauceOptions() {
         this(new MutableCapabilities());
     }
@@ -159,7 +166,7 @@ public class SauceOptions {
         return timeout.getTimeouts();
     }
 
-    private SauceOptions(MutableCapabilities options) {
+    protected SauceOptions(MutableCapabilities options) {
         seleniumCapabilities = new MutableCapabilities(options.asMap());
         if (options.getCapability("browserName") != null) {
             setCapability("browserName", options.getCapability("browserName"));
@@ -168,6 +175,7 @@ public class SauceOptions {
 
     public MutableCapabilities toCapabilities() {
         MutableCapabilities sauceCapabilities = new MutableCapabilities();
+        addAuthentication(sauceCapabilities);
 
         if (getCapability("jobVisibility") != null) {
             sauceCapabilities.setCapability("public", getCapability("jobVisibility"));
@@ -189,7 +197,7 @@ public class SauceOptions {
         return seleniumCapabilities;
     }
 
-    private void addCapabilityIfDefined(MutableCapabilities capabilities, String capability) {
+    protected void addCapabilityIfDefined(MutableCapabilities capabilities, String capability) {
         Object value = getCapability(capability);
         if (value != null) {
             capabilities.setCapability(capability, value);
@@ -227,11 +235,11 @@ public class SauceOptions {
     }
 
     // This might be made public in future version; For now, no good reason to prefer it over direct accessor
-    private Object getCapability(String capability) {
+    protected Object getCapability(String capability) {
         try {
             String getter = "get" + capability.substring(0, 1).toUpperCase() + capability.substring(1);
             Method declaredMethod = null;
-            declaredMethod = SauceOptions.class.getDeclaredMethod(getter);
+            declaredMethod = this.getClass().getMethod(getter);
             return declaredMethod.invoke(this);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
@@ -240,7 +248,7 @@ public class SauceOptions {
     }
 
     // This might be made public in future version; For now, no good reason to prefer it over direct accessor
-    public void setCapability(String key, Object value) {
+    protected void setCapability(String key, Object value) {
         if (primaryEnum.contains(key) && value.getClass().equals(String.class)) {
             setEnumCapability(key, (String) value);
         } else if (secondaryEnum.contains(key) && isKeyString((HashMap) value)) {
@@ -324,6 +332,35 @@ public class SauceOptions {
             default:
                 break;
         }
+    }
+
+    protected void addAuthentication(MutableCapabilities caps) {
+        caps.setCapability("username", getSauceUsername());
+        caps.setCapability("accessKey", getSauceAccessKey());
+    }
+
+    protected String getSauceUsername() {
+        if (getSystemProperty("SAUCE_USERNAME") != null) {
+            return getSystemProperty("SAUCE_USERNAME");
+        } else if (getEnvironmentVariable("SAUCE_USERNAME") != null) {
+            return getEnvironmentVariable("SAUCE_USERNAME");
+        } else {
+            throw new SauceEnvironmentVariablesNotSetException("Sauce Username was not provided");
+        }
+    }
+
+    protected String getSauceAccessKey() {
+        if (getSystemProperty("SAUCE_ACCESS_KEY") != null) {
+            return getSystemProperty("SAUCE_ACCESS_KEY");
+        } else if (getEnvironmentVariable("SAUCE_ACCESS_KEY") != null) {
+            return getEnvironmentVariable("SAUCE_ACCESS_KEY");
+        } else {
+            throw new SauceEnvironmentVariablesNotSetException("Sauce Access Key was not provided");
+        }
+    }
+
+    protected String getSystemProperty(String key) {
+        return System.getProperty(key);
     }
 
     protected String getEnvironmentVariable(String key) {

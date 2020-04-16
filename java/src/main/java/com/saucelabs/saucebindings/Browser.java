@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 public enum Browser {
+    NONE(""),
     CHROME("chrome"),
     INTERNET_EXPLORER("internet explorer"),
     EDGE("MicrosoftEdge"),

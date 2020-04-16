@@ -5,6 +5,14 @@
     "previous": "Previous",
     "tagline": "Provide Convenient Way to Use Sauce Labs",
     "docs": {
+      "basic-options": {
+        "title": "Setting Basic Options",
+        "sidebar_label": "Basic Options"
+      },
+      "browser-options": {
+        "title": "Setting Browser Options",
+        "sidebar_label": "Browser Options"
+      },
       "code-of-conduct": {
         "title": "Code of Conduct",
         "sidebar_label": "Code of Conduct"
@@ -17,6 +25,10 @@
         "title": "Creating a Session",
         "sidebar_label": "Create Session"
       },
+      "data-center": {
+        "title": "Setting Data Center",
+        "sidebar_label": "Data Center"
+      },
       "getting-started": {
         "title": "Getting Started",
         "sidebar_label": "Getting Started"
@@ -25,19 +37,23 @@
         "title": "Overview",
         "sidebar_label": "Overview"
       },
-      "set-options": {
-        "title": "Setting Options",
-        "sidebar_label": "Set Options"
+      "sauce-options": {
+        "title": "Setting Sauce Options",
+        "sidebar_label": "Sauce Options"
+      },
+      "upcoming-features": {
+        "title": "Features Under Development",
+        "sidebar_label": "Upcoming Features"
       }
     },
     "links": {
-      "Docs": "Docs",
-      "Help": "Help",
-      "Try it free": "Try it free",
-      "Sign in": "Sign in"
+      "Try Sauce Labs": "Try Sauce Labs",
+      "Sign in to Sauce Labs": "Sign in to Sauce Labs"
     },
     "categories": {
       "Introduction": "Introduction",
+      "Configuration": "Configuration",
+      "Integration": "Integration",
       "Support": "Support"
     }
   },

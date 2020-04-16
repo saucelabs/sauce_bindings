@@ -3,22 +3,27 @@ id: contributing
 title: Become a Contributor
 sidebar_label: Contribute
 ---
-Sauce Labs is proudly based on open source technologies and encourages open source projects like Sauce Bindings. If you would like to contribute there are several ways of doing so.
+Sauce Labs proudly supports open source technologies and encourages open source projects like Sauce Bindings. 
+If you would like to contribute there are several ways of doing so.
 
-## Find a Way To Contribute
+## Ways To Contribute
 
 The project offers a variety of ways to contribute:
 
-* contributing code
-* improving documentation
+* submit code features
+* improve documentation (the code for this website is 
+[on github](https://github.com/saucelabs/sauce_bindings/tree/master/docs))
 * create educational content (blog posts, tutorials, videos, etc.)
-* spread the good word about the Sauce Bindings (e.g. via Twitter)
-* [create bugs](https://github.com/saucelabs/sauce_bindings/issues) if you discover them while using Sauce Bindings
-* See something you'd like fixed? Have a good idea for how to improve Sauce Bindings? [Create an issue](https://github.com/saucelabs/sauce_bindings/issues) or add to an existing issue. 
+* spread the good word about Sauce Bindings (e.g. via Twitter)
+* [report bugs](https://github.com/saucelabs/sauce_bindings/issues) if you discover them while using Sauce Bindings
+* See something you'd like fixed? Have a good idea for how to improve something? 
+[Create an issue](https://github.com/saucelabs/sauce_bindings/issues) or add to an existing issue. 
 
 ### Contributing Docs
 
-A great way to start working with any open source project is through improving documentation. You can add or edit doc strings, either in a pull request or directly from GitHub. You can edit a file in GitHub as long as you're signed in and create a pull request from those edits.
+A great way to start working with any open source project is through improving documentation. 
+You can add or edit doc strings, either in a pull request or directly from GitHub. You can edit a file in 
+GitHub as long as you're signed in and create a pull request from those edits.
 
 ### Contributing Code
 
@@ -26,17 +31,17 @@ We love and welcome contributions from the community! We have several language b
 There are also [good first issues](https://github.com/saucelabs/sauce_bindings/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) labeled if you'd like to get started on development but don't know how.
 For all of the bindings you need to do the following first
 
-1.Fork the latest code to your account
+1. Fork the latest code to your account
 
-2.Clone the code onto your local computer
+2. Clone the code onto your local computer
 
 ```bash
 git clone https://github.com/saucelabs/sauce_bindings.git
 ``` 
 
-3.Navigate to project directory (root/sauce_bindings)
+3. Navigate to project directory (root/sauce_bindings)
 
-4.Run tests
+4. Run tests
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Java-->
 
@@ -50,22 +55,21 @@ make java_tests
 make python_tests
 ```
 
-<!--C#-->
-
-```c#
-make dotnet_tests
-```
-
 <!--Ruby-->
 
 ```ruby
 make ruby_tests
 ```
 
+<!--C#-->
+
+```c#
+make dotnet_tests
+```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
-5.Implement your feature and make sure you add tests
+5. Implement your feature (make sure you add tests!)
+    * Note: for Java, you need to install the [Lombok plugin](https://plugins.jetbrains.com/plugin/6317-lombok)
 
-* For Java, you need to install [Lombok plugin](https://plugins.jetbrains.com/plugin/6317-lombok)
-
-6.Submit a pull request
+6. Submit a pull request

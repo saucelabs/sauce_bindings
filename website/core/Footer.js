@@ -26,21 +26,28 @@ class Footer extends React.Component {
       <footer className="nav-footer" id="footer">
         <section className="sitemap">
           <div className="wrapper">
+            <div className="logo">
+              <img
+                  src={`${this.props.config.baseUrl}img/logo-saucelabs-inverted.png`}
+                  height="32"
+              />
+            </div>
+          </div>
+          <div className="wrapper">
             <div>
               <h5>Docs</h5>
-              <a href={this.docUrl('gettingstarted.html', this.props.language)}>
+              <a href={this.docUrl('getting-started')}>
                 Getting Started
               </a>
             </div>
             <div>
               <h5>Community</h5>
               <a
-                href="https://stackoverflow.com/questions/tagged/simplesauce"
+                href="https://stackoverflow.com/questions/tagged/saucebindings"
                 target="_blank"
                 rel="noreferrer noopener">
                 Stack Overflow
               </a>
-              <a href="https://gitter.im/simple-sauce">Project Chat</a>
               <a
                 href="https://twitter.com/saucelabs"
                 target="_blank"
@@ -105,22 +112,10 @@ class Footer extends React.Component {
         </section>
         <section className="footer-copyright">
           <div className="wrapper">
-            <a
-              href="https://opensource.facebook.com/"
-              target="_blank"
-              rel="noreferrer noopener"
-              className="fbOpenSource">
-              <img
-                src={`${this.props.config.baseUrl}img/oss_logo.png`}
-                alt="Facebook Open Source"
-                width="170"
-                height="45"
-              />
-            </a>
-            <p className="copyright">{this.props.config.copyright}</p>
+            <p className="copyright">{this.props.config.copyright} Labs Inc., all rights reserved. SAUCE and SAUCE LABS are registered trademarks owned by Sauce Labs Inc. in the United States, EU, and may be registered in other jurisdictions.</p>
           </div>
         </section>
-      </footer>      
+      </footer>
     );
   }
 }

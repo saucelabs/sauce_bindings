@@ -23,25 +23,23 @@ const users = [
 const siteConfig = {
   title: "Sauce Bindings", // Title for your website.
   tagline: "Provide Convenient Way to Use Sauce Labs",
-  url: "https://saucelabs.github.io/sauce_bindings", // Your website URL
-  baseUrl: "/", // Base URL for your project */
+  url: "https://saucelabs.github.io", // Your website URL
+  baseUrl: "/sauce_bindings/", // Base URL for your project */
   // For github.io type URLs, you would set the url and baseUrl like:
   //   url: "https://facebook.github.io",
   //   baseUrl: "/test-site/",
 
   // Used for publishing and more
   projectName: "sauce_bindings",
-  organizationName: "Sauce Labs",
+  organizationName: "saucelabs",
   // For top-level user or org sites, the organization is still the same.
   // e.g., for the https://JoelMarcey.github.io site, it would be set like...
   //   organizationName: "JoelMarcey"
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    { doc: "getting-started", label: "Docs" },
-    { page: "help", label: "Help" },
-    { href: "https://saucelabs.com/sign-up", label: "Try it free", external: true },
-    { href: "https://app.saucelabs.com/login", label: "Sign in", external: true }
+    { href: "https://saucelabs.com/sign-up", label: "Try Sauce Labs", external: true },
+    { href: "https://app.saucelabs.com/login", label: "Sign in to Sauce Labs", external: true }
   ],
 
   // If you have users set above, you add it here:

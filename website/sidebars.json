@@ -1,6 +1,8 @@
 {
   "docs": {
-    "Introduction": ["overview","getting-started", "create-session", "set-options"],
+    "Introduction": ["overview","getting-started", "create-session"],
+    "Configuration": ["basic-options", "sauce-options", "browser-options"],
+    "Integration": ["data-center", "upcoming-features"],
     "Support": ["contributing","code-of-conduct"]
   }
 }

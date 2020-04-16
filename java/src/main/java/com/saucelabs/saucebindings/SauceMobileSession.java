@@ -33,7 +33,7 @@ public class SauceMobileSession extends SauceSession {
             url = getSauceUrl(username, key);
         }
 
-        driver = createAppiumDriver(url, capabilities);
+        //driver = createRemoteWebDriver(url, capabilities);
         return driver;
     }
 

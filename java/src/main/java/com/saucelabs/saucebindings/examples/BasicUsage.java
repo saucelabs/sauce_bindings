@@ -9,7 +9,7 @@ public class BasicUsage {
 
         sauce.start();
 
-        sauce.getDriver().get("https://www.saucedemo.com/");
+        sauce.getWebDriver().get("https://www.saucedemo.com/");
 
         sauce.stop(true);
     }

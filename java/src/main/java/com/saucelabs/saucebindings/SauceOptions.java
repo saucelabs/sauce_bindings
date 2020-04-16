@@ -25,10 +25,12 @@ public class SauceOptions {
     @Setter(AccessLevel.NONE) private MutableCapabilities seleniumCapabilities;
     public TimeoutStore timeout = new TimeoutStore();
 
-    // w3c Settings
-    private Browser browserName = Browser.CHROME;
-    private String browserVersion = "latest";
-    private SaucePlatform platformName = SaucePlatform.WINDOWS_10;
+    // w3c settings - applies to any sauce session
+    protected Browser browserName = Browser.CHROME;
+    protected SaucePlatform platformName = SaucePlatform.WINDOWS_10;
+    protected String browserVersion = "latest";
+
+    // w3c settings - applies only to VDC
     private PageLoadStrategy pageLoadStrategy;
     private Boolean acceptInsecureCerts = null;
     private Proxy proxy;
@@ -164,7 +166,7 @@ public class SauceOptions {
         return timeout.getTimeouts();
     }
 
-    private SauceOptions(MutableCapabilities options) {
+    protected SauceOptions(MutableCapabilities options) {
         seleniumCapabilities = new MutableCapabilities(options.asMap());
         if (options.getCapability("browserName") != null) {
             setCapability("browserName", options.getCapability("browserName"));

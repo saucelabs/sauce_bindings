@@ -207,3 +207,16 @@ h1,h2,h3,h4,h5,h6 {
 
 @media only screen and (min-width: 1500px) {
 }
+
+.navGroupCategoryTitle {
+  font-size: 32px !important;
+  padding-bottom: 10px;
+}
+
+.navGroupSubcategoryTitle {
+  font-size: 18px !important;
+}
+
+.toc section .navGroups{
+  padding-top: 0 !important;
+}

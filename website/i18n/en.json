@@ -51,10 +51,7 @@
       "Sign in to Sauce Labs": "Sign in to Sauce Labs"
     },
     "categories": {
-      "Introduction": "Introduction",
-      "Configuration": "Configuration",
-      "Integration": "Integration",
-      "Support": "Support"
+      "Sauce Bindings": "Sauce Bindings"
     }
   },
   "pages-strings": {

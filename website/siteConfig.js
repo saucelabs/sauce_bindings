@@ -22,6 +22,7 @@ const users = [
 
 const siteConfig = {
   title: "Sauce Bindings", // Title for your website.
+  disableHeaderTitle: true,
   tagline: "Provide Convenient Way to Use Sauce Labs",
   url: "https://saucelabs.github.io", // Your website URL
   baseUrl: "/sauce_bindings/", // Base URL for your project */

@@ -1,8 +1,40 @@
 {
   "docs": {
-    "Introduction": ["overview","getting-started", "create-session"],
-    "Configuration": ["basic-options", "sauce-options", "browser-options"],
-    "Integration": ["data-center", "upcoming-features"],
-    "Support": ["contributing","code-of-conduct"]
+    "Sauce Bindings": [
+      {
+        "type": "subcategory",
+        "label": "Introduction",
+        "ids": [
+          "overview",
+          "getting-started",
+          "create-session"
+        ]
+      },
+      {
+        "type": "subcategory",
+        "label": "Configuration",
+        "ids": [
+          "basic-options",
+          "sauce-options",
+          "browser-options"
+        ]
+      },
+      {
+        "type": "subcategory",
+        "label": "Integration",
+        "ids": [
+          "data-center",
+          "upcoming-features"
+        ]
+      },
+      {
+        "type": "subcategory",
+        "label": "Support",
+        "ids": [
+          "contributing",
+          "code-of-conduct"
+        ]
+      }
+     ]
   }
 }

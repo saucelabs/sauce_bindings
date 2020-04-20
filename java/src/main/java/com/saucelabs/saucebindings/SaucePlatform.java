@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 public enum SaucePlatform {
+    LINUX("Linux"),
     WINDOWS_10("Windows 10"),
     WINDOWS_8_1("Windows 8.1"),
     WINDOWS_8("Windows 8"),

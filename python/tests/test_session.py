@@ -64,6 +64,7 @@ class TestStart(object):
         session.start()
 
         assert session.driver.session_id
+        session.stop(True)
 
     def test_raises_exception_if_no_username_set(self):
         del os.environ['SAUCE_USERNAME']

@@ -15,7 +15,7 @@ class TestInit(object):
         assert "us-west-1" in session.remote_url
 
     def test_overrides_default_value_for_data_center(self):
-        session = SauceSession(data_center='eu')
+        session = SauceSession(data_center='eu-central')
 
         assert "eu-central-1" in session.remote_url
 
@@ -45,7 +45,7 @@ class TestDataCenter(object):
     def test_overrides_default_value_for_data_center(self):
         session = SauceSession()
 
-        session.data_center = 'eu'
+        session.data_center = 'eu-central'
 
         assert "eu-central-1" in session.remote_url
 

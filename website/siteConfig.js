@@ -107,7 +107,9 @@ const siteConfig = {
 
   // You may provide arbitrary config keys to be used as needed by your
   // template. For example, if you need your repo's URL...
-     repoUrl: "https://github.com/saucelabs/sauce_bindings",
+  repoUrl: "https://github.com/saucelabs/sauce_bindings",
+
+  gaTrackingId: 'UA-6735579-21'
 };
 
 module.exports = siteConfig;

@@ -76,3 +76,7 @@ class SauceSession():
             result = 'failed'
 
         self.driver.execute_script('sauce:job-result={}'.format(result))
+
+        # Update results for Sauce Jenkins OnDemand plugin and test reporter
+        if self.driver is not None:
+            print("SauceOnDemandSessionID={} job-name={}".format(self.driver.session_id, self.options.name))

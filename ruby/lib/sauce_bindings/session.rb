@@ -34,6 +34,7 @@ module SauceBindings
       return if @driver.nil?
 
       SauceWhisk::Jobs.change_status(@driver.session_id, result)
+      puts "SauceOnDemandSessionID=#{@driver.session_id} job-name=#{@options.name}"
       @driver.quit
     end
 

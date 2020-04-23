@@ -64,9 +64,14 @@ public class SauceSession {
     private void updateResult(String result) {
         getJSExecutor().executeScript("sauce:job-result=" + result);
 
+        // Add output for the Sauce OnDemand Jenkins plugin
+        // The first print statement will automatically populate links on Jenkins to Sauce
+        // The second print statement will output the job link to logging/console
         if (this.driver != null) {
             String sauceReporter = String.format("SauceOnDemandSessionID=%s job-name=%s", this.driver.getSessionId(), this.sauceOptions.getName());
-            System.out.print("SauceOnDemandSessionID={} job-name={}");
+            String sauceTestLink = String.format("Test Job Link: https://app.saucelabs.com/tests/%s", this.driver.getSessionId());
+            System.out.print(sauceReporter);
+            System.out.print(sauceTestLink);
         }
     }
 

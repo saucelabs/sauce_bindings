@@ -77,6 +77,9 @@ class SauceSession():
 
         self.driver.execute_script('sauce:job-result={}'.format(result))
 
-        # Update results for Sauce Jenkins OnDemand plugin and test reporter
+        # Add output for the Sauce OnDemand Jenkins plugin
+        # The first print statement will automatically populate links on Jenkins to Sauce
+        # The second print statement will output the job link to logging/console
         if self.driver is not None:
-            print("SauceOnDemandSessionID={} job-name={}".format(self.driver.session_id, self.options.name))
+            print("SauceOnDemandSessioID={} job-name={}".format(self.driver.session_id, self.options.name))
+            print("Test Job Link: https://app.saucelabs.com/tests/{}".format(self.driver.session_id))

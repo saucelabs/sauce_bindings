@@ -34,7 +34,11 @@ module SauceBindings
       return if @driver.nil?
 
       SauceWhisk::Jobs.change_status(@driver.session_id, result)
+      # Add output for the Sauce OnDemand Jenkins plugin
+      # The first print statement will automatically populate links on Jenkins to Sauce
+      # The second print statement will output the job link to logging/console  
       puts "SauceOnDemandSessionID=#{@driver.session_id} job-name=#{@options.name}"
+      puts "Test Job Link: https://app.saucelabs.com/tests/#{@driver.session_id}"
       @driver.quit
     end
 

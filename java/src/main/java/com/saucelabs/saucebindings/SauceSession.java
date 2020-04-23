@@ -63,6 +63,11 @@ public class SauceSession {
 
     private void updateResult(String result) {
         getJSExecutor().executeScript("sauce:job-result=" + result);
+
+        if (this.driver != null) {
+            String sauceReporter = String.format("SauceOnDemandSessionID=%s job-name=%s", this.driver.getSessionId(), this.sauceOptions.getName());
+            System.out.print("SauceOnDemandSessionID={} job-name={}");
+        }
     }
 
     private void stop() {

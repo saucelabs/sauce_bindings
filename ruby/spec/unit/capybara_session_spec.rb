@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'webmock/rspec'
 require 'sauce_bindings/capybara_session'
 
 module SauceBindings
@@ -26,19 +25,14 @@ module SauceBindings
     end
 
     before do
-      ENV['BUILD_TAG'] = ''
-      ENV['BUILD_NAME'] = 'TEMP BUILD'
-      ENV['BUILD_NUMBER'] = '11'
-      ENV['SAUCE_USERNAME'] = 'foo'
-      ENV['SAUCE_ACCESS_KEY'] = '123'
-    end
-
-    after do
-      ENV.delete 'BUILD_TAG'
-      ENV.delete 'BUILD_NAME'
-      ENV.delete 'BUILD_NUMBER'
-      ENV.delete 'SAUCE_USERNAME'
-      ENV.delete 'SAUCE_ACCESS_KEY'
+      allow_any_instance_of(Net::HTTP).to receive(:proxy_uri)
+      allow_any_instance_of(Selenium::WebDriver::Remote::Http::Default).to receive(:use_proxy?).and_return(false)
+      allow(ENV).to receive(:[]).with('DISABLE_CAPYBARA_SELENIUM_OPTIMIZATIONS')
+      allow(ENV).to receive(:[]).with('BUILD_TAG').and_return('')
+      allow(ENV).to receive(:[]).with('BUILD_NAME').and_return('TEMP BUILD')
+      allow(ENV).to receive(:[]).with('BUILD_NUMBER').and_return('11')
+      allow(ENV).to receive(:[]).with('SAUCE_USERNAME').and_return('foo')
+      allow(ENV).to receive(:[]).with('SAUCE_ACCESS_KEY').and_return('123')
     end
 
     describe '#new' do

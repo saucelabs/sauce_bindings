@@ -5,6 +5,8 @@ require 'spec_helper'
 module SauceBindings
   describe Session do
     describe 'starts with data center' do
+      before { WebMock.allow_net_connect! }
+
       it 'defaults to US West' do
         session = Session.new
         driver = session.start

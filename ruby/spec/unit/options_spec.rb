@@ -5,12 +5,10 @@ require 'spec_helper'
 module SauceBindings
   describe Options do
     before do
-      ENV['BUILD_TAG'] = ''
-      ENV['BUILD_NAME'] = 'TEMP BUILD'
-      ENV['BUILD_NUMBER'] = '11'
+      allow(ENV).to receive(:[]).with('BUILD_TAG').and_return('')
+      allow(ENV).to receive(:[]).with('BUILD_NAME').and_return('TEMP BUILD')
+      allow(ENV).to receive(:[]).with('BUILD_NUMBER').and_return('11')
     end
-
-    after { ENV.delete 'BUILD_TAG' }
 
     describe '#new' do
       let(:default_options) do

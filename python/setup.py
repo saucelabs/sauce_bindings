@@ -14,7 +14,7 @@ setup(
   author = 'josh.grant',
   author_email = 'josh.grant@saucelabs.com',
   url = 'https://github.com/saucelabs/sauce_bindings/',
-  download_url = 'https://github.com/saucelabs/sauce_bindings/archive/v_100b1.tar.gz', # based on GitHub releases
+  download_url = 'https://github.com/saucelabs/sauce_bindings/archive/v_100.tar.gz', # based on GitHub releases
   keywords = ['Sauce Labs', 'testing', 'selenium'],
   install_requires=[
           'selenium',

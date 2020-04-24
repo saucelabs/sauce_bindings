@@ -7,13 +7,14 @@ sidebar_label: Overview
 
 Writing and maintaining automated test frameworks is hard work. 
 Sauce Labs wants to reduce the complexity of integrating with our service. 
-We've created Sauce Bindings, a collection of tools that make working with Sauce Labs straightforward and obvious. 
+We've created Sauce Bindings, an interface to simplify working with Sauce Labs session-related interactions. 
 
 Sauce Bindings has three main goals:
 
--   Provide test developers with a wrapper or _binding_ for the most popular programming language used for web and mobile testing.
+-   Provide test developers with a wrapper or _binding_ for the most popular programming languages
+ used for web and mobile testing.
 -   Provide a concise API for connecting to Sauce Labs in test frameworks and making use of Sauce Labs features.
--   Provide an excellent developer user experience for using Sauce Labs in a straightforward, intuitive way.
+-   Provide an excellent developer user experience for using Sauce Labs in a straightforward way.
 
 ## Supported Language Bindings
 
@@ -24,7 +25,14 @@ We support the most popular automation programming languages:
 -   Ruby
 -   C#
 
+## What You'll Need
+
+- Significant experience in one of the supported languages as a software developer or SDET
+- Solid understanding of test automation 
+- Strong familiarity with their framework.
+
 ## Help
+
 Sauce Bindings are written and maintained by [Sauce Labs Experts](https://saucelabs.com/our-experts)
 
 We're here for you if you [have questions](mailto:techserv@saucelabs.com).

@@ -4,8 +4,8 @@ title: Features Under Development
 sidebar_label: Upcoming Features
 ---
 
-As the primary vehicle for interacting with Sauce Labs, there are a number of features we will be looking
-to add. If there is something you'd like to see that isn't on this list, please 
+There are a number of features we will be looking to add. 
+If there is something you'd like to see that isn't on this list, please 
 [open a ticket](https://github.com/saucelabs/sauce_bindings/issues/new).
 
 * Mobile Application Support

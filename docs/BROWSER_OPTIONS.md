@@ -4,7 +4,7 @@ title: Setting Browser Options
 sidebar_label: Browser Options
 ---
 
-Selenium provides options classes for each of the supported browsers with all of their custom settings
+Selenium provides options classes for each of the supported browsers with all of their custom settings.
 Rather than re-implement these, the `SauceOptions` class can be constructed with an instance of
 one of these objects:
 

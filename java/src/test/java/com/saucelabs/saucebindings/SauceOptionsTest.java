@@ -9,6 +9,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.safari.SafariOptions;
 import org.yaml.snakeyaml.Yaml;
 
@@ -169,6 +170,18 @@ public class SauceOptionsTest {
 
         assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
         assertEquals(chromeOptions, sauceOptions.getSeleniumCapabilities());
+    }
+
+    @Test
+    public void acceptsDesiredeCapabilitiesClass() {
+        DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+        capabilities.setCapability("args", "--foo");
+        capabilities.setCapability("unHandledPromptBehavior", "dismiss");
+
+        sauceOptions = new SauceOptions(capabilities);
+
+        assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
+        assertEquals(capabilities.asMap(), sauceOptions.getSeleniumCapabilities().asMap());
     }
 
     @Test

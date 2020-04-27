@@ -11,6 +11,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.safari.SafariOptions;
 
 import java.lang.reflect.InvocationTargetException;
@@ -150,6 +151,16 @@ public class SauceOptions {
 
     public SauceOptions(SafariOptions options) {
         this(new MutableCapabilities(options));
+    }
+
+    /**
+     * @deprecated
+     * This constructor is provided to easily convert to SauceOptions from existing code
+     * Selenium will be deprecating DesiredCapabilities, so you are encouraged to update
+     */
+    @Deprecated
+    public SauceOptions(DesiredCapabilities capabilities) {
+        this(new MutableCapabilities(capabilities));
     }
 
     public Map<Timeouts, Integer> getTimeouts() {

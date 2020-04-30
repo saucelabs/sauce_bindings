@@ -2,3 +2,4 @@ selenium==3.141.0
 pytest
 flake8
 pyyaml
+pytest-mock

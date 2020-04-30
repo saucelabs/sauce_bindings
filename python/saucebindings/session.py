@@ -51,12 +51,7 @@ class SauceSession():
         elif not self._access_key:
             raise KeyError("Cannot start session, Sauce Access Key is not set.")
 
-        executor = RemoteConnection(self.remote_url, self._resolve_ip)
-        self.driver = webdriver.Remote(
-            command_executor=executor,
-            desired_capabilities=self.options.to_capabilities(),
-            keep_alive=True
-        )
+        self.driver = self.create_driver(self.remote_url, self.options.to_capabilities())
         return self.driver
 
     def stop(self, result):
@@ -83,3 +78,10 @@ class SauceSession():
         if self.driver is not None:
             print("SauceOnDemandSessioID={} job-name={}".format(self.driver.session_id, self.options.name))
             print("Test Job Link: https://app.saucelabs.com/tests/{}".format(self.driver.session_id))
+
+    def create_driver(self, url, capabilities):
+        return webdriver.Remote(
+            command_executor=RemoteConnection(url, self._resolve_ip),
+            desired_capabilities=capabilities,
+            keep_alive=True
+        )

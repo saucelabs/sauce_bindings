@@ -21,6 +21,10 @@
         "title": "Become a Contributor",
         "sidebar_label": "Contribute"
       },
+      "converting-desired-caps": {
+        "title": "Converting From Desired Capabilities",
+        "sidebar_label": "Converting From Existing Code"
+      },
       "create-session": {
         "title": "Creating a Session",
         "sidebar_label": "Create Session"

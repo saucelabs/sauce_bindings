@@ -29,6 +29,13 @@
       },
       {
         "type": "subcategory",
+        "label": "Tutorials",
+        "ids": [
+          "converting-desired-caps"
+        ]
+      },
+      {
+        "type": "subcategory",
         "label": "Support",
         "ids": [
           "contributing",

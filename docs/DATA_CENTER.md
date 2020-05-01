@@ -13,16 +13,28 @@ You can Specify US East or Central EU on the Session class:
 <!--Java-->
 
 ```java
-import com.saucelabs.saucebindings.session;
+import com.saucelabs.saucebindings.*;
+import org.junit.Test;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class HelloSauce {
-    public static void main(String[] args) {
-        SauceSession sauceSession = new SauceSession();
-        sauceSession.setDataCenter(DataCenter.US_EAST);
+public class ChangeDataCenter {
 
-        RemoteWebDriver driver = sauceSession.start();
-        // use the driver to drive the browser as desired
-        sauceSession.stop(True);
+    @Test
+    public void dataCenter() {
+        // 1. Create Session object with the defaults
+        SauceSession session = new SauceSession();
+
+        // 2. Set Data Center
+        session.setDataCenter(DataCenter.EU_CENTRAL);
+
+        // 3. Start Session to get the Driver
+        RemoteWebDriver driver = session.start();
+
+        // 4. Use the driver in your tests just like normal
+        driver.get("https://www.saucedemo.com/");
+
+        // 5. Stop the Session with whether the test passed or failed
+        session.stop(true);
     }
 }
 ```
@@ -31,21 +43,42 @@ public class HelloSauce {
 ```python
 from saucebindings.session import SauceSession
 
-sauceSession = SauceSession(data_center='eu')
 
-driver = sauceSession.start()
-# use the driver to drive the browser as desired
-session.stop(True)
+class TestDataCenter(object):
+
+    def test_creates_session(self):
+        # 1. Create Session object with the desired Data Center
+        session = SauceSession(data_center='eu-central')
+
+        # 2. Start Session to get the Driver
+        driver = session.start()
+
+        # 3. Use the driver in your tests just like normal
+        driver.get('https://www.saucedemo.com/')
+
+        # 4. Stop the Session with whether the test passed or failed
+        session.stop(True)
 ```
 <!--Ruby-->
 ```ruby
 require 'sauce_bindings'
+require 'rspec'
 
-sauceSession = SauceSession.new(data_center: :EU_VDC)
+describe 'Create Session' do
+  it 'starts session' do
+    # 1. Create Session object with the desired Data Center
+    session = SauceBindings::Session.new(data_center: :EU_CENTRAL)
 
-driver = sauceSession.start
-# use the driver to drive the browser as desired
-sauceSession.stop(true)
+    # 2. Start Session to get the Driver
+    driver = session.start
+
+    # 3. Use the driver in your tests just like normal
+    driver.get('https://www.saucedemo.com/')
+
+    # 4. Stop the Session with whether the test passed or failed
+    session.stop(true)
+  end
+end
 ```
 <!--C#-->
 <br />

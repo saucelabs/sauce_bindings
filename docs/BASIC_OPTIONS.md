@@ -19,22 +19,31 @@ Here's an example of running a test on Firefox and Windows 8.0.
 <!--Java-->
 
 ```java
-import com.saucelabs.saucebindings.options;
-import com.saucelabs.saucebindings.session;
+import com.saucelabs.saucebindings.*;
+import org.junit.Test;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class HelloSauce {
-    public static void main(String[] args) {
+public class BasicOptions {
+
+    @Test
+    public void basicOptions() {
+        // 1. Specify the 3 basic parameters of a SauceOptions instance
         SauceOptions sauceOptions = new SauceOptions();
         sauceOptions.setBrowserName(Browser.FIREFOX);
-        sauceOptions.setBrowserVersion("77");
+        sauceOptions.setBrowserVersion("73.0");
         sauceOptions.setPlatformName(SaucePlatform.WINDOWS_8);
 
-        // Then you can pass the Options object into the Session object:
-        SauceSession sauceSession = new SauceSession(sauceOptions);
+        // 2. Create Session object with the Options object instance
+        SauceSession session = new SauceSession(sauceOptions);
 
-        RemoteWebDriver driver = sauceSession.start();
-        // use the driver to drive the browser as desired
-        sauceSession.stop(True);
+        // 3. Start Session to get the Driver
+        RemoteWebDriver driver = session.start();
+
+        // 4. Use the driver in your tests just like normal
+        driver.get("https://www.saucedemo.com/");
+
+        // 5. Stop the Session with whether the test passed or failed
+        session.stop(true);
     }
 }
 ```
@@ -44,31 +53,52 @@ public class HelloSauce {
 from saucebindings.options import SauceOptions
 from saucebindings.session import SauceSession
 
-sauceOptions = SauceOptions(browserName='firefox', 
-                            browserVersion='77.0', 
-                            platformName='Windows 8.0')
 
-# Then you can pass the Options object into the Session object:
-sauceSession = SauceSession(sauceOptions)
+class TestBasicOptions(object):
 
-driver = sauceSession.start()
-# use the driver to drive the browser as desired
-session.stop(True)
+    def test_creates_session(self):
+        # 1. Create a SauceOptions instance with the 3 primary parameters
+        sauceOptions = SauceOptions(browserName='firefox',
+                                    browserVersion='73.0',
+                                    platformName='Windows 8')
+
+        # 2. Create Session object with SauceOptions object instance
+        session = SauceSession(sauceOptions)
+
+        # 3. Start Session to get the Driver
+        driver = session.start()
+
+        # 4. Use the driver in your tests just like normal
+        driver.get('https://www.saucedemo.com/')
+
+        # 5. Stop the Session with whether the test passed or failed
+        session.stop(True)
 ```
 <!--Ruby-->
 ```ruby
 require 'sauce_bindings'
+require 'rspec'
 
-sauceOptions = SauceOptions.new(browser_name: 'firefox',
-                                browser_version: '77',
-                                platform_name: 'Windows 8.0')
+describe 'Basic Options' do
+  it 'creates session' do
+    # 1. Create a SauceOptions instance with the 3 primary parameters
+    sauce_options = SauceBindings::Options.new(browser_name: 'firefox',
+                                               browser_version: '73.0',
+                                               platform_name: 'Windows 8')
 
-# Then you can pass the Options object into the Session object:
-sauceSession = SauceSession.new(sauceOptions)
+    # 2. Create Session object with SauceOptions object instance
+    session = SauceBindings::Session.new(sauce_options)
 
-driver = sauceSession.start
-# use the driver to drive the browser as desired
-sauceSession.stop(true)
+    # 3. Start Session to get the Driver
+    driver = session.start
+
+    # 4. Use the driver in your tests just like normal
+    driver.get('https://www.saucedemo.com/')
+
+    # 5. Stop the Session with whether the test passed or failed
+    session.stop(true)
+  end
+end
 ```
 <!--C#-->
 <br />

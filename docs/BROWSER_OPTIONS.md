@@ -12,22 +12,33 @@ one of these objects:
 <!--Java-->
 
 ```java
-import com.saucelabs.saucebindings.options;
-import com.saucelabs.saucebindings.session;
+import com.saucelabs.saucebindings.*;
+import org.junit.Test;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class HelloSauce {
-    public static void main(String[] args) {
+public class BrowserOptions {
 
+    @Test
+    public void browserOptions() {
+        // 1. Create Selenium Browser Options instance
         FirefoxOptions browserOptions = new FirefoxOptions();
         browserOptions.addArguments("--foo");
 
+        // 2. Create Sauce Options object with the Browser Options object instance
         SauceOptions sauceOptions = new SauceOptions(browserOptions);
-        SauceSession sauceSession = new SauceSession(sauceOptions);
 
-        RemoteWebDriver driver = sauceSession.start();
-        // use the driver to drive the browser as desired
-        sauceSession.stop(True);
+        // 3. Create Session object with the Sauce Options object instance
+        SauceSession session = new SauceSession(sauceOptions);
+
+        // 4. Start Session to get the Driver
+        RemoteWebDriver driver = session.start();
+
+        // 5. Use the driver in your tests just like normal
+        driver.get("https://www.saucedemo.com/");
+
+        // 6. Stop the Session with whether the test passed or failed
+        session.stop(true);
     }
 }
 ```
@@ -38,28 +49,57 @@ from saucebindings.options import SauceOptions
 from saucebindings.session import SauceSession
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
-browserOptions = FirefoxOptions()
-browserOptions.add_argument('--foo')
 
-sauceOptions = SauceOptions(browserOptions)
-sauceSession = SauceSession(sauceOptions)
+class TestBrowserOptions(object):
 
-driver = sauceSession.start()
-# use the driver to drive the browser as desired
-session.stop(True)
+    def test_creates_session(self):
+
+        # 1. Create Selenium Browser Options instance
+        browserOptions = FirefoxOptions()
+        browserOptions.add_argument('--foo')
+
+        # 2. Create Sauce Options object with the Browser Options object instance
+        sauceOptions = SauceOptions(seleniumOptions=browserOptions)
+
+        # 3. Create Session object with SauceOptions object instance
+        session = SauceSession(sauceOptions)
+
+        # 4. Start Session to get the Driver
+        driver = session.start()
+
+        # 5. Use the driver in your tests just like normal
+        driver.get('https://www.saucedemo.com/')
+
+        # 6. Stop the Session with whether the test passed or failed
+        session.stop(True)
 ```
+
 <!--Ruby-->
 ```ruby
 require 'sauce_bindings'
+require 'rspec'
 
-browser_options = Selenium::WebDriver::Firefox::Options.new(args: ['--foo'])
+describe 'Browser Options' do
+  it 'creates session' do
+    # 1. Create Selenium Browser Options instance
+    browser_options = Selenium::WebDriver::Firefox::Options.new(args: ['--foo'])
 
-sauce_options = SauceOptions.new(browser_options)
-sauce_session = SauceSession.new(sauceOptions)
+    # 2. Create Sauce Options object with the Browser Options object instance
+    sauce_options = SauceBindings::Options.new(browser_options)
 
-driver = sauceSession.start
-# use the driver to drive the browser as desired
-sauceSession.stop(true)
+    # 3. Create Session object with SauceOptions object instance
+    session = SauceBindings::Session.new(sauce_options)
+
+    # 4. Start Session to get the Driver
+    driver = session.start
+
+    # 5. Use the driver in your tests just like normal
+    driver.get('https://www.saucedemo.com/')
+
+    # 6. Stop the Session with whether the test passed or failed
+    session.stop(true)
+  end
+end
 ```
 
 <!--C#-->

@@ -28,18 +28,27 @@ Here are instructions for setting environment variables on each Operating System
 <!--Java-->
 <br />
 
-1. Install Java version 9 or greater (we recommend Java 11)<br />
+1. Install ***Java version 9*** or greater (Java 8 *will not* work!)<br />
 2. Install your favorite Java IDE (we really like IntelliJ and the Community Edition is free).
-2. The project is designed as a standard Maven project and follow Maven conventions.</br>
+2. The project is designed as a standard Maven project and follows Maven conventions.</br>
 Add the following to your .pom file:
 
 ```xml
 <dependency>
     <groupId>com.saucelabs</groupId>
-    <artifactId>sauce-bindings</artifactId>
+    <artifactId>sauce_bindings</artifactId>
     <version>1.0.0</version>
 </dependency>
 ```
+
+Examples on this site are written to use JUnit 4, so to execute them you must also add this to your .pom file:
+```xml
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.13</version>
+</dependency>
+``` 
 
 <!--Python-->
 <br />
@@ -56,25 +65,26 @@ from saucebindings.session import SauceSession
 
 <!--Ruby-->
 <br />
-
 1. Add it to your Gemfile:
 ```ruby
 gem 'sauce_bindings'
 ```
+
 2. Require it in your project:
 ```ruby
 require 'sauce_bindings'
 ```
 
-Alternately, to try it out you can install it on your system:
-```bash
-gem install sauce_bindings
-```
-
-Note, for Capybara users, you must also require this file:
+If you are using Capybara, you must also require this file:
 ```ruby
 require 'sauce_bindings/capybara_session'
 ```
+
+Examples on this site are written to use RSpec, so to execute them you must also add this to your Gemfile:
+```ruby
+gem 'rspec'
+```
+
 <!--C#-->
 <br />
 

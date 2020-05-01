@@ -13,23 +13,31 @@ All of these configurations can now be easily set with the `SauceOptions` class
 <!--Java-->
 
 ```java
-import com.saucelabs.saucebindings.options;
-import com.saucelabs.saucebindings.session;
+import com.saucelabs.saucebindings.*;
+import org.junit.Test;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
+public class SauceSpecificOptions {
 
-public class HelloSauce {
-    public static void main(String[] args) {
+    @Test
+    public void sauceOptions() {
+        // 1. Specify Sauce Specific Options
         SauceOptions sauceOptions = new SauceOptions();
         sauceOptions.setExtendedDebugging(true);
-        sauceOptions.setParentTunnel("Mommy");
         sauceOptions.setIdleTimeout(100);
         sauceOptions.setTimeZone("Alaska");
 
-        SauceSession sauceSession = new SauceSession(sauceOptions);
+        // 2. Create Session object with the Options object instance
+        SauceSession session = new SauceSession(sauceOptions);
 
-        RemoteWebDriver driver = sauceSession.start();
-        // use the driver to drive the browser as desired
-        sauceSession.stop(True);
+        // 3. Start Session to get the Driver
+        RemoteWebDriver driver = session.start();
+
+        // 4. Use the driver in your tests just like normal
+        driver.get("https://www.saucedemo.com/");
+
+        // 5. Stop the Session with whether the test passed or failed
+        session.stop(true);
     }
 }
 ```
@@ -39,31 +47,52 @@ public class HelloSauce {
 from saucebindings.options import SauceOptions
 from saucebindings.session import SauceSession
 
-sauceOptions = SauceOptions(extendedDebugging=true, 
-                            parentTunnel='Mommy', 
-                            idleTimeout=100,
-                            timeZone='Alaska')
 
-sauceSession = SauceSession(sauceOptions)
+class TestSauceOptions(object):
 
-driver = sauceSession.start()
-# use the driver to drive the browser as desired
-session.stop(True)
+    def test_creates_session(self):
+        # 1. Create a SauceOptions instance with Sauce Labs Specific Options
+        sauceOptions = SauceOptions(extendedDebugging=True,
+                                    idleTimeout=100,
+                                    timeZone='Alaska')
+
+        # 2. Create Session object with SauceOptions object instance
+        session = SauceSession(sauceOptions)
+
+        # 3. Start Session to get the Driver
+        driver = session.start()
+
+        # 4. Use the driver in your tests just like normal
+        driver.get('https://www.saucedemo.com/')
+
+        # 5. Stop the Session with whether the test passed or failed
+        session.stop(True)
 ```
 <!--Ruby-->
 ```ruby
 require 'sauce_bindings'
+require 'rspec'
 
-sauceOptions = SauceOptions.new(extended_debugging: true,
-                                parent_tunnel: 'Mommy',
-                                idle_timeout: 100,
-                                time_zone: 'Alaska')
+describe 'Sauce Options' do
+  it 'creates session' do
+    # 1. Create a SauceOptions instance with Sauce Labs Specific Options
+    sauce_options = SauceBindings::Options.new(extended_debugging: true,
+                                               idle_timeout: 100,
+                                               time_zone: 'Alaska')
 
-sauceSession = SauceSession.new(sauceOptions)
+    # 2. Create Session object with SauceOptions object instance
+    session = SauceBindings::Session.new(sauce_options)
 
-driver = sauceSession.start
-# use the driver to drive the browser as desired
-sauceSession.stop(true)
+    # 3. Start Session to get the Driver
+    driver = session.start
+
+    # 4. Use the driver in your tests just like normal
+    driver.get('https://www.saucedemo.com/')
+
+    # 5. Stop the Session with whether the test passed or failed
+    session.stop(true)
+  end
+end
 ```
 <!--C#-->
 <br />

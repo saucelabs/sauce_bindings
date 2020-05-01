@@ -70,8 +70,7 @@ public class SauceSession {
         if (this.driver != null) {
             String sauceReporter = String.format("SauceOnDemandSessionID=%s job-name=%s", this.driver.getSessionId(), this.sauceOptions.getName());
             String sauceTestLink = String.format("Test Job Link: https://app.saucelabs.com/tests/%s", this.driver.getSessionId());
-            System.out.print(sauceReporter);
-            System.out.print(sauceTestLink);
+            System.out.print(sauceReporter + "\n" + sauceTestLink);
         }
     }
 

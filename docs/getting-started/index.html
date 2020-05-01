@@ -78,12 +78,14 @@ SAUCE_ACCESS_KEY=<span class="hljs-string">'valid.key'</span>
 <h2><a class="anchor" aria-hidden="true" id="language-specific--prerequisites"></a><a href="#language-specific--prerequisites" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Language Specific  Prerequisites</h2>
 <div class="tabs"><div class="nav-tabs"><div id="tab-group-26-tab-27" class="nav-link active" data-group="group_26" data-tab="tab-group-26-content-27">Java</div><div id="tab-group-26-tab-28" class="nav-link" data-group="group_26" data-tab="tab-group-26-content-28">Python</div><div id="tab-group-26-tab-29" class="nav-link" data-group="group_26" data-tab="tab-group-26-content-29">Ruby</div><div id="tab-group-26-tab-30" class="nav-link" data-group="group_26" data-tab="tab-group-26-content-30">C#</div></div><div class="tab-content"><div id="tab-group-26-content-27" class="tab-pane active" data-group="group_26" tabindex="-1"><div><span><p><br /></p>
 <ol>
-<li>Install Java version 9 or greater (we recommend Java 11)<br /></li>
+<li>Install <strong><em>Java version 9</em></strong> or greater (Java 8 <em>will not</em> work!)<br /></li>
 <li>Install your favorite Java IDE (we really like IntelliJ and the Community Edition is free).</li>
-<li>The project is designed as a standard Maven project and follow Maven conventions.</br>
+<li>The project is designed as a standard Maven project and follows Maven conventions.</br>
 Add the following to your .pom file:</li>
 </ol>
-<pre><code class="hljs css language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br />    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.saucelabs<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br />    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>sauce-bindings<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br />    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br /><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br /></code></pre>
+<pre><code class="hljs css language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br />    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.saucelabs<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br />    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>sauce_bindings<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br />    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br /><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br /></code></pre>
+<p>Examples on this site are written to use JUnit 4, so to execute them you must also add this to your .pom file:</p>
+<pre><code class="hljs css language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br />    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>junit<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br />    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>junit<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br />    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>4.13<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br /><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br /></code></pre>
 </span></div></div><div id="tab-group-26-content-28" class="tab-pane" data-group="group_26" tabindex="-1"><div><span><p><br /></p>
 <ol>
 <li>Install the package:</li>
@@ -102,10 +104,10 @@ Add the following to your .pom file:</li>
 <li>Require it in your project:</li>
 </ol>
 <pre><code class="hljs css language-ruby"><span class="hljs-keyword">require</span> <span class="hljs-string">'sauce_bindings'</span><br /></code></pre>
-<p>Alternately, to try it out you can install it on your system:</p>
-<pre><code class="hljs css language-bash">gem install sauce_bindings<br /></code></pre>
-<p>Note, for Capybara users, you must also require this file:</p>
+<p>If you are using Capybara, you must also require this file:</p>
 <pre><code class="hljs css language-ruby"><span class="hljs-keyword">require</span> <span class="hljs-string">'sauce_bindings/capybara_session'</span><br /></code></pre>
+<p>Examples on this site are written to use RSpec, so to execute them you must also add this to your Gemfile:</p>
+<pre><code class="hljs css language-ruby">gem <span class="hljs-string">'rspec'</span><br /></code></pre>
 </span></div></div><div id="tab-group-26-content-30" class="tab-pane" data-group="group_26" tabindex="-1"><div><span><p><br /></p>
 <p><strong>C# bindings are coming soon...</strong></p>
 </span></div></div></div></div>

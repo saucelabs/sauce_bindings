@@ -12,41 +12,68 @@ this is all you need to do:
 <!--Java-->
 
 ```java
-import com.saucelabs.saucebindings.session;
+import com.saucelabs.saucebindings.*;
+import org.junit.Test;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class HelloSauce {
-    public static void main(String[] args) {
-        SauceSession sauceSession = new SauceSession();
-        RemoteWebDriver driver = sauceSession.start();
+public class StartSession {
 
-        // use the driver to drive the browser as desired
+    @Test
+    public void startSession() {
+        // 1. Create Session object with the defaults
+        SauceSession session = new SauceSession();
 
-        sauceSession.stop(True);
+        // 2. Start Session to get the Driver
+        RemoteWebDriver driver = session.start();
+
+        // 3. Use the driver in your tests just like normal
+        driver.get("https://www.saucedemo.com/");
+
+        // 4. Stop the Session with whether the test passed or failed
+        session.stop(true);
     }
 }
 ```
-
 <!--Python-->
 ```python
 from saucebindings.session import SauceSession
 
-sauceSession = SauceSession()
-driver = sauceSession.start()
 
-# use the driver to drive the browser as desired
+class TestCreateSession(object):
 
-session.stop(True)
+    def test_creates_session(self):
+        # 1. Create Session object with the defaults
+        session = SauceSession()
+
+        # 2. Start Session to get the Driver
+        driver = session.start()
+
+        # 3. Use the driver in your tests just like normal
+        driver.get('https://www.saucedemo.com/')
+
+        # 4. Stop the Session with whether the test passed or failed
+        session.stop(True)
 ```
 <!--Ruby-->
 ```ruby
 require 'sauce_bindings'
+require 'rspec'
 
-sauceSession = SauceSession.new
-driver = sauceSession.start
+describe 'Create Session' do
+  it 'starts session' do
+    # 1. Create Session object with the defaults
+    session = SauceBindings::Session.new
 
-# use the driver to drive the browser as desired
+    # 2. Start Session to get the Driver
+    driver = session.start
 
-sauceSession.stop(true)
+    # 3. Use the driver in your tests just like normal
+    driver.get('https://www.saucedemo.com/')
+
+    # 4. Stop the Session with whether the test passed or failed
+    session.stop(true)
+  end
+end
 ```
 <!--C#-->
 <br />

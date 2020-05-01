@@ -220,3 +220,7 @@ h1,h2,h3,h4,h5,h6 {
 .toc section .navGroups{
   padding-top: 0 !important;
 }
+
+.subNavGroup {
+  padding-bottom: 10px;
+}

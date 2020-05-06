@@ -1,12 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
+using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.IE;
+using OpenQA.Selenium.Safari;
 using Simple.Sauce;
+using System;
+using System.Collections.Generic;
 
 namespace SimpleSauce.Test
 {
@@ -22,18 +24,18 @@ namespace SimpleSauce.Test
         [TestMethod]
         public void UsesLatestChromeWindowsVersionsByDefault()
         {
-            SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.Chrome);
+            SauceOptions.BrowserName.Should().Be(Browser.Chrome);
             SauceOptions.BrowserVersion.Should().Be("latest");
             SauceOptions.PlatformName.Should().BeEquivalentTo(Platforms.Windows10);
         }
         [TestMethod]
-        public void UpdatesBrowserBrowserVersionPlatformVersion()
+        public void UpdatesBrowserVersionPlatformVersion()
         {
             SauceOptions.BrowserVersion = "68";
             SauceOptions.BrowserName = Browser.Firefox;
             SauceOptions.PlatformName = Platforms.MacOsHighSierra;
 
-            SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.Firefox);
+            SauceOptions.BrowserName.Should().Be(Browser.Firefox);
             SauceOptions.BrowserVersion.Should().Be("68");
             SauceOptions.PlatformName.Should().BeEquivalentTo(Platforms.MacOsHighSierra);
         }
@@ -55,7 +57,6 @@ namespace SimpleSauce.Test
             var impl = new KeyValuePair<string, int>("implicit", 4);
             var page = new KeyValuePair<string, int>("pageload", 44);
             var script = new KeyValuePair<string, int>("script", 33);
-
 
             SauceOptions.AcceptInsecureCerts.Should().BeTrue();
             SauceOptions.PageLoadStrategy.Should().Be(PageLoadStrategy.Eager);
@@ -131,6 +132,198 @@ namespace SimpleSauce.Test
             SauceOptions.TimeZone.Should().Be("San Francisco");
             SauceOptions.TunnelIdentifier.Should().Be("My Tunnel ID");
             SauceOptions.VideoUploadOnPass.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void AcceptsChromeOptionsClass()
+        {
+            var options = new ChromeOptions();
+            SauceOptions = new SauceOptions(options);
+
+            SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.Chrome);
+            SauceOptions.SeleniumOptions.Should().BeEquivalentTo(options);
+        }
+        [TestMethod]
+        public void AcceptsEdgeOptionsClass()
+        {
+            var options = new EdgeOptions();
+            SauceOptions = new SauceOptions(options);
+
+            SauceOptions.BrowserName.Should().Be(Browser.Edge);
+            SauceOptions.SeleniumOptions.Should().BeEquivalentTo(options);
+        }
+
+        [TestMethod]
+        public void AcceptsFirefoxOptionsClass()
+        {
+            var options = new FirefoxOptions();
+            SauceOptions = new SauceOptions(options);
+
+            SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.Firefox);
+            SauceOptions.SeleniumOptions.Should().BeEquivalentTo(options);
+        }
+
+        [TestMethod]
+        public void AcceptsInternetExplorerOptionsClass()
+        {
+            var options = new InternetExplorerOptions();
+            SauceOptions = new SauceOptions(options);
+
+            SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.IE);
+            SauceOptions.SeleniumOptions.Should().BeEquivalentTo(options);
+        }
+
+        [TestMethod]
+        public void AcceptsSafariOptionsClass()
+        {
+            var options = new SafariOptions();
+            SauceOptions = new SauceOptions(options);
+
+            SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.Safari);
+            SauceOptions.SeleniumOptions.Should().BeEquivalentTo(options);
+        }
+
+        [TestMethod]
+        public void CreatesDefaultBuildName()
+        {
+            Environment.SetEnvironmentVariable("BUILD_TAG", "Not Empty");
+            Environment.SetEnvironmentVariable("BUILD_NAME", "TEMP BUILD");
+            Environment.SetEnvironmentVariable("BUILD_NUMBER", "11");
+
+            SauceOptions.BuildName.Should().BeEquivalentTo("TEMP BUILD: 11");
+        }
+
+        [TestMethod]
+        [Ignore("Waiting for fixes")]
+
+        public void ParsesCapabilitiesFromW3CValues()
+        {
+            SauceOptions.BrowserName = Browser.Firefox;
+            SauceOptions.PlatformName = Platforms.MacOsHighSierra;
+            SauceOptions.BrowserVersion = "77";
+            SauceOptions.PageLoadStrategy = PageLoadStrategy.Eager;
+            SauceOptions.AcceptInsecureCerts = true;
+            SauceOptions.SetWindowRect = true;
+            SauceOptions.Timeout.Implicit = 4;
+            SauceOptions.Timeout.PageLoad = 44;
+            SauceOptions.Timeout.Script = 33;
+            SauceOptions.BuildName = "Build Name";
+
+            var timeouts = new Dictionary<string, int>
+            {
+                { "Implicit", 4 },
+                { "PageLoad", 44 },
+                { "Script", 33 }
+            };
+
+            var expectedCapabilities = new Dictionary<string, object>
+            {
+                { "BrowserName", "firefox" },
+                { "BrowserVersion", "77" },
+                { "PlatformName", "macOS 10.13" },
+                { "AcceptInsecureCerts", true },
+                { "SetWindowRect", true },
+                { "StrictFileInteractability", true },
+                { "PageLoadStrategy", PageLoadStrategy.Eager },
+                { "Timeouts", timeouts },
+                { "UnhandledPromptBehavior", UnhandledPromptBehavior.Ignore }
+            };
+
+            SauceOptions.ToDriverOptions().Should().Be(expectedCapabilities);
+        }
+
+        [TestMethod]
+        [Ignore("Waiting for fixes")]
+        public void ParsesCapabilitiesFromSauceLabsValues()
+        {
+            var customData = new Dictionary<string, string> { { "foo", "foo" }, { "bar", "bar" } };
+
+            var args = new List<string> { "--silent", "-a", "-q" };
+
+            var prerun = new Dictionary<string, object>
+            {
+                {"executable", "http://url.to/your/executable.exe"},
+                {"args", args},
+                {"background", false},
+                {"timeout", new TimeSpan(120)}
+            };
+
+            var tags = new List<string> { "foo", "bar" };
+
+            SauceOptions.AvoidProxy = true;
+            SauceOptions.BuildName = "Sample Build Name";
+            SauceOptions.CapturePerformance = true;
+            SauceOptions.ChromedriverVersion = "71";
+            SauceOptions.Timeout.CommandTimeout = 2;
+            SauceOptions.CustomData = customData;
+            SauceOptions.ExtendedDebugging = true;
+            SauceOptions.Timeout.IdleTimeout = 3;
+            SauceOptions.IeDriverVersion = "3.141.0";
+            SauceOptions.Timeout.MaxDuration = 300;
+            SauceOptions.TestName = "Sample Test Name";
+            SauceOptions.ParentTunnel = "Mommy";
+            SauceOptions.Prerun = prerun;
+            SauceOptions.Priority = 0;
+            SauceOptions.TestVisibility = TestVisibility.Team;
+            SauceOptions.RecordLogs = false;
+            SauceOptions.RecordScreenshots = false;
+            SauceOptions.RecordVideo = false;
+            SauceOptions.ScreenResolution = "10x10";
+            SauceOptions.SeleniumVersion = "3.141.59";
+            SauceOptions.Tags = tags;
+            SauceOptions.TimeZone = "San Francisco";
+            SauceOptions.TunnelIdentifier = "MyTunnel";
+            SauceOptions.VideoUploadOnPass = false;
+
+            var expectedCapabilities = new Dictionary<string, object>();
+
+            SauceOptions.ToDriverOptions().Should().BeEquivalentTo(expectedCapabilities, options => options.WithAutoConversion());
+        }
+        [TestMethod]
+        [Ignore("Waiting for fixes")]
+
+        public void ParsesCapabilitiesFromSeleniumValues()
+        {
+            var options = new ChromeOptions();
+            SauceOptions = new SauceOptions(options);
+
+            var expectedCapabilities = new Dictionary<string, object>();
+
+            SauceOptions.ToDriverOptions().Should().BeEquivalentTo(expectedCapabilities);
+        }
+
+        //TODO finish copying over this test from Java later
+        [TestMethod]
+        [Ignore("Waiting for fixes")]
+
+        public void ParsesW3CAndSauceAndSeleniumValues()
+        {
+            var firefoxOptions = new FirefoxOptions();
+            firefoxOptions.AddArguments("--foo");
+            firefoxOptions.UnhandledPromptBehavior = UnhandledPromptBehavior.Dismiss;
+
+            SauceOptions = new SauceOptions(firefoxOptions)
+            {
+                PageLoadStrategy = PageLoadStrategy.Eager,
+                AcceptInsecureCerts = true,
+                AvoidProxy = true,
+                BuildName = "Sample Build Name",
+                CapturePerformance = true
+            };
+
+
+            var impl = new KeyValuePair<string, int>("implicit", 4);
+            var page = new KeyValuePair<string, int>("pageload", 44);
+            var script = new KeyValuePair<string, int>("script", 33);
+
+            var expectedCapabilities = new Dictionary<string, object>
+            {
+                { "platformName", Platforms.Windows10 },
+                { "pageLoadStrategy", "eager" },
+                {"acceptInsecureCerts", true }
+            };
+
+            SauceOptions.ToDriverOptions().Should().BeEquivalentTo(expectedCapabilities);
         }
     }
 }

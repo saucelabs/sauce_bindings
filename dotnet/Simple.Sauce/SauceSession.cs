@@ -1,7 +1,6 @@
-﻿using System;
+﻿using OpenQA.Selenium;
+using System;
 using System.Collections.Generic;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 
 namespace Simple.Sauce
 {
@@ -31,15 +30,31 @@ namespace Simple.Sauce
             Driver = driver;
         }
 
-        public ChromeOptions ChromeOptions { get; private set; }
+        readonly string sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
+        readonly string sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
+        private Uri _sauceUrl;
+
         public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
-        public SauceOptions Options { get; }
+        public SauceOptions Options { get; private set; }
 
         public ISauceRemoteDriver Driver { get; set; }
+        public Uri SauceUrl
+        {
+            get
+            {
+                if (_sauceUrl != null)
+                    return _sauceUrl;
+                else
+                {
+                    string url = "https://" + sauceUserName + ":" + sauceAccessKey + "@" + DataCenter.Value + "/wd/hub";
+                    return new Uri(url);
+                }
+            }
+        }
 
         public IWebDriver Start()
         {
-            if (!string.IsNullOrEmpty(Options.ConfiguredEdgeOptions.BrowserVersion))
+            if (Options.BrowserName == Browser.Edge)
                 return CreateEdgeBrowser();
             if (!string.IsNullOrEmpty(Options.ConfiguredSafariOptions.BrowserVersion))
                 return CreateSafariDriver();
@@ -92,16 +107,7 @@ namespace Simple.Sauce
 
         private IWebDriver CreateEdgeBrowser()
         {
-            var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
-            var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
-            var sauceConfiguration = new Dictionary<string, object>
-            {
-                ["username"] = sauceUserName,
-                ["accessKey"] = sauceAccessKey
-            };
-
-            Options.ConfiguredEdgeOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
-            return Driver.CreateRemoteWebDriver(Options.ConfiguredEdgeOptions);
+            return Driver.CreateRemoteWebDriver(SauceUrl, Options.ToDriverOptions());
         }
 
         public void Stop(bool isPassed)

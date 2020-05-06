@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Simple.Sauce;
+using System.Collections.Generic;
 
 namespace SimpleSauce.Test.Browsers
 {

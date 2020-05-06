@@ -1,5 +1,3 @@
-using System;
-using System.Reflection;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -54,19 +52,6 @@ namespace SimpleSauce.Test
             SauceSession.Start();
 
             var browserOptionsSetInSauceJson = SauceSession.Options.ConfiguredChromeOptions.ToString();
-            var browserOptionsSetInSauce = DeserializeToObject(browserOptionsSetInSauceJson);
-            AssertUsernameAndAccessKeyExist(browserOptionsSetInSauce);
-        }
-        [TestMethod]
-        public void Start_WithEdge_SetsUsernameAndAccessKey()
-        {
-            SauceOptions = new SauceOptions();
-            SauceOptions.WithEdge();
-            SauceSession = new SauceSession(SauceOptions, _dummyDriver.Object);
-
-            SauceSession.Start();
-
-            var browserOptionsSetInSauceJson = SauceSession.Options.ConfiguredEdgeOptions.ToString();
             var browserOptionsSetInSauce = DeserializeToObject(browserOptionsSetInSauceJson);
             AssertUsernameAndAccessKeyExist(browserOptionsSetInSauce);
         }

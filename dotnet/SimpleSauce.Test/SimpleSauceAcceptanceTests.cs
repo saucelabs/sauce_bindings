@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
@@ -29,30 +27,27 @@ namespace SimpleSauce.Test
         {
             _session = new SauceSession();
             _driver = _session.Start();
+            ((IJavaScriptExecutor)_driver).ExecuteScript("sauce:job-name=" + TestContext.TestName);
+
             var capabilities = ((RemoteWebDriver)_driver).Capabilities;
             capabilities.GetCapability("browserName").Should().Be("chrome");
         }
         [TestMethod]
         public void RunTestWithEdge()
         {
-            _sauceOptions = new SauceOptions();
-            _sauceOptions.WithEdge();
+            _sauceOptions = new SauceOptions
+            {
+                BrowserName = Browser.Edge
+            };
+
             _session = new SauceSession(_sauceOptions);
             _driver = _session.Start();
+            ((IJavaScriptExecutor)_driver).ExecuteScript("sauce:job-name=" + TestContext.TestName);
             var capabilities = ((RemoteWebDriver)_driver).Capabilities;
-            capabilities.GetCapability("browserName").Should().Be("MicrosoftEdge");
+            //Noticed that I started getting back msedge
+            capabilities.GetCapability("browserName").Should().Be("msedge");
         }
-        [TestMethod]
-        [Ignore("Getting an infrastructure error")]
-        public void RunTestWithEdge15()
-        {
-            _sauceOptions = new SauceOptions();
-            _sauceOptions.WithEdge(EdgeVersion._15);
-            _session = new SauceSession(_sauceOptions);
-            _driver = _session.Start();
-            var capabilities = ((RemoteWebDriver)_driver).Capabilities;
-            capabilities.GetCapability("browserName").Should().Be("MicrosoftEdge");
-        }
+
         [TestMethod]
         public void RunTestWithSafariDefault()
         {
@@ -60,6 +55,8 @@ namespace SimpleSauce.Test
             _sauceOptions.WithSafari();
             _session = new SauceSession(_sauceOptions);
             _driver = _session.Start();
+            ((IJavaScriptExecutor)_driver).ExecuteScript("sauce:job-name=" + TestContext.TestName);
+
             var capabilities = ((RemoteWebDriver)_driver).Capabilities;
             capabilities.GetCapability("browserName").Should().Be("Safari");
         }

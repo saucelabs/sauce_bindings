@@ -4,7 +4,9 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Safari;
+
 // ReSharper disable InconsistentNaming
 
 namespace Simple.Sauce
@@ -12,20 +14,86 @@ namespace Simple.Sauce
     public class SauceOptions
     {
         private const string DEFAULT_BROWSER_VERSION = "latest";
+
         private const string DEFAULT_PLATFORM = "Windows 10";
+
+        //TODO not fond of this name
+        public static List<string> W3CAllowedOptionsList = new List<string>(new[]
+            {
+                "BrowserName",
+                "BrowserVersion",
+                "PlatformName",
+                "PageLoadStrategy",
+                "AcceptInsecureCerts",
+                "Proxy",
+                "SetWindowRect",
+                "Timeouts",
+                "StrictFileInteractability",
+                "UnhandledPromptBehavior"
+            }
+        );
+
+        private static readonly List<string> _sauceAllowedOptions = new List<string>(new[]
+            {
+                "AvoidProxy",
+                "Build",
+                "CapturePerformance",
+                "ChromedriverVersion",
+                "CommandTimeout",
+                "CustomData",
+                "ExtendedDebugging",
+                "IdleTimeout",
+                "IedriverVersion",
+                "MaxDuration",
+                "Name",
+                "ParentTunnel",
+                "Prerun",
+                "Priority",
+                // public, do not use, reserved keyword, using jobVisibility
+                "RecordLogs",
+                "RecordScreenshots",
+                "RecordVideo",
+                "ScreenResolution",
+                "SeleniumVersion",
+                "Tags",
+                "TimeZone",
+                "TunnelIdentifier",
+                "VideoUploadOnPass"
+            }
+        );
+
+        //TODO could probably store this into an enum
+        private readonly Dictionary<string, string> knownCITools = new Dictionary<string, string>
+        {
+            {"Jenkins", "BUILD_TAG"},
+            {"Bamboo", "bamboo_agentId"},
+            {"Travis", "TRAVIS_JOB_ID"},
+            {"Circle", "CIRCLE_JOB"},
+            {"GitLab", "CI"},
+            {"TeamCity", "TEAMCITY_PROJECT_NAME"},
+            {"ADO", "NEEDS_DEFINITION"}
+        };
+
+        private string _buildName;
 
         public SauceOptions()
         {
-            WithChrome();
             Timeout = new Timeout();
         }
 
-        public EdgeOptions ConfiguredEdgeOptions { get; set; } = new EdgeOptions();
-        public ChromeOptions ConfiguredChromeOptions { get; private set; } = new ChromeOptions();
+        public SauceOptions(DriverOptions options)
+        {
+            SeleniumOptions = options;
+            Timeout = new Timeout();
+            if (options.BrowserName != null) BrowserName = ToBrowserEnum(options.BrowserName);
+        }
+
+        public ChromeOptions ConfiguredChromeOptions { get; } = new ChromeOptions();
         public SafariOptions ConfiguredSafariOptions { get; set; } = new SafariOptions();
+
         public FirefoxOptions ConfiguredFirefoxOptions { get; set; } = new FirefoxOptions();
-        public Browser BrowserName { get; set; } = Browser.Chrome;
-        public String BrowserVersion { get; set; } = DEFAULT_BROWSER_VERSION;
+
+        public string BrowserVersion { get; set; } = DEFAULT_BROWSER_VERSION;
         public Platforms PlatformName { get; set; } = Platforms.Windows10;
         public PageLoadStrategy PageLoadStrategy { get; set; }
         public bool AcceptInsecureCerts { get; set; }
@@ -36,10 +104,36 @@ namespace Simple.Sauce
         public bool StrictFileInteractability { get; set; }
         public UnhandledPromptBehavior UnhandledPromptBehavior { get; set; }
         public bool AvoidProxy { get; set; }
-        public string BuildName { get; set; }
+
+        public string BuildName
+        {
+            get
+            {
+                if (_buildName != null)
+                    return _buildName;
+                if (GetEnvironmentVariable(knownCITools["Jenkins"]) != null)
+                    return GetEnvironmentVariable("BUILD_NAME") + ": " + GetEnvironmentVariable("BUILD_NUMBER");
+                if (GetEnvironmentVariable(knownCITools["Bamboo"]) != null)
+                    return GetEnvironmentVariable("bamboo_shortJobName") + ": " +
+                           GetEnvironmentVariable("bamboo_buildNumber");
+                if (GetEnvironmentVariable(knownCITools["Travis"]) != null)
+                    return GetEnvironmentVariable("TRAVIS_JOB_NAME") + ": " +
+                           GetEnvironmentVariable("TRAVIS_JOB_NUMBER");
+                if (GetEnvironmentVariable(knownCITools["Circle"]) != null)
+                    return GetEnvironmentVariable("CIRCLE_JOB") + ": " + GetEnvironmentVariable("CIRCLE_BUILD_NUM");
+                if (GetEnvironmentVariable(knownCITools["GitLab"]) != null)
+                    return GetEnvironmentVariable("CI_JOB_NAME") + ": " + GetEnvironmentVariable("CI_JOB_ID");
+                if (GetEnvironmentVariable(knownCITools["TeamCity"]) != null)
+                    return GetEnvironmentVariable("TEAMCITY_PROJECT_NAME") + ": " +
+                           GetEnvironmentVariable("BUILD_NUMBER");
+                return "Build Time: " + DateTime.Now;
+            }
+            set => _buildName = value;
+        }
+
         public bool CapturePerformance { get; set; }
         public string ChromedriverVersion { get; set; }
-        public Dictionary<string,string> CustomData { get; set; }
+        public Dictionary<string, string> CustomData { get; set; }
         public bool ExtendedDebugging { get; set; }
         public string IeDriverVersion { get; set; }
         public string TestName { get; set; }
@@ -56,19 +150,97 @@ namespace Simple.Sauce
         public string TimeZone { get; set; }
         public string TunnelIdentifier { get; set; }
         public bool VideoUploadOnPass { get; set; }
+        public DriverOptions SeleniumOptions { get; set; }
+        public Browser BrowserName { get; set; } = Browser.Chrome;
 
-        public void WithEdge()
+        public DriverOptions ToDriverOptions()
         {
-            WithEdge(EdgeVersion.Latest);
+            //TODO temporary solution to get the code working
+            var sauceConfiguration = new Dictionary<string, object>
+            {
+                ["username"] = Environment.GetEnvironmentVariable("SAUCE_USERNAME"),
+                ["accessKey"] = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY")
+            };
+            //TODO add if logic from the toCapabilities() in Java
+
+            SetDriverOptions();
+            W3CAllowedOptionsList.ForEach(AppendCapabilityToSeleniumOptions);
+
+            SeleniumOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
+            return SeleniumOptions;
         }
 
-        public void WithEdge(EdgeVersion edgeVersion)
+        private void SetDriverOptions()
         {
-            if (edgeVersion == null)
-                throw new ArgumentNullException("Please supply a valid EdgeVersion. You suplied an invalid value=>" +
-                                                edgeVersion);
-            ConfiguredEdgeOptions.BrowserVersion = edgeVersion.Value;
-            ConfiguredEdgeOptions.PlatformName = DEFAULT_PLATFORM;
+            if (BrowserName == Browser.Edge)
+                SeleniumOptions = new EdgeOptions();
+            else if (BrowserName == Browser.Firefox)
+                SeleniumOptions = new FirefoxOptions();
+            else if(BrowserName == Browser.Chrome)
+                SeleniumOptions = new ChromeOptions();
+            else if(BrowserName == Browser.IE)
+                SeleniumOptions = new InternetExplorerOptions();
+            else if(BrowserName == Browser.Safari)
+                SeleniumOptions = new SafariOptions();
+            else
+                throw new ArgumentOutOfRangeException("The desired browser configuration is not yet set.");
+        }
+
+        private void AppendCapabilityToSeleniumOptions(string capability)
+        {
+            var capabilityValue = TryToGetCapabilityValue(capability);
+            if (capabilityValue != null)
+            {
+                SeleniumOptions.AddAdditionalOption(capability, capabilityValue);
+            }
+        }
+
+        private object TryToGetCapabilityValue(string capability)
+        {
+            try
+            {
+                return GetType().GetProperty(capability)?.GetValue(this);
+            }
+            catch (NullReferenceException)
+            {
+                return null;
+            }
+
+            //PropertyInfo pinfo = typeof(SauceOptions).GetProperty(capability);
+            //return  pinfo.GetValue(YourInstantiatedObject, null);
+        }
+
+
+        protected string GetEnvironmentVariable(string key)
+        {
+            return Environment.GetEnvironmentVariable(key);
+        }
+
+        private Browser ToBrowserEnum(string browserName)
+        {
+            Browser browser;
+            switch (browserName)
+            {
+                case "chrome":
+                    browser = Browser.Chrome;
+                    break;
+                case "MicrosoftEdge":
+                    browser = Browser.Edge;
+                    break;
+                case "firefox":
+                    browser = Browser.Firefox;
+                    break;
+                case "safari":
+                    browser = Browser.Safari;
+                    break;
+                case "internet explorer":
+                    browser = Browser.IE;
+                    break;
+                default:
+                    throw new ArgumentException("No such browser exists.");
+            }
+
+            return browser;
         }
 
         public void WithChrome()

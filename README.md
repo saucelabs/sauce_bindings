@@ -6,7 +6,7 @@
 [![codecov](https://codecov.io/gh/saucelabs/sauce_bindings/branch/master/graph/badge.svg)](https://codecov.io/gh/saucelabs/sauce_bindings)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](https://github.com/sauce_bindings/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/sauce_bindings.svg)](http://isitmaintained.com/project/saucelabs/sauce_bindings "Average time to resolve an issue")
+
 
 ## The Idea - Making Sauce Simple To Use
 

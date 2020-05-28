@@ -1,7 +1,6 @@
 package com.saucelabs.saucebindings;
 
 import lombok.Getter;
-import org.openqa.selenium.JavascriptExecutor;
 import lombok.Setter;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.MutableCapabilities;
@@ -46,10 +45,6 @@ public class SauceSession {
         return new RemoteWebDriver(url, capabilities);
     }
 
-    protected JavascriptExecutor getJSExecutor() {
-        return driver;
-    }
-
     public void stop(Boolean passed) {
         String result = passed ? "passed" : "failed";
         stop(result);
@@ -61,15 +56,14 @@ public class SauceSession {
     }
 
     private void updateResult(String result) {
-        getJSExecutor().executeScript("sauce:job-result=" + result);
-
+        getDriver().executeScript("sauce:job-result=" + result);
         // Add output for the Sauce OnDemand Jenkins plugin
         // The first print statement will automatically populate links on Jenkins to Sauce
         // The second print statement will output the job link to logging/console
         if (this.driver != null) {
             String sauceReporter = String.format("SauceOnDemandSessionID=%s job-name=%s", this.driver.getSessionId(), this.sauceOptions.getName());
             String sauceTestLink = String.format("Test Job Link: https://app.saucelabs.com/tests/%s", this.driver.getSessionId());
-            System.out.print(sauceReporter + "\n" + sauceTestLink);
+            System.out.print(sauceReporter + "\n" + sauceTestLink + "\n");
         }
     }
 

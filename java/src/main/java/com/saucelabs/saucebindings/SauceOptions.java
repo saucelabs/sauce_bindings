@@ -1,10 +1,11 @@
 package com.saucelabs.saucebindings;
 
+import io.appium.java_client.android.AndroidOptions;
+import io.appium.java_client.ios.IOSOptions;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.AccessLevel;
 import lombok.experimental.Accessors;
-
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -24,11 +25,12 @@ import java.util.Map;
 @Setter @Getter
 public class SauceOptions {
     @Setter(AccessLevel.NONE) private MutableCapabilities seleniumCapabilities;
+
     public TimeoutStore timeout = new TimeoutStore();
 
     // w3c Settings
     private Browser browserName = Browser.CHROME;
-    private String browserVersion = "latest";
+    private String browserVersion;
     private SaucePlatform platformName = SaucePlatform.WINDOWS_10;
     private PageLoadStrategy pageLoadStrategy;
     private Boolean acceptInsecureCerts = null;
@@ -37,6 +39,11 @@ public class SauceOptions {
     @Getter(AccessLevel.NONE) private Map<Timeouts, Integer> timeouts;
     private Boolean strictFileInteractability = null;
     private UnhandledPromptBehavior unhandledPromptBehavior;
+
+    // Appium Settings
+    private String deviceName;
+    private String deviceOrientation;
+    private String platformVersion;
 
     // Sauce Settings
     private Boolean avoidProxy = null;
@@ -64,6 +71,7 @@ public class SauceOptions {
     private String timeZone;
     private String tunnelIdentifier;
     private Boolean videoUploadOnPass = null;
+    private String appiumVersion;
 
     public static final List<String> primaryEnum = List.of(
             "browserName",
@@ -92,6 +100,7 @@ public class SauceOptions {
             "unhandledPromptBehavior");
 
     public static final List<String> sauceDefinedOptions = List.of(
+            "appiumVersion",
             "avoidProxy",
             "build",
             "capturePerformance",
@@ -117,6 +126,11 @@ public class SauceOptions {
             "tunnelIdentifier",
             "videoUploadOnPass");
 
+    public static final List<String> appiumDefinedOptions = List.of(
+            "deviceName",
+            "platformVersion",
+            "deviceOrientation");
+
     public static final Map<String, String> knownCITools;
     static {
         knownCITools = new HashMap<>();
@@ -127,6 +141,85 @@ public class SauceOptions {
         knownCITools.put("GitLab", "CI");
         knownCITools.put("TeamCity", "TEAMCITY_PROJECT_NAME");
     }
+
+    public static SauceOptions chrome() {
+        ChromeOptions chromeOptions = new ChromeOptions();
+        return chrome(chromeOptions);
+    }
+
+    public static SauceOptions firefox() {
+        FirefoxOptions firefoxOptions = new FirefoxOptions();
+        return firefox(firefoxOptions);
+    }
+
+    public static SauceOptions ie() {
+        InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
+        return ie(internetExplorerOptions);
+    }
+
+    public static SauceOptions edge() {
+        EdgeOptions edgeOptions = new EdgeOptions();
+        return edge(edgeOptions);
+    }
+
+    public static SauceOptions safari() {
+        SafariOptions safariOptions = new SafariOptions();
+        return safari(safariOptions);
+    }
+
+    public static SauceOptions android() {
+        AndroidOptions androidOptions = new AndroidOptions();
+        return android(androidOptions);
+    }
+
+    public static SauceOptions ios() {
+        IOSOptions iosOptions = new IOSOptions();
+        return ios(iosOptions);
+    }
+
+    public static SauceOptions chrome(ChromeOptions options) {
+        return new SauceOptions(options);
+    }
+
+    public static SauceOptions firefox(FirefoxOptions options) {
+        return new SauceOptions(options);
+    }
+
+    public static SauceOptions ie(InternetExplorerOptions options) {
+        return new SauceOptions(options);
+    }
+
+    public static SauceOptions edge(EdgeOptions options) {
+        return new SauceOptions(options);
+    }
+
+    public static SauceOptions safari(SafariOptions options) {
+        SauceOptions sauceOptions = new SauceOptions(options);
+        sauceOptions.setPlatformName(SaucePlatform.MAC_MOJAVE);
+        return sauceOptions;
+    }
+
+    public static SauceOptions android(AndroidOptions options) {
+        SauceOptions sauceOptions = new SauceOptions(options);
+        sauceOptions.setPlatformName(SaucePlatform.ANDROID);
+        sauceOptions.setDeviceName("Android GoogleAPI Emulator");
+        sauceOptions.setPlatformVersion("8.1");
+
+        return sauceOptions;
+    }
+
+    public static SauceOptions ios(IOSOptions options) {
+        IOSOptions iosOptions = new IOSOptions();
+
+        SauceOptions sauceOptions = new SauceOptions(iosOptions);
+        sauceOptions.setPlatformName(SaucePlatform.IOS);
+        sauceOptions.setDeviceName("iPhone XS Simulator");
+        sauceOptions.setBrowserName(Browser.SAFARI);
+        sauceOptions.setPlatformVersion("13.2");
+
+        return sauceOptions;
+    }
+
 
     public SauceOptions() {
         this(new MutableCapabilities());
@@ -149,6 +242,14 @@ public class SauceOptions {
     }
 
     public SauceOptions(SafariOptions options) {
+        this(new MutableCapabilities(options));
+    }
+
+    public SauceOptions(IOSOptions options) {
+        this(new MutableCapabilities(options));
+    }
+
+    public SauceOptions(AndroidOptions options) {
         this(new MutableCapabilities(options));
     }
 
@@ -185,8 +286,19 @@ public class SauceOptions {
             addCapabilityIfDefined(sauceCapabilities, capability);
         });
 
+        appiumDefinedOptions.forEach((capability) -> {
+            addAppiumCapabilityIfDefined(seleniumCapabilities, capability);
+        });
+
         seleniumCapabilities.setCapability("sauce:options", sauceCapabilities);
         return seleniumCapabilities;
+    }
+
+    private void addAppiumCapabilityIfDefined(MutableCapabilities capabilities, String capability) {
+        Object value = getCapability(capability);
+        if (value != null) {
+            capabilities.setCapability("appium:" + capability, value);
+        }
     }
 
     private void addCapabilityIfDefined(MutableCapabilities capabilities, String capability) {

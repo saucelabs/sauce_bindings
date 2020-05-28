@@ -15,7 +15,9 @@ public enum SaucePlatform {
     MAC_HIGH_SIERRA("macOS 10.13"),
     MAC_SIERRA("macOS 10.12"),
     MAC_EL_CAPITAN("OS X 10.11"),
-    MAC_YOSEMITE("OS X 10.10");
+    MAC_YOSEMITE("OS X 10.10"),
+    ANDROID("android"),
+    IOS("IOS");
 
     @Getter
     private final String value;

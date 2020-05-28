@@ -33,10 +33,9 @@ public class SauceOptionsTest {
     public MockitoRule initRule = MockitoJUnit.rule();
 
     @Test
-    public void usesLatestChromeWindowsVersionsByDefault() {
+    public void usesChromeWindowsVersionsByDefault() {
         assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
         assertEquals(SaucePlatform.WINDOWS_10, sauceOptions.getPlatformName());
-        assertEquals("latest", sauceOptions.getBrowserVersion());
     }
 
     @Test
@@ -63,6 +62,7 @@ public class SauceOptionsTest {
 
     @Test
     public void acceptsOtherW3CValues() {
+        sauceOptions.setBrowserVersion("68");
         sauceOptions.setAcceptInsecureCerts(true);
         sauceOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
         sauceOptions.setSetWindowRect(true);
@@ -78,6 +78,7 @@ public class SauceOptionsTest {
         timeouts.put(Timeouts.PAGE_LOAD, 100);
         timeouts.put(Timeouts.SCRIPT, 10);
 
+        assertEquals("68", sauceOptions.getBrowserVersion());
         assertEquals(true, sauceOptions.getAcceptInsecureCerts());
         assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
         assertEquals(true, sauceOptions.getSetWindowRect());
@@ -422,7 +423,6 @@ public class SauceOptionsTest {
 
         MutableCapabilities expectedCapabilities = new MutableCapabilities();
         expectedCapabilities.setCapability("browserName", "chrome");
-        expectedCapabilities.setCapability("browserVersion", "latest");
         expectedCapabilities.setCapability("platformName", "Windows 10");
 
         expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
@@ -447,7 +447,6 @@ public class SauceOptionsTest {
 
         MutableCapabilities expectedCapabilities = new MutableCapabilities();
         expectedCapabilities.setCapability("browserName", "firefox");
-        expectedCapabilities.setCapability("browserVersion", "latest");
         expectedCapabilities.setCapability("platformName", "Windows 10");
         expectedCapabilities.merge(firefoxOptions);
 
@@ -476,9 +475,11 @@ public class SauceOptionsTest {
         doReturn("test-accesskey").when(sauceOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
 
         expectedCapabilities.merge(firefoxOptions);
-        expectedCapabilities.setCapability("browserVersion", "latest");
         expectedCapabilities.setCapability("platformName", "Windows 10");
         expectedCapabilities.setCapability("acceptInsecureCerts", true);
+
+        sauceOptions.setBrowserVersion("latest");
+        expectedCapabilities.setCapability("browserVersion", "latest");
 
         sauceOptions.setBuild("CUSTOM BUILD: 12");
         sauceCapabilities.setCapability("build", "CUSTOM BUILD: 12");

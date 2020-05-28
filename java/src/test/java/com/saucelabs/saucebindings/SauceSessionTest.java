@@ -27,24 +27,23 @@ public class SauceSessionTest {
 
     @Before
     public void setUp() {
-        doReturn(dummyRemoteDriver).when(sauceSession).createRemoteWebDriver(any(URL.class), any(MutableCapabilities.class));
+        doReturn(dummyRemoteDriver).when(sauceSession).createDriver(any(URL.class), any(MutableCapabilities.class));
     }
 
     @Test
-    public void sauceSessionDefaultsToLatestChromeOnWindows() {
+    public void sauceSessionDefaultsToChromeOnWindows() {
         Browser actualBrowser = sauceSession.getSauceOptions().getBrowserName();
         String actualBrowserVersion = sauceSession.getSauceOptions().getBrowserVersion();
         SaucePlatform actualPlatformName = sauceSession.getSauceOptions().getPlatformName();
 
         assertEquals(Browser.CHROME, actualBrowser);
         assertEquals(SaucePlatform.WINDOWS_10, actualPlatformName);
-        assertEquals("latest", actualBrowserVersion);
     }
 
     @Test
     public void sauceSessionUsesProvidedSauceOptions() {
         doReturn(dummyMutableCapabilities).when(sauceOptions).toCapabilities();
-        doReturn(dummyRemoteDriver).when(sauceOptsSession).createRemoteWebDriver(any(URL.class), eq(dummyMutableCapabilities));
+        doReturn(dummyRemoteDriver).when(sauceOptsSession).createDriver(any(URL.class), eq(dummyMutableCapabilities));
 
         sauceOptsSession.start();
 

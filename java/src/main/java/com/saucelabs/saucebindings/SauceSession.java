@@ -9,9 +9,9 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class SauceSession {
+public class SauceSession<T extends RemoteWebDriver>  {
     @Getter @Setter private DataCenter dataCenter = DataCenter.US_WEST;
-    @Getter private final SauceOptions sauceOptions;
+    @Getter @Setter protected SauceOptions sauceOptions;
     @Setter private URL sauceUrl;
 
     @Getter private RemoteWebDriver driver;
@@ -24,9 +24,9 @@ public class SauceSession {
         sauceOptions = options;
     }
 
-    public RemoteWebDriver start() {
-        driver = createRemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities());
-        return driver;
+    public T start() {
+        this.driver = createDriver(getSauceUrl(), sauceOptions.toCapabilities());
+        return (T) driver;
 	}
 
     public URL getSauceUrl() {
@@ -41,8 +41,8 @@ public class SauceSession {
         }
     }
 
-    protected RemoteWebDriver createRemoteWebDriver(URL url, MutableCapabilities capabilities) {
-        return new RemoteWebDriver(url, capabilities);
+    protected T createDriver(URL url, MutableCapabilities capabilities) {
+        return (T) new RemoteWebDriver(url, capabilities);
     }
 
     public void stop(Boolean passed) {
@@ -60,16 +60,16 @@ public class SauceSession {
         // Add output for the Sauce OnDemand Jenkins plugin
         // The first print statement will automatically populate links on Jenkins to Sauce
         // The second print statement will output the job link to logging/console
-        if (this.driver != null) {
-            String sauceReporter = String.format("SauceOnDemandSessionID=%s job-name=%s", this.driver.getSessionId(), this.sauceOptions.getName());
-            String sauceTestLink = String.format("Test Job Link: https://app.saucelabs.com/tests/%s", this.driver.getSessionId());
+        if (getDriver() != null) {
+            String sauceReporter = String.format("SauceOnDemandSessionID=%s job-name=%s", getDriver().getSessionId(), this.getSauceOptions().getName());
+            String sauceTestLink = String.format("Test Job Link: https://app.saucelabs.com/tests/%s", getDriver().getSessionId());
             System.out.print(sauceReporter + "\n" + sauceTestLink + "\n");
         }
     }
 
     private void stop() {
-        if(driver !=null) {
-            driver.quit();
+        if(getDriver() !=null) {
+            getDriver().quit();
         }
     }
 }

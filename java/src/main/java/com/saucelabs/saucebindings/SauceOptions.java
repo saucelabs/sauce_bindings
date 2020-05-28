@@ -1,10 +1,11 @@
 package com.saucelabs.saucebindings;
 
+import io.appium.java_client.android.AndroidOptions;
+import io.appium.java_client.ios.IOSOptions;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.AccessLevel;
 import lombok.experimental.Accessors;
-
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -24,11 +25,12 @@ import java.util.Map;
 @Setter @Getter
 public class SauceOptions {
     @Setter(AccessLevel.NONE) private MutableCapabilities seleniumCapabilities;
+
     public TimeoutStore timeout = new TimeoutStore();
 
     // w3c Settings
     private Browser browserName = Browser.CHROME;
-    private String browserVersion = "latest";
+    private String browserVersion;
     private SaucePlatform platformName = SaucePlatform.WINDOWS_10;
     private PageLoadStrategy pageLoadStrategy;
     private Boolean acceptInsecureCerts = null;
@@ -38,13 +40,27 @@ public class SauceOptions {
     private Boolean strictFileInteractability = null;
     private UnhandledPromptBehavior unhandledPromptBehavior;
 
+    // Defined in Appium
+    // These technically belong in Appium's IOSOptions & AndroidOptions
+    // but Sauce has always had them in its documentation, so it should handle them
+    private String app; // TODO - consider handling URL and auto-add "sauce-storage:"
+    private String appActivity; // Android only
+    private String appPackage; // Android only - TODO - Should this be an Array?
+    private Boolean autoAcceptAlerts; // iOS only
+    private SauceAutomationName automationName;
+    private String deviceName;
+    private DeviceOrientation deviceOrientation; // Similar to Selenium's ScreenOrientation
+    private String platformVersion;
+
     // Sauce Settings
+    private String appiumVersion;
     private Boolean avoidProxy = null;
     private String build;
     private Boolean capturePerformance = null;
     private String chromedriverVersion;
     private Integer commandTimeout = null;
     private Map<String, Object> customData = null;
+    private DeviceType deviceType; // Android Only for generic emulators
     private Boolean extendedDebugging = null;
     private Integer idleTimeout = null;
     private String iedriverVersion;
@@ -66,7 +82,10 @@ public class SauceOptions {
     private Boolean videoUploadOnPass = null;
 
     public static final List<String> primaryEnum = List.of(
+            "automationName",
             "browserName",
+            "deviceOrientation",
+            "deviceType",
             "jobVisibility",
             "pageLoadStrategy",
             "platformName",
@@ -91,13 +110,25 @@ public class SauceOptions {
             "strictFileInteractability",
             "unhandledPromptBehavior");
 
+    public static final List<String> appiumDefinedOptions = List.of(
+            "app",
+            "appActivity",
+            "appPackage",
+            "autoAcceptAlerts",
+            "automationName",
+            "deviceName",
+            "platformVersion",
+            "deviceOrientation");
+
     public static final List<String> sauceDefinedOptions = List.of(
+            "appiumVersion",
             "avoidProxy",
             "build",
             "capturePerformance",
             "chromedriverVersion",
             "commandTimeout",
             "customData",
+            "deviceType",
             "extendedDebugging",
             "idleTimeout",
             "iedriverVersion",
@@ -128,6 +159,83 @@ public class SauceOptions {
         knownCITools.put("TeamCity", "TEAMCITY_PROJECT_NAME");
     }
 
+    public static SauceOptions chrome() {
+        ChromeOptions chromeOptions = new ChromeOptions();
+        return chrome(chromeOptions);
+    }
+
+    public static SauceOptions firefox() {
+        FirefoxOptions firefoxOptions = new FirefoxOptions();
+        return firefox(firefoxOptions);
+    }
+
+    public static SauceOptions internetExplorer() {
+        InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
+        return internetExplorer(internetExplorerOptions);
+    }
+
+    public static SauceOptions edge() {
+        EdgeOptions edgeOptions = new EdgeOptions();
+        return edge(edgeOptions);
+    }
+
+    public static SauceOptions safari() {
+        SafariOptions safariOptions = new SafariOptions();
+        return safari(safariOptions);
+    }
+
+    public static SauceOptions android() {
+        AndroidOptions androidOptions = new AndroidOptions();
+        return android(androidOptions);
+    }
+
+    public static SauceOptions ios() {
+        IOSOptions iosOptions = new IOSOptions();
+        return ios(iosOptions);
+    }
+
+    public static SauceOptions chrome(ChromeOptions options) {
+        return new SauceOptions(options);
+    }
+
+    public static SauceOptions firefox(FirefoxOptions options) {
+        return new SauceOptions(options);
+    }
+
+    public static SauceOptions internetExplorer(InternetExplorerOptions options) {
+        return new SauceOptions(options);
+    }
+
+    public static SauceOptions edge(EdgeOptions options) {
+        return new SauceOptions(options);
+    }
+
+    public static SauceOptions safari(SafariOptions options) {
+        SauceOptions sauceOptions = new SauceOptions(options);
+        sauceOptions.setPlatformName(SaucePlatform.MAC_MOJAVE);
+        return sauceOptions;
+    }
+
+    public static SauceOptions android(AndroidOptions options) {
+        SauceOptions sauceOptions = new SauceOptions(options);
+        sauceOptions.setPlatformName(SaucePlatform.ANDROID);
+        sauceOptions.setDeviceName("Android GoogleAPI Emulator");
+        sauceOptions.setPlatformVersion("8.1");
+
+        return sauceOptions;
+    }
+
+    public static SauceOptions ios(IOSOptions options) {
+        SauceOptions sauceOptions = new SauceOptions(options);
+        sauceOptions.setPlatformName(SaucePlatform.IOS);
+        sauceOptions.setDeviceName("iPhone Simulator");
+        sauceOptions.setBrowserName(Browser.SAFARI);
+        sauceOptions.setPlatformVersion("13.2");
+
+        return sauceOptions;
+    }
+
+
     public SauceOptions() {
         this(new MutableCapabilities());
     }
@@ -149,6 +257,14 @@ public class SauceOptions {
     }
 
     public SauceOptions(SafariOptions options) {
+        this(new MutableCapabilities(options));
+    }
+
+    public SauceOptions(IOSOptions options) {
+        this(new MutableCapabilities(options));
+    }
+
+    public SauceOptions(AndroidOptions options) {
         this(new MutableCapabilities(options));
     }
 
@@ -185,8 +301,19 @@ public class SauceOptions {
             addCapabilityIfDefined(sauceCapabilities, capability);
         });
 
+        appiumDefinedOptions.forEach((capability) -> {
+            addAppiumCapabilityIfDefined(seleniumCapabilities, capability);
+        });
+
         seleniumCapabilities.setCapability("sauce:options", sauceCapabilities);
         return seleniumCapabilities;
+    }
+
+    private void addAppiumCapabilityIfDefined(MutableCapabilities capabilities, String capability) {
+        Object value = getCapability(capability);
+        if (value != null) {
+            capabilities.setCapability("appium:" + capability, value);
+        }
     }
 
     private void addCapabilityIfDefined(MutableCapabilities capabilities, String capability) {
@@ -211,6 +338,8 @@ public class SauceOptions {
             return getEnvironmentVariable("CI_JOB_NAME") + ": " + getEnvironmentVariable("CI_JOB_ID");
         } else if (getEnvironmentVariable(knownCITools.get("TeamCity")) != null) {
             return getEnvironmentVariable("TEAMCITY_PROJECT_NAME") + ": " + getEnvironmentVariable("BUILD_NUMBER");
+        } else if (getSystemProperty("BUILD_NAME") != null) {
+            return getSystemProperty("BUILD_NAME");
         } else {
             return "Build Time: " + System.currentTimeMillis();
         }
@@ -281,12 +410,38 @@ public class SauceOptions {
 
     private void setEnumCapability(String key, String value) {
         switch (key) {
+            case "automationName":
+                if (!SauceAutomationName.keys().contains(value)) {
+                    String message = value + " is not a valid SauceAutomationName, please choose from: " +
+                            SauceAutomationName.keys();
+                    throw new InvalidSauceOptionsArgumentException(message);
+                } else {
+                    setAutomationName(SauceAutomationName.valueOf(SauceAutomationName.fromString(value)));
+                }
+                break;
             case "browserName":
                 if (!Browser.keys().contains(value)) {
                     String message = value + " is not a valid Browser, please choose from: " + Browser.keys();
                     throw new InvalidSauceOptionsArgumentException(message);
                 } else {
                     setBrowserName(Browser.valueOf(Browser.fromString(value)));
+                }
+                break;
+            case "deviceOrientation":
+                if (!DeviceOrientation.keys().contains(value)) {
+                    String message = value + " is not a valid DeviceOrientation, please choose from: " +
+                            DeviceOrientation.keys();
+                    throw new InvalidSauceOptionsArgumentException(message);
+                } else {
+                    setDeviceOrientation(DeviceOrientation.valueOf(DeviceOrientation.fromString(value)));
+                }
+                break;
+            case "deviceType":
+                if (!DeviceType.keys().contains(value)) {
+                    String message = value + " is not a valid DeviceType, please choose from: " + DeviceType.keys();
+                    throw new InvalidSauceOptionsArgumentException(message);
+                } else {
+                    setDeviceType(DeviceType.valueOf(DeviceType.fromString(value)));
                 }
                 break;
             case "platformName":
@@ -299,7 +454,8 @@ public class SauceOptions {
                 break;
             case "jobVisibility":
                 if (!JobVisibility.keys().contains(value)) {
-                    String message = value + " is not a valid Job Visibility, please choose from: " + JobVisibility.keys();
+                    String message = value + " is not a valid Job Visibility, please choose from: " +
+                            JobVisibility.keys();
                     throw new InvalidSauceOptionsArgumentException(message);
                 } else {
                     setJobVisibility(JobVisibility.valueOf(JobVisibility.fromString(value)));
@@ -307,7 +463,8 @@ public class SauceOptions {
                 break;
             case "pageLoadStrategy":
                 if (!PageLoadStrategy.keys().contains(value)) {
-                    String message = value + " is not a valid Job Visibility, please choose from: " + PageLoadStrategy.keys();
+                    String message = value + " is not a valid Job Visibility, please choose from: " +
+                            PageLoadStrategy.keys();
                     throw new InvalidSauceOptionsArgumentException(message);
                 } else {
                     setPageLoadStrategy(PageLoadStrategy.valueOf(PageLoadStrategy.fromString(value)));
@@ -315,7 +472,8 @@ public class SauceOptions {
                 break;
             case "unhandledPromptBehavior":
                 if (!UnhandledPromptBehavior.keys().contains(value)) {
-                    String message = value + " is not a valid Job Visibility, please choose from: " + UnhandledPromptBehavior.keys();
+                    String message = value + " is not a valid Job Visibility, please choose from: " +
+                            UnhandledPromptBehavior.keys();
                     throw new InvalidSauceOptionsArgumentException(message);
                 } else {
                     setUnhandledPromptBehavior(UnhandledPromptBehavior.valueOf(UnhandledPromptBehavior.fromString(value)));

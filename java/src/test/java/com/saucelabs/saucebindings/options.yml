@@ -54,3 +54,15 @@ invalidOption:
   browserVersion: "70"
   platformName: "MacOS 10.12"
   recordScreenshots: false
+
+mobileValues:
+  app: "http://path.com/to/app"
+  appiumVersion: "1.17.0"
+  appActivity: ".MainActivity"
+  appPackage: "com.example.android.myApp, com.android.settings"
+  autoAcceptAlerts: true
+  automationName: "UiAutomator2"
+  deviceName: "Google Nexus 7 HD Emulator"
+  deviceOrientation: "landscape"
+  deviceType: "tablet"
+  platformVersion: "9.1"

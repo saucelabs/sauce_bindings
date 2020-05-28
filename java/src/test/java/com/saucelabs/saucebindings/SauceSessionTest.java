@@ -5,7 +5,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -14,18 +13,13 @@ import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class SauceSessionTest {
     private SauceOptions sauceOptions = spy(new SauceOptions());
     private SauceSession sauceSession = spy(new SauceSession());
     private SauceSession sauceOptsSession = spy(new SauceSession(sauceOptions));
     private RemoteWebDriver dummyRemoteDriver = mock(RemoteWebDriver.class);
-    private JavascriptExecutor dummyJSExecutor = mock(JavascriptExecutor.class);
     private MutableCapabilities dummyMutableCapabilities = mock(MutableCapabilities.class);
 
     @Rule
@@ -99,33 +93,29 @@ public class SauceSessionTest {
 
     @Test
     public void stopWithBooleanTrue() {
-        doReturn(dummyJSExecutor).when(sauceSession).getJSExecutor();
         sauceSession.start();
         sauceSession.stop(true);
-        verify(dummyJSExecutor).executeScript("sauce:job-result=passed");
+        verify(dummyRemoteDriver).executeScript("sauce:job-result=passed");
     }
 
     @Test
     public void stopWithBooleanFalse() {
-        doReturn(dummyJSExecutor).when(sauceSession).getJSExecutor();
         sauceSession.start();
         sauceSession.stop(false);
-        verify(dummyJSExecutor).executeScript("sauce:job-result=failed");
+        verify(dummyRemoteDriver).executeScript("sauce:job-result=failed");
     }
 
     @Test
     public void stopWithStringPassed() {
-        doReturn(dummyJSExecutor).when(sauceSession).getJSExecutor();
         sauceSession.start();
         sauceSession.stop("passed");
-        verify(dummyJSExecutor).executeScript("sauce:job-result=passed");
+        verify(dummyRemoteDriver).executeScript("sauce:job-result=passed");
     }
 
     @Test
     public void stopWithStringFailed() {
-        doReturn(dummyJSExecutor).when(sauceSession).getJSExecutor();
         sauceSession.start();
         sauceSession.stop("failed");
-        verify(dummyJSExecutor).executeScript("sauce:job-result=failed");
+        verify(dummyRemoteDriver).executeScript("sauce:job-result=failed");
     }
 }

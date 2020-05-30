@@ -33,10 +33,45 @@ public class SauceOptionsTest {
     public MockitoRule initRule = MockitoJUnit.rule();
 
     @Test
-    public void usesLatestChromeWindowsVersionsByDefault() {
+    public void staticChromeDefaultsToChrome(){
+        sauceOptions = SauceOptions.chrome();
+
+        assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
+    }
+
+    @Test
+    public void staticFirefoxDefaultsToFirefox(){
+        sauceOptions = SauceOptions.firefox();
+
+        assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
+    }
+
+    @Test
+    public void staticIEDefaultsToIE(){
+        sauceOptions = SauceOptions.internetExplorer();
+
+        assertEquals(Browser.INTERNET_EXPLORER, sauceOptions.getBrowserName());
+    }
+
+    @Test
+    public void staticEdgeDefaultsToEdge(){
+        sauceOptions = SauceOptions.edge();
+
+        assertEquals(Browser.EDGE, sauceOptions.getBrowserName());
+    }
+
+    @Test
+    public void staticSafariDefaultsToSafariMacLatest(){
+        sauceOptions = SauceOptions.safari();
+
+        assertEquals(Browser.SAFARI, sauceOptions.getBrowserName());
+        assertEquals(SaucePlatform.MAC_MOJAVE, sauceOptions.getPlatformName());
+    }
+
+    @Test
+    public void usesChromeWindowsVersionsByDefault() {
         assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
         assertEquals(SaucePlatform.WINDOWS_10, sauceOptions.getPlatformName());
-        assertEquals("latest", sauceOptions.getBrowserVersion());
     }
 
     @Test
@@ -63,6 +98,7 @@ public class SauceOptionsTest {
 
     @Test
     public void acceptsOtherW3CValues() {
+        sauceOptions.setBrowserVersion("68");
         sauceOptions.setAcceptInsecureCerts(true);
         sauceOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
         sauceOptions.setSetWindowRect(true);
@@ -78,6 +114,7 @@ public class SauceOptionsTest {
         timeouts.put(Timeouts.PAGE_LOAD, 100);
         timeouts.put(Timeouts.SCRIPT, 10);
 
+        assertEquals("68", sauceOptions.getBrowserVersion());
         assertEquals(true, sauceOptions.getAcceptInsecureCerts());
         assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
         assertEquals(true, sauceOptions.getSetWindowRect());
@@ -165,7 +202,7 @@ public class SauceOptionsTest {
         chromeOptions.addArguments("--foo");
         chromeOptions.setUnhandledPromptBehaviour(DISMISS);
 
-        sauceOptions = new SauceOptions(chromeOptions);
+        sauceOptions = SauceOptions.chrome(chromeOptions);
 
         assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
         assertEquals(chromeOptions, sauceOptions.getSeleniumCapabilities());
@@ -176,7 +213,7 @@ public class SauceOptionsTest {
         EdgeOptions edgeOptions = new EdgeOptions();
         edgeOptions.setPageLoadStrategy("eager");
 
-        sauceOptions = new SauceOptions(edgeOptions);
+        sauceOptions = SauceOptions.edge(edgeOptions);
 
         assertEquals(Browser.EDGE, sauceOptions.getBrowserName());
         assertEquals(edgeOptions, sauceOptions.getSeleniumCapabilities());
@@ -189,7 +226,7 @@ public class SauceOptionsTest {
         firefoxOptions.addPreference("foo", "bar");
         firefoxOptions.setUnhandledPromptBehaviour(DISMISS);
 
-        sauceOptions = new SauceOptions(firefoxOptions);
+        sauceOptions = SauceOptions.firefox(firefoxOptions);
 
         assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
         assertEquals(firefoxOptions, sauceOptions.getSeleniumCapabilities());
@@ -202,21 +239,22 @@ public class SauceOptionsTest {
         internetExplorerOptions.setPageLoadStrategy(org.openqa.selenium.PageLoadStrategy.EAGER);
         internetExplorerOptions.setUnhandledPromptBehaviour(DISMISS);
 
-        sauceOptions = new SauceOptions(internetExplorerOptions);
+        sauceOptions = SauceOptions.internetExplorer(internetExplorerOptions);
 
         assertEquals(Browser.INTERNET_EXPLORER, sauceOptions.getBrowserName());
         assertEquals(internetExplorerOptions, sauceOptions.getSeleniumCapabilities());
     }
 
     @Test
-    public void acceptsSafariOptionsClass() {
+    public void acceptsSafariOptionsClassSetsMacPlatform() {
         SafariOptions safariOptions = new SafariOptions();
         safariOptions.setAutomaticInspection(true);
         safariOptions.setAutomaticProfiling(true);
 
-        sauceOptions = new SauceOptions(safariOptions);
+        sauceOptions = SauceOptions.safari(safariOptions);
 
         assertEquals(Browser.SAFARI, sauceOptions.getBrowserName());
+        assertEquals(SaucePlatform.MAC_MOJAVE, sauceOptions.getPlatformName());
         assertEquals(safariOptions, sauceOptions.getSeleniumCapabilities());
     }
 
@@ -422,7 +460,6 @@ public class SauceOptionsTest {
 
         MutableCapabilities expectedCapabilities = new MutableCapabilities();
         expectedCapabilities.setCapability("browserName", "chrome");
-        expectedCapabilities.setCapability("browserVersion", "latest");
         expectedCapabilities.setCapability("platformName", "Windows 10");
 
         expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
@@ -447,7 +484,6 @@ public class SauceOptionsTest {
 
         MutableCapabilities expectedCapabilities = new MutableCapabilities();
         expectedCapabilities.setCapability("browserName", "firefox");
-        expectedCapabilities.setCapability("browserVersion", "latest");
         expectedCapabilities.setCapability("platformName", "Windows 10");
         expectedCapabilities.merge(firefoxOptions);
 
@@ -476,9 +512,11 @@ public class SauceOptionsTest {
         doReturn("test-accesskey").when(sauceOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
 
         expectedCapabilities.merge(firefoxOptions);
-        expectedCapabilities.setCapability("browserVersion", "latest");
         expectedCapabilities.setCapability("platformName", "Windows 10");
         expectedCapabilities.setCapability("acceptInsecureCerts", true);
+
+        sauceOptions.setBrowserVersion("latest");
+        expectedCapabilities.setCapability("browserVersion", "latest");
 
         sauceOptions.setBuild("CUSTOM BUILD: 12");
         sauceCapabilities.setCapability("build", "CUSTOM BUILD: 12");

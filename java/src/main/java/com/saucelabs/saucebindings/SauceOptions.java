@@ -239,7 +239,6 @@ public class SauceOptions {
         }
     }
 
-    // This might be made public in future version; For now, no good reason to prefer it over direct accessor
     public void setCapability(String key, Object value) {
         if (primaryEnum.contains(key) && value.getClass().equals(String.class)) {
             setEnumCapability(key, (String) value);

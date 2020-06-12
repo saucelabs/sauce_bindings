@@ -7,7 +7,14 @@ trigger:
 - master
 
 pool:
-  vmImage: 'macOS-latest'
+  vmImage: 'windows-latest'
+  branches:
+    include:
+    - master
+# This was meant to exclude DotnetFramework.Test from building, but I couldn't get it to work
+#  paths:
+#    exclude:
+#    - DotnetFramework.Test\DotnetFramework.Test.csproj
 
 variables:
   solution: '**/*.sln'
@@ -16,6 +23,9 @@ variables:
 
 #Excellent docs on .NET Core steps: https://docs.microsoft.com/en-us/azure/devops/pipelines/ecosystems/dotnet-core?view=azure-devops#feedback
 steps:
+- script: set
+  displayName: show all variables
+
 - task: DotNetCoreCLI@2
   displayName: Restore
   inputs:
@@ -33,6 +43,8 @@ steps:
 - powershell: |
    Write-Host "Our Sauce Username in ADO is=> $($env:SAUCE_USER)";
    Write-Host "Our Sauce Access Key in ADO is=> $($env:SAUCE_KEY)";
+   Write-Host "System.DefaultWorkingDirectory=>$(System.DefaultWorkingDirectory)"
+   Write-Host "Build.ArtifactStagingDirectory=>$(Build.ArtifactStagingDirectory)"
    Write-Host ("##vso[task.setvariable variable=SAUCE_USERNAME]$($env:SAUCE_USER)")
    Write-Host ("##vso[task.setvariable variable=SAUCE_ACCESS_KEY]$($env:SAUCE_KEY)")
 
@@ -42,3 +54,19 @@ steps:
     command: test
     projects: '**/*Test/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
+
+# Pack a NuGet package to a test directory
+- task: DotNetCoreCLI@2
+  displayName: 'Pack NuGet'
+  inputs: 
+    command: 'pack'
+    outputDir: '$(Build.ArtifactStagingDirectory)/TestDir'
+
+- task: NuGetCommand@2
+  displayName: publish
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranchName'], 'master'),eq(variables['Build.SourceBranchName'], 'develop')))
+  inputs:
+    command: push
+    nuGetFeedType: external
+    publishFeedCredentials: 'NuGet'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg'

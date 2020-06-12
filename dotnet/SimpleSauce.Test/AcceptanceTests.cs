@@ -40,17 +40,6 @@ namespace SauceBindings.Test
             capabilities.GetCapability("browserName").Should().Be("msedge");
         }
         [TestMethod]
-        [Ignore("Getting an infrastructure error")]
-        public void RunTestWithEdge15()
-        {
-            _sauceOptions = new SauceOptions();
-            _sauceOptions.WithEdge(EdgeVersion._15);
-            _session = new SauceSession(_sauceOptions);
-            _driver = _session.Start();
-            var capabilities = ((RemoteWebDriver)_driver).Capabilities;
-            capabilities.GetCapability("browserName").Should().Be("MicrosoftEdge");
-        }
-        [TestMethod]
         public void RunTestWithSafariDefault()
         {
             _sauceOptions = new SauceOptions();

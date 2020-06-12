@@ -19,7 +19,7 @@ namespace SauceBindings.Test
         {
             var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
             var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
-            var _sauceOptions = new Dictionary<string, object>
+            var sauceOptions = new Dictionary<string, object>
             {
                 ["username"] = sauceUserName,
                 ["accessKey"] = sauceAccessKey
@@ -30,10 +30,10 @@ namespace SauceBindings.Test
                 PlatformName = "Windows 10",
                 UseSpecCompliantProtocol = true
             };
-            chromeOptions.AddAdditionalOption("sauce:options", _sauceOptions);
+            chromeOptions.AddAdditionalOption("sauce:options", sauceOptions);
 
             var driver = new RemoteWebDriver(new Uri("https://ondemand.saucelabs.com/wd/hub"),
-                chromeOptions.ToCapabilities(), TimeSpan.FromSeconds(600));
+                chromeOptions.ToCapabilities(), TimeSpan.FromSeconds(30));
             driver.Navigate().GoToUrl("https://www.google.com");
             driver.SessionId.Should().NotBeNull();
 

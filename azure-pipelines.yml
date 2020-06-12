@@ -4,6 +4,10 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
   branches:
     include:
     - master
@@ -11,9 +15,6 @@ trigger:
 #  paths:
 #    exclude:
 #    - DotnetFramework.Test\DotnetFramework.Test.csproj
-
-pool:
-  vmImage: 'windows-latest'
 
 variables:
   solution: '**/*.sln'
@@ -37,7 +38,6 @@ steps:
     command: build
     projects: '**/*.csproj'
     arguments: '--configuration Release' # Update this to match your need
-
 
 #need to use the vso tasks so that the env variables persist trhough tasks in ADO
 - powershell: |

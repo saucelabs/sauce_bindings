@@ -1,12 +1,10 @@
-using System;
-using System.Reflection;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-using Simple.Sauce;
+using Sauce.Bindings;
 
-namespace SimpleSauce.Test
+namespace SauceBindings.Test
 {
     [TestClass]
     public class SauceSessionTests : BaseTest

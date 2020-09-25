@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
-namespace Simple.Sauce
+namespace Sauce.Bindings
 {
     public class Timeout
     {

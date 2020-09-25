@@ -1,9 +1,9 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium.Chrome;
-using Simple.Sauce;
+using Sauce.Bindings;
 
-namespace SimpleSauce.Test.Browsers
+namespace SauceBindings.Test.Browsers
 {
     [TestClass]
     public class ChromeTests : BaseTest

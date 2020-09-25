@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Simple.Sauce;
+using Sauce.Bindings;
 
-namespace SimpleSauce.Test.Browsers
+namespace SauceBindings.Test.Browsers
 {
     [TestClass]
     public class SafariTests : BaseTest

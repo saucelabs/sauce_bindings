@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
-namespace Simple.Sauce
+namespace Sauce.Bindings
 {
     public class SauceSession
     {

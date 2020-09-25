@@ -20,6 +20,10 @@ public class SauceVisualSession {
     public SauceVisualSession() {
     }
 
+    public SauceVisualSession(SauceVisualOptions sauceVisualOptions) {
+        visualOptions = sauceVisualOptions;
+    }
+
     public RemoteWebDriver start() {
         visualOptions = new SauceVisualOptions();
 //        visualOptions.setCapability("projectName", "visual-e2e-test");

@@ -5,6 +5,8 @@ import org.openqa.selenium.MutableCapabilities;
 
 public class SauceVisualOptions {
     private final MutableCapabilities visualCapabilities;
+    private String visualProjectName;
+    private String viewportSize;
 
     public SauceVisualOptions(){
         visualCapabilities = new MutableCapabilities();
@@ -29,5 +31,13 @@ public class SauceVisualOptions {
     }
     protected String getEnvironmentVariable(String key) {
         return System.getenv(key);
+    }
+
+    public void setProjectName(String projectName) {
+        visualProjectName = projectName;
+    }
+
+    public void setViewportSize(String viewport) {
+        viewportSize = viewport;
     }
 }

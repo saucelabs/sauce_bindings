@@ -1,5 +1,6 @@
 package com.saucelabs.saucebindings;
 
+import com.saucelabs.saucebindings.visual.SauceVisualOptions;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.AccessLevel;
@@ -359,5 +360,9 @@ public class SauceOptions {
 
     protected String getEnvironmentVariable(String key) {
         return System.getenv(key);
+    }
+
+    public void setVisualTesting(SauceVisualOptions visualOptions) {
+        seleniumCapabilities.setCapability("sauce:visual", visualOptions);
     }
 }

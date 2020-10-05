@@ -240,7 +240,6 @@ public class SauceOptions {
         }
     }
 
-    // This might be made public in future version; For now, no good reason to prefer it over direct accessor
     public void setCapability(String key, Object value) {
         if (primaryEnum.contains(key) && value.getClass().equals(String.class)) {
             setEnumCapability(key, (String) value);
@@ -283,44 +282,22 @@ public class SauceOptions {
     private void setEnumCapability(String key, String value) {
         switch (key) {
             case "browserName":
-                if (!Browser.keys().contains(value)) {
-                    String message = value + " is not a valid Browser, please choose from: " + Browser.keys();
-                    throw new InvalidSauceOptionsArgumentException(message);
-                } else {
-                    setBrowserName(Browser.valueOf(Browser.fromString(value)));
-                }
+                setBrowserName(Browser.valueOf(Browser.fromString(value)));
                 break;
             case "platformName":
-                if (!SaucePlatform.keys().contains(value)) {
-                    String message = value + " is not a valid Platform, please choose from: " + SaucePlatform.keys();
-                    throw new InvalidSauceOptionsArgumentException(message);
-                } else {
-                    setPlatformName(SaucePlatform.valueOf(SaucePlatform.fromString(value)));
-                }
+                setPlatformName(SaucePlatform.valueOf(SaucePlatform.fromString(value)));
                 break;
             case "jobVisibility":
-                if (!JobVisibility.keys().contains(value)) {
-                    String message = value + " is not a valid Job Visibility, please choose from: " + JobVisibility.keys();
-                    throw new InvalidSauceOptionsArgumentException(message);
-                } else {
-                    setJobVisibility(JobVisibility.valueOf(JobVisibility.fromString(value)));
-                }
+                setJobVisibility(JobVisibility.valueOf(JobVisibility.fromString(value)));
                 break;
             case "pageLoadStrategy":
-                if (!PageLoadStrategy.keys().contains(value)) {
-                    String message = value + " is not a valid Job Visibility, please choose from: " + PageLoadStrategy.keys();
-                    throw new InvalidSauceOptionsArgumentException(message);
-                } else {
-                    setPageLoadStrategy(PageLoadStrategy.valueOf(PageLoadStrategy.fromString(value)));
-                }
+                setPageLoadStrategy(PageLoadStrategy.valueOf(
+                        PageLoadStrategy.fromString(value)));
                 break;
             case "unhandledPromptBehavior":
-                if (!UnhandledPromptBehavior.keys().contains(value)) {
-                    String message = value + " is not a valid Job Visibility, please choose from: " + UnhandledPromptBehavior.keys();
-                    throw new InvalidSauceOptionsArgumentException(message);
-                } else {
-                    setUnhandledPromptBehavior(UnhandledPromptBehavior.valueOf(UnhandledPromptBehavior.fromString(value)));
-                }
+                setUnhandledPromptBehavior(
+                        UnhandledPromptBehavior.valueOf(
+                                UnhandledPromptBehavior.fromString(value)));
                 break;
             default:
                 break;

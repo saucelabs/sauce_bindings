@@ -515,13 +515,4 @@ public class SauceOptionsTest {
 
         assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
     }
-
-    @Test(expected = NullPointerException.class)
-    public void setEnumCapabilityWithInvalidKeysThrowsException() {
-        sauceOptions.setCapability("browserName", "FOO");
-        sauceOptions.setCapability("platformName", "FOO");
-        sauceOptions.setCapability("jobVisibility", "FOO");
-        sauceOptions.setCapability("pageLoadStrategy", "FOO");
-        sauceOptions.setCapability("unhandledPromptBehavior", "FOO");
-    }
 }

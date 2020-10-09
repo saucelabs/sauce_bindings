@@ -282,22 +282,44 @@ public class SauceOptions {
     private void setEnumCapability(String key, String value) {
         switch (key) {
             case "browserName":
-                setBrowserName(Browser.valueOf(Browser.fromString(value)));
+                if (!Browser.keys().contains(value)) {
+                    String message = value + " is not a valid Browser, please choose from: " + Browser.keys();
+                    throw new InvalidSauceOptionsArgumentException(message);
+                } else {
+                    setBrowserName(Browser.valueOf(Browser.fromString(value)));
+                }
                 break;
             case "platformName":
-                setPlatformName(SaucePlatform.valueOf(SaucePlatform.fromString(value)));
+                if (!SaucePlatform.keys().contains(value)) {
+                    String message = value + " is not a valid Platform, please choose from: " + SaucePlatform.keys();
+                    throw new InvalidSauceOptionsArgumentException(message);
+                } else {
+                    setPlatformName(SaucePlatform.valueOf(SaucePlatform.fromString(value)));
+                }
                 break;
             case "jobVisibility":
-                setJobVisibility(JobVisibility.valueOf(JobVisibility.fromString(value)));
+                if (!JobVisibility.keys().contains(value)) {
+                    String message = value + " is not a valid Job Visibility, please choose from: " + JobVisibility.keys();
+                    throw new InvalidSauceOptionsArgumentException(message);
+                } else {
+                    setJobVisibility(JobVisibility.valueOf(JobVisibility.fromString(value)));
+                }
                 break;
             case "pageLoadStrategy":
-                setPageLoadStrategy(PageLoadStrategy.valueOf(
-                        PageLoadStrategy.fromString(value)));
+                if (!PageLoadStrategy.keys().contains(value)) {
+                    String message = value + " is not a valid Job Visibility, please choose from: " + PageLoadStrategy.keys();
+                    throw new InvalidSauceOptionsArgumentException(message);
+                } else {
+                    setPageLoadStrategy(PageLoadStrategy.valueOf(PageLoadStrategy.fromString(value)));
+                }
                 break;
             case "unhandledPromptBehavior":
-                setUnhandledPromptBehavior(
-                        UnhandledPromptBehavior.valueOf(
-                                UnhandledPromptBehavior.fromString(value)));
+                if (!UnhandledPromptBehavior.keys().contains(value)) {
+                    String message = value + " is not a valid Job Visibility, please choose from: " + UnhandledPromptBehavior.keys();
+                    throw new InvalidSauceOptionsArgumentException(message);
+                } else {
+                    setUnhandledPromptBehavior(UnhandledPromptBehavior.valueOf(UnhandledPromptBehavior.fromString(value)));
+                }
                 break;
             default:
                 break;

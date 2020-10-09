@@ -1,10 +1,9 @@
 package com.saucelabs.saucebindings;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.AccessLevel;
 import lombok.experimental.Accessors;
-
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -20,6 +19,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Accessors(chain = true)
 @Setter @Getter
@@ -261,10 +261,12 @@ public class SauceOptions {
         return map.keySet().toArray()[0].getClass().equals(String.class);
     }
 
+    // this method is only used when setting capabilities from mergeCapabilities method
     private void setEnumCapability(String key, HashMap value) {
         if ("prerun".equals(key)) {
             Map<Prerun, Object> prerunMap = new HashMap<>();
             value.forEach((oldKey, val) -> {
+                enumValidator("Prerun", Prerun.keys(), (String) oldKey);
                 String keyString = Prerun.fromString((String) oldKey);
                 prerunMap.put(Prerun.valueOf(keyString), val);
             });
@@ -272,6 +274,7 @@ public class SauceOptions {
         } else if ("timeouts".equals(key)) {
             Map<Timeouts, Integer> timeoutsMap = new HashMap<>();
             value.forEach((oldKey, val) -> {
+                enumValidator("Timeouts", Timeouts.keys(), (String) oldKey);
                 String keyString = Timeouts.fromString((String) oldKey);
                 timeoutsMap.put(Timeouts.valueOf(keyString), (Integer) val);
             });
@@ -279,50 +282,38 @@ public class SauceOptions {
         }
     }
 
+    // this method is only used when setting capabilities from mergeCapabilities method
     private void setEnumCapability(String key, String value) {
         switch (key) {
             case "browserName":
-                if (!Browser.keys().contains(value)) {
-                    String message = value + " is not a valid Browser, please choose from: " + Browser.keys();
-                    throw new InvalidSauceOptionsArgumentException(message);
-                } else {
-                    setBrowserName(Browser.valueOf(Browser.fromString(value)));
-                }
+                enumValidator("Browser", Browser.keys(), value);
+                setBrowserName(Browser.valueOf(Browser.fromString(value)));
                 break;
             case "platformName":
-                if (!SaucePlatform.keys().contains(value)) {
-                    String message = value + " is not a valid Platform, please choose from: " + SaucePlatform.keys();
-                    throw new InvalidSauceOptionsArgumentException(message);
-                } else {
-                    setPlatformName(SaucePlatform.valueOf(SaucePlatform.fromString(value)));
-                }
+                enumValidator("SaucePlatform", SaucePlatform.keys(), value);
+                setPlatformName(SaucePlatform.valueOf(SaucePlatform.fromString(value)));
                 break;
             case "jobVisibility":
-                if (!JobVisibility.keys().contains(value)) {
-                    String message = value + " is not a valid Job Visibility, please choose from: " + JobVisibility.keys();
-                    throw new InvalidSauceOptionsArgumentException(message);
-                } else {
-                    setJobVisibility(JobVisibility.valueOf(JobVisibility.fromString(value)));
-                }
+                enumValidator("JobVisibility", JobVisibility.keys(), value);
+                setJobVisibility(JobVisibility.valueOf(JobVisibility.fromString(value)));
                 break;
             case "pageLoadStrategy":
-                if (!PageLoadStrategy.keys().contains(value)) {
-                    String message = value + " is not a valid Job Visibility, please choose from: " + PageLoadStrategy.keys();
-                    throw new InvalidSauceOptionsArgumentException(message);
-                } else {
-                    setPageLoadStrategy(PageLoadStrategy.valueOf(PageLoadStrategy.fromString(value)));
-                }
+                enumValidator("PageLoadStrategy", PageLoadStrategy.keys(), value);
+                setPageLoadStrategy(PageLoadStrategy.valueOf(PageLoadStrategy.fromString(value)));
                 break;
             case "unhandledPromptBehavior":
-                if (!UnhandledPromptBehavior.keys().contains(value)) {
-                    String message = value + " is not a valid Job Visibility, please choose from: " + UnhandledPromptBehavior.keys();
-                    throw new InvalidSauceOptionsArgumentException(message);
-                } else {
-                    setUnhandledPromptBehavior(UnhandledPromptBehavior.valueOf(UnhandledPromptBehavior.fromString(value)));
-                }
+                enumValidator("UnhandledPromptBehavior", UnhandledPromptBehavior.keys(), value);
+                setUnhandledPromptBehavior(UnhandledPromptBehavior.valueOf(UnhandledPromptBehavior.fromString(value)));
                 break;
             default:
                 break;
+        }
+    }
+
+    private void enumValidator(String name, Set values, String value) {
+        if (!values.contains(value)) {
+            String message = value + " is not a valid " + name + ", please choose from: " + values;
+            throw new InvalidSauceOptionsArgumentException(message);
         }
     }
 

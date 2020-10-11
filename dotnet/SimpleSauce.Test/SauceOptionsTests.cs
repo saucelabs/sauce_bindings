@@ -76,7 +76,7 @@ namespace SauceBindings.Test
                 Executable = "http://url.to/your/executable.exe",
                 Args = args,
                 Background = false,
-                Timeout = new TimeSpan(120)
+                Timeout = 120
             };
 
             var tags = new List<string> { "foo", "bar" };

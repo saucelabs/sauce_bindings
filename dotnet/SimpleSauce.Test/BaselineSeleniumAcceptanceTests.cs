@@ -13,8 +13,8 @@ namespace SauceBindings.Test
     [TestCategory("Acceptance")]
     public class BaselineSeleniumAcceptanceTests
     {
-        private TestContext TestContext { get; set; }
-        private RemoteWebDriver _driver { get; set; }
+        public TestContext TestContext { get; set; }
+        public RemoteWebDriver _driver { get; set; }
 
         [TestInitialize]
         public void Setup()

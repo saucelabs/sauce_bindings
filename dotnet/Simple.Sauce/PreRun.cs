@@ -17,13 +17,6 @@ namespace Sauce.Bindings
         public bool Background { get; set; }
 
         [JsonProperty("timeout")]
-        public TimeSpan Timeout { get; set; }
-
-        public Dictionary<string, int> ToDictionary()
-        {
-            var json = JsonConvert.SerializeObject(this, JsonUtils.SerializerSettings());
-            var dictionary = JsonConvert.DeserializeObject<Dictionary<string, int>>(json, JsonUtils.SerializerSettings());
-            return dictionary;
-        }
+        public int Timeout { get; set; }
     }
 }

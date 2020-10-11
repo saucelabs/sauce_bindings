@@ -99,9 +99,6 @@ namespace Sauce.Bindings
             if (CustomData != null)
                 sauceOptions.Add("custom-data", CustomData);
 
-            if (Prerun != null)
-                sauceOptions.Add("prerun", Prerun.ToDictionary());
-
             return sauceOptions;
         }
 

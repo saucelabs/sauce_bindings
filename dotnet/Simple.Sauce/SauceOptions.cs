@@ -108,7 +108,9 @@ namespace Sauce.Bindings
             ConfiguredOptions.PlatformName = platform;
         }
 
-        public SauceOptions WithChrome(string version = DEFAULT_BROWSER_VERSION, string platform = DEFAULT_PLATFORM)
+        public SauceOptions WithChrome() => WithChrome(DEFAULT_BROWSER_VERSION, DEFAULT_PLATFORM);
+        public SauceOptions WithChrome(string version) => WithChrome(version, DEFAULT_PLATFORM);
+        public SauceOptions WithChrome(string version, string platform)
         {
             ConfiguredOptions = new ChromeOptions();
             ConfigureOptions(version, platform);
@@ -127,14 +129,18 @@ namespace Sauce.Bindings
             return this;
         }
 
-        public SauceOptions WithFirefox(string version = DEFAULT_BROWSER_VERSION, string platform = DEFAULT_PLATFORM)
+        public SauceOptions WithFirefox() => WithFirefox(DEFAULT_BROWSER_VERSION, DEFAULT_PLATFORM);
+        public SauceOptions WithFirefox(string version) => WithFirefox(version, DEFAULT_PLATFORM);
+        public SauceOptions WithFirefox(string version, string platform)
         {
             ConfiguredOptions = new FirefoxOptions();
             ConfigureOptions(version, platform);
             return this;
         }
 
-        public SauceOptions WithSafari(string version = DEFAULT_BROWSER_VERSION)
+        public SauceOptions WithSafari() => WithSafari(DEFAULT_BROWSER_VERSION);
+
+        public SauceOptions WithSafari(string version)
         {
             var platform = MatchCorrectPlatformToBrowserVersion(version);
             ConfiguredOptions = new SafariOptions();

@@ -71,7 +71,7 @@ namespace SauceBindings.Test
 
             var args = new List<string> { "--silent", "-a", "-q" };
 
-            PreRun prerun = new PreRun()
+            PreRun prerun = new PreRun
             {
                 Executable = "http://url.to/your/executable.exe",
                 Args = args,

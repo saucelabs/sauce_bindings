@@ -38,7 +38,7 @@ namespace SauceBindings.Test
             chromeOptions.AddAdditionalOption("sauce:options", sauceOptions);
 
             _driver = new RemoteWebDriver(new Uri("https://ondemand.us-west-1.saucelabs.com/wd/hub"),
-                chromeOptions.ToCapabilities(), TimeSpan.FromSeconds(30)); ;
+                chromeOptions.ToCapabilities(), TimeSpan.FromSeconds(30));
         }
 
         [TestCleanup]

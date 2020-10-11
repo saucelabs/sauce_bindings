@@ -20,7 +20,7 @@ namespace SauceBindings.Test
         [TestMethod]
         public void PreRunTest()
         {
-            SauceOptions.Prerun = new PreRun()
+            SauceOptions.Prerun = new PreRun
             {
                 Executable = "http://url.to/your/executable.exe",
                 Args = new List<string> { "--silent", "-a", "-q" },

@@ -19,21 +19,23 @@ namespace SauceBindings.Test
         [TestMethod]
         public void UsesLatestChromeWindowsVersionsByDefault()
         {
-            SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.Chrome);
+            SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.Chrome.Value);
             SauceOptions.BrowserVersion.Should().Be("latest");
-            SauceOptions.PlatformName.Should().BeEquivalentTo(Platforms.Windows10);
+            SauceOptions.PlatformName.Should().BeEquivalentTo(Platforms.Windows10.Value);
         }
+
         [TestMethod]
-        public void UpdatesBrowserBrowserVersionPlatformVersion()
+        public void UpdatesBrowserAndBrowserVersionAndPlatformVersion()
         {
             SauceOptions.BrowserVersion = "68";
-            SauceOptions.BrowserName = Browser.Firefox;
-            SauceOptions.PlatformName = Platforms.MacOsHighSierra;
+            SauceOptions.BrowserName = Browser.Firefox.Value;
+            SauceOptions.PlatformName = Platforms.MacOsHighSierra.Value;
 
-            SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.Firefox);
+            SauceOptions.BrowserName.Should().BeEquivalentTo("firefox");
             SauceOptions.BrowserVersion.Should().Be("68");
-            SauceOptions.PlatformName.Should().BeEquivalentTo(Platforms.MacOsHighSierra);
+            SauceOptions.PlatformName.Should().BeEquivalentTo("macOS 10.13");
         }
+
         [TestMethod]
         public void AcceptsAllW3CValues()
         {
@@ -50,9 +52,8 @@ namespace SauceBindings.Test
             SauceOptions.UnhandledPromptBehavior = UnhandledPromptBehavior.Dismiss;
 
             var impl = new KeyValuePair<string, int>("implicit", 4);
-            var page = new KeyValuePair<string, int>("pageload", 44);
+            var page = new KeyValuePair<string, int>("pageLoad", 44);
             var script = new KeyValuePair<string, int>("script", 33);
-
 
             SauceOptions.AcceptInsecureCerts.Should().BeTrue();
             SauceOptions.PageLoadStrategy.Should().Be(PageLoadStrategy.Eager);
@@ -62,6 +63,7 @@ namespace SauceBindings.Test
             SauceOptions.StrictFileInteractability.Should().BeTrue();
             SauceOptions.UnhandledPromptBehavior.Should().Be(UnhandledPromptBehavior.Dismiss);
         }
+
         [TestMethod]
         public void AcceptsAllSauceLabsValues()
         {
@@ -69,12 +71,12 @@ namespace SauceBindings.Test
 
             var args = new List<string> { "--silent", "-a", "-q" };
 
-            var prerun = new Dictionary<string, object>
+            PreRun prerun = new PreRun()
             {
-                {"executable", "http://url.to/your/executable.exe"},
-                {"args", args},
-                {"background", false},
-                {"timeout", new TimeSpan(120)}
+                Executable = "http://url.to/your/executable.exe",
+                Args = args,
+                Background = false,
+                Timeout = new TimeSpan(120)
             };
 
             var tags = new List<string> { "foo", "bar" };

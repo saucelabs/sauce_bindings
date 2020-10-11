@@ -13,31 +13,35 @@ namespace SauceBindings.Test.Browsers
         {
             SauceOptions = new SauceOptions();
         }
+
         [TestMethod]
         public void WithChrome_SetsChromeOptions()
         {
             SauceOptions.WithChrome();
-            SauceOptions.ConfiguredChromeOptions.Should().NotBeNull();
-            SauceOptions.ConfiguredChromeOptions.Should().BeOfType(typeof(ChromeOptions));
+            SauceOptions.ConfiguredOptions.Should().NotBeNull();
+            SauceOptions.ConfiguredOptions.Should().BeOfType(typeof(ChromeOptions));
         }
+
         [TestMethod]
         public void WithChrome_DefaultBrowserVersion_Latest()
         {
             SauceOptions.WithChrome();
-            SauceOptions.ConfiguredChromeOptions.BrowserVersion.Should().Be("latest");
+            SauceOptions.ConfiguredOptions.BrowserVersion.Should().Be("latest");
         }
+
         [TestMethod]
         public void WithChrome_DefaultPlatform_Win10()
         {
             SauceOptions.WithChrome();
-            SauceOptions.ConfiguredChromeOptions.PlatformName.Should().Be("Windows 10");
+            SauceOptions.ConfiguredOptions.PlatformName.Should().Be(Platforms.Windows10.Value);
         }
+
         [TestMethod]
         public void WithChrome_VersionChanged_SetsVersion()
         {
             SauceOptions.WithChrome("72");
-            SauceOptions.ConfiguredChromeOptions.BrowserVersion.Should().
-                Be("72", "we set a specific chrome version and this version should be passed to ChromeOptions");
+            SauceOptions.ConfiguredOptions.BrowserVersion.Should().
+                Be("72", "We set a specific chrome version and this version should be passed to ChromeOptions.");
         }
     }
 }

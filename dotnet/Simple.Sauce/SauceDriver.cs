@@ -1,74 +1,70 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.DevTools.Debugger;
+using OpenQA.Selenium.Edge;
+using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Remote;
+using OpenQA.Selenium.Safari;
 
 namespace Sauce.Bindings
 {
     public class SauceDriver : ISauceRemoteDriver
     {
-        private IWebDriver _driver; 
-        public IWebDriver CreateRemoteWebDriver(DriverOptions browserOptions)
+        private IWebDriver _driver;
+
+        public IWebDriver CreateRemoteWebDriver(DriverOptions options)
         {
-            _driver = new RemoteWebDriver(new Uri("https://ondemand.saucelabs.com/wd/hub"),
-                browserOptions.ToCapabilities(), TimeSpan.FromSeconds(600));
+            return CreateRemoteWebDriver(DataCenter.UsWest, options);
+        }
+
+        public IWebDriver CreateRemoteWebDriver(DataCenter dataCenter, DriverOptions options)
+        {
+            _driver = new RemoteWebDriver(new Uri(dataCenter.Value),
+                options.ToCapabilities(), TimeSpan.FromSeconds(600));
+
             return _driver;
         }
 
         public object ExecuteScript(string script, params object[] args)
-        {
-            return ((IJavaScriptExecutor) _driver).ExecuteScript(script, args);
-        }
+            => ((IJavaScriptExecutor)_driver).ExecuteScript(script, args);
+
 
         public object ExecuteAsyncScript(string script, params object[] args)
-        {
-            throw new NotImplementedException();
-        }
+            => ((IJavaScriptExecutor)_driver).ExecuteAsyncScript(script, args);
 
-        public IWebElement FindElement(By @by)
-        {
-            throw new NotImplementedException();
-        }
+        public ReadOnlyCollection<IWebElement> FindElements(By by)
+                    => _driver.FindElements(by);
 
-        public ReadOnlyCollection<IWebElement> FindElements(By @by)
+        public IWebElement FindElement(By by) => _driver.FindElement(by);
+        public IOptions Manage() => _driver.Manage();
+        public INavigation Navigate() => _driver.Navigate();
+        public ITargetLocator SwitchTo() => _driver.SwitchTo();
+        public string Title => _driver.Title;
+        public string PageSource => _driver.PageSource;
+        public string CurrentWindowHandle => _driver.CurrentWindowHandle;
+        public ReadOnlyCollection<string> WindowHandles => _driver.WindowHandles;
+
+        public string Url
         {
-            throw new NotImplementedException();
+            get { return _driver.Url; }
+            set { _driver.Url = value; }
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _driver?.Dispose();
         }
 
         public void Close()
         {
-            throw new NotImplementedException();
+            _driver?.Close();
         }
 
         public void Quit()
         {
-            _driver.Quit();
+            _driver?.Quit();
         }
-
-        public IOptions Manage()
-        {
-            throw new NotImplementedException();
-        }
-
-        public INavigation Navigate()
-        {
-            throw new NotImplementedException();
-        }
-
-        public ITargetLocator SwitchTo()
-        {
-            throw new NotImplementedException();
-        }
-
-        public string Url { get; set; }
-        public string Title { get; }
-        public string PageSource { get; }
-        public string CurrentWindowHandle { get; }
-        public ReadOnlyCollection<string> WindowHandles { get; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
@@ -21,18 +22,18 @@ namespace Sauce.Bindings
             Timeout = new Timeout();
         }
 
-        public EdgeOptions ConfiguredEdgeOptions { get; set; } = new EdgeOptions();
-        public ChromeOptions ConfiguredChromeOptions { get; private set; } = new ChromeOptions();
-        public SafariOptions ConfiguredSafariOptions { get; set; } = new SafariOptions();
-        public FirefoxOptions ConfiguredFirefoxOptions { get; set; } = new FirefoxOptions();
-        public Browser BrowserName { get; set; } = Browser.Chrome;
-        public String BrowserVersion { get; set; } = DEFAULT_BROWSER_VERSION;
-        public Platforms PlatformName { get; set; } = Platforms.Windows10;
+        [JsonIgnore]
+        public DriverOptions ConfiguredOptions { get; set; }
+
+        [JsonIgnore]
+        public Timeout Timeout { get; set; }
+
+        public string BrowserName { get; set; } = Browser.Chrome.Value;
+        public string BrowserVersion { get; set; } = DEFAULT_BROWSER_VERSION;
+        public string PlatformName { get; set; } = Platforms.Windows10.Value;
         public PageLoadStrategy PageLoadStrategy { get; set; }
         public bool AcceptInsecureCerts { get; set; }
         public bool SetWindowRect { get; set; }
-        public Timeout Timeout { get; set; }
-
         public Proxy Proxy { get; set; }
         public bool StrictFileInteractability { get; set; }
         public UnhandledPromptBehavior UnhandledPromptBehavior { get; set; }
@@ -40,12 +41,15 @@ namespace Sauce.Bindings
         public string BuildName { get; set; }
         public bool CapturePerformance { get; set; }
         public string ChromedriverVersion { get; set; }
-        public Dictionary<string,string> CustomData { get; set; }
+        public Dictionary<string, string> CustomData { get; set; }
         public bool ExtendedDebugging { get; set; }
         public string IeDriverVersion { get; set; }
+
+        [JsonProperty("name")]
         public string TestName { get; set; }
         public string ParentTunnel { get; set; }
-        public Dictionary<string, object> Prerun { get; set; }
+        public string TunnelIdentifier { get; set; }
+        public PreRun Prerun { get; set; }
         public int Priority { get; set; }
         public TestVisibility TestVisibility { get; set; }
         public bool RecordLogs { get; set; }
@@ -55,83 +59,117 @@ namespace Sauce.Bindings
         public string SeleniumVersion { get; set; }
         public IList<string> Tags { get; set; }
         public string TimeZone { get; set; }
-        public string TunnelIdentifier { get; set; }
         public bool VideoUploadOnPass { get; set; }
 
-        public void WithEdge()
+        public Dictionary<string, object> ToDictionary()
         {
-            WithEdge(EdgeVersion.Latest);
+            var options = new Dictionary<string, object>();
+
+            var addAuth = AddAuthentication();
+            foreach (var option in addAuth)
+                options.Add(option.Key, option.Value);
+
+            var addOptions = AddOptions();
+            foreach (var option in addOptions)
+                options.Add(option.Key, option.Value);
+
+            return options;
         }
 
-        public void WithEdge(EdgeVersion edgeVersion)
+        private Dictionary<string, object> AddAuthentication()
         {
-            if (edgeVersion == null)
-                throw new ArgumentNullException("Please supply a valid EdgeVersion. You suplied an invalid value=>" +
+            var sauceUsername = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
+            var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
+
+            return new Dictionary<string, object>
+            {
+                ["username"] = sauceUsername,
+                ["accessKey"] = sauceAccessKey
+            };
+        }
+
+        private Dictionary<string, object> AddOptions()
+        {
+            var options = JsonConvert.SerializeObject(this, JsonUtils.SerializerSettings());
+            var sauceOptions = JsonConvert.DeserializeObject<Dictionary<string, object>>(options, JsonUtils.SerializerSettings());
+
+            foreach (var timeout in Timeout?.ToDictionary())
+                sauceOptions.Add(timeout.Key, timeout.Value);
+
+            if (CustomData != null)
+                sauceOptions.Add("custom-data", CustomData);
+
+            if (Prerun != null)
+                sauceOptions.Add("prerun", Prerun.ToDictionary());
+
+            return sauceOptions;
+        }
+
+        private void ConfigureOptions(string version = DEFAULT_BROWSER_VERSION, string platform = DEFAULT_PLATFORM)
+        {
+            ConfiguredOptions.BrowserVersion = version;
+            ConfiguredOptions.PlatformName = platform;
+        }
+
+        public SauceOptions WithChrome(string version = DEFAULT_BROWSER_VERSION, string platform = DEFAULT_PLATFORM)
+        {
+            ConfiguredOptions = new ChromeOptions();
+            ConfigureOptions(version, platform);
+            return this;
+        }
+
+        public SauceOptions WithEdge() => WithEdge(EdgeVersion.Latest);
+        public SauceOptions WithEdge(EdgeVersion edgeVersion)
+        {
+            if (edgeVersion is null)
+                throw new ArgumentNullException("Please supply a valid Edge Version. You supplied an invalid value => " +
                                                 edgeVersion);
-            ConfiguredEdgeOptions.BrowserVersion = edgeVersion.Value;
-            ConfiguredEdgeOptions.PlatformName = DEFAULT_PLATFORM;
+
+            ConfiguredOptions = new EdgeOptions();
+            ConfigureOptions(edgeVersion.Value);
+            return this;
         }
 
-        public void WithChrome()
+        public SauceOptions WithFirefox(string version = DEFAULT_BROWSER_VERSION, string platform = DEFAULT_PLATFORM)
         {
-            ConfiguredChromeOptions.BrowserVersion = DEFAULT_BROWSER_VERSION;
-            ConfiguredChromeOptions.PlatformName = DEFAULT_PLATFORM;
+            ConfiguredOptions = new FirefoxOptions();
+            ConfigureOptions(version, platform);
+            return this;
         }
 
-        public void WithChrome(string chromeVersion)
+        public SauceOptions WithSafari(string version = DEFAULT_BROWSER_VERSION)
         {
-            ConfiguredChromeOptions.BrowserVersion = chromeVersion;
+            var platform = MatchCorrectPlatformToBrowserVersion(version);
+            ConfiguredOptions = new SafariOptions();
+            ConfigureOptions(version, platform);
+            return this;
         }
 
-        public void WithSafari()
-        {
-            WithSafari(DEFAULT_BROWSER_VERSION);
-        }
-
-        public void WithSafari(string safariVersion)
-        {
-            ConfiguredSafariOptions.BrowserVersion = safariVersion;
-            ConfiguredSafariOptions.PlatformName = MatchCorrectPlatformToBrowserVersion(safariVersion);
-        }
-
-        public string MatchCorrectPlatformToBrowserVersion(string safariBrowserVersion)
+        private string MatchCorrectPlatformToBrowserVersion(string safariBrowserVersion)
         {
             switch (safariBrowserVersion)
             {
                 case "latest":
-                    return Platforms.MacOsMojave.Value;
+                case "15.0":
+                    return Platforms.MacOsCatalina.Value;
+                case "14.0":
                 case "12.0":
                     return Platforms.MacOsMojave.Value;
                 case "13.0":
-                    return Platforms.MacOsHighSierra.Value;
                 case "12.1":
-                    return Platforms.MacOsHighSierra.Value;
                 case "11.1":
                     return Platforms.MacOsHighSierra.Value;
                 case "11.0":
-                    return Platforms.MacOsSierra.Value;
                 case "10.1":
                     return Platforms.MacOsSierra.Value;
-                case "9.0":
-                    return Platforms.MacOsxElCapitan.Value;
                 case "10.0":
+                case "9.0":
                     return Platforms.MacOsxElCapitan.Value;
                 case "8.0":
                     return Platforms.MacOsxYosemite.Value;
                 default:
-                    throw new IncorrectSafariVersionException();
+                    throw new IncorrectSafariVersionException(safariBrowserVersion);
             }
-        }
-
-        public void WithFirefox()
-        {
-            WithFirefox(DEFAULT_BROWSER_VERSION);
-        }
-
-        public void WithFirefox(string version)
-        {
-            ConfiguredFirefoxOptions.BrowserVersion = version;
-            ConfiguredFirefoxOptions.PlatformName = DEFAULT_PLATFORM;
         }
     }
 }

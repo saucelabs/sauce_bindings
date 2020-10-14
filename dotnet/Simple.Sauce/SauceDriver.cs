@@ -7,17 +7,33 @@ namespace Sauce.Bindings
 {
     public class SauceDriver : ISauceRemoteDriver
     {
-        private IWebDriver _driver; 
-        public IWebDriver CreateRemoteWebDriver(DriverOptions browserOptions)
+        private IWebDriver _driver;
+
+        public IWebDriver CreateRemoteWebDriver(DriverOptions options)
         {
-            _driver = new RemoteWebDriver(new Uri("https://ondemand.saucelabs.com/wd/hub"),
-                browserOptions.ToCapabilities(), TimeSpan.FromSeconds(600));
+            return CreateRemoteWebDriver(DataCenter.UsWest, options, 600);
+        }
+
+        public IWebDriver CreateRemoteWebDriver(DriverOptions options, int commandTimeout)
+        {
+            return CreateRemoteWebDriver(DataCenter.UsWest, options, commandTimeout);
+        }
+
+        public IWebDriver CreateRemoteWebDriver(DataCenter dataCenter, DriverOptions options)
+        {
+            return CreateRemoteWebDriver(dataCenter, options, 600);
+        }
+
+        public IWebDriver CreateRemoteWebDriver(DataCenter dataCenter, DriverOptions options, int commandTimeout)
+        {
+            _driver = new RemoteWebDriver(new Uri(dataCenter.Value),
+                options.ToCapabilities(), TimeSpan.FromSeconds(commandTimeout));
             return _driver;
         }
 
         public object ExecuteScript(string script, params object[] args)
         {
-            return ((IJavaScriptExecutor) _driver).ExecuteScript(script, args);
+            return ((IJavaScriptExecutor)_driver).ExecuteScript(script, args);
         }
 
         public object ExecuteAsyncScript(string script, params object[] args)
@@ -37,7 +53,7 @@ namespace Sauce.Bindings
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _driver?.Dispose();
         }
 
         public void Close()

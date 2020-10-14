@@ -2,6 +2,10 @@
 {
     public enum TestVisibility
     {
-        Public
+        Public,
+        Restricted,
+        Share,
+        Team,
+        Private
     }
 }

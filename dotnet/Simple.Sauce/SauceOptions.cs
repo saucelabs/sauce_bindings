@@ -40,7 +40,7 @@ namespace Sauce.Bindings
         public string BuildName { get; set; }
         public bool CapturePerformance { get; set; }
         public string ChromedriverVersion { get; set; }
-        public Dictionary<string,string> CustomData { get; set; }
+        public Dictionary<string, string> CustomData { get; set; }
         public bool ExtendedDebugging { get; set; }
         public string IeDriverVersion { get; set; }
         public string TestName { get; set; }
@@ -94,32 +94,30 @@ namespace Sauce.Bindings
             ConfiguredSafariOptions.PlatformName = MatchCorrectPlatformToBrowserVersion(safariVersion);
         }
 
-        public string MatchCorrectPlatformToBrowserVersion(string safariBrowserVersion)
+        private string MatchCorrectPlatformToBrowserVersion(string safariBrowserVersion)
         {
             switch (safariBrowserVersion)
             {
                 case "latest":
-                    return Platforms.MacOsMojave.Value;
+                case "15.0":
+                    return Platforms.MacOsCatalina.Value;
+                case "14.0":
                 case "12.0":
                     return Platforms.MacOsMojave.Value;
                 case "13.0":
-                    return Platforms.MacOsHighSierra.Value;
                 case "12.1":
-                    return Platforms.MacOsHighSierra.Value;
                 case "11.1":
                     return Platforms.MacOsHighSierra.Value;
                 case "11.0":
-                    return Platforms.MacOsSierra.Value;
                 case "10.1":
                     return Platforms.MacOsSierra.Value;
-                case "9.0":
-                    return Platforms.MacOsxElCapitan.Value;
                 case "10.0":
+                case "9.0":
                     return Platforms.MacOsxElCapitan.Value;
                 case "8.0":
                     return Platforms.MacOsxYosemite.Value;
                 default:
-                    throw new IncorrectSafariVersionException();
+                    throw new IncorrectSafariVersionException(safariBrowserVersion);
             }
         }
 

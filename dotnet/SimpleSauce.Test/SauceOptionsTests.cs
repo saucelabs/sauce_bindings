@@ -50,7 +50,7 @@ namespace SauceBindings.Test
             SauceOptions.UnhandledPromptBehavior = UnhandledPromptBehavior.Dismiss;
 
             var impl = new KeyValuePair<string, int>("implicit", 4);
-            var page = new KeyValuePair<string, int>("pageload", 44);
+            var page = new KeyValuePair<string, int>("pageLoad", 44);
             var script = new KeyValuePair<string, int>("script", 33);
 
 

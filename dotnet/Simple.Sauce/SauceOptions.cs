@@ -39,7 +39,7 @@ namespace Sauce.Bindings
         public bool ExtendedDebugging { get; set; }
         public string ParentTunnel { get; set; }
         public string TunnelIdentifier { get; set; }
-        public Dictionary<string, object> Prerun { get; set; }
+        public Prerun Prerun { get; set; }
         public int Priority { get; set; }
         public TestVisibility TestVisibility { get; set; }
         public bool RecordLogs { get; set; }

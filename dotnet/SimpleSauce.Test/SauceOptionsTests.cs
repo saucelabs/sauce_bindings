@@ -67,14 +67,12 @@ namespace SauceBindings.Test
         {
             var customData = new Dictionary<string, string> { { "foo", "foo" }, { "bar", "bar" } };
 
-            var args = new List<string> { "--silent", "-a", "-q" };
-
-            var prerun = new Dictionary<string, object>
+            Prerun prerun = new Prerun
             {
-                {"executable", "http://url.to/your/executable.exe"},
-                {"args", args},
-                {"background", false},
-                {"timeout", new TimeSpan(120)}
+                Executable = "http://url.to/your/executable.exe",
+                Args = new List<string> { "--silent", "-a", "-q" },
+                Background = false,
+                Timeout = 120
             };
 
             var tags = new List<string> { "foo", "bar" };

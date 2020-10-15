@@ -22,7 +22,7 @@ namespace SauceBindings.Test
         }
 
         [TestMethod]
-        public void Start_Default_IsChrome()
+        public void ChromeIsDefaultBrowser()
         {
             _session = new SauceSession();
             _driver = _session.Start();
@@ -30,14 +30,17 @@ namespace SauceBindings.Test
             capabilities.GetCapability("browserName").Should().Be("chrome");
         }
         [TestMethod]
-        public void RunTestWithEdge()
+        public void RunTestWithFirefox()
         {
-            _sauceOptions = new SauceOptions();
-            _sauceOptions.WithEdge();
+            _sauceOptions = new SauceOptions
+            {
+                BrowserName = Browser.Firefox
+            };
             _session = new SauceSession(_sauceOptions);
             _driver = _session.Start();
+            ((IJavaScriptExecutor)_driver).ExecuteScript("sauce:job-name=" + TestContext.TestName);
             var capabilities = ((RemoteWebDriver)_driver).Capabilities;
-            capabilities.GetCapability("browserName").Should().Be("msedge");
+            capabilities.GetCapability("browserName").Should().Be("firefox");
         }
         [TestMethod]
         public void RunTestWithSafariDefault()

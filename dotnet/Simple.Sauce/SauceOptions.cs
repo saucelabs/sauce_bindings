@@ -17,9 +17,11 @@ namespace Sauce.Bindings
 
         public SauceOptions()
         {
-            WithChrome();
             Timeout = new Timeout();
         }
+
+
+        public DriverOptions SeleniumOptions { get; set; }
 
         public EdgeOptions ConfiguredEdgeOptions { get; set; } = new EdgeOptions();
         public ChromeOptions ConfiguredChromeOptions { get; private set; } = new ChromeOptions();

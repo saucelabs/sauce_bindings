@@ -28,10 +28,8 @@ namespace SauceBindings.Test
         public void UpdatesBrowserAndBrowserVersionAndPlatformVersion()
         {
             SauceOptions.ConfiguredOptions.BrowserVersion = "68";
-            //SauceOptions.BrowserName = Browser.Firefox.Value;
             SauceOptions.ConfiguredOptions.PlatformName = Platforms.MacOsHighSierra.Value;
 
-            //SauceOptions.ConfiguredOptions.BrowserName.Should().BeEquivalentTo("firefox");
             SauceOptions.ConfiguredOptions.BrowserVersion.Should().Be("68");
             SauceOptions.ConfiguredOptions.PlatformName.Should().BeEquivalentTo("macOS 10.13");
         }
@@ -84,12 +82,10 @@ namespace SauceBindings.Test
             SauceOptions.AvoidProxy = true;
             SauceOptions.BuildName = "Sample Build Name";
             SauceOptions.CapturePerformance = true;
-            //SauceOptions.ChromedriverVersion = "71";
             SauceOptions.Timeout.CommandTimeout = 2;
             SauceOptions.CustomData = customData;
             SauceOptions.ExtendedDebugging = true;
             SauceOptions.Timeout.IdleTimeout = 3;
-            //SauceOptions.IeDriverVersion = "3.141.0";
             SauceOptions.Timeout.MaxDuration = 300;
             SauceOptions.TestName = "Sample Test Name";
             SauceOptions.ParentTunnel = "Mommy";
@@ -109,12 +105,10 @@ namespace SauceBindings.Test
             SauceOptions.AvoidProxy.Should().BeTrue();
             SauceOptions.BuildName.Should().Be("Sample Build Name");
             SauceOptions.CapturePerformance.Should().BeTrue();
-            //SauceOptions.ChromedriverVersion.Should().Be("71");
             SauceOptions.Timeout.CommandTimeout.Should().Be(2);
             SauceOptions.CustomData.Should().BeEquivalentTo(customData);
             SauceOptions.ExtendedDebugging.Should().BeTrue();
             SauceOptions.Timeout.IdleTimeout.Should().Be(3);
-            //SauceOptions.IeDriverVersion.Should().Be("3.141.0");
             SauceOptions.Timeout.MaxDuration.Should().Be(300);
             SauceOptions.TestName.Should().Be("Sample Test Name");
             SauceOptions.ParentTunnel.Should().Be("Mommy");

@@ -133,7 +133,6 @@ namespace Sauce.Bindings
 
         public SauceOptions WithSafari(string version)
         {
-            var platform =
             ConfiguredOptions = new SafariOptions
             {
                 BrowserVersion = version,

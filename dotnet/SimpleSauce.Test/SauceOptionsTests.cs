@@ -19,49 +19,51 @@ namespace SauceBindings.Test
         [TestMethod]
         public void UsesLatestChromeWindowsVersionsByDefault()
         {
-            SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.Chrome);
-            SauceOptions.BrowserVersion.Should().Be("latest");
-            SauceOptions.PlatformName.Should().BeEquivalentTo(Platforms.Windows10);
+            SauceOptions.ConfiguredOptions.BrowserName.Should().BeEquivalentTo(Browser.Chrome.Value);
+            SauceOptions.ConfiguredOptions.BrowserVersion.Should().Be("latest");
+            SauceOptions.ConfiguredOptions.PlatformName.Should().BeEquivalentTo(Platforms.Windows10.Value);
         }
-        [TestMethod]
-        public void UpdatesBrowserBrowserVersionPlatformVersion()
-        {
-            SauceOptions.BrowserVersion = "68";
-            SauceOptions.BrowserName = Browser.Firefox;
-            SauceOptions.PlatformName = Platforms.MacOsHighSierra;
 
-            SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.Firefox);
-            SauceOptions.BrowserVersion.Should().Be("68");
-            SauceOptions.PlatformName.Should().BeEquivalentTo(Platforms.MacOsHighSierra);
+        [TestMethod]
+        public void UpdatesBrowserAndBrowserVersionAndPlatformVersion()
+        {
+            SauceOptions.ConfiguredOptions.BrowserVersion = "68";
+            //SauceOptions.BrowserName = Browser.Firefox.Value;
+            SauceOptions.ConfiguredOptions.PlatformName = Platforms.MacOsHighSierra.Value;
+
+            //SauceOptions.ConfiguredOptions.BrowserName.Should().BeEquivalentTo("firefox");
+            SauceOptions.ConfiguredOptions.BrowserVersion.Should().Be("68");
+            SauceOptions.ConfiguredOptions.PlatformName.Should().BeEquivalentTo("macOS 10.13");
         }
+
         [TestMethod]
         public void AcceptsAllW3CValues()
         {
-            SauceOptions.PageLoadStrategy = PageLoadStrategy.Eager;
-            SauceOptions.AcceptInsecureCerts = true;
+            SauceOptions.ConfiguredOptions.PageLoadStrategy = PageLoadStrategy.Eager;
+            SauceOptions.ConfiguredOptions.AcceptInsecureCertificates = true;
             SauceOptions.SetWindowRect = true;
             SauceOptions.Timeout.Implicit = 4;
             SauceOptions.Timeout.PageLoad = 44;
             SauceOptions.Timeout.Script = 33;
 
             var proxy = new Proxy();
-            SauceOptions.Proxy = proxy;
-            SauceOptions.StrictFileInteractability = true;
-            SauceOptions.UnhandledPromptBehavior = UnhandledPromptBehavior.Dismiss;
+            SauceOptions.ConfiguredOptions.Proxy = proxy;
+            SauceOptions.ConfiguredOptions.UseStrictFileInteractability = true;
+            SauceOptions.ConfiguredOptions.UnhandledPromptBehavior = UnhandledPromptBehavior.Dismiss;
 
             var impl = new KeyValuePair<string, int>("implicit", 4);
             var page = new KeyValuePair<string, int>("pageLoad", 44);
             var script = new KeyValuePair<string, int>("script", 33);
 
-
-            SauceOptions.AcceptInsecureCerts.Should().BeTrue();
-            SauceOptions.PageLoadStrategy.Should().Be(PageLoadStrategy.Eager);
-            SauceOptions.Proxy.Should().Be(proxy);
+            SauceOptions.ConfiguredOptions.AcceptInsecureCertificates.Should().BeTrue();
+            SauceOptions.ConfiguredOptions.PageLoadStrategy.Should().Be(PageLoadStrategy.Eager);
+            SauceOptions.ConfiguredOptions.Proxy.Should().Be(proxy);
             SauceOptions.SetWindowRect.Should().BeTrue();
             SauceOptions.Timeout.ToDictionary().Should().Contain(impl, page, script);
-            SauceOptions.StrictFileInteractability.Should().BeTrue();
-            SauceOptions.UnhandledPromptBehavior.Should().Be(UnhandledPromptBehavior.Dismiss);
+            SauceOptions.ConfiguredOptions.UseStrictFileInteractability.Should().BeTrue();
+            SauceOptions.ConfiguredOptions.UnhandledPromptBehavior.Should().Be(UnhandledPromptBehavior.Dismiss);
         }
+
         [TestMethod]
         public void AcceptsAllSauceLabsValues()
         {
@@ -82,12 +84,12 @@ namespace SauceBindings.Test
             SauceOptions.AvoidProxy = true;
             SauceOptions.BuildName = "Sample Build Name";
             SauceOptions.CapturePerformance = true;
-            SauceOptions.ChromedriverVersion = "71";
+            //SauceOptions.ChromedriverVersion = "71";
             SauceOptions.Timeout.CommandTimeout = 2;
             SauceOptions.CustomData = customData;
             SauceOptions.ExtendedDebugging = true;
             SauceOptions.Timeout.IdleTimeout = 3;
-            SauceOptions.IeDriverVersion = "3.141.0";
+            //SauceOptions.IeDriverVersion = "3.141.0";
             SauceOptions.Timeout.MaxDuration = 300;
             SauceOptions.TestName = "Sample Test Name";
             SauceOptions.ParentTunnel = "Mommy";
@@ -107,12 +109,12 @@ namespace SauceBindings.Test
             SauceOptions.AvoidProxy.Should().BeTrue();
             SauceOptions.BuildName.Should().Be("Sample Build Name");
             SauceOptions.CapturePerformance.Should().BeTrue();
-            SauceOptions.ChromedriverVersion.Should().Be("71");
+            //SauceOptions.ChromedriverVersion.Should().Be("71");
             SauceOptions.Timeout.CommandTimeout.Should().Be(2);
             SauceOptions.CustomData.Should().BeEquivalentTo(customData);
             SauceOptions.ExtendedDebugging.Should().BeTrue();
             SauceOptions.Timeout.IdleTimeout.Should().Be(3);
-            SauceOptions.IeDriverVersion.Should().Be("3.141.0");
+            //SauceOptions.IeDriverVersion.Should().Be("3.141.0");
             SauceOptions.Timeout.MaxDuration.Should().Be(300);
             SauceOptions.TestName.Should().Be("Sample Test Name");
             SauceOptions.ParentTunnel.Should().Be("Mommy");

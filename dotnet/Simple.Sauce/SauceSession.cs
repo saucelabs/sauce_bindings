@@ -2,115 +2,47 @@
 using System.Collections.Generic;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Edge;
+using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Safari;
 
 namespace Sauce.Bindings
 {
     public class SauceSession
     {
-        public SauceSession()
-        {
-            Driver = new SauceDriver();
-            Options = new SauceOptions();
-        }
-
-        public SauceSession(ISauceRemoteDriver driver)
-        {
-            Driver = driver;
-            Options = new SauceOptions();
-        }
-
-        public SauceSession(SauceOptions options)
-        {
-            Options = options;
-            Driver = new SauceDriver();
-        }
-
-        public SauceSession(SauceOptions options, ISauceRemoteDriver driver)
+        #region Constructors
+        public SauceSession() : this(new SauceOptions(), new SauceDriver(), DataCenter.UsWest) { }
+        public SauceSession(DataCenter dataCenter) : this(new SauceOptions(), new SauceDriver(), dataCenter) { }
+        public SauceSession(SauceOptions options) : this(options, new SauceDriver(), DataCenter.UsWest) { }
+        public SauceSession(ISauceRemoteDriver driver) : this(new SauceOptions(), driver, DataCenter.UsWest) { }
+        public SauceSession(SauceOptions options, DataCenter dataCenter) : this(options, new SauceDriver(), dataCenter) { }
+        public SauceSession(SauceOptions options, ISauceRemoteDriver driver) : this(options, driver, DataCenter.UsWest) { }
+        public SauceSession(ISauceRemoteDriver driver, DataCenter dataCenter) : this(new SauceOptions(), driver, dataCenter) { }
+        public SauceSession(SauceOptions options, ISauceRemoteDriver driver, DataCenter dataCenter)
         {
             Options = options;
             Driver = driver;
+            DataCenter = dataCenter;
         }
+        #endregion
 
-        public ChromeOptions ChromeOptions { get; private set; }
+        #region Properties
         public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
         public SauceOptions Options { get; }
-
         public ISauceRemoteDriver Driver { get; set; }
+        #endregion
 
         public IWebDriver Start()
         {
-            if (!string.IsNullOrEmpty(Options.ConfiguredEdgeOptions.BrowserVersion))
-                return CreateEdgeBrowser();
-            if (!string.IsNullOrEmpty(Options.ConfiguredSafariOptions.BrowserVersion))
-                return CreateSafariDriver();
-            if (!string.IsNullOrEmpty(Options.ConfiguredFirefoxOptions.BrowserVersion))
-                return CreateFirefoxDriver();
-            return CreateChromeDriver();
-        }
-
-        private IWebDriver CreateFirefoxDriver()
-        {
-            var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
-            var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
-            var sauceConfiguration = new Dictionary<string, object>
-            {
-                ["username"] = sauceUserName,
-                ["accessKey"] = sauceAccessKey
-            };
-
-            Options.ConfiguredFirefoxOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
-            return Driver.CreateRemoteWebDriver(Options.ConfiguredFirefoxOptions);
-        }
-
-        private IWebDriver CreateSafariDriver()
-        {
-            var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
-            var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
-            var sauceConfiguration = new Dictionary<string, object>
-            {
-                ["username"] = sauceUserName,
-                ["accessKey"] = sauceAccessKey
-            };
-
-            Options.ConfiguredSafariOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
-            return Driver.CreateRemoteWebDriver(Options.ConfiguredSafariOptions);
-        }
-
-        private IWebDriver CreateChromeDriver()
-        {
-            var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
-            var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
-            var sauceConfiguration = new Dictionary<string, object>
-            {
-                ["username"] = sauceUserName,
-                ["accessKey"] = sauceAccessKey
-            };
-
-            Options.ConfiguredChromeOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
-            return Driver.CreateRemoteWebDriver(Options.ConfiguredChromeOptions);
-        }
-
-        private IWebDriver CreateEdgeBrowser()
-        {
-            var sauceUserName = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
-            var sauceAccessKey = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
-            var sauceConfiguration = new Dictionary<string, object>
-            {
-                ["username"] = sauceUserName,
-                ["accessKey"] = sauceAccessKey
-            };
-
-            Options.ConfiguredEdgeOptions.AddAdditionalOption("sauce:options", sauceConfiguration);
-            return Driver.CreateRemoteWebDriver(Options.ConfiguredEdgeOptions);
+            Options.ConfiguredOptions.AddAdditionalOption("sauce:options", Options.ToDictionary());
+            return Driver.CreateRemoteWebDriver(DataCenter, Options.ConfiguredOptions);
         }
 
         public void Stop(bool isPassed)
         {
-            if (Driver is null)
-                return;
             var script = "sauce:job-result=" + (isPassed ? "passed" : "failed");
-            Driver.ExecuteScript(script);
-            Driver.Quit();
+            Driver?.ExecuteScript(script);
+            Driver?.Quit();
         }
     }
 }

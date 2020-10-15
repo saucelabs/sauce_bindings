@@ -31,17 +31,17 @@ namespace SauceBindings.Test.Browsers
         }
 
         [TestMethod]
-        public void WithSafari_DefaultPlatform_Mojave()
+        public void WithSafari_DefaultPlatform_Catalina()
         {
             SauceOptions.WithSafari();
-            SauceOptions.ConfiguredSafariOptions.PlatformName.Should().Be(Platforms.MacOsCatalina.Value);
+            SauceOptions.ConfiguredOptions.PlatformName.Should().Be(Platforms.MacOsCatalina.Value);
         }
 
         [TestMethod]
         public void WithSafari_DefaultBrowserVersion_latest()
         {
             SauceOptions.WithSafari();
-            SauceOptions.ConfiguredSafariOptions.BrowserVersion.Should().Be("latest");
+            SauceOptions.ConfiguredOptions.BrowserVersion.Should().Be("latest");
         }
 
         [TestMethod]
@@ -53,19 +53,11 @@ namespace SauceBindings.Test.Browsers
         }
 
         [TestMethod]
-        public void WithSafari_UpdatedVersion_SetsCorrectPlatform()
-        {
-            var expectedSafariVersion = "latest";
-            SauceOptions.WithSafari(expectedSafariVersion);
-            SauceOptions.ConfiguredSafariOptions.PlatformName.Should().Be(Platforms.MacOsCatalina.Value);
-        }
-
-        [TestMethod]
         [DynamicData(nameof(SafariAndMacConfigurations), typeof(SafariTests))]
-        public void WithSafari_SpecificVersion_SetsCorrectBrowser(string safariVersion, Platforms expectedPlatform)
+        public void WithSafari_SpecificVersion_SetsCorrectPlatform(string safariVersion, Platforms expectedPlatform)
         {
             SauceOptions.WithSafari(safariVersion);
-            SauceOptions.ConfiguredSafariOptions.PlatformName.Should().Be(expectedPlatform.Value);
+            SauceOptions.ConfiguredOptions.PlatformName.Should().Be(expectedPlatform.Value);
         }
     }
 }

@@ -13,30 +13,35 @@ namespace SauceBindings.Test.Browsers
         {
             SauceOptions = new SauceOptions();
         }
+
         [TestMethod]
         public void WithFirefox_SetsFirefoxOptions()
         {
             SauceOptions.WithFirefox();
-            SauceOptions.ConfiguredFirefoxOptions.Should().NotBeNull();
-            SauceOptions.ConfiguredFirefoxOptions.Should().BeOfType(typeof(FirefoxOptions));
+            SauceOptions.ConfiguredOptions.Should().NotBeNull();
+            SauceOptions.ConfiguredOptions.Should().BeOfType(typeof(FirefoxOptions));
         }
+
         [TestMethod]
         public void WithFirefox_DefaultBrowserVersion_Latest()
         {
             SauceOptions.WithFirefox();
-            SauceOptions.ConfiguredChromeOptions.BrowserVersion.Should().Be("latest");
+            SauceOptions.ConfiguredOptions.BrowserVersion.Should().Be("latest");
         }
+
         [TestMethod]
         public void WithFirefox_DefaultPlatform_Win10()
         {
             SauceOptions.WithFirefox();
-            SauceOptions.ConfiguredChromeOptions.PlatformName.Should().Be("Windows 10");
+            SauceOptions.ConfiguredOptions.PlatformName.Should().Be(Platforms.Windows10.Value);
         }
+
         [TestMethod]
         public void WithFirefox_VersionChanged_SetsVersion()
         {
             SauceOptions.WithFirefox("72");
-            SauceOptions.ConfiguredFirefoxOptions.BrowserVersion.Should().Be("72");
+            SauceOptions.ConfiguredOptions.BrowserVersion.Should().
+                Be("72", "We set a specific firefox version and this version should be passed to FirefoxOptions.");
         }
     }
 }

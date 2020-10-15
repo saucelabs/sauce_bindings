@@ -12,7 +12,8 @@ namespace SauceBindings.Test
         public void CreateRemoteWebDriver_WithEmptyChromeOptions_ThrowsException()
         {
             var browserOptions = new ChromeOptions();
-            var sauceDriver = new SauceDriver();
+            using var sauceDriver = new SauceDriver();
+
             Assert.ThrowsException<WebDriverException>(
                 () => sauceDriver.CreateRemoteWebDriver(browserOptions));
         }

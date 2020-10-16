@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using Sauce.Bindings;
+using System;
+using System.Collections.Generic;
 
 namespace SauceBindings.Test
 {

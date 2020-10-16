@@ -42,15 +42,5 @@ namespace SauceBindings.Test
             var capabilities = ((RemoteWebDriver)_driver).Capabilities;
             capabilities.GetCapability("browserName").Should().Be("firefox");
         }
-        [TestMethod]
-        public void RunTestWithSafariDefault()
-        {
-            _sauceOptions = new SauceOptions();
-            _sauceOptions.WithSafari();
-            _session = new SauceSession(_sauceOptions);
-            _driver = _session.Start();
-            var capabilities = ((RemoteWebDriver)_driver).Capabilities;
-            capabilities.GetCapability("browserName").Should().Be("Safari");
-        }
     }
 }

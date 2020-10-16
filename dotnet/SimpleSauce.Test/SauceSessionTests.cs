@@ -56,19 +56,6 @@ namespace SauceBindings.Test
             AssertUsernameAndAccessKeyExist(browserOptionsSetInSauce);
         }
         [TestMethod]
-        public void Start_WithEdge_SetsUsernameAndAccessKey()
-        {
-            SauceOptions = new SauceOptions();
-            SauceOptions.WithEdge();
-            SauceSession = new SauceSession(SauceOptions, _dummyDriver.Object);
-
-            SauceSession.Start();
-
-            var browserOptionsSetInSauceJson = SauceSession.Options.ConfiguredEdgeOptions.ToString();
-            var browserOptionsSetInSauce = DeserializeToObject(browserOptionsSetInSauceJson);
-            AssertUsernameAndAccessKeyExist(browserOptionsSetInSauce);
-        }
-        [TestMethod]
         public void Start_WithChrome_SetsUsernameAndAccessKey()
         {
             SauceOptions = new SauceOptions();

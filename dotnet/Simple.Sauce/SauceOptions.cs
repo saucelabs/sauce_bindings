@@ -19,7 +19,38 @@ namespace Sauce.Bindings
         {
             Timeout = new Timeout();
         }
+        public SauceOptions(DriverOptions options)
+        {
+            SeleniumOptions = options;
+            Timeout = new Timeout();
+            if (options.BrowserName != null) BrowserName = ToBrowserEnum(options.BrowserName);
+        }
+        private Browser ToBrowserEnum(string browserName)
+        {
+            Browser browser;
+            switch (browserName)
+            {
+                case "chrome":
+                    browser = Browser.Chrome;
+                    break;
+                case "MicrosoftEdge":
+                    browser = Browser.Edge;
+                    break;
+                case "firefox":
+                    browser = Browser.Firefox;
+                    break;
+                case "safari":
+                    browser = Browser.Safari;
+                    break;
+                case "internet explorer":
+                    browser = Browser.IE;
+                    break;
+                default:
+                    throw new ArgumentException("No such browser exists.");
+            }
 
+            return browser;
+        }
 
         public DriverOptions SeleniumOptions { get; set; }
 

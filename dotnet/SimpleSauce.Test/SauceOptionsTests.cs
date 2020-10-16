@@ -4,6 +4,11 @@ using OpenQA.Selenium;
 using Sauce.Bindings;
 using System;
 using System.Collections.Generic;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Edge;
+using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.IE;
+using OpenQA.Selenium.Safari;
 
 namespace SauceBindings.Test
 {
@@ -34,6 +39,55 @@ namespace SauceBindings.Test
             SauceOptions.BrowserVersion.Should().Be("68");
             SauceOptions.PlatformName.Should().BeEquivalentTo(Platforms.MacOsHighSierra);
         }
+        [TestMethod]
+        public void AcceptsChromeOptionsClass()
+        {
+            var options = new ChromeOptions();
+            SauceOptions = new SauceOptions(options);
+
+            SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.Chrome);
+            SauceOptions.SeleniumOptions.Should().BeEquivalentTo(options);
+        }
+        [TestMethod]
+        public void AcceptsEdgeOptionsClass()
+        {
+            var options = new EdgeOptions();
+            SauceOptions = new SauceOptions(options);
+
+            SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.Edge);
+            SauceOptions.SeleniumOptions.Should().BeEquivalentTo(options);
+        }
+
+        [TestMethod]
+        public void AcceptsFirefoxOptionsClass()
+        {
+            var options = new FirefoxOptions();
+            SauceOptions = new SauceOptions(options);
+
+            SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.Firefox);
+            SauceOptions.SeleniumOptions.Should().BeEquivalentTo(options);
+        }
+
+        [TestMethod]
+        public void AcceptsInternetExplorerOptionsClass()
+        {
+            var options = new InternetExplorerOptions();
+            SauceOptions = new SauceOptions(options);
+
+            SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.IE);
+            SauceOptions.SeleniumOptions.Should().BeEquivalentTo(options);
+        }
+
+        [TestMethod]
+        public void AcceptsSafariOptionsClass()
+        {
+            var options = new SafariOptions();
+            SauceOptions = new SauceOptions(options);
+
+            SauceOptions.BrowserName.Should().BeEquivalentTo(Browser.Safari);
+            SauceOptions.SeleniumOptions.Should().BeEquivalentTo(options);
+        }
+
         [TestMethod]
         public void AcceptsAllW3CValues()
         {

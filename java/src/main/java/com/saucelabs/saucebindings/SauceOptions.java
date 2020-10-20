@@ -342,4 +342,8 @@ public class SauceOptions {
     public void setVisualTesting(SauceVisualOptions visualOptions) {
         seleniumCapabilities.setCapability("sauce:visual", visualOptions);
     }
+
+    public SauceOptions visual() {
+        //Set visual defaults
+    }
 }

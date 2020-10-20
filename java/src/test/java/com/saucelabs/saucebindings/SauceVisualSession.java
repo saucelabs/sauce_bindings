@@ -41,7 +41,6 @@ public class SauceVisualSession {
     }
 
     @Getter
-    @Setter
     private String hubUrl = "https://hub.screener.io/wd/hub";
 
     public URL getHubUrl() {

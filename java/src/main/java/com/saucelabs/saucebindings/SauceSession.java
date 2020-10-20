@@ -15,7 +15,6 @@ public class SauceSession {
     @Setter private URL sauceUrl;
 
     @Getter private RemoteWebDriver driver;
-
     public SauceSession() {
         this(new SauceOptions());
     }
@@ -25,6 +24,9 @@ public class SauceSession {
     }
 
     public RemoteWebDriver start() {
+        if(sauceOptions.getVisualCapabilities() != null){
+            return createRemoteWebDriver(getScreenerUrl(), sauceOptions.toCapabilities());
+        }
         driver = createRemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities());
         return driver;
 	}
@@ -40,6 +42,13 @@ public class SauceSession {
             }
         }
     }
+    public URL getScreenerUrl() {
+        try {
+            return new URL("https://hub.screener.io/wd/hub");
+        } catch (MalformedURLException e) {
+            throw new InvalidArgumentException("Invalid URL");
+        }
+}
 
     protected RemoteWebDriver createRemoteWebDriver(URL url, MutableCapabilities capabilities) {
         return new RemoteWebDriver(url, capabilities);
@@ -72,5 +81,4 @@ public class SauceSession {
             driver.quit();
         }
     }
-
 }

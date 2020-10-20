@@ -1,11 +1,9 @@
 package com.saucelabs.saucebindings;
 
-import com.saucelabs.saucebindings.visual.SauceVisualOptions;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.AccessLevel;
 import lombok.experimental.Accessors;
-
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -128,6 +126,8 @@ public class SauceOptions {
         knownCITools.put("GitLab", "CI");
         knownCITools.put("TeamCity", "TEAMCITY_PROJECT_NAME");
     }
+
+    public MutableCapabilities visualCapabilities = null;
 
     public SauceOptions() {
         this(new MutableCapabilities());
@@ -339,11 +339,26 @@ public class SauceOptions {
         return System.getenv(key);
     }
 
-    public void setVisualTesting(SauceVisualOptions visualOptions) {
-        seleniumCapabilities.setCapability("sauce:visual", visualOptions);
+    public SauceOptions visual() {
+        visualCapabilities = new MutableCapabilities();
+        //TODO this gets a bit interesting because in Screener, the projectName
+        //is typically tied to an app
+        visualCapabilities.setCapability("projectName", getBuild());
+        visualCapabilities.setCapability("apiKey", getScreenerApiKey());
+        seleniumCapabilities.setCapability("sauce:visual", visualCapabilities);
+        return this;
     }
 
-    public SauceOptions visual() {
-        //Set visual defaults
+    private String getScreenerApiKey() {
+        String key = "SCREENER_API_KEY";
+        if (getSystemProperty(key) != null) {
+            return getSystemProperty(key);
+        } else if (getEnvironmentVariable(key) != null) {
+            return getEnvironmentVariable(key);
+        } else {
+            throw new SauceEnvironmentVariablesNotSetException(
+                    "Screener Access Key was not set in your env variables." +
+                            "Please set " + key + " value.");
+        }
     }
 }

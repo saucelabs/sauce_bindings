@@ -7,6 +7,11 @@ import org.junit.After;
 import org.junit.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static org.junit.Assert.assertNotNull;
 
 public class VisualTests {
@@ -40,49 +45,42 @@ public class VisualTests {
         assertNotNull(session.getDriver());
     }
 
-//    @Test
-//    public void simpleTest() {
-//        SauceVisualSession visualSession = new SauceVisualSession();
-//        //Not sure if you always need to set test name,
-//        //but if we do then maybe we can just do start(testName);
-//        visualSession.start();
-//        visualSession.setTestName("Visual Test");
-//        visualSession.takeSnapshot("Snapshot name 1");
-//        Boolean isPassed = visualSession.stop();
-//        assertTrue(isPassed);
-//    }
+    @Test
+    public void settingUniqueOptions() throws OptionForVisualTestingOnlyException {
+        SauceOptions sauceOptions = new SauceOptions().visual();
+        //my biggest problem here is that these errors will only be caught at run time
+        // if someone tries to use them without setting .visual();
+        sauceOptions.setProjectName("App Name");
+        sauceOptions.setViewportSize("1280x1024");
 
-//    @Test
-//    public void withVisualOptions() {
-//        var visualOptions = new SauceVisualOptions();
-//        visualOptions.setProjectName("Sauce Bindings");
-//        visualOptions.setViewportSize("1280x1024");
-//
-//        SauceVisualSession visualSession = new SauceVisualSession(visualOptions);
-//        //Not sure if you always need to set test name,
-//        //but if we do then maybe we can just do start(testName);
-//        visualSession.start();
-//        visualSession.setTestName("Visual Test");
-//        visualSession.takeSnapshot("Snapshot name 1");
-//        Boolean isPassed = visualSession.stop();
-//        assertTrue(isPassed);
-//    }
+        //weird one
+        //sauceOptions.setBranch("testBranch");
 
-//    @Test
-//    public void withVisualOptions2() {
-//        SauceOptions sauceOptions = new SauceOptions().visual();
-//        sauceOptions.setProjectName("Sauce Bindings");
-//        sauceOptions.setViewportSize("1280x1024");
-//
-//        //if visual then set the test name
-//        sauceOptions.setName("Test name");
-//
-//        SauceSession sauceSession = new SauceSession(sauceOptions);
-//        //Not sure if you always need to set test name,
-//        //but if we do then maybe we can just do start(testName);
-//        RemoteWebDriver driver = sauceSession.start();
-//        sauceSession.takeSnapshot("Snapshot name 1");
-//        Boolean isPassed = sauceSession.stop();
-//        assertTrue(isPassed);
-//    }
+        Map<String, Object> diffOptions = new HashMap<>();
+        diffOptions.put("structure", true);
+        diffOptions.put("layout", true);
+        diffOptions.put("style", true);
+        diffOptions.put("content", true);
+        diffOptions.put("minLayoutPosition", 4);
+        diffOptions.put("minLayoutDimension", 10);
+
+        sauceOptions.setDiffOptions(diffOptions);
+
+        List<String> elementsToIgnore = new ArrayList<>();
+        elementsToIgnore.add("#foo");
+        elementsToIgnore.add(".bar");
+
+        sauceOptions.selectorsToIgnore(elementsToIgnore);
+        sauceOptions.failOnNewStates(true);
+        sauceOptions.alwaysAcceptBaseBranch(true);
+        //sauceOptions.disableBranchBaseline(true);
+        sauceOptions.scrollAndStitchScreenshots(true);
+        sauceOptions.disableCORS(true);
+
+        session = new SauceSession(sauceOptions);
+        webDriver = session.start();
+        webDriver.get("https://www.saucedemo.com/");
+        session.takeSnapshot("Snapshot name");
+        assertNotNull(session.getDriver());
+    }
 }

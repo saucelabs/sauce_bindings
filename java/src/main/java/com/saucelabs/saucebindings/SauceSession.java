@@ -3,6 +3,7 @@ package com.saucelabs.saucebindings;
 import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.InvalidArgumentException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -15,6 +16,10 @@ public class SauceSession {
     @Setter private URL sauceUrl;
 
     @Getter private RemoteWebDriver driver;
+    private JavascriptExecutor getJavascriptExecutor(){
+        return driver;
+    };
+
     public SauceSession() {
         this(new SauceOptions());
     }
@@ -26,6 +31,8 @@ public class SauceSession {
     public RemoteWebDriver start() {
         if(sauceOptions.getVisualCapabilities() != null){
             driver = createRemoteWebDriver(getScreenerUrl(), sauceOptions.toCapabilities());
+            getJavascriptExecutor().executeScript(
+                    "/*@visual.init*/", sauceOptions.getName());
             return driver;
         }
         driver = createRemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities());
@@ -72,7 +79,7 @@ public class SauceSession {
     }
 
     private void updateVisualResult() {
-        getDriver().executeScript("/*@visual.end*/");
+        getJavascriptExecutor().executeScript("/*@visual.end*/");
     }
 
     private void updateSauceResult(String result) {
@@ -91,5 +98,9 @@ public class SauceSession {
         if(driver !=null) {
             driver.quit();
         }
+    }
+
+    public void takeSnapshot(String snapshotName) {
+        getJavascriptExecutor().executeScript("/*@visual.snapshot*/", snapshotName);
     }
 }

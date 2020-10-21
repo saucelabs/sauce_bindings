@@ -368,4 +368,40 @@ public class SauceOptions {
         }
         visualCapabilities.setCapability("viewportSize", viewportSize);
     }
+
+    public void setProjectName(String projectName) {
+        visualCapabilities.setCapability("projectName", projectName);
+    }
+
+    public void setBranch(String branch) {
+        visualCapabilities.setCapability("branch", branch);
+    }
+
+    public void setDiffOptions(Map<String, Object> diffOptions) {
+        visualCapabilities.setCapability("diffOptions", diffOptions);
+    }
+
+    public void selectorsToIgnore(List<String> elementsToIgnore) {
+        visualCapabilities.setCapability("ignore", elementsToIgnore.toString());
+    }
+
+    public void failOnNewStates(boolean fail) {
+        visualCapabilities.setCapability("failOnNewStates", fail);
+    }
+
+    public void alwaysAcceptBaseBranch(boolean acceptBaseBranch) {
+        visualCapabilities.setCapability("failOnNewStates", acceptBaseBranch);
+    }
+
+    public void disableBranchBaseline(boolean disableBaseline) {
+        visualCapabilities.setCapability("disableBranchBaseline", disableBaseline);
+    }
+
+    public void scrollAndStitchScreenshots(boolean scrollAndStitch) {
+        visualCapabilities.setCapability("scrollAndStitchScreenshots", scrollAndStitch);
+    }
+
+    public void disableCORS(boolean disable) {
+        visualCapabilities.setCapability("scrollAndStitchScreenshots", disable);
+    }
 }

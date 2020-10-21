@@ -361,4 +361,11 @@ public class SauceOptions {
                             "Please set " + key + " value.");
         }
     }
+
+    public void setViewportSize(String viewportSize) throws OptionForVisualTestingOnlyException {
+        if(visualCapabilities == null){
+            throw new OptionForVisualTestingOnlyException();
+        }
+        visualCapabilities.setCapability("viewportSize", viewportSize);
+    }
 }

@@ -1,7 +1,9 @@
 package com.saucelabs.saucebindings.integration;
 
+import com.saucelabs.saucebindings.OptionForVisualTestingOnlyException;
 import com.saucelabs.saucebindings.SauceOptions;
 import com.saucelabs.saucebindings.SauceSession;
+import org.junit.After;
 import org.junit.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -9,21 +11,34 @@ import static org.junit.Assert.assertNotNull;
 
 public class VisualTests {
     private RemoteWebDriver webDriver;
+    private SauceSession session;
+
+    @After
+    public void cleanUp() {
+        session.stop(true);
+    }
 
     @Test
     public void defaultStart() {
         SauceOptions sauceOptions = new SauceOptions().visual();
-        SauceSession sauceSession = new SauceSession(sauceOptions);
-        webDriver = sauceSession.start();
-        assertNotNull(webDriver);
+        session = new SauceSession(sauceOptions);
+        session.start();
+        assertNotNull(session.getDriver());
     }
 
-//    @Test
-//    public void pointsToVisualHub() {
-//        SauceVisualSession visualSession = new SauceVisualSession();
-//        webDriver = visualSession.start();
-//        assertNotNull(visualSession.getHubUrl().toString().contains("hub.screener.io/wd/hub"));
-//    }
+    //TODO I don't like the fact that our tests will need to throw
+    //specific visual exceptions
+    @Test
+    public void settingCommonOptions() throws OptionForVisualTestingOnlyException {
+        SauceOptions sauceOptions = new SauceOptions().visual();
+        sauceOptions.setName("testName");
+        //my biggest problem here is that this error will only be caught at run time
+        sauceOptions.setViewportSize("1280x1024");
+
+        session = new SauceSession(sauceOptions);
+        webDriver = session.start();
+        assertNotNull(session.getDriver());
+    }
 
 //    @Test
 //    public void simpleTest() {

@@ -14,7 +14,7 @@ public enum JobVisibility {
     PRIVATE("private");
 
     @Getter
-    private String value;
+    private final String value;
 
     private static final class JobVisibilityLookup {
         private static final Map<String, String> lookup = new HashMap<String, String>();

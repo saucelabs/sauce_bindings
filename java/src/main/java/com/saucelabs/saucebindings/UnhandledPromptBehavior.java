@@ -14,7 +14,7 @@ public enum UnhandledPromptBehavior {
     IGNORE("ignore");
 
     @Getter
-    private String value;
+    private final String value;
 
     private static final class UnhandledPromptBehaviorLookup {
         private static final Map<String, String> lookup = new HashMap<String, String>();

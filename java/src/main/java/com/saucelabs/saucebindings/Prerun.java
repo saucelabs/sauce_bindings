@@ -13,7 +13,7 @@ public enum Prerun {
     TIMEOUT("timeout");
 
     @Getter
-    private String value;
+    private final String value;
 
     private static final class PrerunLookup {
         private static final Map<String, String> lookup = new HashMap<String, String>();

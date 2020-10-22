@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Safari;
+using System;
+using System.Collections.Generic;
 
 // ReSharper disable InconsistentNaming
 
@@ -17,9 +17,42 @@ namespace Sauce.Bindings
 
         public SauceOptions()
         {
-            WithChrome();
             Timeout = new Timeout();
         }
+        public SauceOptions(DriverOptions options)
+        {
+            SeleniumOptions = options;
+            Timeout = new Timeout();
+            if (options.BrowserName != null) BrowserName = ToBrowserEnum(options.BrowserName);
+        }
+        private Browser ToBrowserEnum(string browserName)
+        {
+            Browser browser;
+            switch (browserName)
+            {
+                case "chrome":
+                    browser = Browser.Chrome;
+                    break;
+                case "MicrosoftEdge":
+                    browser = Browser.Edge;
+                    break;
+                case "firefox":
+                    browser = Browser.Firefox;
+                    break;
+                case "safari":
+                    browser = Browser.Safari;
+                    break;
+                case "internet explorer":
+                    browser = Browser.IE;
+                    break;
+                default:
+                    throw new ArgumentException("No such browser exists.");
+            }
+
+            return browser;
+        }
+
+        public DriverOptions SeleniumOptions { get; set; }
 
         public EdgeOptions ConfiguredEdgeOptions { get; set; } = new EdgeOptions();
         public ChromeOptions ConfiguredChromeOptions { get; private set; } = new ChromeOptions();
@@ -40,7 +73,7 @@ namespace Sauce.Bindings
         public string BuildName { get; set; }
         public bool CapturePerformance { get; set; }
         public string ChromedriverVersion { get; set; }
-        public Dictionary<string,string> CustomData { get; set; }
+        public Dictionary<string, string> CustomData { get; set; }
         public bool ExtendedDebugging { get; set; }
         public string IeDriverVersion { get; set; }
         public string TestName { get; set; }

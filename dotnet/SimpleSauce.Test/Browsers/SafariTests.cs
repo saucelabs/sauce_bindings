@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sauce.Bindings;
+using System.Collections.Generic;
 
 namespace SauceBindings.Test.Browsers
 {

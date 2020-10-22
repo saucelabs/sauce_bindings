@@ -1,7 +1,6 @@
-﻿using System;
+﻿using OpenQA.Selenium;
+using System;
 using System.Collections.Generic;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 
 namespace Sauce.Bindings
 {
@@ -31,7 +30,6 @@ namespace Sauce.Bindings
             Driver = driver;
         }
 
-        public ChromeOptions ChromeOptions { get; private set; }
         public DataCenter DataCenter { get; set; } = DataCenter.UsWest;
         public SauceOptions Options { get; }
 
@@ -39,8 +37,8 @@ namespace Sauce.Bindings
 
         public IWebDriver Start()
         {
-            if (!string.IsNullOrEmpty(Options.ConfiguredEdgeOptions.BrowserVersion))
-                return CreateEdgeBrowser();
+            if (Options.BrowserName.Value == Browser.Firefox.Value)
+                return CreateFirefoxDriver();
             if (!string.IsNullOrEmpty(Options.ConfiguredSafariOptions.BrowserVersion))
                 return CreateSafariDriver();
             if (!string.IsNullOrEmpty(Options.ConfiguredFirefoxOptions.BrowserVersion))

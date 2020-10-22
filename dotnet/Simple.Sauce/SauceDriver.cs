@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
+using System;
+using System.Collections.ObjectModel;
 
 namespace Sauce.Bindings
 {
     public class SauceDriver : ISauceRemoteDriver
     {
-        private IWebDriver _driver; 
+        private IWebDriver _driver;
         public IWebDriver CreateRemoteWebDriver(DriverOptions browserOptions)
         {
             _driver = new RemoteWebDriver(new Uri("https://ondemand.saucelabs.com/wd/hub"),
@@ -17,7 +17,7 @@ namespace Sauce.Bindings
 
         public object ExecuteScript(string script, params object[] args)
         {
-            return ((IJavaScriptExecutor) _driver).ExecuteScript(script, args);
+            return ((IJavaScriptExecutor)_driver).ExecuteScript(script, args);
         }
 
         public object ExecuteAsyncScript(string script, params object[] args)

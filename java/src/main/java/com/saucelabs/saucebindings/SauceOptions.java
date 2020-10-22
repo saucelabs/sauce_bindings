@@ -15,6 +15,7 @@ import org.openqa.selenium.safari.SafariOptions;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +65,7 @@ public class SauceOptions {
     private String tunnelIdentifier;
     private Boolean videoUploadOnPass = null;
 
-    public static final List<String> primaryEnum = List.of(
+    public static final List<String> primaryEnum = Arrays.asList(
             "browserName",
             "jobVisibility",
             "pageLoadStrategy",
@@ -73,12 +74,12 @@ public class SauceOptions {
             "unhandledPromptBehavior"
     );
 
-    public static final List<String> secondaryEnum = List.of(
+    public static final List<String> secondaryEnum = Arrays.asList(
             "prerun",
             "timeouts"
     );
 
-    public static final List<String> w3cDefinedOptions = List.of(
+    public static final List<String> w3cDefinedOptions = Arrays.asList(
             "browserName",
             "browserVersion",
             "platformName",
@@ -90,7 +91,7 @@ public class SauceOptions {
             "strictFileInteractability",
             "unhandledPromptBehavior");
 
-    public static final List<String> sauceDefinedOptions = List.of(
+    public static final List<String> sauceDefinedOptions = Arrays.asList(
             "avoidProxy",
             "build",
             "capturePerformance",

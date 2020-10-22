@@ -2,23 +2,24 @@ package com.saucelabs.saucebindings;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class SauceSession {
     @Getter @Setter private DataCenter dataCenter = DataCenter.US_WEST;
     @Getter private final SauceOptions sauceOptions;
-    @Setter private URL sauceUrl;
 
     @Getter private RemoteWebDriver driver;
+    @Getter APIStrategy sauceAPIStrategy;
+    @Getter
+    private String sauceUrl;
+
     private JavascriptExecutor getJavascriptExecutor(){
         return driver;
-    };
+    }
 
     public SauceSession() {
         this(new SauceOptions());
@@ -26,38 +27,18 @@ public class SauceSession {
 
     public SauceSession(SauceOptions options) {
         sauceOptions = options;
+        if(sauceOptions.getVisualCapabilities() != null){
+            sauceAPIStrategy = new VisualTestingStrategy(sauceOptions);
+        }
+        else{
+            sauceAPIStrategy = new BrowserTestingStrategy(sauceOptions);
+        }
     }
 
     public RemoteWebDriver start() {
-        if(sauceOptions.getVisualCapabilities() != null){
-            driver = createRemoteWebDriver(getScreenerUrl(), sauceOptions.toCapabilities());
-            getJavascriptExecutor().executeScript(
-                    "/*@visual.init*/", sauceOptions.getName());
-            return driver;
-        }
-        driver = createRemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities());
+        driver = sauceAPIStrategy.createRemoteWebDriver();
         return driver;
 	}
-
-    public URL getSauceUrl() {
-        if (sauceUrl != null) {
-            return sauceUrl;
-        } else {
-            try {
-                return new URL(dataCenter.getValue());
-            } catch (MalformedURLException e) {
-                throw new InvalidArgumentException("Invalid URL");
-            }
-        }
-    }
-    public URL getScreenerUrl() {
-        try {
-            setSauceUrl(new URL("https://hub.screener.io/wd/hub"));
-            return sauceUrl;
-        } catch (MalformedURLException e) {
-            throw new InvalidArgumentException("Invalid URL");
-        }
-}
 
     protected RemoteWebDriver createRemoteWebDriver(URL url, MutableCapabilities capabilities) {
         return new RemoteWebDriver(url, capabilities);
@@ -102,5 +83,12 @@ public class SauceSession {
 
     public void takeSnapshot(String snapshotName) {
         getJavascriptExecutor().executeScript("/*@visual.snapshot*/", snapshotName);
+    }
+
+    public URL getSauceUrl() {
+        return sauceAPIStrategy.getSauceUrl();
+    }
+    public void setSauceUrl(URL url){
+        sauceUrl = sauceAPIStrategy.setSauceUrl(url);
     }
 }

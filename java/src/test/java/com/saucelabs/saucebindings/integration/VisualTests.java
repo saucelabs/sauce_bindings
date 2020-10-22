@@ -25,7 +25,7 @@ public class VisualTests {
 
     @Test
     public void defaultStart() {
-        SauceOptions sauceOptions = new SauceOptions().visual();
+        SauceOptions sauceOptions = new SauceOptions().visual("SauceBindings");
         session = new SauceSession(sauceOptions);
         session.start();
         assertNotNull(session.getDriver());
@@ -35,7 +35,7 @@ public class VisualTests {
     //specific visual exceptions
     @Test
     public void settingCommonOptions() throws OptionForVisualTestingOnlyException {
-        SauceOptions sauceOptions = new SauceOptions().visual();
+        SauceOptions sauceOptions = new SauceOptions().visual("SauceBindings");
         sauceOptions.setName("testName");
         //my biggest problem here is that this error will only be caught at run time
         sauceOptions.setViewportSize("1280x1024");
@@ -47,7 +47,7 @@ public class VisualTests {
 
     @Test
     public void settingUniqueOptions() throws OptionForVisualTestingOnlyException {
-        SauceOptions sauceOptions = new SauceOptions().visual();
+        SauceOptions sauceOptions = new SauceOptions().visual("SauceBindings");
         //my biggest problem here is that these errors will only be caught at run time
         // if someone tries to use them without setting .visual();
         sauceOptions.setProjectName("App Name");

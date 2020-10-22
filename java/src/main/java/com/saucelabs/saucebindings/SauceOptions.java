@@ -370,10 +370,6 @@ public class SauceOptions {
         visualCapabilities.setCapability("viewportSize", viewportSize);
     }
 
-    public void setProjectName(String projectName) {
-        visualCapabilities.setCapability("projectName", projectName);
-    }
-
     public void setBranch(String branch) {
         visualCapabilities.setCapability("branch", branch);
     }

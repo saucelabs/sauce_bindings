@@ -89,6 +89,6 @@ public class SauceSession {
         return sauceAPIStrategy.getSauceUrl();
     }
     public void setSauceUrl(URL url){
-        sauceUrl = sauceAPIStrategy.setSauceUrl(url);
+        sauceAPIStrategy.setSauceUrl(url);
     }
 }

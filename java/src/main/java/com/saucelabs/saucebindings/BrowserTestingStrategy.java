@@ -31,7 +31,7 @@ public class BrowserTestingStrategy implements APIStrategy {
     }
 
     @Override
-    public String setSauceUrl(URL url) {
+    public void setSauceUrl(URL url) {
         sauceUrl = url;
     }
 

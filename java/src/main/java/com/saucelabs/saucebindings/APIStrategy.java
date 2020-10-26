@@ -8,5 +8,5 @@ public interface APIStrategy {
     RemoteWebDriver createRemoteWebDriver();
     URL getSauceUrl();
 
-    String setSauceUrl(URL url);
+    void setSauceUrl(URL url);
 }

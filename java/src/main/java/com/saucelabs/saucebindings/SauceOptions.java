@@ -342,8 +342,6 @@ public class SauceOptions {
 
     public SauceOptions visual(String projectName) {
         visualCapabilities = new MutableCapabilities();
-        //TODO this gets a bit interesting because in Screener, the projectName
-        //is typically tied to an app
         visualCapabilities.setCapability("projectName", projectName);
         visualCapabilities.setCapability("apiKey", getScreenerApiKey());
         seleniumCapabilities.setCapability("sauce:visual", visualCapabilities);

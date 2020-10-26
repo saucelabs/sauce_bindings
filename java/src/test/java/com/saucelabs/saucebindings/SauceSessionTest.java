@@ -16,11 +16,11 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 public class SauceSessionTest {
-    private SauceOptions sauceOptions = spy(new SauceOptions());
-    private SauceSession sauceSession = spy(new SauceSession());
-    private SauceSession sauceOptsSession = spy(new SauceSession(sauceOptions));
-    private RemoteWebDriver dummyRemoteDriver = mock(RemoteWebDriver.class);
-    private MutableCapabilities dummyMutableCapabilities = mock(MutableCapabilities.class);
+    private final SauceOptions sauceOptions = spy(new SauceOptions());
+    private final SauceSession sauceSession = spy(new SauceSession());
+    private final SauceSession sauceOptsSession = spy(new SauceSession(sauceOptions));
+    private final RemoteWebDriver dummyRemoteDriver = mock(RemoteWebDriver.class);
+    private final MutableCapabilities dummyMutableCapabilities = mock(MutableCapabilities.class);
 
     @Rule
     public MockitoRule initRule = MockitoJUnit.rule();

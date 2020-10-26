@@ -12,7 +12,7 @@ public enum PageLoadStrategy {
     NORMAL("normal");
 
     @Getter
-    private String value;
+    private final String value;
 
     private static final class PageLoadStrategyLookup {
         private static final Map<String, String> lookup = new HashMap<String, String>();

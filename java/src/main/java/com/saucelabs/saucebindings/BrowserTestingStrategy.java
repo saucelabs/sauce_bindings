@@ -11,7 +11,7 @@ import java.net.URL;
 
 public class BrowserTestingStrategy implements APIStrategy {
     private final SauceOptions sauceOptions;
-    @Getter private RemoteWebDriver driver;
+    @Getter @Setter private RemoteWebDriver driver;
     @Getter
     @Setter private DataCenter dataCenter = DataCenter.US_WEST;
     private URL sauceUrl;
@@ -55,6 +55,7 @@ public class BrowserTestingStrategy implements APIStrategy {
 
     @Override
     public RemoteWebDriver createRemoteWebDriver() {
-        return new RemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities());
+        setDriver(new RemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities()));
+        return getDriver();
     }
 }

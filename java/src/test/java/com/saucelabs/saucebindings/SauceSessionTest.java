@@ -84,10 +84,9 @@ public class SauceSessionTest {
     }
 
     @Test
-    public void stopCallsDriverQuitPassing() {
+    public void stopCallsDriverQuit() {
         sauceSession.start();
         sauceSession.stop(true);
-
         verify(dummyRemoteDriver).quit();
     }
 

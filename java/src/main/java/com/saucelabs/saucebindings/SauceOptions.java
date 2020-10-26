@@ -363,10 +363,7 @@ public class SauceOptions {
         }
     }
 
-    public void setViewportSize(String viewportSize) throws OptionForVisualTestingOnlyException {
-        if(visualCapabilities == null){
-            throw new OptionForVisualTestingOnlyException();
-        }
+    public void setViewportSize(String viewportSize) {
         visualCapabilities.setCapability("viewportSize", viewportSize);
     }
 

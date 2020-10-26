@@ -1,6 +1,5 @@
 package com.saucelabs.saucebindings.integration;
 
-import com.saucelabs.saucebindings.OptionForVisualTestingOnlyException;
 import com.saucelabs.saucebindings.SauceOptions;
 import com.saucelabs.saucebindings.SauceSession;
 import org.junit.After;
@@ -35,7 +34,7 @@ public class VisualTests {
     //TODO I don't like the fact that our tests will need to throw
     //specific visual exceptions
     @Test
-    public void settingCommonOptions() throws OptionForVisualTestingOnlyException {
+    public void settingCommonOptions() {
         SauceOptions sauceOptions = new SauceOptions().visual(projectName);
         sauceOptions.setName("testName");
         //my biggest problem here is that this error will only be caught at run time
@@ -47,7 +46,7 @@ public class VisualTests {
     }
 
     @Test
-    public void settingUniqueOptions() throws OptionForVisualTestingOnlyException {
+    public void settingUniqueOptions() {
         SauceOptions sauceOptions = new SauceOptions().visual(projectName);
         //my biggest problem here is that these errors will only be caught at run time
         // if someone tries to use them without setting .visual();

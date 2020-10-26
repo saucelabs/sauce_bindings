@@ -9,4 +9,6 @@ public interface APIStrategy {
     URL getSauceUrl();
 
     void setSauceUrl(URL url);
+
+    void updateResult(String result);
 }

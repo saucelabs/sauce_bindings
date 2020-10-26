@@ -19,7 +19,7 @@ public class VisualTestingStrategy implements APIStrategy {
     private RemoteWebDriver driver;
     @Setter
     public URL sauceUrl;
-    private JavascriptExecutor getJavascriptExecutor(){
+    public JavascriptExecutor getJavascriptExecutor(){
         return driver;
     }
 
@@ -39,5 +39,10 @@ public class VisualTestingStrategy implements APIStrategy {
         } catch (MalformedURLException e) {
             throw new InvalidArgumentException("Invalid URL");
         }
+    }
+
+    @Override
+    public void updateResult(String result) {
+        getJavascriptExecutor().executeScript("/*@visual.end*/");
     }
 }

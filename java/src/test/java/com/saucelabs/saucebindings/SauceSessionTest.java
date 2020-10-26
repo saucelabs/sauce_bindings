@@ -95,6 +95,7 @@ public class SauceSessionTest {
     public void stopWithBooleanTrue() {
         sauceSession.start();
         sauceSession.stop(true);
+        verify(new BrowserTestingStrategy(new SauceOptions()).getDriver()).executeScript("sauce:job-result=passed");
         verify(dummyRemoteDriver).executeScript("sauce:job-result=passed");
     }
 

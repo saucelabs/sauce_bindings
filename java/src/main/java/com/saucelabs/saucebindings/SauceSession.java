@@ -50,29 +50,8 @@ public class SauceSession {
     }
 
     public void stop(String result) {
-        if(sauceOptions.visualCapabilities != null){
-            updateVisualResult();
-        }
-        else{
-            updateSauceResult(result);
-        }
+        sauceAPIStrategy.updateResult(result);
         stop();
-    }
-
-    private void updateVisualResult() {
-        getJavascriptExecutor().executeScript("/*@visual.end*/");
-    }
-
-    private void updateSauceResult(String result) {
-        getDriver().executeScript("sauce:job-result=" + result);
-        // Add output for the Sauce OnDemand Jenkins plugin
-        // The first print statement will automatically populate links on Jenkins to Sauce
-        // The second print statement will output the job link to logging/console
-        if (this.driver != null) {
-            String sauceReporter = String.format("SauceOnDemandSessionID=%s job-name=%s", this.driver.getSessionId(), this.sauceOptions.getName());
-            String sauceTestLink = String.format("Test Job Link: https://app.saucelabs.com/tests/%s", this.driver.getSessionId());
-            System.out.print(sauceReporter + "\n" + sauceTestLink + "\n");
-        }
     }
 
     private void stop() {

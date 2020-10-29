@@ -313,23 +313,21 @@ public class SauceOptions {
     }
 
     protected String getSauceUsername() {
-        if (getSystemProperty("SAUCE_USERNAME") != null) {
-            return getSystemProperty("SAUCE_USERNAME");
-        } else if (getEnvironmentVariable("SAUCE_USERNAME") != null) {
-            return getEnvironmentVariable("SAUCE_USERNAME");
+        return tryToGetVariable("SAUCE_USERNAME", "Sauce Username was not provided");
+    }
+
+    private String tryToGetVariable(String key, String errorMessage) {
+        if (getSystemProperty(key) != null) {
+            return getSystemProperty(key);
+        } else if (getEnvironmentVariable(key) != null) {
+            return getEnvironmentVariable(key);
         } else {
-            throw new SauceEnvironmentVariablesNotSetException("Sauce Username was not provided");
+            throw new SauceEnvironmentVariablesNotSetException(errorMessage);
         }
     }
 
     protected String getSauceAccessKey() {
-        if (getSystemProperty("SAUCE_ACCESS_KEY") != null) {
-            return getSystemProperty("SAUCE_ACCESS_KEY");
-        } else if (getEnvironmentVariable("SAUCE_ACCESS_KEY") != null) {
-            return getEnvironmentVariable("SAUCE_ACCESS_KEY");
-        } else {
-            throw new SauceEnvironmentVariablesNotSetException("Sauce Access Key was not provided");
-        }
+        return tryToGetVariable("SAUCE_ACCESS_KEY", "Sauce Access Key was not provided");
     }
 
     protected String getSystemProperty(String key) {

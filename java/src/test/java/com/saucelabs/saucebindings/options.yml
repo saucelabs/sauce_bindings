@@ -48,6 +48,29 @@ exampleValues:
   tunnelIdentifier: 'tunnelname'
   videoUploadOnPass: false
 
+badBrowser:
+  browserName: "netscape"
+
+badPlatform:
+  platformName: "MAC"
+
+badJobVisibility:
+  jobVisibility: "me"
+
+badPageLoad:
+  browserName: "fast"
+
+badPrompt:
+  browserName: "consume"
+
+badTimeout:
+  timeouts:
+    bad: 1
+
+badPrerun:
+  prerun:
+    nope: ""
+
 invalidOption:
   foo: "bar"
   browser_Nme: "firefox"

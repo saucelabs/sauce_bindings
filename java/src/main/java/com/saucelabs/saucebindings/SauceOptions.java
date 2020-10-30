@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Accessors(chain = true)
 @Setter @Getter
@@ -262,10 +263,12 @@ public class SauceOptions {
         return map.keySet().toArray()[0].getClass().equals(String.class);
     }
 
+    // this method is only used when setting capabilities from mergeCapabilities method
     private void setEnumCapability(String key, HashMap value) {
         if ("prerun".equals(key)) {
             Map<Prerun, Object> prerunMap = new HashMap<>();
             value.forEach((oldKey, val) -> {
+                enumValidator("Prerun", Prerun.keys(), (String) oldKey);
                 String keyString = Prerun.fromString((String) oldKey);
                 prerunMap.put(Prerun.valueOf(keyString), val);
             });
@@ -273,6 +276,7 @@ public class SauceOptions {
         } else if ("timeouts".equals(key)) {
             Map<Timeouts, Integer> timeoutsMap = new HashMap<>();
             value.forEach((oldKey, val) -> {
+                enumValidator("Timeouts", Timeouts.keys(), (String) oldKey);
                 String keyString = Timeouts.fromString((String) oldKey);
                 timeoutsMap.put(Timeouts.valueOf(keyString), (Integer) val);
             });
@@ -280,28 +284,38 @@ public class SauceOptions {
         }
     }
 
+    // this method is only used when setting capabilities from mergeCapabilities method
     private void setEnumCapability(String key, String value) {
         switch (key) {
             case "browserName":
+                enumValidator("Browser", Browser.keys(), value);
                 setBrowserName(Browser.valueOf(Browser.fromString(value)));
                 break;
             case "platformName":
+                enumValidator("SaucePlatform", SaucePlatform.keys(), value);
                 setPlatformName(SaucePlatform.valueOf(SaucePlatform.fromString(value)));
                 break;
             case "jobVisibility":
+                enumValidator("JobVisibility", JobVisibility.keys(), value);
                 setJobVisibility(JobVisibility.valueOf(JobVisibility.fromString(value)));
                 break;
             case "pageLoadStrategy":
-                setPageLoadStrategy(PageLoadStrategy.valueOf(
-                        PageLoadStrategy.fromString(value)));
+                enumValidator("PageLoadStrategy", PageLoadStrategy.keys(), value);
+                setPageLoadStrategy(PageLoadStrategy.valueOf(PageLoadStrategy.fromString(value)));
                 break;
             case "unhandledPromptBehavior":
-                setUnhandledPromptBehavior(
-                        UnhandledPromptBehavior.valueOf(
-                                UnhandledPromptBehavior.fromString(value)));
+                enumValidator("UnhandledPromptBehavior", UnhandledPromptBehavior.keys(), value);
+                setUnhandledPromptBehavior(UnhandledPromptBehavior.valueOf(UnhandledPromptBehavior.fromString(value)));
                 break;
             default:
                 break;
+        }
+    }
+
+    private void enumValidator(String name, Set values, String value) {
+        if (!values.contains(value)) {
+            String message = value + " is not a valid " + name + ", please choose from: " + values;
+            throw new InvalidSauceOptionsArgumentException(message);
         }
     }
 
@@ -313,23 +327,21 @@ public class SauceOptions {
     }
 
     protected String getSauceUsername() {
-        if (getSystemProperty("SAUCE_USERNAME") != null) {
-            return getSystemProperty("SAUCE_USERNAME");
-        } else if (getEnvironmentVariable("SAUCE_USERNAME") != null) {
-            return getEnvironmentVariable("SAUCE_USERNAME");
+        return tryToGetVariable("SAUCE_USERNAME", "Sauce Username was not provided");
+    }
+
+    private String tryToGetVariable(String key, String errorMessage) {
+        if (getSystemProperty(key) != null) {
+            return getSystemProperty(key);
+        } else if (getEnvironmentVariable(key) != null) {
+            return getEnvironmentVariable(key);
         } else {
-            throw new SauceEnvironmentVariablesNotSetException("Sauce Username was not provided");
+            throw new SauceEnvironmentVariablesNotSetException(errorMessage);
         }
     }
 
     protected String getSauceAccessKey() {
-        if (getSystemProperty("SAUCE_ACCESS_KEY") != null) {
-            return getSystemProperty("SAUCE_ACCESS_KEY");
-        } else if (getEnvironmentVariable("SAUCE_ACCESS_KEY") != null) {
-            return getEnvironmentVariable("SAUCE_ACCESS_KEY");
-        } else {
-            throw new SauceEnvironmentVariablesNotSetException("Sauce Access Key was not provided");
-        }
+        return tryToGetVariable("SAUCE_ACCESS_KEY", "Sauce Access Key was not provided");
     }
 
     protected String getSystemProperty(String key) {

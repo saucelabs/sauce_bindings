@@ -3,6 +3,7 @@ package com.saucelabs.saucebindings.integration;
 import com.saucelabs.saucebindings.SauceOptions;
 import com.saucelabs.saucebindings.SauceSession;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -17,15 +18,20 @@ public class VisualTests {
     private RemoteWebDriver webDriver;
     private SauceSession session;
     private String projectName = "SauceBindingsTests";
+    private SauceOptions sauceOptions;
 
     @After
     public void cleanUp() {
         session.stop(true);
     }
 
+    @Before
+    public void setUp() {
+        sauceOptions = new SauceOptions().visual(projectName);
+    }
+
     @Test
     public void defaultStart() {
-        SauceOptions sauceOptions = new SauceOptions().visual(projectName);
         session = new SauceSession(sauceOptions);
         session.start();
         assertNotNull(session.getDriver());
@@ -35,10 +41,7 @@ public class VisualTests {
     //specific visual exceptions
     @Test
     public void settingCommonOptions() {
-        SauceOptions sauceOptions = new SauceOptions().visual(projectName);
         sauceOptions.setName("testName");
-        //my biggest problem here is that this error will only be caught at run time
-        sauceOptions.setViewportSize("1280x1024");
 
         session = new SauceSession(sauceOptions);
         webDriver = session.start();
@@ -47,7 +50,6 @@ public class VisualTests {
 
     @Test
     public void settingUniqueOptions() {
-        SauceOptions sauceOptions = new SauceOptions().visual(projectName);
         //my biggest problem here is that these errors will only be caught at run time
         // if someone tries to use them without setting .visual();
         sauceOptions.setViewportSize("1280x1024");

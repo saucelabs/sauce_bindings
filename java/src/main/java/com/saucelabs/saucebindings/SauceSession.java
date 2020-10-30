@@ -25,7 +25,7 @@ public class SauceSession {
     }
 
     public RemoteWebDriver start() {
-        if(sauceOptions.getVisualProjectName() != null){
+        if(sauceOptions.visual() != null){
             driver = createRemoteWebDriver(getScreenerUrl(), sauceOptions.toCapabilities());
             getDriver().executeScript(
                     "/*@visual.init*/", sauceOptions.getName());
@@ -65,7 +65,7 @@ public class SauceSession {
     }
 
     public void stop(String result) {
-        if(sauceOptions.getVisualProjectName() != null){
+        if(sauceOptions.visual() != null){
             updateVisualResult();
         }
         else{

@@ -25,6 +25,7 @@ import java.util.Set;
 @Setter @Getter
 public class SauceOptions {
     @Setter(AccessLevel.NONE) private MutableCapabilities seleniumCapabilities;
+    @Setter(AccessLevel.NONE) @Getter(AccessLevel.NONE) private VisualOptions visualOptions = null;
     public TimeoutStore timeout = new TimeoutStore();
 
     // w3c Settings
@@ -65,20 +66,6 @@ public class SauceOptions {
     private String timeZone;
     private String tunnelIdentifier;
     private Boolean videoUploadOnPass = null;
-
-    // Sauce Visual Settings
-    // https://screener.io/v2/docs/visual-e2e/visual-options
-    private String visualProjectName; // the actual key for this is "projectName"
-    private String viewportSize;
-    private String branch;
-    private String baseBranch;
-    private Map<String, Object> diffOptions = null;
-    private String ignore = null;   // This probably should be a List not a String, but conversions, ugh
-    private Boolean failOnNewStates = null;
-    private Boolean alwaysAcceptBaseBranch = null;
-    private Boolean disableBranchBaseline = null;
-    private Boolean scrollAndStitchScreenshots = null;
-    private Boolean disableCORS = null;
 
     public static final List<String> primaryEnum = Arrays.asList(
             "browserName",
@@ -132,19 +119,6 @@ public class SauceOptions {
             "tunnelIdentifier",
             "videoUploadOnPass");
 
-    public static final List<String> sauceVisualOptions = Arrays.asList(
-            // "projectName", --> do not use, using visualProjectName
-            "viewportSize",
-            "branch",
-            "baseBranch",
-            "diffOptions",
-            "ignore",
-            "failOnNewStates",
-            "alwaysAcceptBaseBranch",
-            "disableBranchBaseline",
-            "scrollAndStitchScreenshots",
-            "disableCORS");
-
     public static final Map<String, String> knownCITools;
     static {
         knownCITools = new HashMap<>();
@@ -158,8 +132,18 @@ public class SauceOptions {
 
     public static SauceOptions visual(String visualProjectName) {
         SauceOptions sauceOptions = new SauceOptions();
-        sauceOptions.setVisualProjectName(visualProjectName);
+        sauceOptions.visualOptions = new VisualOptions(visualProjectName);
         return sauceOptions;
+    }
+
+    public static SauceOptions visual(String visualProjectName, MutableCapabilities capabilities) {
+        SauceOptions sauceOptions = new SauceOptions(capabilities);
+        sauceOptions.visualOptions = new VisualOptions(visualProjectName);
+        return sauceOptions;
+    }
+
+    public VisualOptions visual() {
+        return visualOptions;
     }
 
     public SauceOptions() {
@@ -193,7 +177,7 @@ public class SauceOptions {
         return timeout.getTimeouts();
     }
 
-    private SauceOptions(MutableCapabilities options) {
+    protected SauceOptions(MutableCapabilities options) {
         seleniumCapabilities = new MutableCapabilities(options.asMap());
         if (options.getCapability("browserName") != null) {
             setCapability("browserName", options.getCapability("browserName"));
@@ -215,27 +199,20 @@ public class SauceOptions {
             addCapabilityIfDefined(seleniumCapabilities, capability);
         });
 
-        if (getCapability("visualProjectName") != null) {
-            MutableCapabilities sauceVisualCapabilities = new MutableCapabilities();
-            sauceVisualCapabilities.setCapability("apiKey", getScreenerApiKey());
-            sauceVisualCapabilities.setCapability("projectName", getCapability("visualProjectName"));
-            setName((String) getCapability("visualProjectName"));
-            sauceVisualOptions.forEach((capability) -> {
-                addCapabilityIfDefined(sauceVisualCapabilities, capability);
-            });
-
-            seleniumCapabilities.setCapability("sauce:visual", sauceVisualCapabilities);
-        }
-
         sauceDefinedOptions.forEach((capability) -> {
             addCapabilityIfDefined(sauceCapabilities, capability);
         });
+
+        if (visualOptions != null) {
+            setName(visualOptions.getProjectName());
+            seleniumCapabilities.setCapability("sauce:visual", visualOptions.toCapabilities());
+        }
 
         seleniumCapabilities.setCapability("sauce:options", sauceCapabilities);
         return seleniumCapabilities;
     }
 
-    private void addCapabilityIfDefined(MutableCapabilities capabilities, String capability) {
+    protected void addCapabilityIfDefined(MutableCapabilities capabilities, String capability) {
         Object value = getCapability(capability);
         if (value != null) {
             capabilities.setCapability(capability, value);
@@ -277,7 +254,7 @@ public class SauceOptions {
         try {
             String getter = "get" + capability.substring(0, 1).toUpperCase() + capability.substring(1);
             Method declaredMethod = null;
-            declaredMethod = SauceOptions.class.getDeclaredMethod(getter);
+            declaredMethod = this.getClass().getDeclaredMethod(getter);
             return declaredMethod.invoke(this);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
@@ -290,6 +267,10 @@ public class SauceOptions {
             setEnumCapability(key, (String) value);
         } else if (secondaryEnum.contains(key) && isKeyString((HashMap) value)) {
             setEnumCapability(key, (HashMap) value);
+        } else if ("visual".equals(key)) {
+            Map visualValues = (HashMap<String, Object>) value;
+            visualOptions = new VisualOptions((String) visualValues.get("projectName"));
+            visual().setVisualCapabilities(visualValues);
         } else {
             try {
                 Class<?> type = SauceOptions.class.getDeclaredField(key).getType();
@@ -377,12 +358,7 @@ public class SauceOptions {
         return tryToGetVariable("SAUCE_ACCESS_KEY", "Sauce Access Key was not provided");
     }
 
-    protected String getScreenerApiKey() {
-        String error = "Screener Access Key was not set in your env variables. Please set SCREENER_API_KEY value.";
-        return tryToGetVariable("SCREENER_API_KEY", error);
-    }
-
-    private String tryToGetVariable(String key, String errorMessage) {
+    protected String tryToGetVariable(String key, String errorMessage) {
         if (getSystemProperty(key) != null) {
             return getSystemProperty(key);
         } else if (getEnvironmentVariable(key) != null) {

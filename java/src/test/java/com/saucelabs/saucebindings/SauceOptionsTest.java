@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.openqa.selenium.UnexpectedAlertBehaviour.DISMISS;
@@ -304,32 +303,6 @@ public class SauceOptionsTest {
         assertEquals(false, sauceOptions.getVideoUploadOnPass());
     }
 
-    @Test
-    public void setsVisualCapabilitiesFromMap() {
-        Map<String, Object> map = serialize("visualValues");
-        sauceOptions.mergeCapabilities(map);
-
-        Map<String, Object> diffMap = new HashMap<>();
-        diffMap.put("structure", true);
-        diffMap.put("layout", true);
-        diffMap.put("style", true);
-        diffMap.put("content", true);
-        diffMap.put("minLayoutPosition", 3);
-        diffMap.put("minLayoutDimension", 12);
-
-        assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
-        assertEquals("68", sauceOptions.getBrowserVersion());
-        assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
-        assertEquals("Sample Build Name", sauceOptions.getBuild());
-        assertEquals("fromYAML", sauceOptions.getVisualProjectName());
-        assertEquals("1280x1024", sauceOptions.getViewportSize());
-        assertEquals(diffMap, sauceOptions.getDiffOptions());
-        assertEquals("#foo, .bar", sauceOptions.getIgnore());
-        assertTrue(sauceOptions.getFailOnNewStates());
-        assertTrue(sauceOptions.getScrollAndStitchScreenshots());
-        assertTrue(sauceOptions.getDisableCORS());
-    }
-
     @Test(expected = InvalidSauceOptionsArgumentException.class)
     public void setsBadBrowserFromMap()  {
         Map<String, Object> map = serialize("badBrowser");
@@ -536,67 +509,6 @@ public class SauceOptionsTest {
     }
 
     @Test
-    public void parsesCapabilitiesFromVisualValues() {
-        Map<String, Object> diffMap = new HashMap<>();
-        diffMap.put("structure", false);
-        diffMap.put("layout", false);
-        diffMap.put("style", false);
-        diffMap.put("content", false);
-        diffMap.put("minLayoutPosition", 5);
-        diffMap.put("minLayoutDimension", 9);
-
-        doReturn("test-name").when(sauceOptions).getEnvironmentVariable("SAUCE_USERNAME");
-        doReturn("test-accesskey").when(sauceOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
-        doReturn("test-visualkey").when(sauceOptions).getEnvironmentVariable("SCREENER_API_KEY");
-        sauceOptions.setBuild("Build Name");
-
-        sauceOptions.setVisualProjectName("myProject");
-        sauceOptions.setViewportSize("1900x1200");
-        sauceOptions.setBranch("my-branch");
-        sauceOptions.setBaseBranch("base-branch");
-        sauceOptions.setIgnore("#some-id, .some-class");
-        sauceOptions.setFailOnNewStates(true);
-        sauceOptions.setAlwaysAcceptBaseBranch(true);
-        sauceOptions.setDisableBranchBaseline(true);
-        sauceOptions.setScrollAndStitchScreenshots(true);
-        sauceOptions.setDisableCORS(true);
-
-        sauceOptions.setDiffOptions(diffMap);
-
-        MutableCapabilities expectedCapabilities = new MutableCapabilities();
-        expectedCapabilities.setCapability("browserName", "chrome");
-        expectedCapabilities.setCapability("browserVersion", "latest");
-        expectedCapabilities.setCapability("platformName", "Windows 10");
-
-        MutableCapabilities sauceCapabilities = new MutableCapabilities();
-        sauceCapabilities.setCapability("build", "Build Name");
-        sauceCapabilities.setCapability("username", "test-name");
-        sauceCapabilities.setCapability("accessKey", "test-accesskey");
-        expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
-
-        MutableCapabilities visualCapabilities = new MutableCapabilities();
-        visualCapabilities.setCapability("projectName", "myProject");
-        visualCapabilities.setCapability("viewportSize", "1900x1200");
-        visualCapabilities.setCapability("branch", "my-branch");
-        visualCapabilities.setCapability("baseBranch", "base-branch");
-
-        visualCapabilities.setCapability("diffOptions", diffMap);
-        visualCapabilities.setCapability("ignore", "#some-id, .some-class");
-
-        visualCapabilities.setCapability("failOnNewStates", true);
-        visualCapabilities.setCapability("alwaysAcceptBaseBranch", true);
-        visualCapabilities.setCapability("disableBranchBaseline", true);
-        visualCapabilities.setCapability("scrollAndStitchScreenshots", true);
-        visualCapabilities.setCapability("disableCORS", true);
-
-        expectedCapabilities.setCapability("sauce:visual", visualCapabilities);
-
-        MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
-        // toString() serializes the enums
-        assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
-    }
-
-        @Test
     public void parsesW3CAndSauceAndSeleniumSettings() {
         MutableCapabilities expectedCapabilities = new MutableCapabilities();
         MutableCapabilities sauceCapabilities = new MutableCapabilities();

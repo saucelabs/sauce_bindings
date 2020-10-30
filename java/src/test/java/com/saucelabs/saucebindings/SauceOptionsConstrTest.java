@@ -18,6 +18,6 @@ public class SauceOptionsConstrTest {
         assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
         assertEquals(SaucePlatform.WINDOWS_10, sauceOptions.getPlatformName());
         assertEquals("latest", sauceOptions.getBrowserVersion());
-        assertEquals("projectName", sauceOptions.getVisualProjectName());
+        assertEquals("projectName", sauceOptions.visual().getProjectName());
     }
 }

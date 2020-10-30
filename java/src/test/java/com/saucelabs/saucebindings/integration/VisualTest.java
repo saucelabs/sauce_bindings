@@ -33,7 +33,7 @@ public class VisualTest {
     public void settingCommonOptions()  {
         sauceOptions = SauceOptions.visual("settingCommonOptions");
         sauceOptions.setName("testName");
-        sauceOptions.setViewportSize("1280x1024");
+        sauceOptions.visual().setViewportSize("1280x1024");
 
         session = new SauceSession(sauceOptions);
         webDriver = session.start();
@@ -44,7 +44,7 @@ public class VisualTest {
     public void settingUniqueOptions() {
         sauceOptions = SauceOptions.visual("settingUniqueOptions");
 
-        sauceOptions.setViewportSize("1280x1024");
+        sauceOptions.visual().setViewportSize("1280x1024");
 
         Map<String, Object> diffOptions = new HashMap<>();
         diffOptions.put("structure", true);
@@ -54,12 +54,12 @@ public class VisualTest {
         diffOptions.put("minLayoutPosition", 4);
         diffOptions.put("minLayoutDimension", 10);
 
-        sauceOptions.setDiffOptions(diffOptions);
+        sauceOptions.visual().setDiffOptions(diffOptions);
 
-        sauceOptions.setIgnore("#foo, .bar");
-        sauceOptions.setFailOnNewStates(true);
-        sauceOptions.setScrollAndStitchScreenshots(true);
-        sauceOptions.setDisableCORS(true);
+        sauceOptions.visual().setIgnore("#foo, .bar");
+        sauceOptions.visual().setFailOnNewStates(true);
+        sauceOptions.visual().setScrollAndStitchScreenshots(true);
+        sauceOptions.visual().setDisableCORS(true);
 
         session = new SauceSession(sauceOptions);
         webDriver = session.start();

@@ -25,5 +25,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r python/requirements.txt
     - name: Test with pytest
+      env:
+          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
       run: |
         pytest python/

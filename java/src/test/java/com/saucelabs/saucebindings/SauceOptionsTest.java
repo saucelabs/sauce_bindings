@@ -1,5 +1,6 @@
 package com.saucelabs.saucebindings;
 
+import lombok.SneakyThrows;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.junit.MockitoJUnit;
@@ -229,12 +230,17 @@ public class SauceOptionsTest {
         assertEquals("TEMP BUILD: 11", sauceOptions.getBuild());
     }
 
-    @Test
-    public void setsCapabilitiesFromMap() throws FileNotFoundException {
+    @SneakyThrows
+    public Map<String, Object> serialize(String key) {
         InputStream input = new FileInputStream(new File("src/test/java/com/saucelabs/saucebindings/options.yml"));
         Yaml yaml = new Yaml();
         Map<String, Object> data = yaml.load(input);
-        Map<String, Object> map = (Map<String, Object>) data.get("exampleValues");
+        return (Map<String, Object>) data.get(key);
+    }
+
+    @Test
+    public void setsCapabilitiesFromMap() throws FileNotFoundException {
+        Map<String, Object> map = serialize("exampleValues");
 
         sauceOptions.mergeCapabilities(map);
 
@@ -296,6 +302,48 @@ public class SauceOptionsTest {
         assertEquals("San Francisco", sauceOptions.getTimeZone());
         assertEquals("tunnelname", sauceOptions.getTunnelIdentifier());
         assertEquals(false, sauceOptions.getVideoUploadOnPass());
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void setsBadBrowserFromMap()  {
+        Map<String, Object> map = serialize("badBrowser");
+        sauceOptions.mergeCapabilities(map);
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void setsBadPlatformFromMap() {
+        Map<String, Object> map = serialize("badPlatform");
+        sauceOptions.mergeCapabilities(map);
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void setsBadJobVisibilityFromMap() {
+        Map<String, Object> map = serialize("badJobVisibility");
+        sauceOptions.mergeCapabilities(map);
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void setsBadPromptFromMap() {
+        Map<String, Object> map = serialize("badPrompt");
+        sauceOptions.mergeCapabilities(map);
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void setsBadTimeoutFromMap() {
+        Map<String, Object> map = serialize("badTimeout");
+        sauceOptions.mergeCapabilities(map);
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void setsBadPrerunFromMap() {
+        Map<String, Object> map = serialize("badPrerun");
+        sauceOptions.mergeCapabilities(map);
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void setsBadPageLoadFromMap() {
+        Map<String, Object> map = serialize("badPageLoad");
+        sauceOptions.mergeCapabilities(map);
     }
 
     @Test

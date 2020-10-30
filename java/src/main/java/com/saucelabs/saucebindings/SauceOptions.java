@@ -156,6 +156,12 @@ public class SauceOptions {
         knownCITools.put("TeamCity", "TEAMCITY_PROJECT_NAME");
     }
 
+    public static SauceOptions visual(String visualProjectName) {
+        SauceOptions sauceOptions = new SauceOptions();
+        sauceOptions.setVisualProjectName(visualProjectName);
+        return sauceOptions;
+    }
+
     public SauceOptions() {
         this(new MutableCapabilities());
     }

@@ -25,6 +25,12 @@ public class SauceSession {
     }
 
     public RemoteWebDriver start() {
+        if(sauceOptions.getVisualProjectName() != null){
+            driver = createRemoteWebDriver(getScreenerUrl(), sauceOptions.toCapabilities());
+            getDriver().executeScript(
+                    "/*@visual.init*/", sauceOptions.getName());
+            return driver;
+        }
         driver = createRemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities());
         return driver;
 	}
@@ -40,6 +46,14 @@ public class SauceSession {
             }
         }
     }
+    public URL getScreenerUrl() {
+        try {
+            setSauceUrl(new URL("https://hub.screener.io/wd/hub"));
+            return sauceUrl;
+        } catch (MalformedURLException e) {
+            throw new InvalidArgumentException("Invalid URL");
+        }
+}
 
     protected RemoteWebDriver createRemoteWebDriver(URL url, MutableCapabilities capabilities) {
         return new RemoteWebDriver(url, capabilities);
@@ -51,11 +65,20 @@ public class SauceSession {
     }
 
     public void stop(String result) {
-        updateResult(result);
+        if(sauceOptions.getVisualProjectName() != null){
+            updateVisualResult();
+        }
+        else{
+            updateSauceResult(result);
+        }
         stop();
     }
 
-    private void updateResult(String result) {
+    private void updateVisualResult() {
+        getDriver().executeScript("/*@visual.end*/");
+    }
+
+    private void updateSauceResult(String result) {
         getDriver().executeScript("sauce:job-result=" + result);
         // Add output for the Sauce OnDemand Jenkins plugin
         // The first print statement will automatically populate links on Jenkins to Sauce
@@ -71,5 +94,9 @@ public class SauceSession {
         if(driver !=null) {
             driver.quit();
         }
+    }
+
+    public void takeSnapshot(String snapshotName) {
+        getDriver().executeScript("/*@visual.snapshot*/", snapshotName);
     }
 }

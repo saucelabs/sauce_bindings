@@ -77,3 +77,22 @@ invalidOption:
   browserVersion: "70"
   platformName: "MacOS 10.12"
   recordScreenshots: false
+
+visualValues:
+  browserName: 'firefox'
+  browserVersion: '68'
+  platformName: 'macOS 10.13'
+  build: 'Sample Build Name'
+  visualProjectName: 'fromYAML'
+  viewportSize: '1280x1024'
+  diffOptions:
+    structure: true
+    layout: true
+    style: true
+    content: true
+    minLayoutPosition: 3
+    minLayoutDimension: 12
+  ignore: '#foo, .bar'
+  failOnNewStates: true
+  scrollAndStitchScreenshots: true
+  disableCORS: true

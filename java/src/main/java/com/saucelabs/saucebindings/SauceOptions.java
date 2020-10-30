@@ -66,6 +66,20 @@ public class SauceOptions {
     private String tunnelIdentifier;
     private Boolean videoUploadOnPass = null;
 
+    // Sauce Visual Settings
+    // https://screener.io/v2/docs/visual-e2e/visual-options
+    private String visualProjectName; // the actual key for this is "projectName"
+    private String viewportSize;
+    private String branch;
+    private String baseBranch;
+    private Map<String, Object> diffOptions = null;
+    private String ignore = null;   // This probably should be a List not a String, but conversions, ugh
+    private Boolean failOnNewStates = null;
+    private Boolean alwaysAcceptBaseBranch = null;
+    private Boolean disableBranchBaseline = null;
+    private Boolean scrollAndStitchScreenshots = null;
+    private Boolean disableCORS = null;
+
     public static final List<String> primaryEnum = Arrays.asList(
             "browserName",
             "jobVisibility",
@@ -117,6 +131,19 @@ public class SauceOptions {
             "timeZone",
             "tunnelIdentifier",
             "videoUploadOnPass");
+
+    public static final List<String> sauceVisualOptions = Arrays.asList(
+            // "projectName", --> do not use, using visualProjectName
+            "viewportSize",
+            "branch",
+            "baseBranch",
+            "diffOptions",
+            "ignore",
+            "failOnNewStates",
+            "alwaysAcceptBaseBranch",
+            "disableBranchBaseline",
+            "scrollAndStitchScreenshots",
+            "disableCORS");
 
     public static final Map<String, String> knownCITools;
     static {
@@ -181,6 +208,18 @@ public class SauceOptions {
         w3cDefinedOptions.forEach((capability) -> {
             addCapabilityIfDefined(seleniumCapabilities, capability);
         });
+
+        if (getCapability("visualProjectName") != null) {
+            MutableCapabilities sauceVisualCapabilities = new MutableCapabilities();
+            sauceVisualCapabilities.setCapability("apiKey", getScreenerApiKey());
+            sauceVisualCapabilities.setCapability("projectName", getCapability("visualProjectName"));
+            setName((String) getCapability("visualProjectName"));
+            sauceVisualOptions.forEach((capability) -> {
+                addCapabilityIfDefined(sauceVisualCapabilities, capability);
+            });
+
+            seleniumCapabilities.setCapability("sauce:visual", sauceVisualCapabilities);
+        }
 
         sauceDefinedOptions.forEach((capability) -> {
             addCapabilityIfDefined(sauceCapabilities, capability);
@@ -328,6 +367,15 @@ public class SauceOptions {
         return tryToGetVariable("SAUCE_USERNAME", "Sauce Username was not provided");
     }
 
+    protected String getSauceAccessKey() {
+        return tryToGetVariable("SAUCE_ACCESS_KEY", "Sauce Access Key was not provided");
+    }
+
+    protected String getScreenerApiKey() {
+        String error = "Screener Access Key was not set in your env variables. Please set SCREENER_API_KEY value.";
+        return tryToGetVariable("SCREENER_API_KEY", error);
+    }
+
     private String tryToGetVariable(String key, String errorMessage) {
         if (getSystemProperty(key) != null) {
             return getSystemProperty(key);
@@ -336,10 +384,6 @@ public class SauceOptions {
         } else {
             throw new SauceEnvironmentVariablesNotSetException(errorMessage);
         }
-    }
-
-    protected String getSauceAccessKey() {
-        return tryToGetVariable("SAUCE_ACCESS_KEY", "Sauce Access Key was not provided");
     }
 
     protected String getSystemProperty(String key) {

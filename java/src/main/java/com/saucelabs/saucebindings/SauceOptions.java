@@ -25,6 +25,7 @@ import java.util.Set;
 @Setter @Getter
 public class SauceOptions {
     @Setter(AccessLevel.NONE) private MutableCapabilities seleniumCapabilities;
+    @Setter(AccessLevel.NONE) @Getter(AccessLevel.NONE) private SauceLabsOptions sauceLabsOptions = null;
     public TimeoutStore timeout = new TimeoutStore();
 
     // w3c Settings
@@ -39,45 +40,12 @@ public class SauceOptions {
     private Boolean strictFileInteractability = null;
     private UnhandledPromptBehavior unhandledPromptBehavior;
 
-    // Sauce Settings
-    private Boolean avoidProxy = null;
-    private String build;
-    private Boolean capturePerformance = null;
-    private String chromedriverVersion;
-    private Integer commandTimeout = null;
-    private Map<String, Object> customData = null;
-    private Boolean extendedDebugging = null;
-    private Integer idleTimeout = null;
-    private String iedriverVersion;
-    private Integer maxDuration = null;
-    private String name;
-    private String parentTunnel;
-    private Map<Prerun, Object> prerun;
-    private URL prerunUrl;
-    private Integer priority = null;
-    private JobVisibility jobVisibility; // the actual key for this is a Java reserved keyword "public"
-    private Boolean recordLogs = null;
-    private Boolean recordScreenshots = null;
-    private Boolean recordVideo = null;
-    private String screenResolution;
-    private String seleniumVersion;
-    private List<String> tags = null;
-    private String timeZone;
-    private String tunnelIdentifier;
-    private Boolean videoUploadOnPass = null;
-
     public static final List<String> primaryEnum = Arrays.asList(
             "browserName",
-            "jobVisibility",
             "pageLoadStrategy",
             "platformName",
             "timeouts",
             "unhandledPromptBehavior"
-    );
-
-    public static final List<String> secondaryEnum = Arrays.asList(
-            "prerun",
-            "timeouts"
     );
 
     public static final List<String> w3cDefinedOptions = Arrays.asList(
@@ -92,41 +60,12 @@ public class SauceOptions {
             "strictFileInteractability",
             "unhandledPromptBehavior");
 
-    public static final List<String> sauceDefinedOptions = Arrays.asList(
-            "avoidProxy",
-            "build",
-            "capturePerformance",
-            "chromedriverVersion",
-            "commandTimeout",
-            "customData",
-            "extendedDebugging",
-            "idleTimeout",
-            "iedriverVersion",
-            "maxDuration",
-            "name",
-            "parentTunnel",
-            "prerun",
-            "priority",
-            // public, do not use, reserved keyword, using jobVisibility
-            "recordLogs",
-            "recordScreenshots",
-            "recordVideo",
-            "screenResolution",
-            "seleniumVersion",
-            "tags",
-            "timeZone",
-            "tunnelIdentifier",
-            "videoUploadOnPass");
 
-    public static final Map<String, String> knownCITools;
-    static {
-        knownCITools = new HashMap<>();
-        knownCITools.put("Jenkins", "BUILD_TAG");
-        knownCITools.put("Bamboo", "bamboo_agentId");
-        knownCITools.put("Travis", "TRAVIS_JOB_ID");
-        knownCITools.put("Circle", "CIRCLE_JOB");
-        knownCITools.put("GitLab", "CI");
-        knownCITools.put("TeamCity", "TEAMCITY_PROJECT_NAME");
+    public SauceLabsOptions sauce() {
+        if (sauceLabsOptions == null) {
+            sauceLabsOptions = new SauceLabsOptions();
+        }
+        return sauceLabsOptions;
     }
 
     public SauceOptions() {
@@ -160,7 +99,7 @@ public class SauceOptions {
         return timeout.getTimeouts();
     }
 
-    private SauceOptions(MutableCapabilities options) {
+    protected SauceOptions(MutableCapabilities options) {
         seleniumCapabilities = new MutableCapabilities(options.asMap());
         if (options.getCapability("browserName") != null) {
             setCapability("browserName", options.getCapability("browserName"));
@@ -168,58 +107,21 @@ public class SauceOptions {
     }
 
     public MutableCapabilities toCapabilities() {
-        MutableCapabilities sauceCapabilities = addAuthentication();
-
-        if (getCapability("jobVisibility") != null) {
-            sauceCapabilities.setCapability("public", getCapability("jobVisibility"));
-        }
-
-        if (getCapability("prerunUrl") != null) {
-            sauceCapabilities.setCapability("prerun", getCapability("prerunUrl"));
-        }
-
         w3cDefinedOptions.forEach((capability) -> {
             addCapabilityIfDefined(seleniumCapabilities, capability);
         });
 
-        sauceDefinedOptions.forEach((capability) -> {
-            addCapabilityIfDefined(sauceCapabilities, capability);
-        });
-
-        seleniumCapabilities.setCapability("sauce:options", sauceCapabilities);
+        seleniumCapabilities.setCapability("sauce:options", sauce().toCapabilities());
         return seleniumCapabilities;
     }
 
-    private void addCapabilityIfDefined(MutableCapabilities capabilities, String capability) {
-        Object value = getCapability(capability);
+    protected void addCapabilityIfDefined(MutableCapabilities capabilities, String capability) {
+        Object value = this.getCapability(capability);
         if (value != null) {
             capabilities.setCapability(capability, value);
         }
     }
 
-    public String getBuild() {
-        if (build != null) {
-            return build;
-        } else if (getEnvironmentVariable(knownCITools.get("Jenkins")) != null) {
-            return getEnvironmentVariable("BUILD_NAME") + ": " + getEnvironmentVariable("BUILD_NUMBER");
-        } else if (getEnvironmentVariable(knownCITools.get("Bamboo")) != null) {
-            return getEnvironmentVariable("bamboo_shortJobName") + ": " + getEnvironmentVariable("bamboo_buildNumber");
-        } else if (getEnvironmentVariable(knownCITools.get("Travis")) != null) {
-            return getEnvironmentVariable("TRAVIS_JOB_NAME") + ": " + getEnvironmentVariable("TRAVIS_JOB_NUMBER");
-        } else if (getEnvironmentVariable(knownCITools.get("Circle")) != null) {
-            return getEnvironmentVariable("CIRCLE_JOB") + ": " + getEnvironmentVariable("CIRCLE_BUILD_NUM");
-        } else if (getEnvironmentVariable(knownCITools.get("GitLab")) != null) {
-            return getEnvironmentVariable("CI_JOB_NAME") + ": " + getEnvironmentVariable("CI_JOB_ID");
-        } else if (getEnvironmentVariable(knownCITools.get("TeamCity")) != null) {
-            return getEnvironmentVariable("TEAMCITY_PROJECT_NAME") + ": " + getEnvironmentVariable("BUILD_NUMBER");
-        } else {
-            return "Build Time: " + System.currentTimeMillis();
-        }
-    }
-
-    public boolean isKnownCI() {
-        return !knownCITools.keySet().stream().allMatch((key) -> getEnvironmentVariable(key) == null);
-    }
 
     // Use Case is pulling serialized information from JSON/YAML, converting it to a HashMap and passing it in
     // This is a preferred pattern as it avoids conditionals in code
@@ -228,11 +130,11 @@ public class SauceOptions {
     }
 
     // This might be made public in future version; For now, no good reason to prefer it over direct accessor
-    private Object getCapability(String capability) {
+    protected Object getCapability(String capability) {
         try {
             String getter = "get" + capability.substring(0, 1).toUpperCase() + capability.substring(1);
             Method declaredMethod = null;
-            declaredMethod = SauceOptions.class.getDeclaredMethod(getter);
+            declaredMethod = this.getClass().getDeclaredMethod(getter);
             return declaredMethod.invoke(this);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
@@ -243,8 +145,18 @@ public class SauceOptions {
     public void setCapability(String key, Object value) {
         if (primaryEnum.contains(key) && value.getClass().equals(String.class)) {
             setEnumCapability(key, (String) value);
-        } else if (secondaryEnum.contains(key) && isKeyString((HashMap) value)) {
-            setEnumCapability(key, (HashMap) value);
+        } else if ("timeouts".equals(key)) {
+            Map<Timeouts, Integer> timeoutsMap = new HashMap<>();
+            ((Map) value).forEach((oldKey, val) -> {
+                enumValidator("Timeouts", Timeouts.keys(), (String) oldKey);
+                String keyString = Timeouts.fromString((String) oldKey);
+                timeoutsMap.put(Timeouts.valueOf(keyString), (Integer) val);
+            });
+            setTimeouts(timeoutsMap);
+        } else if ("sauce".equals(key)) {
+            sauce().setSauceCapabilities((HashMap<String, Object>) value);
+        } else if (SauceLabsOptions.sauceLabsOptions.contains(key)) {
+            sauce().setSauceCapability(key, value);
         } else {
             try {
                 Class<?> type = SauceOptions.class.getDeclaredField(key).getType();
@@ -262,27 +174,6 @@ public class SauceOptions {
     }
 
     // this method is only used when setting capabilities from mergeCapabilities method
-    private void setEnumCapability(String key, HashMap value) {
-        if ("prerun".equals(key)) {
-            Map<Prerun, Object> prerunMap = new HashMap<>();
-            value.forEach((oldKey, val) -> {
-                enumValidator("Prerun", Prerun.keys(), (String) oldKey);
-                String keyString = Prerun.fromString((String) oldKey);
-                prerunMap.put(Prerun.valueOf(keyString), val);
-            });
-            setPrerun(prerunMap);
-        } else if ("timeouts".equals(key)) {
-            Map<Timeouts, Integer> timeoutsMap = new HashMap<>();
-            value.forEach((oldKey, val) -> {
-                enumValidator("Timeouts", Timeouts.keys(), (String) oldKey);
-                String keyString = Timeouts.fromString((String) oldKey);
-                timeoutsMap.put(Timeouts.valueOf(keyString), (Integer) val);
-            });
-            setTimeouts(timeoutsMap);
-        }
-    }
-
-    // this method is only used when setting capabilities from mergeCapabilities method
     private void setEnumCapability(String key, String value) {
         switch (key) {
             case "browserName":
@@ -292,10 +183,6 @@ public class SauceOptions {
             case "platformName":
                 enumValidator("SaucePlatform", SaucePlatform.keys(), value);
                 setPlatformName(SaucePlatform.valueOf(SaucePlatform.fromString(value)));
-                break;
-            case "jobVisibility":
-                enumValidator("JobVisibility", JobVisibility.keys(), value);
-                setJobVisibility(JobVisibility.valueOf(JobVisibility.fromString(value)));
                 break;
             case "pageLoadStrategy":
                 enumValidator("PageLoadStrategy", PageLoadStrategy.keys(), value);
@@ -310,25 +197,14 @@ public class SauceOptions {
         }
     }
 
-    private void enumValidator(String name, Set values, String value) {
+    protected void enumValidator(String name, Set values, String value) {
         if (!values.contains(value)) {
             String message = value + " is not a valid " + name + ", please choose from: " + values;
             throw new InvalidSauceOptionsArgumentException(message);
         }
     }
 
-    private MutableCapabilities addAuthentication() {
-        MutableCapabilities caps = new MutableCapabilities();
-        caps.setCapability("username", getSauceUsername());
-        caps.setCapability("accessKey", getSauceAccessKey());
-        return caps;
-    }
-
-    protected String getSauceUsername() {
-        return tryToGetVariable("SAUCE_USERNAME", "Sauce Username was not provided");
-    }
-
-    private String tryToGetVariable(String key, String errorMessage) {
+    protected String tryToGetVariable(String key, String errorMessage) {
         if (getSystemProperty(key) != null) {
             return getSystemProperty(key);
         } else if (getEnvironmentVariable(key) != null) {
@@ -338,15 +214,220 @@ public class SauceOptions {
         }
     }
 
-    protected String getSauceAccessKey() {
-        return tryToGetVariable("SAUCE_ACCESS_KEY", "Sauce Access Key was not provided");
-    }
-
     protected String getSystemProperty(String key) {
         return System.getProperty(key);
     }
 
     protected String getEnvironmentVariable(String key) {
         return System.getenv(key);
+    }
+
+    /**
+     * Everything below here is deprecated for superclass.
+     * Prepend with sauce()
+     */
+
+    public boolean isKnownCI() {
+        return sauce().isKnownCI();
+    }
+
+    public SauceOptions setAvoidProxy(Boolean avoidProxy) {
+        return sauce().setAvoidProxy(avoidProxy);
+    }
+
+    public SauceOptions setBuild(String build) {
+        return sauce().setBuild(build);
+    }
+
+    public SauceOptions setCapturePerformance(Boolean capturePerformance) {
+        return sauce().setCapturePerformance(capturePerformance);
+    }
+
+    public SauceOptions setChromedriverVersion(String chromedriverVersion) {
+        return sauce().setChromedriverVersion(chromedriverVersion);
+    }
+
+    public SauceOptions setCommandTimeout(Integer commandTimeout) {
+        return sauce().setCommandTimeout(commandTimeout);
+    }
+
+    public SauceOptions setCustomData(Map<String, Object> customData) {
+        return sauce().setCustomData(customData);
+    }
+
+    public SauceOptions setExtendedDebugging(Boolean extendedDebugging) {
+        return sauce().setExtendedDebugging(extendedDebugging);
+    }
+
+    public SauceOptions setIdleTimeout(Integer idleTimeout) {
+        return sauce().setIdleTimeout(idleTimeout);
+    }
+
+    public SauceOptions setIedriverVersion(String iedriverVersion) {
+        return sauce().setIedriverVersion(iedriverVersion);
+    }
+
+    public SauceOptions setMaxDuration(Integer maxDuration) {
+        return sauce().setMaxDuration(maxDuration);
+    }
+
+    public SauceOptions setName(String name) {
+        return sauce().setName(name);
+    }
+
+    public SauceOptions setParentTunnel(String parentTunnel) {
+        return sauce().setParentTunnel(parentTunnel);
+    }
+
+    public SauceOptions setPrerun(Map<Prerun, Object> prerun) {
+        return sauce().setPrerun(prerun);
+    }
+
+    public SauceOptions setPrerunUrl(URL prerunUrl) {
+        return sauce().setPrerunUrl(prerunUrl);
+    }
+
+    public SauceOptions setPriority(Integer priority) {
+        return sauce().setPriority(priority);
+    }
+
+    public SauceOptions setJobVisibility(JobVisibility jobVisibility) {
+        return sauce().setJobVisibility(jobVisibility);
+    }
+
+    public SauceOptions setRecordLogs(Boolean recordLogs) {
+        return sauce().setRecordLogs(recordLogs);
+    }
+
+    public SauceOptions setRecordScreenshots(Boolean recordScreenshots) {
+        return sauce().setRecordScreenshots(recordScreenshots);
+    }
+
+    public SauceOptions setRecordVideo(Boolean recordVideo) {
+        return sauce().setRecordVideo(recordVideo);
+    }
+
+    public SauceOptions setScreenResolution(String screenResolution) {
+        return sauce().setScreenResolution(screenResolution);
+    }
+
+    public SauceOptions setSeleniumVersion(String seleniumVersion) {
+        return sauce().setSeleniumVersion(seleniumVersion);
+    }
+
+    public SauceOptions setTags(List<String> tags) {
+        return sauce().setTags(tags);
+    }
+
+    public SauceOptions setTimeZone(String timeZone) {
+        return sauce().setTimeZone(timeZone);
+    }
+
+    public SauceOptions setTunnelIdentifier (String tunnelIdentifier) {
+        return sauce().setTunnelIdentifier(tunnelIdentifier);
+    }
+
+    public SauceOptions setVideoUploadOnPass(Boolean videoUploadOnPass) {
+        return sauce().setVideoUploadOnPass(videoUploadOnPass);
+    }
+
+    public Boolean getAvoidProxy() {
+        return sauce().getAvoidProxy();
+    }
+
+    public String getBuild() {
+        return sauce().getBuild();
+    }
+
+    public Boolean getCapturePerformance() {
+        return sauce().getCapturePerformance();
+    }
+
+    public String getChromedriverVersion() {
+        return sauce().getChromedriverVersion();
+    }
+
+    public Integer getCommandTimeout() {
+        return sauce().getCommandTimeout();
+    }
+
+    public Map<String, Object> getCustomData() {
+        return sauce().getCustomData();
+    }
+
+    public Boolean getExtendedDebugging() {
+        return sauce().getExtendedDebugging();
+    }
+
+    public Integer getIdleTimeout() {
+        return sauce().getIdleTimeout();
+    }
+
+    public String getIedriverVersion() {
+        return sauce().getIedriverVersion();
+    }
+
+    public Integer getMaxDuration() {
+        return sauce().getMaxDuration();
+    }
+
+    public String getName() {
+        return sauce().getName();
+    }
+
+    public String getParentTunnel() {
+        return sauce().getParentTunnel();
+    }
+
+    public Map<Prerun, Object> getPrerun() {
+        return sauce().getPrerun();
+    }
+
+    public URL getPrerunUrl() {
+        return sauce().getPrerunUrl();
+    }
+
+    public Integer getPriority() {
+        return sauce().getPriority();
+    }
+
+    public JobVisibility getJobVisibility() {
+        return sauce().getJobVisibility();
+    }
+
+    public Boolean getRecordLogs() {
+        return sauce().getRecordLogs();
+    }
+
+    public Boolean getRecordScreenshots() {
+        return sauce().getRecordScreenshots();
+    }
+
+    public Boolean getRecordVideo() {
+        return sauce().getRecordVideo();
+    }
+
+    public String getScreenResolution() {
+        return sauce().getScreenResolution();
+    }
+
+    public String getSeleniumVersion() {
+        return sauce().getSeleniumVersion();
+    }
+
+    public List<String> getTags() {
+        return sauce().getTags();
+    }
+
+    public String getTimeZone() {
+        return sauce().getTimeZone();
+    }
+
+    public String getTunnelIdentifier () {
+        return sauce().getTunnelIdentifier();
+    }
+
+    public Boolean getVideoUploadOnPass() {
+        return sauce().getVideoUploadOnPass();
     }
 }

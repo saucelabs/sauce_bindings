@@ -223,9 +223,12 @@ public class SauceOptionsTest {
 
     @Test
     public void createsDefaultBuildName() {
-        doReturn("Not Empty").when(sauceOptions).getEnvironmentVariable("BUILD_TAG");
-        doReturn("TEMP BUILD").when(sauceOptions).getEnvironmentVariable("BUILD_NAME");
-        doReturn("11").when(sauceOptions).getEnvironmentVariable("BUILD_NUMBER");
+        SauceLabsOptions sauceLabsOptions = spy(new SauceLabsOptions());
+        doReturn(sauceLabsOptions).when(sauceOptions).sauce();
+
+        doReturn("Not Empty").when(sauceLabsOptions).getEnvironmentVariable("BUILD_TAG");
+        doReturn("TEMP BUILD").when(sauceLabsOptions).getEnvironmentVariable("BUILD_NAME");
+        doReturn("11").when(sauceLabsOptions).getEnvironmentVariable("BUILD_NUMBER");
 
         assertEquals("TEMP BUILD: 11", sauceOptions.getBuild());
     }
@@ -348,8 +351,10 @@ public class SauceOptionsTest {
 
     @Test
     public void parsesCapabilitiesFromW3CValues() {
-        doReturn("test-name").when(sauceOptions).getEnvironmentVariable("SAUCE_USERNAME");
-        doReturn("test-accesskey").when(sauceOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
+        SauceLabsOptions sauceLabsOptions = spy(new SauceLabsOptions());
+        doReturn(sauceLabsOptions).when(sauceOptions).sauce();
+        doReturn("test-name").when(sauceLabsOptions).getEnvironmentVariable("SAUCE_USERNAME");
+        doReturn("test-accesskey").when(sauceLabsOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
 
         sauceOptions.setBrowserName(Browser.FIREFOX);
         sauceOptions.setPlatformName(SaucePlatform.MAC_HIGH_SIERRA);
@@ -392,8 +397,10 @@ public class SauceOptionsTest {
 
     @Test
     public void parsesCapabilitiesFromSauceValues() {
-        doReturn("test-name").when(sauceOptions).getEnvironmentVariable("SAUCE_USERNAME");
-        doReturn("test-accesskey").when(sauceOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
+        SauceLabsOptions sauceLabsOptions = spy(new SauceLabsOptions());
+        doReturn(sauceLabsOptions).when(sauceOptions).sauce();
+        doReturn("test-name").when(sauceLabsOptions).getEnvironmentVariable("SAUCE_USERNAME");
+        doReturn("test-accesskey").when(sauceLabsOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
 
         Map<String, Object> customData = new HashMap<>();
         customData.put("foo", "foo");
@@ -488,8 +495,11 @@ public class SauceOptionsTest {
         firefoxOptions.setUnhandledPromptBehaviour(DISMISS);
 
         sauceOptions = spy(new SauceOptions(firefoxOptions));
-        doReturn("test-name").when(sauceOptions).getEnvironmentVariable("SAUCE_USERNAME");
-        doReturn("test-accesskey").when(sauceOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
+
+        SauceLabsOptions sauceLabsOptions = spy(new SauceLabsOptions());
+        doReturn(sauceLabsOptions).when(sauceOptions).sauce();
+        doReturn("test-name").when(sauceLabsOptions).getEnvironmentVariable("SAUCE_USERNAME");
+        doReturn("test-accesskey").when(sauceLabsOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
 
         sauceOptions.setBuild("Build Name");
 
@@ -520,8 +530,10 @@ public class SauceOptionsTest {
 
         sauceOptions = spy(new SauceOptions(firefoxOptions));
 
-        doReturn("test-name").when(sauceOptions).getEnvironmentVariable("SAUCE_USERNAME");
-        doReturn("test-accesskey").when(sauceOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
+        SauceLabsOptions sauceLabsOptions = spy(new SauceLabsOptions());
+        doReturn(sauceLabsOptions).when(sauceOptions).sauce();
+        doReturn("test-name").when(sauceLabsOptions).getEnvironmentVariable("SAUCE_USERNAME");
+        doReturn("test-accesskey").when(sauceLabsOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
 
         expectedCapabilities.merge(firefoxOptions);
         expectedCapabilities.setCapability("browserVersion", "latest");

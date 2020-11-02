@@ -61,7 +61,7 @@ public class SauceSession {
         // The first print statement will automatically populate links on Jenkins to Sauce
         // The second print statement will output the job link to logging/console
         if (this.driver != null) {
-            String sauceReporter = String.format("SauceOnDemandSessionID=%s job-name=%s", this.driver.getSessionId(), this.sauceOptions.getName());
+            String sauceReporter = String.format("SauceOnDemandSessionID=%s job-name=%s", this.driver.getSessionId(), this.sauceOptions.sauce().getName());
             String sauceTestLink = String.format("Test Job Link: https://app.saucelabs.com/tests/%s", this.driver.getSessionId());
             System.out.print(sauceReporter + "\n" + sauceTestLink + "\n");
         }

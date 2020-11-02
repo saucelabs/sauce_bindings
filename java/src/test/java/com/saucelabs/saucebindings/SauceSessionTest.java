@@ -17,6 +17,7 @@ import static org.mockito.Mockito.*;
 
 public class SauceSessionTest {
     private final SauceOptions sauceOptions = spy(new SauceOptions());
+    private final SauceLabsOptions sauceLabsOptions = spy(new SauceLabsOptions());
     private final SauceSession sauceSession = spy(new SauceSession());
     private final SauceSession sauceOptsSession = spy(new SauceSession(sauceOptions));
     private final RemoteWebDriver dummyRemoteDriver = mock(RemoteWebDriver.class);
@@ -73,13 +74,15 @@ public class SauceSessionTest {
 
     @Test(expected = SauceEnvironmentVariablesNotSetException.class)
     public void startThrowsErrorWithoutUsername() {
-        doReturn(null).when(sauceOptions).getEnvironmentVariable("SAUCE_USERNAME");
+        doReturn(sauceLabsOptions).when(sauceOptions).sauce();
+        doReturn(null).when(sauceLabsOptions).getEnvironmentVariable("SAUCE_USERNAME");
         sauceOptsSession.start();
     }
 
     @Test(expected = SauceEnvironmentVariablesNotSetException.class)
     public void startThrowsErrorWithoutAccessKey() {
-        doReturn(null).when(sauceOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
+        doReturn(sauceLabsOptions).when(sauceOptions).sauce();
+        doReturn(null).when(sauceLabsOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
         sauceOptsSession.start();
     }
 

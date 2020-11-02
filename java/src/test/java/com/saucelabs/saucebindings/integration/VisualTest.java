@@ -1,16 +1,23 @@
 package com.saucelabs.saucebindings.integration;
 
+import com.saucelabs.saucebindings.Browser;
 import com.saucelabs.saucebindings.SauceOptions;
+import com.saucelabs.saucebindings.SaucePlatform;
 import com.saucelabs.saucebindings.SauceSession;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertNotNull;
 
+@RunWith(Parameterized.class)
 public class VisualTest {
     private RemoteWebDriver webDriver;
     private SauceSession session;
@@ -65,6 +72,61 @@ public class VisualTest {
         webDriver = session.start();
         webDriver.get("https://www.saucedemo.com/");
         session.takeSnapshot("Snapshot name");
+        assertNotNull(session.getDriver());
+    }
+
+    @Test
+    public void multiScreenshotTest() {
+        sauceOptions = SauceOptions.visual("multiScreenshotTest");
+        session = new SauceSession(sauceOptions);
+        webDriver = session.start();
+        webDriver.get("https://www.saucedemo.com/");
+        session.takeSnapshot("Login page");
+
+        webDriver.get("https://www.saucedemo.com/inventory.html");
+        session.takeSnapshot("Inventory page");
+
+        assertNotNull(session.getDriver());
+    }
+
+    /*
+     * Configure our data driven parameters
+     * */
+    @Parameterized.Parameter
+    public String browserName;
+    @Parameterized.Parameter(2)
+    public String browserVersion;
+    @Parameterized.Parameter(1)
+    public String platform;
+    @Parameterized.Parameter(3)
+    public String viewportSize;
+    @Parameterized.Parameter(4)
+    public String deviceName;
+
+    @Parameterized.Parameters(name = "{4}")
+    public static Collection<Object[]> crossBrowserData() {
+        return Arrays.asList(new Object[][] {
+                { "Chrome", "Windows_10", "latest", "412x732", "Pixel XL" },
+                { "Safari", "macOS 10.15", "latest", "375x812", "iPhone X" }
+        });
+    }
+    @Test
+    @Parameterized.Parameters()
+    public void crossPlatformTest() {
+        sauceOptions = SauceOptions.visual("crossPlatformTest");
+        sauceOptions.setPlatformName(SaucePlatform.valueOf(platform));
+        sauceOptions.setBrowserName(Browser.valueOf(browserName));
+        sauceOptions.setBrowserVersion(browserVersion);
+        sauceOptions.visual().setViewportSize(viewportSize);
+
+        session = new SauceSession(sauceOptions);
+        webDriver = session.start();
+        webDriver.get("https://www.saucedemo.com/");
+        session.takeSnapshot("Login page");
+
+        webDriver.get("https://www.saucedemo.com/inventory.html");
+        session.takeSnapshot("Inventory page");
+
         assertNotNull(session.getDriver());
     }
 }

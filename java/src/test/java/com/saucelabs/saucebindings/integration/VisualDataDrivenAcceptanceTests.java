@@ -52,7 +52,7 @@ public class VisualDataDrivenAcceptanceTests {
     //if we have the ability to run multiple tests in parallel
     @Test
     @Parameterized.Parameters()
-    public void crossPlatformTest() {
+    public void sameBuildNameForMultipleThreads() {
         sauceOptions = SauceOptions.visual("crossPlatformTest");
         sauceOptions.setPlatformName(SaucePlatform.valueOf(platform.toUpperCase()));
         sauceOptions.setBrowserName(Browser.valueOf(browserName.toUpperCase()));

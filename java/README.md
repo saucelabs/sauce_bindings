@@ -131,3 +131,34 @@ mvn test
 ```
 
 Tests will also be automatically executed as part of the building process.
+
+## Deploying
+
+#### Prerequisites
+1.	Ensure you have access to Sauce Repository on Sonatype: https://issues.sonatype.org/browse/OSSRH-34416
+2.	Install gpg2
+
+#### Release
+1. Execute in terminal: `mvn release:prepare`
+    * This does:
+        * Runs the tests to ensure passing
+        * Removes the `SNAPSHOT` from the version in the `pom.xml`
+        * Commits changes and tags the release
+        * Bumps version to next development version with `SNAPSHOT`
+        * Commits changes
+
+2. Answer Questions:
+    * "What is the release version for "saucebindings"? (com.saucelabs:sauce_bindings) 1.0.1"
+        * Major Releases indicate backward incompatible changes
+        * Minor Releases indicate new features available in all languages
+        * Point Releases are for updates to language specific functionality
+    * "What is SCM release tag or label for "saucebindings"? (com.saucelabs:sauce_bindings) sauce_bindings-1.0.1"
+        * use format: "v1.0.1"
+    * "What is the new development version for "saucebindings"? (com.saucelabs:sauce_bindings) 1.0.2-SNAPSHOT"
+        * hit enter
+
+3. Execute in terminal: `GPG_TTY=$(tty) mvn release:perform`
+    * This does:
+        * Runs the tests to ensure passing
+        * Builds Jar
+        * Uploads artifacts to maven profile 

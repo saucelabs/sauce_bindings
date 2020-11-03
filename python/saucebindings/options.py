@@ -71,8 +71,11 @@ class SauceOptions:
         # Circle
         elif os.environ.get('CIRCLE_JOB'):
             self.build = "{}: {}".format(os.environ['CIRCLE_JOB'], os.environ['CIRCLE_BUILD_NUM'])
+        # GitHub Actions
+        elif os.environ.get("GITHUB_SHA"):
+            self.build = "{}: {}".format(os.environ['GITHUB_WORKFLOW'], os.environ['GITHUB_SHA'])
         # Gitlab
-        elif os.environ.get('CI'):
+        elif os.environ.get('CI_JOB_ID'):
             self.build = "{}: {}".format(os.environ['CI_JOB_NAME'], os.environ['CI_JOB_ID'])
         # Team City
         elif os.environ.get('TEAMCITY_PROJECT_NAME'):

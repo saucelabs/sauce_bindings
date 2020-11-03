@@ -145,8 +145,11 @@ module SauceBindings
       # CircleCI
       elsif ENV['CIRCLE_JOB']
         "#{ENV['CIRCLE_JOB']}: #{ENV['CIRCLE_BUILD_NUM']}"
+      # GitHub Actions
+      elsif ENV['GITHUB_SHA']
+        "#{ENV['GITHUB_WORKFLOW']}: #{ENV['GITHUB_SHA']}"
       # Gitlab
-      elsif ENV['CI']
+      elsif ENV['CI_JOB_NAME']
         "#{ENV['CI_JOB_NAME']}: #{ENV['CI_JOB_ID']}"
       # Team City
       elsif ENV['TEAMCITY_PROJECT_NAME']

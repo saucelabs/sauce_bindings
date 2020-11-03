@@ -18,7 +18,7 @@ import java.util.Map;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(Parameterized.class)
-public class VisualTest {
+public class VisualAcceptanceTests {
     private RemoteWebDriver webDriver;
     private SauceSession session;
     private SauceOptions sauceOptions;
@@ -103,19 +103,22 @@ public class VisualTest {
     @Parameterized.Parameter(4)
     public String deviceName;
 
-    @Parameterized.Parameters(name = "{4}")
+    @Parameterized.Parameters()
     public static Collection<Object[]> crossBrowserData() {
         return Arrays.asList(new Object[][] {
-                { "Chrome", "Windows_10", "latest", "412x732", "Pixel XL" },
-                { "Safari", "macOS 10.15", "latest", "375x812", "iPhone X" }
+                { "Chrome", "WINDOWS_10", "latest", "412x732", "Pixel XL" },
+                { "Safari", "MAC_MOJAVE", "latest", "375x812", "iPhone X" }
         });
     }
+
+    //This is an important use case as it demonstrates
+    //if we have the ability to run multiple tests in parallel
     @Test
     @Parameterized.Parameters()
     public void crossPlatformTest() {
         sauceOptions = SauceOptions.visual("crossPlatformTest");
-        sauceOptions.setPlatformName(SaucePlatform.valueOf(platform));
-        sauceOptions.setBrowserName(Browser.valueOf(browserName));
+        sauceOptions.setPlatformName(SaucePlatform.valueOf(platform.toUpperCase()));
+        sauceOptions.setBrowserName(Browser.valueOf(browserName.toUpperCase()));
         sauceOptions.setBrowserVersion(browserVersion);
         sauceOptions.visual().setViewportSize(viewportSize);
 
@@ -123,9 +126,6 @@ public class VisualTest {
         webDriver = session.start();
         webDriver.get("https://www.saucedemo.com/");
         session.takeSnapshot("Login page");
-
-        webDriver.get("https://www.saucedemo.com/inventory.html");
-        session.takeSnapshot("Inventory page");
 
         assertNotNull(session.getDriver());
     }

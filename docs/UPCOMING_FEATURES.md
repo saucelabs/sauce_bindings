@@ -9,7 +9,7 @@ If there is something you'd like to see that isn't on this list, please
 [open a ticket](https://github.com/saucelabs/sauce_bindings/issues/new).
 
 * Support for end-to-end visual testing
-* Mobile Application Support
+* Mobile automation support
 * Default Test Names Based on Method
 * Default Build Names Based on CI Tool
 * Methods for Session related information and updates (no need to use an HTTP Library)

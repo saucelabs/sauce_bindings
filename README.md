@@ -11,3 +11,25 @@
 ## Making Sauce Simple To Use
 
 ***[Learn More Here](https://opensource.saucelabs.com/sauce_bindings/docs/overview.html)***
+
+## Contributing
+
+[Instructions here](https://opensource.saucelabs.com/sauce_bindings/docs/contributing)
+
+## Building and Installing
+
+Currently each binding follows its own language-specific build process for building and installing each language binding.
+
+-   [Java](https://github.com/saucelabs/sauce_bindings/tree/master/java/README.md#building),
+-   [C#](https://github.com/saucelabs/sauce_bindings/tree/master/dotnet/README.md#migrating-to-simple-sauce),
+-   [Python](https://github.com/saucelabs/sauce_bindings/tree/master/python/README.rst#installation),
+-   [Ruby](https://github.com/saucelabs/sauce_bindings/tree/master/ruby#installation).
+
+## Tests
+
+Currently each binding has tests that can be executed in a language-specific way. 
+
+-   [Java](https://github.com/saucelabs/sauce_bindings/tree/master/java/README.md#testing),
+-   [C#](https://github.com/saucelabs/sauce_bindings/tree/master/dotnet/README.md),
+-   [Python](https://github.com/saucelabs/sauce_bindings/tree/master/python/README.rst#testing),
+-   [Ruby](https://github.com/saucelabs/sauce_bindings/tree/master/ruby#installation).

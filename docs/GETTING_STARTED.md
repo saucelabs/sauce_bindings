@@ -28,20 +28,21 @@ Here are instructions for setting environment variables on each Operating System
 <!--Java-->
 <br />
 
-1. Install ***Java version 9*** or greater (Java 8 *will not* work!)<br />
+1. Install ***Java version 8*** or greater <br />
 2. Install your favorite Java IDE (we really like IntelliJ and the Community Edition is free).
 2. The project is designed as a standard Maven project and follows Maven conventions.</br>
 Add the following to your .pom file:
 
 ```xml
+<!-- https://mvnrepository.com/artifact/com.saucelabs/sauce_bindings -->
 <dependency>
     <groupId>com.saucelabs</groupId>
     <artifactId>sauce_bindings</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
-Examples on this site are written to use JUnit 4, so to execute them you must also add this to your .pom file:
+Examples in the docs are written to use JUnit 4, so to execute the examples you must also add this to your .pom file:
 ```xml
 <dependency>
     <groupId>junit</groupId>

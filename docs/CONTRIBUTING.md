@@ -22,8 +22,7 @@ The project offers a variety of ways to contribute:
 ### Contributing Docs
 
 A great way to start working with any open source project is through improving documentation. 
-You can add or edit doc strings, either in a pull request or directly from GitHub. You can edit a file in 
-GitHub as long as you're signed in and create a pull request from those edits.
+To get started, follow [instructions](https://github.com/saucelabs/sauce_bindings/blob/master/website/README.md).
 
 ### Contributing Code
 

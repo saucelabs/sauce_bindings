@@ -71,18 +71,6 @@ public class SauceSessionTest {
         assertEquals(expetedSauceUrl, sauceSession.getSauceUrl().toString());
     }
 
-    @Test(expected = SauceEnvironmentVariablesNotSetException.class)
-    public void startThrowsErrorWithoutUsername() {
-        doReturn(null).when(sauceOptions).getEnvironmentVariable("SAUCE_USERNAME");
-        sauceOptsSession.start();
-    }
-
-    @Test(expected = SauceEnvironmentVariablesNotSetException.class)
-    public void startThrowsErrorWithoutAccessKey() {
-        doReturn(null).when(sauceOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
-        sauceOptsSession.start();
-    }
-
     @Test
     public void stopCallsDriverQuitPassing() {
         sauceSession.start();

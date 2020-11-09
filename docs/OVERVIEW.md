@@ -27,9 +27,8 @@ We support the most popular automation programming languages:
 
 ## What You'll Need
 
-- Significant experience in one of the supported languages as a software developer or SDET
-- Solid understanding of test automation 
-- Strong familiarity with their framework.
+- Your favorite IDE
+- A Sauce Labs account ([Try It Free](https://saucelabs.com/sign-up))
 
 ## Help
 

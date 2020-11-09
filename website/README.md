@@ -1,6 +1,6 @@
 This website was created with [Docusaurus](https://docusaurus.io/).
 
-# What's In This Document
+# How to update Sauce Bindings website
 
 * [Get Started in 5 Minutes](#get-started-in-5-minutes)
 * [Directory Structure](#directory-structure)
@@ -28,7 +28,7 @@ $ yarn start
 Your project file structure should look something like this
 
 ```
-my-docusaurus/
+root/
   docs/
     doc-1.md
     doc-2.md

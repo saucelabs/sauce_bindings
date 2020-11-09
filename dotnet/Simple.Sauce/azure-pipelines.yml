@@ -62,11 +62,12 @@ steps:
     command: 'pack'
     outputDir: '$(Build.ArtifactStagingDirectory)/TestDir'
 
-- task: NuGetCommand@2
-  displayName: publish
-  condition: and(succeeded(), or(eq(variables['Build.SourceBranchName'], 'master'),eq(variables['Build.SourceBranchName'], 'develop')))
-  inputs:
-    command: push
-    nuGetFeedType: external
-    publishFeedCredentials: 'NuGet'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg'
+# Turning off the publishing as it tries to publish any time there's any merge to master, even from other languages.
+#- task: NuGetCommand@2
+#  displayName: publish
+#  condition: and(succeeded(), or(eq(variables['Build.SourceBranchName'], 'master'),eq(variables['Build.SourceBranchName'], 'develop')))
+#  inputs:
+#    command: push
+#    nuGetFeedType: external
+#    publishFeedCredentials: 'NuGet'
+#    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg'

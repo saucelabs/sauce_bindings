@@ -152,210 +152,262 @@ public class SauceOptions extends Options {
      * Prepend with sauce()
      */
 
+    @Deprecated
     public boolean isKnownCI() {
         return sauce().isKnownCI();
     }
 
+    @Deprecated
     public Options setAvoidProxy(Boolean avoidProxy) {
         return sauce().setAvoidProxy(avoidProxy);
     }
 
+    @Deprecated
     public Options setBuild(String build) {
         return sauce().setBuild(build);
     }
 
+    @Deprecated
     public Options setCapturePerformance(Boolean capturePerformance) {
         return sauce().setCapturePerformance(capturePerformance);
     }
 
+    @Deprecated
     public Options setChromedriverVersion(String chromedriverVersion) {
         return sauce().setChromedriverVersion(chromedriverVersion);
     }
 
+    @Deprecated
     public Options setCommandTimeout(Integer commandTimeout) {
         return sauce().setCommandTimeout(commandTimeout);
     }
 
+    @Deprecated
     public Options setCustomData(Map<String, Object> customData) {
         return sauce().setCustomData(customData);
     }
 
+    @Deprecated
     public Options setExtendedDebugging(Boolean extendedDebugging) {
         return sauce().setExtendedDebugging(extendedDebugging);
     }
 
+    @Deprecated
     public Options setIdleTimeout(Integer idleTimeout) {
         return sauce().setIdleTimeout(idleTimeout);
     }
 
+    @Deprecated
     public Options setIedriverVersion(String iedriverVersion) {
         return sauce().setIedriverVersion(iedriverVersion);
     }
 
+    @Deprecated
     public Options setMaxDuration(Integer maxDuration) {
         return sauce().setMaxDuration(maxDuration);
     }
 
+    @Deprecated
     public Options setName(String name) {
         return sauce().setName(name);
     }
 
+    @Deprecated
     public Options setParentTunnel(String parentTunnel) {
         return sauce().setParentTunnel(parentTunnel);
     }
 
+    @Deprecated
     public Options setPrerun(Map<Prerun, Object> prerun) {
         return sauce().setPrerun(prerun);
     }
 
+    @Deprecated
     public Options setPrerunUrl(URL prerunUrl) {
         return sauce().setPrerunUrl(prerunUrl);
     }
 
+    @Deprecated
     public Options setPriority(Integer priority) {
         return sauce().setPriority(priority);
     }
 
+    @Deprecated
     public Options setJobVisibility(JobVisibility jobVisibility) {
         return sauce().setJobVisibility(jobVisibility);
     }
 
+    @Deprecated
     public Options setRecordLogs(Boolean recordLogs) {
         return sauce().setRecordLogs(recordLogs);
     }
 
+    @Deprecated
     public Options setRecordScreenshots(Boolean recordScreenshots) {
         return sauce().setRecordScreenshots(recordScreenshots);
     }
 
+    @Deprecated
     public Options setRecordVideo(Boolean recordVideo) {
         return sauce().setRecordVideo(recordVideo);
     }
 
+    @Deprecated
     public Options setScreenResolution(String screenResolution) {
         return sauce().setScreenResolution(screenResolution);
     }
 
+    @Deprecated
     public Options setSeleniumVersion(String seleniumVersion) {
         return sauce().setSeleniumVersion(seleniumVersion);
     }
 
+    @Deprecated
     public Options setTags(List<String> tags) {
         return sauce().setTags(tags);
     }
 
+    @Deprecated
     public Options setTimeZone(String timeZone) {
         return sauce().setTimeZone(timeZone);
     }
 
+    @Deprecated
     public Options setTunnelIdentifier (String tunnelIdentifier) {
         return sauce().setTunnelIdentifier(tunnelIdentifier);
     }
 
+    @Deprecated
     public Options setVideoUploadOnPass(Boolean videoUploadOnPass) {
         return sauce().setVideoUploadOnPass(videoUploadOnPass);
     }
 
+    @Deprecated
     public Boolean getAvoidProxy() {
         return sauce().getAvoidProxy();
     }
 
+    @Deprecated
     public String getBuild() {
         return sauce().getBuild();
     }
 
+    @Deprecated
     public Boolean getCapturePerformance() {
         return sauce().getCapturePerformance();
     }
 
+    @Deprecated
     public String getChromedriverVersion() {
         return sauce().getChromedriverVersion();
     }
 
+    @Deprecated
     public Integer getCommandTimeout() {
         return sauce().getCommandTimeout();
     }
 
+    @Deprecated
     public Map<String, Object> getCustomData() {
         return sauce().getCustomData();
     }
 
+    @Deprecated
     public Boolean getExtendedDebugging() {
         return sauce().getExtendedDebugging();
     }
 
+    @Deprecated
     public Integer getIdleTimeout() {
         return sauce().getIdleTimeout();
     }
 
+    @Deprecated
     public String getIedriverVersion() {
         return sauce().getIedriverVersion();
     }
 
+    @Deprecated
     public Integer getMaxDuration() {
         return sauce().getMaxDuration();
     }
 
+    @Deprecated
     public String getName() {
         return sauce().getName();
     }
 
+    @Deprecated
     public String getParentTunnel() {
         return sauce().getParentTunnel();
     }
 
+    @Deprecated
     public Map<Prerun, Object> getPrerun() {
         return sauce().getPrerun();
     }
 
+    @Deprecated
     public URL getPrerunUrl() {
         return sauce().getPrerunUrl();
     }
 
+    @Deprecated
     public Integer getPriority() {
         return sauce().getPriority();
     }
 
+    @Deprecated
     public JobVisibility getJobVisibility() {
         return sauce().getJobVisibility();
     }
 
+    @Deprecated
     public Boolean getRecordLogs() {
         return sauce().getRecordLogs();
     }
 
+    @Deprecated
     public Boolean getRecordScreenshots() {
         return sauce().getRecordScreenshots();
     }
 
+    @Deprecated
     public Boolean getRecordVideo() {
         return sauce().getRecordVideo();
     }
 
+    @Deprecated
     public String getScreenResolution() {
         return sauce().getScreenResolution();
     }
 
+    @Deprecated
     public String getSeleniumVersion() {
         return sauce().getSeleniumVersion();
     }
 
+    @Deprecated
     public List<String> getTags() {
         return sauce().getTags();
     }
 
+    @Deprecated
     public String getTimeZone() {
         return sauce().getTimeZone();
     }
 
+    @Deprecated
     public String getTunnelIdentifier () {
         return sauce().getTunnelIdentifier();
     }
 
+    @Deprecated
     public Boolean getVideoUploadOnPass() {
         return sauce().getVideoUploadOnPass();
     }
 
+    @Deprecated
     public MutableCapabilities getSeleniumCapabilities() {
         return capabilities;
     }

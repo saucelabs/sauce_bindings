@@ -74,15 +74,25 @@ public class SauceSessionTest {
 
     @Test(expected = SauceEnvironmentVariablesNotSetException.class)
     public void startThrowsErrorWithoutUsername() {
+        SauceLabsOptions sauceLabsOptions = spy(new SauceLabsOptions());
+        sauceLabsOptions.setCapabilityManager(new CapabilityManager(sauceLabsOptions));
+        SystemManager systemManager = spy(new SystemManager());
+        sauceLabsOptions.setSystemManager(systemManager);
         doReturn(sauceLabsOptions).when(sauceOptions).sauce();
-        doReturn(null).when(sauceLabsOptions).getEnvironmentVariable("SAUCE_USERNAME");
+        doReturn(null).when(systemManager).getEnv("SAUCE_USERNAME");
+
         sauceOptsSession.start();
     }
 
     @Test(expected = SauceEnvironmentVariablesNotSetException.class)
     public void startThrowsErrorWithoutAccessKey() {
+        SauceLabsOptions sauceLabsOptions = spy(new SauceLabsOptions());
+        sauceLabsOptions.setCapabilityManager(new CapabilityManager(sauceLabsOptions));
+        SystemManager systemManager = spy(new SystemManager());
+        sauceLabsOptions.setSystemManager(systemManager);
         doReturn(sauceLabsOptions).when(sauceOptions).sauce();
-        doReturn(null).when(sauceLabsOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
+        doReturn(null).when(systemManager).getEnv("SAUCE_ACCESS_KEY");
+
         sauceOptsSession.start();
     }
 

@@ -15,7 +15,6 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -224,11 +223,13 @@ public class SauceOptionsTest {
     @Test
     public void createsDefaultBuildName() {
         SauceLabsOptions sauceLabsOptions = spy(new SauceLabsOptions());
+        SystemManager systemManager = spy(new SystemManager());
+        sauceLabsOptions.setSystemManager(systemManager);
         doReturn(sauceLabsOptions).when(sauceOptions).sauce();
 
-        doReturn("Not Empty").when(sauceLabsOptions).getEnvironmentVariable("BUILD_TAG");
-        doReturn("TEMP BUILD").when(sauceLabsOptions).getEnvironmentVariable("BUILD_NAME");
-        doReturn("11").when(sauceLabsOptions).getEnvironmentVariable("BUILD_NUMBER");
+        doReturn("Not Empty").when(systemManager).getEnv("BUILD_TAG");
+        doReturn("TEMP BUILD").when(systemManager).getEnv("BUILD_NAME");
+        doReturn("11").when(systemManager).getEnv("BUILD_NUMBER");
 
         assertEquals("TEMP BUILD: 11", sauceOptions.getBuild());
     }
@@ -242,7 +243,7 @@ public class SauceOptionsTest {
     }
 
     @Test
-    public void setsCapabilitiesFromMap() throws FileNotFoundException {
+    public void setsCapabilitiesFromMap() {
         Map<String, Object> map = serialize("exampleValues");
 
         sauceOptions.mergeCapabilities(map);
@@ -351,10 +352,14 @@ public class SauceOptionsTest {
 
     @Test
     public void parsesCapabilitiesFromW3CValues() {
+        sauceOptions.setCapabilityManager(new CapabilityManager(sauceOptions));
         SauceLabsOptions sauceLabsOptions = spy(new SauceLabsOptions());
+        sauceLabsOptions.setCapabilityManager(new CapabilityManager(sauceLabsOptions));
+        SystemManager systemManager = spy(new SystemManager());
+        sauceLabsOptions.setSystemManager(systemManager);
         doReturn(sauceLabsOptions).when(sauceOptions).sauce();
-        doReturn("test-name").when(sauceLabsOptions).getEnvironmentVariable("SAUCE_USERNAME");
-        doReturn("test-accesskey").when(sauceLabsOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
+        doReturn("test-name").when(systemManager).getEnv("SAUCE_USERNAME");
+        doReturn("test-accesskey").when(systemManager).getEnv("SAUCE_ACCESS_KEY");
 
         sauceOptions.setBrowserName(Browser.FIREFOX);
         sauceOptions.setPlatformName(SaucePlatform.MAC_HIGH_SIERRA);
@@ -398,9 +403,13 @@ public class SauceOptionsTest {
     @Test
     public void parsesCapabilitiesFromSauceValues() {
         SauceLabsOptions sauceLabsOptions = spy(new SauceLabsOptions());
+        sauceLabsOptions.setCapabilityManager(new CapabilityManager(sauceLabsOptions));
+        SystemManager systemManager = spy(new SystemManager());
+        sauceLabsOptions.setSystemManager(systemManager);
         doReturn(sauceLabsOptions).when(sauceOptions).sauce();
-        doReturn("test-name").when(sauceLabsOptions).getEnvironmentVariable("SAUCE_USERNAME");
-        doReturn("test-accesskey").when(sauceLabsOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
+
+        doReturn("test-name").when(systemManager).getEnv("SAUCE_USERNAME");
+        doReturn("test-accesskey").when(systemManager).getEnv("SAUCE_ACCESS_KEY");
 
         Map<String, Object> customData = new HashMap<>();
         customData.put("foo", "foo");
@@ -496,10 +505,15 @@ public class SauceOptionsTest {
 
         sauceOptions = spy(new SauceOptions(firefoxOptions));
 
+        // This is a lot of mocking and I dislike it but don't see an alternative
+        // Have to override Managers with mocked ones for this all to work
         SauceLabsOptions sauceLabsOptions = spy(new SauceLabsOptions());
+        sauceLabsOptions.setCapabilityManager(new CapabilityManager(sauceLabsOptions));
+        SystemManager systemManager = spy(new SystemManager());
+        sauceLabsOptions.setSystemManager(systemManager);
         doReturn(sauceLabsOptions).when(sauceOptions).sauce();
-        doReturn("test-name").when(sauceLabsOptions).getEnvironmentVariable("SAUCE_USERNAME");
-        doReturn("test-accesskey").when(sauceLabsOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
+        doReturn("test-name").when(systemManager).getEnv("SAUCE_USERNAME");
+        doReturn("test-accesskey").when(systemManager).getEnv("SAUCE_ACCESS_KEY");
 
         sauceOptions.setBuild("Build Name");
 
@@ -528,26 +542,33 @@ public class SauceOptionsTest {
         firefoxOptions.addArguments("--foo");
         firefoxOptions.setUnhandledPromptBehaviour(DISMISS);
 
-        sauceOptions = spy(new SauceOptions(firefoxOptions));
+        SauceOptions sauceFFOptions = spy(new SauceOptions(firefoxOptions));
 
+        sauceFFOptions.setCapabilityManager(new CapabilityManager(sauceFFOptions));
+
+        // This is a lot of mocking and I dislike it but don't see an alternative
+        // Have to override Managers with mocked ones for this all to work
         SauceLabsOptions sauceLabsOptions = spy(new SauceLabsOptions());
-        doReturn(sauceLabsOptions).when(sauceOptions).sauce();
-        doReturn("test-name").when(sauceLabsOptions).getEnvironmentVariable("SAUCE_USERNAME");
-        doReturn("test-accesskey").when(sauceLabsOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
+        sauceLabsOptions.setCapabilityManager(new CapabilityManager(sauceLabsOptions));
+        SystemManager systemManager = spy(new SystemManager());
+        sauceLabsOptions.setSystemManager(systemManager);
+        doReturn(sauceLabsOptions).when(sauceFFOptions).sauce();
+        doReturn("test-name").when(systemManager).getEnv("SAUCE_USERNAME");
+        doReturn("test-accesskey").when(systemManager).getEnv("SAUCE_ACCESS_KEY");
 
         expectedCapabilities.merge(firefoxOptions);
         expectedCapabilities.setCapability("browserVersion", "latest");
         expectedCapabilities.setCapability("platformName", "Windows 10");
         expectedCapabilities.setCapability("acceptInsecureCerts", true);
 
-        sauceOptions.setBuild("CUSTOM BUILD: 12");
+        sauceFFOptions.setBuild("CUSTOM BUILD: 12");
         sauceCapabilities.setCapability("build", "CUSTOM BUILD: 12");
 
-        sauceOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
+        sauceFFOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
         expectedCapabilities.setCapability("pageLoadStrategy", PageLoadStrategy.EAGER);
-        sauceOptions.setAcceptInsecureCerts(true);
+        sauceFFOptions.setAcceptInsecureCerts(true);
         expectedCapabilities.setCapability("acceptInsecureCerts", true);
-        sauceOptions.timeout.setImplicitWait(1)
+        sauceFFOptions.timeout.setImplicitWait(1)
                 .setPageLoad(100)
                 .setScript(10);
         Map<Timeouts, Integer> timeouts = new HashMap<>();
@@ -555,23 +576,23 @@ public class SauceOptionsTest {
         timeouts.put(Timeouts.SCRIPT, 10);
         timeouts.put(Timeouts.PAGE_LOAD, 100);
         expectedCapabilities.setCapability("timeouts", timeouts);
-        sauceOptions.setUnhandledPromptBehavior(UnhandledPromptBehavior.IGNORE);
+        sauceFFOptions.setUnhandledPromptBehavior(UnhandledPromptBehavior.IGNORE);
         expectedCapabilities.setCapability("unhandledPromptBehavior", UnhandledPromptBehavior.IGNORE);
 
-        sauceOptions.setExtendedDebugging(true);
+        sauceFFOptions.setExtendedDebugging(true);
         sauceCapabilities.setCapability("extendedDebugging", true);
-        sauceOptions.setName("Test name");
+        sauceFFOptions.setName("Test name");
         sauceCapabilities.setCapability("name", "Test name");
-        sauceOptions.setParentTunnel("Mommy");
+        sauceFFOptions.setParentTunnel("Mommy");
         sauceCapabilities.setCapability("parentTunnel", "Mommy");
 
-        sauceOptions.setJobVisibility(JobVisibility.SHARE);
+        sauceFFOptions.setJobVisibility(JobVisibility.SHARE);
         sauceCapabilities.setCapability("public", JobVisibility.SHARE);
         sauceCapabilities.setCapability("username", "test-name");
         sauceCapabilities.setCapability("accessKey", "test-accesskey");
 
         expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
-        MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
+        MutableCapabilities actualCapabilities = sauceFFOptions.toCapabilities();
 
         assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
     }

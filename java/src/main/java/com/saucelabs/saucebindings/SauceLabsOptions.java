@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @Accessors(chain = true) @Setter @Getter
-public class SauceLabsOptions extends SauceOptions {
+public class SauceLabsOptions extends Options {
     // https://wiki.saucelabs.com/display/DOCS/Test+Configuration+Options
     private Boolean avoidProxy = null;
     private String build;
@@ -43,7 +43,7 @@ public class SauceLabsOptions extends SauceOptions {
     private Boolean videoUploadOnPass = null;
 
 
-    public static final List<String> sauceLabsOptions = Arrays.asList(
+    public final List<String> validOptions = Arrays.asList(
             "avoidProxy",
             "build",
             "capturePerformance",
@@ -58,6 +58,7 @@ public class SauceLabsOptions extends SauceOptions {
             "name",
             "parentTunnel",
             "prerun",
+            "prerunUrl",
             "priority",
             // public, do not use, reserved keyword, using jobVisibility with enum
             "recordLogs",
@@ -70,20 +71,29 @@ public class SauceLabsOptions extends SauceOptions {
             "tunnelIdentifier",
             "videoUploadOnPass");
 
+    public SauceLabsOptions() {
+        capabilityManager = new CapabilityManager(this);
+        systemManager = new SystemManager();
+    }
+
     public MutableCapabilities toCapabilities() {
-        MutableCapabilities sauceLabsCapabilities = addAuthentication();
+        capabilities.setCapability("username", getSauceUsername());
+        capabilities.setCapability("accessKey", getSauceAccessKey());
 
-        sauceLabsOptions.forEach((capability) -> {
-            if ("prerunUrl".equals(capability)) {
-                sauceLabsCapabilities.setCapability("prerun", getCapability("prerunUrl"));
-            } else if ("jobVisibility".equals(capability)) {
-                sauceLabsCapabilities.setCapability("public", getCapability("jobVisibility"));
-            } else {
-                addCapabilityIfDefined(sauceLabsCapabilities, capability);
-            }
-        });
+        Object visibilityValue = capabilityManager.getCapability("jobVisibility");
+        if (visibilityValue != null) {
+            capabilities.setCapability("public", visibilityValue);
+            setJobVisibility(null);
+        }
 
-        return sauceLabsCapabilities;
+        Object prerunValue = capabilityManager.getCapability("prerunUrl");
+        if (prerunValue != null) {
+            capabilities.setCapability("prerun", prerunValue);
+            setPrerunUrl(null);
+        }
+
+        capabilityManager.addCapabilities();
+        return capabilities;
     }
 
     protected void setSauceCapabilities(Map<String, Object> sauceLabsCapabilities) {
@@ -92,12 +102,12 @@ public class SauceLabsOptions extends SauceOptions {
 
     protected void setSauceCapability(String key, Object value) {
         if ("jobVisibility".equals(key)) {
-            enumValidator("JobVisibility", JobVisibility.keys(), (String) value);
+            capabilityManager.capabilityValidator("JobVisibility", JobVisibility.keys(), (String) value);
             setJobVisibility(JobVisibility.valueOf(JobVisibility.fromString((String) value)));
         } else if ("prerun".equals(key)) {
             Map<Prerun, Object> prerunMap = new HashMap<>();
             ((Map) value).forEach((oldKey, val) -> {
-                enumValidator("Prerun", Prerun.keys(), (String) oldKey);
+                capabilityManager.capabilityValidator("Prerun", Prerun.keys(), (String) oldKey);
                 String keyString = Prerun.fromString((String) oldKey);
                 prerunMap.put(Prerun.valueOf(keyString), val);
             });
@@ -117,25 +127,25 @@ public class SauceLabsOptions extends SauceOptions {
     public String getBuild() {
         if (build != null) {
             return build;
-        } else if (getEnvironmentVariable(knownCITools.get("Jenkins")) != null) {
-            return getEnvironmentVariable("BUILD_NAME") + ": " + getEnvironmentVariable("BUILD_NUMBER");
-        } else if (getEnvironmentVariable(knownCITools.get("Bamboo")) != null) {
-            return getEnvironmentVariable("bamboo_shortJobName") + ": " + getEnvironmentVariable("bamboo_buildNumber");
-        } else if (getEnvironmentVariable(knownCITools.get("Travis")) != null) {
-            return getEnvironmentVariable("TRAVIS_JOB_NAME") + ": " + getEnvironmentVariable("TRAVIS_JOB_NUMBER");
-        } else if (getEnvironmentVariable(knownCITools.get("Circle")) != null) {
-            return getEnvironmentVariable("CIRCLE_JOB") + ": " + getEnvironmentVariable("CIRCLE_BUILD_NUM");
-        } else if (getEnvironmentVariable(knownCITools.get("GitLab")) != null) {
-            return getEnvironmentVariable("CI_JOB_NAME") + ": " + getEnvironmentVariable("CI_JOB_ID");
-        } else if (getEnvironmentVariable(knownCITools.get("TeamCity")) != null) {
-            return getEnvironmentVariable("TEAMCITY_PROJECT_NAME") + ": " + getEnvironmentVariable("BUILD_NUMBER");
+        } else if (systemManager.getEnv(knownCITools.get("Jenkins")) != null) {
+            return systemManager.getEnv("BUILD_NAME") + ": " + systemManager.getEnv("BUILD_NUMBER");
+        } else if (systemManager.getEnv(knownCITools.get("Bamboo")) != null) {
+            return systemManager.getEnv("bamboo_shortJobName") + ": " + systemManager.getEnv("bamboo_buildNumber");
+        } else if (systemManager.getEnv(knownCITools.get("Travis")) != null) {
+            return systemManager.getEnv("TRAVIS_JOB_NAME") + ": " + systemManager.getEnv("TRAVIS_JOB_NUMBER");
+        } else if (systemManager.getEnv(knownCITools.get("Circle")) != null) {
+            return systemManager.getEnv("CIRCLE_JOB") + ": " + systemManager.getEnv("CIRCLE_BUILD_NUM");
+        } else if (systemManager.getEnv(knownCITools.get("GitLab")) != null) {
+            return systemManager.getEnv("CI_JOB_NAME") + ": " + systemManager.getEnv("CI_JOB_ID");
+        } else if (systemManager.getEnv(knownCITools.get("TeamCity")) != null) {
+            return systemManager.getEnv("TEAMCITY_PROJECT_NAME") + ": " + systemManager.getEnv("BUILD_NUMBER");
         } else {
             return "Build Time: " + System.currentTimeMillis();
         }
     }
 
     public boolean isKnownCI() {
-        return !knownCITools.keySet().stream().allMatch((key) -> getEnvironmentVariable(key) == null);
+        return !knownCITools.keySet().stream().allMatch((key) -> systemManager.getEnv(key) == null);
     }
 
     public static final Map<String, String> knownCITools;
@@ -150,18 +160,11 @@ public class SauceLabsOptions extends SauceOptions {
         knownCITools.put("TeamCity", "TEAMCITY_PROJECT_NAME");
     }
 
-    private MutableCapabilities addAuthentication() {
-        MutableCapabilities caps = new MutableCapabilities();
-        caps.setCapability("username", getSauceUsername());
-        caps.setCapability("accessKey", getSauceAccessKey());
-        return caps;
-    }
-
     protected String getSauceUsername() {
-        return tryToGetVariable("SAUCE_USERNAME", "Sauce Username was not provided");
+        return systemManager.get("SAUCE_USERNAME", "Sauce Username was not provided");
     }
 
     protected String getSauceAccessKey() {
-        return tryToGetVariable("SAUCE_ACCESS_KEY", "Sauce Access Key was not provided");
+        return systemManager.get("SAUCE_ACCESS_KEY", "Sauce Access Key was not provided");
     }
 }

@@ -1,27 +1,23 @@
 package com.saucelabs.saucebindings;
 
-import org.openqa.selenium.MutableCapabilities;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Set;
 
 public class CapabilityManager {
-    private final SauceOptions options;
+    private final BaseOptions options;
 
-    public CapabilityManager(SauceOptions options) {
+    public CapabilityManager(BaseOptions options) {
         this.options = options;
     }
 
-    public MutableCapabilities addCapabilities(MutableCapabilities capabilities, List<String> validOptions) {
-        validOptions.forEach((capability) -> {
+    public void addCapabilities() {
+        options.getValidOptions().forEach((capability) -> {
             Object value = getCapability(capability);
             if (value != null) {
-                capabilities.setCapability(capability, value);
+                options.capabilities.setCapability(capability, value);
             }
         });
-        return capabilities;
     }
 
     public void setCapability(String key, Object value) {

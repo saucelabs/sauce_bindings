@@ -12,8 +12,6 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.safari.SafariOptions;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,9 +20,8 @@ import java.util.Map;
 
 @Accessors(chain = true)
 @Setter @Getter
-public class SauceOptions {
-    @Setter(AccessLevel.NONE) private MutableCapabilities capabilities;
-    @Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE) private CapabilityManager capabilityManager;
+public class SauceOptions extends Options {
+    @Setter(AccessLevel.NONE) @Getter(AccessLevel.NONE) private SauceLabsOptions sauceLabsOptions = null;
     public TimeoutStore timeout = new TimeoutStore();
 
     // w3c Settings
@@ -39,34 +36,7 @@ public class SauceOptions {
     private Boolean strictFileInteractability = null;
     private UnhandledPromptBehavior unhandledPromptBehavior;
 
-    // Sauce Settings
-    private Boolean avoidProxy = null;
-    private String build;
-    private Boolean capturePerformance = null;
-    private String chromedriverVersion;
-    private Integer commandTimeout = null;
-    private Map<String, Object> customData = null;
-    private Boolean extendedDebugging = null;
-    private Integer idleTimeout = null;
-    private String iedriverVersion;
-    private Integer maxDuration = null;
-    private String name;
-    private String parentTunnel;
-    private Map<Prerun, Object> prerun;
-    private URL prerunUrl;
-    private Integer priority = null;
-    private JobVisibility jobVisibility; // the actual key for this is a Java reserved keyword "public"
-    private Boolean recordLogs = null;
-    private Boolean recordScreenshots = null;
-    private Boolean recordVideo = null;
-    private String screenResolution;
-    private String seleniumVersion;
-    private List<String> tags = null;
-    private String timeZone;
-    private String tunnelIdentifier;
-    private Boolean videoUploadOnPass = null;
-
-    public static final List<String> w3cDefinedOptions = Arrays.asList(
+    public final List<String> validOptions = Arrays.asList(
             "browserName",
             "browserVersion",
             "platformName",
@@ -78,41 +48,8 @@ public class SauceOptions {
             "strictFileInteractability",
             "unhandledPromptBehavior");
 
-    public static final List<String> sauceDefinedOptions = Arrays.asList(
-            "avoidProxy",
-            "build",
-            "capturePerformance",
-            "chromedriverVersion",
-            "commandTimeout",
-            "customData",
-            "extendedDebugging",
-            "idleTimeout",
-            "iedriverVersion",
-            "maxDuration",
-            "name",
-            "parentTunnel",
-            "prerun",
-            "priority",
-            // public, do not use, reserved keyword, using jobVisibility
-            "recordLogs",
-            "recordScreenshots",
-            "recordVideo",
-            "screenResolution",
-            "seleniumVersion",
-            "tags",
-            "timeZone",
-            "tunnelIdentifier",
-            "videoUploadOnPass");
-
-    public static final Map<String, String> knownCITools;
-    static {
-        knownCITools = new HashMap<>();
-        knownCITools.put("Jenkins", "BUILD_TAG");
-        knownCITools.put("Bamboo", "bamboo_agentId");
-        knownCITools.put("Travis", "TRAVIS_JOB_ID");
-        knownCITools.put("Circle", "CIRCLE_JOB");
-        knownCITools.put("GitLab", "CI");
-        knownCITools.put("TeamCity", "TEAMCITY_PROJECT_NAME");
+    public SauceLabsOptions sauce() {
+        return sauceLabsOptions;
     }
 
     public SauceOptions() {
@@ -149,65 +86,21 @@ public class SauceOptions {
     private SauceOptions(MutableCapabilities options) {
         capabilities = new MutableCapabilities(options.asMap());
         capabilityManager = new CapabilityManager(this);
+        sauceLabsOptions = new SauceLabsOptions();
         if (options.getCapability("browserName") != null) {
             setCapability("browserName", options.getCapability("browserName"));
         }
     }
 
     public MutableCapabilities toCapabilities() {
-        capabilityManager.addCapabilities(capabilities, w3cDefinedOptions);
-
-        MutableCapabilities sauceCapabilities = new MutableCapabilities();
-        sauceCapabilities.setCapability("username", getSauceUsername());
-        sauceCapabilities.setCapability("accessKey", getSauceAccessKey());
-
-        capabilityManager.addCapabilities(sauceCapabilities, sauceDefinedOptions);
-
-        Object visibilityValue = capabilityManager.getCapability("jobVisibility");
-        if (visibilityValue != null) {
-            sauceCapabilities.setCapability("public", visibilityValue);
-        }
-
-        Object prerunValue = capabilityManager.getCapability("prerunUrl");
-        if (prerunValue != null) {
-            sauceCapabilities.setCapability("prerun", prerunValue);
-        }
-
-        capabilities.setCapability("sauce:options", sauceCapabilities);
+        capabilityManager.addCapabilities();
+        capabilities.setCapability("sauce:options", sauce().toCapabilities());
         return capabilities;
     }
 
-    public String getBuild() {
-        if (build != null) {
-            return build;
-        } else if (SystemManager.get(knownCITools.get("Jenkins")) != null) {
-            return SystemManager.get("BUILD_NAME") + ": " + SystemManager.get("BUILD_NUMBER");
-        } else if (SystemManager.get(knownCITools.get("Bamboo")) != null) {
-            return SystemManager.get("bamboo_shortJobName") + ": " + SystemManager.get("bamboo_buildNumber");
-        } else if (SystemManager.get(knownCITools.get("Travis")) != null) {
-            return SystemManager.get("TRAVIS_JOB_NAME") + ": " + SystemManager.get("TRAVIS_JOB_NUMBER");
-        } else if (SystemManager.get(knownCITools.get("Circle")) != null) {
-            return SystemManager.get("CIRCLE_JOB") + ": " + SystemManager.get("CIRCLE_BUILD_NUM");
-        } else if (SystemManager.get(knownCITools.get("GitLab")) != null) {
-            return SystemManager.get("CI_JOB_NAME") + ": " + SystemManager.get("CI_JOB_ID");
-        } else if (SystemManager.get(knownCITools.get("TeamCity")) != null) {
-            return SystemManager.get("TEAMCITY_PROJECT_NAME") + ": " + SystemManager.get("BUILD_NUMBER");
-        } else {
-            return "Build Time: " + System.currentTimeMillis();
-        }
-    }
-
-    public boolean isKnownCI() {
-        return !knownCITools.keySet().stream().allMatch((key) -> SystemManager.get(key) == null);
-    }
-
-    // Use Case is pulling serialized information from JSON/YAML, converting it to a HashMap and passing it in
-    // This is a preferred pattern as it avoids conditionals in code
-    public void mergeCapabilities(Map<String, Object> capabilities) {
-        capabilities.forEach(this::setCapability);
-    }
-
-    public void setCapability(String key, Object value) {
+    // This will convert string value to an enum if necessary
+    @Override
+    protected void setCapability(String key, Object value) {
         if ("browserName".equals(key)) {
             capabilityManager.capabilityValidator("Browser", Browser.keys(), (String) value);
             setBrowserName(Browser.valueOf(Browser.fromString((String) value)));
@@ -228,35 +121,504 @@ public class SauceOptions {
                 timeoutsMap.put(Timeouts.valueOf(keyString), (Integer) val);
             });
             setTimeouts(timeoutsMap);
-        } else if ("jobVisibility".equals(key)) {
-            capabilityManager.capabilityValidator("JobVisibility", JobVisibility.keys(), (String) value);
-            setJobVisibility(JobVisibility.valueOf(JobVisibility.fromString((String) value)));
-        } else if ("prerun".equals(key)) {
-            Map<Prerun, Object> prerunMap = new HashMap<>();
-            ((Map) value).forEach((oldKey, val) -> {
-                capabilityManager.capabilityValidator("Prerun", Prerun.keys(), (String) oldKey);
-                String keyString = Prerun.fromString((String) oldKey);
-                prerunMap.put(Prerun.valueOf(keyString), val);
-            });
-            setPrerun(prerunMap);
+        } else if ("sauce".equals(key)) {
+            sauce().mergeCapabilities((HashMap<String, Object>) value);
+        } else if (sauce().getValidOptions().contains(key)) {
+            deprecatedSetCapability(key, value);
         } else {
-            try {
-                Class<?> type = SauceOptions.class.getDeclaredField(key).getType();
-                String setter = "set" + key.substring(0, 1).toUpperCase() + key.substring(1);
-                Method method = SauceOptions.class.getDeclaredMethod(setter, type);
-                method.invoke(this, value);
-            } catch (NoSuchFieldException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
+            super.setCapability(key, value);
         }
     }
 
-    protected String getSauceUsername() {
-        return SystemManager.get("SAUCE_USERNAME", "Sauce Username was not provided");
+    @Deprecated
+    private void deprecatedSetCapability(String key, Object value) {
+        System.out.println("WARNING: using merge() of Map with value of (" + key + ") is DEPRECATED");
+        System.out.println("place this value inside a nested Map with the keyword 'sauce'");
+        sauce().setCapability(key, value);
     }
 
-    protected String getSauceAccessKey() {
-        return SystemManager.get("SAUCE_ACCESS_KEY", "Sauce Access Key was not provided");
+    /**
+     * @deprecated No longer supported
+     * @return
+     */
+    @Deprecated
+    public boolean isKnownCI() {
+        return sauce().isKnownCI();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param avoidProxy
+     * @return
+     */
+    @Deprecated
+    public Options setAvoidProxy(Boolean avoidProxy) {
+        return sauce().setAvoidProxy(avoidProxy);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param build
+     * @return
+     */
+    @Deprecated
+    public Options setBuild(String build) {
+        return sauce().setBuild(build);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param capturePerformance
+     * @return
+     */
+    @Deprecated
+    public Options setCapturePerformance(Boolean capturePerformance) {
+        return sauce().setCapturePerformance(capturePerformance);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param chromedriverVersion
+     * @return
+     */
+    @Deprecated
+    public Options setChromedriverVersion(String chromedriverVersion) {
+        return sauce().setChromedriverVersion(chromedriverVersion);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param commandTimeout
+     * @return
+     */
+    @Deprecated
+    public Options setCommandTimeout(Integer commandTimeout) {
+        return sauce().setCommandTimeout(commandTimeout);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param customData
+     * @return
+     */
+    @Deprecated
+    public Options setCustomData(Map<String, Object> customData) {
+        return sauce().setCustomData(customData);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param extendedDebugging
+     * @return
+     */
+    @Deprecated
+    public Options setExtendedDebugging(Boolean extendedDebugging) {
+        return sauce().setExtendedDebugging(extendedDebugging);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param idleTimeout
+     * @return
+     */
+    @Deprecated
+    public Options setIdleTimeout(Integer idleTimeout) {
+        return sauce().setIdleTimeout(idleTimeout);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param iedriverVersion
+     * @return
+     */
+    @Deprecated
+    public Options setIedriverVersion(String iedriverVersion) {
+        return sauce().setIedriverVersion(iedriverVersion);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param maxDuration
+     * @return
+     */
+    @Deprecated
+    public Options setMaxDuration(Integer maxDuration) {
+        return sauce().setMaxDuration(maxDuration);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param name
+     * @return
+     */
+    @Deprecated
+    public Options setName(String name) {
+        return sauce().setName(name);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param parentTunnel
+     * @return
+     */
+    @Deprecated
+    public Options setParentTunnel(String parentTunnel) {
+        return sauce().setParentTunnel(parentTunnel);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param prerun
+     * @return
+     */
+    @Deprecated
+    public Options setPrerun(Map<Prerun, Object> prerun) {
+        return sauce().setPrerun(prerun);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param prerunUrl
+     * @return
+     */
+    @Deprecated
+    public Options setPrerunUrl(URL prerunUrl) {
+        return sauce().setPrerunUrl(prerunUrl);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param priority
+     * @return
+     */
+    @Deprecated
+    public Options setPriority(Integer priority) {
+        return sauce().setPriority(priority);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param jobVisibility
+     * @return
+     */
+    @Deprecated
+    public Options setJobVisibility(JobVisibility jobVisibility) {
+        return sauce().setJobVisibility(jobVisibility);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param recordLogs
+     * @return
+     */
+    @Deprecated
+    public Options setRecordLogs(Boolean recordLogs) {
+        return sauce().setRecordLogs(recordLogs);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param recordScreenshots
+     * @return
+     */
+    @Deprecated
+    public Options setRecordScreenshots(Boolean recordScreenshots) {
+        return sauce().setRecordScreenshots(recordScreenshots);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param recordVideo
+     * @return
+     */
+    @Deprecated
+    public Options setRecordVideo(Boolean recordVideo) {
+        return sauce().setRecordVideo(recordVideo);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param screenResolution
+     * @return
+     */
+    @Deprecated
+    public Options setScreenResolution(String screenResolution) {
+        return sauce().setScreenResolution(screenResolution);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param seleniumVersion
+     * @return
+     */
+    @Deprecated
+    public Options setSeleniumVersion(String seleniumVersion) {
+        return sauce().setSeleniumVersion(seleniumVersion);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param tags
+     * @return
+     */
+    @Deprecated
+    public Options setTags(List<String> tags) {
+        return sauce().setTags(tags);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param timeZone
+     * @return
+     */
+    @Deprecated
+    public Options setTimeZone(String timeZone) {
+        return sauce().setTimeZone(timeZone);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param tunnelIdentifier
+     * @return
+     */
+    @Deprecated
+    public Options setTunnelIdentifier (String tunnelIdentifier) {
+        return sauce().setTunnelIdentifier(tunnelIdentifier);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @param videoUploadOnPass
+     * @return
+     */
+    @Deprecated
+    public Options setVideoUploadOnPass(Boolean videoUploadOnPass) {
+        return sauce().setVideoUploadOnPass(videoUploadOnPass);
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public Boolean getAvoidProxy() {
+        return sauce().getAvoidProxy();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public String getBuild() {
+        return sauce().getBuild();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public Boolean getCapturePerformance() {
+        return sauce().getCapturePerformance();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public String getChromedriverVersion() {
+        return sauce().getChromedriverVersion();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public Integer getCommandTimeout() {
+        return sauce().getCommandTimeout();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public Map<String, Object> getCustomData() {
+        return sauce().getCustomData();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public Boolean getExtendedDebugging() {
+        return sauce().getExtendedDebugging();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public Integer getIdleTimeout() {
+        return sauce().getIdleTimeout();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public String getIedriverVersion() {
+        return sauce().getIedriverVersion();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public Integer getMaxDuration() {
+        return sauce().getMaxDuration();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public String getName() {
+        return sauce().getName();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public String getParentTunnel() {
+        return sauce().getParentTunnel();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public Map<Prerun, Object> getPrerun() {
+        return sauce().getPrerun();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public URL getPrerunUrl() {
+        return sauce().getPrerunUrl();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public Integer getPriority() {
+        return sauce().getPriority();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public JobVisibility getJobVisibility() {
+        return sauce().getJobVisibility();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public Boolean getRecordLogs() {
+        return sauce().getRecordLogs();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public Boolean getRecordScreenshots() {
+        return sauce().getRecordScreenshots();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public Boolean getRecordVideo() {
+        return sauce().getRecordVideo();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public String getScreenResolution() {
+        return sauce().getScreenResolution();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public String getSeleniumVersion() {
+        return sauce().getSeleniumVersion();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public List<String> getTags() {
+        return sauce().getTags();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public String getTimeZone() {
+        return sauce().getTimeZone();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public String getTunnelIdentifier () {
+        return sauce().getTunnelIdentifier();
+    }
+
+    /**
+     * @deprecated Use with sauce() instead
+     * @return
+     */
+    @Deprecated
+    public Boolean getVideoUploadOnPass() {
+        return sauce().getVideoUploadOnPass();
     }
 
     /**

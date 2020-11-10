@@ -15,7 +15,6 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -108,55 +107,76 @@ public class SauceOptionsTest {
         tags.add("Bar");
         tags.add("Foobar");
 
-        sauceOptions.setAvoidProxy(true);
-        sauceOptions.setBuild("Sample Build Name");
-        sauceOptions.setCapturePerformance(true);
-        sauceOptions.setChromedriverVersion("71");
-        sauceOptions.setCommandTimeout(2);
-        sauceOptions.setCustomData(customData);
-        sauceOptions.setExtendedDebugging(true);
-        sauceOptions.setIdleTimeout(3);
-        sauceOptions.setIedriverVersion("3.141.0");
-        sauceOptions.setMaxDuration(300);
-        sauceOptions.setName("Test name");
-        sauceOptions.setParentTunnel("Mommy");
-        sauceOptions.setPrerun(prerun);
-        sauceOptions.setPriority(0);
-        sauceOptions.setJobVisibility(JobVisibility.TEAM);
-        sauceOptions.setRecordLogs(false);
-        sauceOptions.setRecordScreenshots(false);
-        sauceOptions.setRecordVideo(false);
-        sauceOptions.setScreenResolution("10x10");
-        sauceOptions.setSeleniumVersion("3.141.59");
-        sauceOptions.setTags(tags);
-        sauceOptions.setTimeZone("San Francisco");
-        sauceOptions.setTunnelIdentifier("tunnelname");
-        sauceOptions.setVideoUploadOnPass(false);
+        sauceOptions.sauce().setAvoidProxy(true);
+        sauceOptions.sauce().setBuild("Sample Build Name");
+        sauceOptions.sauce().setCapturePerformance(true);
+        sauceOptions.sauce().setChromedriverVersion("71");
+        sauceOptions.sauce().setCommandTimeout(2);
+        sauceOptions.sauce().setCustomData(customData);
+        sauceOptions.sauce().setExtendedDebugging(true);
+        sauceOptions.sauce().setIdleTimeout(3);
+        sauceOptions.sauce().setIedriverVersion("3.141.0");
+        sauceOptions.sauce().setMaxDuration(300);
+        sauceOptions.sauce().setName("Test name");
+        sauceOptions.sauce().setParentTunnel("Mommy");
+        sauceOptions.sauce().setPrerun(prerun);
+        sauceOptions.sauce().setPriority(0);
+        sauceOptions.sauce().setJobVisibility(JobVisibility.TEAM);
+        sauceOptions.sauce().setRecordLogs(false);
+        sauceOptions.sauce().setRecordScreenshots(false);
+        sauceOptions.sauce().setRecordVideo(false);
+        sauceOptions.sauce().setScreenResolution("10x10");
+        sauceOptions.sauce().setSeleniumVersion("3.141.59");
+        sauceOptions.sauce().setTags(tags);
+        sauceOptions.sauce().setTimeZone("San Francisco");
+        sauceOptions.sauce().setTunnelIdentifier("tunnelname");
+        sauceOptions.sauce().setVideoUploadOnPass(false);
 
-        assertEquals(true, sauceOptions.getAvoidProxy());
-        assertEquals("Sample Build Name", sauceOptions.getBuild());
-        assertEquals(true, sauceOptions.getCapturePerformance());
-        assertEquals("71", sauceOptions.getChromedriverVersion());
-        assertEquals(Integer.valueOf(2), sauceOptions.getCommandTimeout());
-        assertEquals(customData, sauceOptions.getCustomData());
-        assertEquals(true, sauceOptions.getExtendedDebugging());
-        assertEquals(Integer.valueOf(3), sauceOptions.getIdleTimeout());
-        assertEquals("3.141.0", sauceOptions.getIedriverVersion());
-        assertEquals(Integer.valueOf(300), sauceOptions.getMaxDuration());
-        assertEquals("Test name", sauceOptions.getName());
-        assertEquals("Mommy", sauceOptions.getParentTunnel());
-        assertEquals(prerun, sauceOptions.getPrerun());
-        assertEquals(Integer.valueOf(0), sauceOptions.getPriority());
-        assertEquals(JobVisibility.TEAM, sauceOptions.getJobVisibility());
-        assertEquals(false, sauceOptions.getRecordLogs());
-        assertEquals(false, sauceOptions.getRecordScreenshots());
-        assertEquals(false, sauceOptions.getRecordVideo());
-        assertEquals("10x10", sauceOptions.getScreenResolution());
-        assertEquals("3.141.59", sauceOptions.getSeleniumVersion());
-        assertEquals(tags, sauceOptions.getTags());
-        assertEquals("San Francisco", sauceOptions.getTimeZone());
-        assertEquals("tunnelname", sauceOptions.getTunnelIdentifier());
-        assertEquals(false, sauceOptions.getVideoUploadOnPass());
+        assertEquals(true, sauceOptions.sauce().getAvoidProxy());
+        assertEquals("Sample Build Name", sauceOptions.sauce().getBuild());
+        assertEquals(true, sauceOptions.sauce().getCapturePerformance());
+        assertEquals("71", sauceOptions.sauce().getChromedriverVersion());
+        assertEquals(Integer.valueOf(2), sauceOptions.sauce().getCommandTimeout());
+        assertEquals(customData, sauceOptions.sauce().getCustomData());
+        assertEquals(true, sauceOptions.sauce().getExtendedDebugging());
+        assertEquals(Integer.valueOf(3), sauceOptions.sauce().getIdleTimeout());
+        assertEquals("3.141.0", sauceOptions.sauce().getIedriverVersion());
+        assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
+        assertEquals("Test name", sauceOptions.sauce().getName());
+        assertEquals("Mommy", sauceOptions.sauce().getParentTunnel());
+        assertEquals(prerun, sauceOptions.sauce().getPrerun());
+        assertEquals(Integer.valueOf(0), sauceOptions.sauce().getPriority());
+        assertEquals(JobVisibility.TEAM, sauceOptions.sauce().getJobVisibility());
+        assertEquals(false, sauceOptions.sauce().getRecordLogs());
+        assertEquals(false, sauceOptions.sauce().getRecordScreenshots());
+        assertEquals(false, sauceOptions.sauce().getRecordVideo());
+        assertEquals("10x10", sauceOptions.sauce().getScreenResolution());
+        assertEquals("3.141.59", sauceOptions.sauce().getSeleniumVersion());
+        assertEquals(tags, sauceOptions.sauce().getTags());
+        assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
+        assertEquals("tunnelname", sauceOptions.sauce().getTunnelIdentifier());
+        assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());
+    }
+
+    @Test
+    public void fluentPatternWorksSauce() {
+        sauceOptions.setBrowserName(Browser.FIREFOX)
+                .setBrowserVersion("68")
+                .setPlatformName(SaucePlatform.MAC_HIGH_SIERRA)
+                .sauce().setAvoidProxy(true)
+                        .setBuild("Sample Build Name")
+                        .setCapturePerformance(true)
+                        .setChromedriverVersion("71")
+                        .setCommandTimeout(2);
+
+        assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
+        assertEquals("68", sauceOptions.getBrowserVersion());
+        assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
+        assertEquals(true, sauceOptions.sauce().getAvoidProxy());
+        assertEquals("Sample Build Name", sauceOptions.sauce().getBuild());
+        assertEquals(true, sauceOptions.sauce().getCapturePerformance());
+        assertEquals("71", sauceOptions.sauce().getChromedriverVersion());
+        assertEquals(Integer.valueOf(2), sauceOptions.sauce().getCommandTimeout());
     }
 
     @Test
@@ -222,7 +242,7 @@ public class SauceOptionsTest {
 
     @Test
     public void createsDefaultBuildName() {
-        assertNotNull(sauceOptions.getBuild());
+        assertNotNull(sauceOptions.sauce().getBuild());
     }
 
     @SneakyThrows
@@ -234,7 +254,7 @@ public class SauceOptionsTest {
     }
 
     @Test
-    public void setsCapabilitiesFromMap() throws FileNotFoundException {
+    public void setsCapabilitiesFromMap() {
         Map<String, Object> map = serialize("exampleValues");
 
         sauceOptions.mergeCapabilities(map);
@@ -273,30 +293,30 @@ public class SauceOptionsTest {
         assertEquals(UnhandledPromptBehavior.ACCEPT, sauceOptions.getUnhandledPromptBehavior());
         assertEquals(true, sauceOptions.getStrictFileInteractability());
         assertEquals(timeouts, sauceOptions.getTimeouts());
-        assertEquals(true, sauceOptions.getAvoidProxy());
-        assertEquals("Sample Build Name", sauceOptions.getBuild());
-        assertEquals(true, sauceOptions.getCapturePerformance());
-        assertEquals("71", sauceOptions.getChromedriverVersion());
-        assertEquals(Integer.valueOf(2), sauceOptions.getCommandTimeout());
-        assertEquals(customData, sauceOptions.getCustomData());
-        assertEquals(true, sauceOptions.getExtendedDebugging());
-        assertEquals(Integer.valueOf(3), sauceOptions.getIdleTimeout());
-        assertEquals("3.141.0", sauceOptions.getIedriverVersion());
-        assertEquals(Integer.valueOf(300), sauceOptions.getMaxDuration());
-        assertEquals("Sample Test Name", sauceOptions.getName());
-        assertEquals("Mommy", sauceOptions.getParentTunnel());
-        assertEquals(prerun, sauceOptions.getPrerun());
-        assertEquals(Integer.valueOf(0), sauceOptions.getPriority());
-        assertEquals(JobVisibility.TEAM, sauceOptions.getJobVisibility());
-        assertEquals(false, sauceOptions.getRecordLogs());
-        assertEquals(false, sauceOptions.getRecordScreenshots());
-        assertEquals(false, sauceOptions.getRecordVideo());
-        assertEquals("10x10", sauceOptions.getScreenResolution());
-        assertEquals("3.141.59", sauceOptions.getSeleniumVersion());
-        assertEquals(tags, sauceOptions.getTags());
-        assertEquals("San Francisco", sauceOptions.getTimeZone());
-        assertEquals("tunnelname", sauceOptions.getTunnelIdentifier());
-        assertEquals(false, sauceOptions.getVideoUploadOnPass());
+        assertEquals(true, sauceOptions.sauce().getAvoidProxy());
+        assertEquals("Sample Build Name", sauceOptions.sauce().getBuild());
+        assertEquals(true, sauceOptions.sauce().getCapturePerformance());
+        assertEquals("71", sauceOptions.sauce().getChromedriverVersion());
+        assertEquals(Integer.valueOf(2), sauceOptions.sauce().getCommandTimeout());
+        assertEquals(customData, sauceOptions.sauce().getCustomData());
+        assertEquals(true, sauceOptions.sauce().getExtendedDebugging());
+        assertEquals(Integer.valueOf(3), sauceOptions.sauce().getIdleTimeout());
+        assertEquals("3.141.0", sauceOptions.sauce().getIedriverVersion());
+        assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
+        assertEquals("Sample Test Name", sauceOptions.sauce().getName());
+        assertEquals("Mommy", sauceOptions.sauce().getParentTunnel());
+        assertEquals(prerun, sauceOptions.sauce().getPrerun());
+        assertEquals(Integer.valueOf(0), sauceOptions.sauce().getPriority());
+        assertEquals(JobVisibility.TEAM, sauceOptions.sauce().getJobVisibility());
+        assertEquals(false, sauceOptions.sauce().getRecordLogs());
+        assertEquals(false, sauceOptions.sauce().getRecordScreenshots());
+        assertEquals(false, sauceOptions.sauce().getRecordVideo());
+        assertEquals("10x10", sauceOptions.sauce().getScreenResolution());
+        assertEquals("3.141.59", sauceOptions.sauce().getSeleniumVersion());
+        assertEquals(tags, sauceOptions.sauce().getTags());
+        assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
+        assertEquals("tunnelname", sauceOptions.sauce().getTunnelIdentifier());
+        assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());
     }
 
     @Test(expected = InvalidSauceOptionsArgumentException.class)
@@ -338,6 +358,18 @@ public class SauceOptionsTest {
     @Test(expected = InvalidSauceOptionsArgumentException.class)
     public void setsBadPageLoadFromMap() {
         Map<String, Object> map = serialize("badPageLoad");
+        sauceOptions.mergeCapabilities(map);
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void setsInvalidOptionFromMap() {
+        Map<String, Object> map = serialize("invalidOption");
+        sauceOptions.mergeCapabilities(map);
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void setsInvalidSauceOptionFromMap() {
+        Map<String, Object> map = serialize("invalidSauceOption");
         sauceOptions.mergeCapabilities(map);
     }
 
@@ -404,30 +436,30 @@ public class SauceOptionsTest {
         tags.add("Bar");
         tags.add("Foobar");
 
-        sauceOptions.setAvoidProxy(true);
-        sauceOptions.setBuild("Sample Build Name");
-        sauceOptions.setCapturePerformance(true);
-        sauceOptions.setChromedriverVersion("71");
-        sauceOptions.setCommandTimeout(2);
-        sauceOptions.setCustomData(customData);
-        sauceOptions.setExtendedDebugging(true);
-        sauceOptions.setIdleTimeout(3);
-        sauceOptions.setIedriverVersion("3.141.0");
-        sauceOptions.setMaxDuration(300);
-        sauceOptions.setName("Test name");
-        sauceOptions.setParentTunnel("Mommy");
-        sauceOptions.setPrerun(prerun);
-        sauceOptions.setPriority(0);
-        sauceOptions.setJobVisibility(JobVisibility.TEAM);
-        sauceOptions.setRecordLogs(false);
-        sauceOptions.setRecordScreenshots(false);
-        sauceOptions.setRecordVideo(false);
-        sauceOptions.setScreenResolution("10x10");
-        sauceOptions.setSeleniumVersion("3.141.59");
-        sauceOptions.setTags(tags);
-        sauceOptions.setTimeZone("San Francisco");
-        sauceOptions.setTunnelIdentifier("tunnelname");
-        sauceOptions.setVideoUploadOnPass(false);
+        sauceOptions.sauce().setAvoidProxy(true);
+        sauceOptions.sauce().setBuild("Sample Build Name");
+        sauceOptions.sauce().setCapturePerformance(true);
+        sauceOptions.sauce().setChromedriverVersion("71");
+        sauceOptions.sauce().setCommandTimeout(2);
+        sauceOptions.sauce().setCustomData(customData);
+        sauceOptions.sauce().setExtendedDebugging(true);
+        sauceOptions.sauce().setIdleTimeout(3);
+        sauceOptions.sauce().setIedriverVersion("3.141.0");
+        sauceOptions.sauce().setMaxDuration(300);
+        sauceOptions.sauce().setName("Test name");
+        sauceOptions.sauce().setParentTunnel("Mommy");
+        sauceOptions.sauce().setPrerun(prerun);
+        sauceOptions.sauce().setPriority(0);
+        sauceOptions.sauce().setJobVisibility(JobVisibility.TEAM);
+        sauceOptions.sauce().setRecordLogs(false);
+        sauceOptions.sauce().setRecordScreenshots(false);
+        sauceOptions.sauce().setRecordVideo(false);
+        sauceOptions.sauce().setScreenResolution("10x10");
+        sauceOptions.sauce().setSeleniumVersion("3.141.59");
+        sauceOptions.sauce().setTags(tags);
+        sauceOptions.sauce().setTimeZone("San Francisco");
+        sauceOptions.sauce().setTunnelIdentifier("tunnelname");
+        sauceOptions.sauce().setVideoUploadOnPass(false);
 
         MutableCapabilities sauceCapabilities = new MutableCapabilities();
         sauceCapabilities.setCapability("avoidProxy", true);
@@ -529,14 +561,14 @@ public class SauceOptionsTest {
         sauceOptions.setUnhandledPromptBehavior(UnhandledPromptBehavior.IGNORE);
         expectedCapabilities.setCapability("unhandledPromptBehavior", UnhandledPromptBehavior.IGNORE);
 
-        sauceOptions.setExtendedDebugging(true);
+        sauceOptions.sauce().setExtendedDebugging(true);
         sauceCapabilities.setCapability("extendedDebugging", true);
-        sauceOptions.setName("Test name");
+        sauceOptions.sauce().setName("Test name");
         sauceCapabilities.setCapability("name", "Test name");
-        sauceOptions.setParentTunnel("Mommy");
+        sauceOptions.sauce().setParentTunnel("Mommy");
         sauceCapabilities.setCapability("parentTunnel", "Mommy");
 
-        sauceOptions.setJobVisibility(JobVisibility.SHARE);
+        sauceOptions.sauce().setJobVisibility(JobVisibility.SHARE);
         sauceCapabilities.setCapability("public", JobVisibility.SHARE);
         sauceCapabilities.setCapability("username", SystemManager.get("SAUCE_USERNAME"));
         sauceCapabilities.setCapability("accessKey", SystemManager.get("SAUCE_ACCESS_KEY"));

@@ -1,7 +1,7 @@
 package com.saucelabs.saucebindings;
 
 public class SystemManager {
-    protected static String get(String key, String errorMessage) {
+    public static String get(String key, String errorMessage) {
         try {
             return get(key);
         } catch (Exception e) {
@@ -23,7 +23,7 @@ public class SystemManager {
         return System.getProperty(key);
     }
 
-    protected static String getEnv(String key) {
+    public static String getEnv(String key) {
         return System.getenv(key);
     }
 }

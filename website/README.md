@@ -23,6 +23,11 @@ $ yarn
 $ yarn start
 ```
 
+3. Publish your changes to the site
+
+```sh
+GIT_USER=your_user_name CURRENT_BRANCH=master yarn run publish-gh-pages
+```
 ## Directory Structure
 
 Your project file structure should look something like this

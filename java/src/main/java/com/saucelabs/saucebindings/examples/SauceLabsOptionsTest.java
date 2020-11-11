@@ -4,15 +4,18 @@ import com.saucelabs.saucebindings.*;
 import org.junit.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class ChangeDataCenter {
+public class SauceLabsOptionsTest {
 
     @Test
-    public void dataCenter() {
-        // 1. Create Session object with the defaults
-        SauceSession session = new SauceSession();
+    public void sauceOptions() {
+        // 1. Specify Sauce Specific Options
+        SauceOptions sauceOptions = new SauceOptions();
+        sauceOptions.setExtendedDebugging(true);
+        sauceOptions.setIdleTimeout(100);
+        sauceOptions.setTimeZone("Alaska");
 
-        // 2. Set Data Center
-        session.setDataCenter(DataCenter.EU_CENTRAL);
+        // 2. Create Session object with the Options object instance
+        SauceSession session = new SauceSession(sauceOptions);
 
         // 3. Start Session to get the Driver
         RemoteWebDriver driver = session.start();

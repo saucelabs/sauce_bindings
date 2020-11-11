@@ -4,15 +4,15 @@ import com.saucelabs.saucebindings.*;
 import org.junit.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class SauceSpecificOptions {
+public class BasicOptionsTest {
 
     @Test
-    public void sauceOptions() {
-        // 1. Specify Sauce Specific Options
+    public void basicOptions() {
+        // 1. Specify the 3 basic parameters of a SauceOptions instance
         SauceOptions sauceOptions = new SauceOptions();
-        sauceOptions.setExtendedDebugging(true);
-        sauceOptions.setIdleTimeout(100);
-        sauceOptions.setTimeZone("Alaska");
+        sauceOptions.setBrowserName(Browser.FIREFOX);
+        sauceOptions.setBrowserVersion("73.0");
+        sauceOptions.setPlatformName(SaucePlatform.WINDOWS_8);
 
         // 2. Create Session object with the Options object instance
         SauceSession session = new SauceSession(sauceOptions);

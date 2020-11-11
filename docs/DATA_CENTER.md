@@ -17,10 +17,10 @@ import com.saucelabs.saucebindings.*;
 import org.junit.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class ChangeDataCenter {
+public class DataCenterTest {
 
     @Test
-    public void dataCenter() {
+    public void changeDataCenter() {
         // 1. Create Session object with the defaults
         SauceSession session = new SauceSession();
 

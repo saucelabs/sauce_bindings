@@ -8,8 +8,11 @@ There are a number of features we will be looking to add.
 If there is something you'd like to see that isn't on this list, please 
 [open a ticket](https://github.com/saucelabs/sauce_bindings/issues/new).
 
-* Support for end-to-end visual testing
-* Mobile automation support
+## Coming Soon
+1. Support for end-to-end visual testing
+2. Mobile automation support
+
+## Backlog
 * Default Test Names Based on Method
 * Default Build Names Based on CI Tool
 * Methods for Session related information and updates (no need to use an HTTP Library)

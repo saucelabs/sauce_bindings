@@ -2,6 +2,7 @@ package com.saucelabs.saucebindings.options;
 
 import com.saucelabs.saucebindings.CapabilityManager;
 import com.saucelabs.saucebindings.SystemManager;
+import com.saucelabs.saucebindings.options.builders.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -12,7 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 @Accessors(chain = true) @Setter @Getter
-public class VisualOptions extends BaseOptions {
+public class VisualOptions<T extends Builder> extends BaseOptions {
+    private T builder = null;
 
     // Sauce Visual Settings
     // https://screener.io/v2/docs/visual-e2e/visual-options
@@ -43,6 +45,24 @@ public class VisualOptions extends BaseOptions {
 
     public VisualOptions() {
         capabilityManager = new CapabilityManager(this);
+    }
+
+    public VisualOptions(T builder) {
+        this();
+        this.builder = builder;
+    }
+
+    public T build() {
+        CapabilityManager builderManager = new CapabilityManager(this);
+        CapabilityManager visualOptionsManager = new CapabilityManager(builder.getSauceOptions().visual());
+
+        getValidOptions().forEach((capability) -> {
+            Object value = builderManager.getCapability(capability);
+            if (value != null) {
+                visualOptionsManager.setCapability(capability, value);
+            }
+        });
+        return (T) builder;
     }
 
     public MutableCapabilities toCapabilities() {

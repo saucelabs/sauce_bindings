@@ -132,4 +132,19 @@ public class SauceEdgeConfigsTest {
         assertEquals("77", sauceOptions.getBrowserVersion());
         assertEquals(edgeOptions, sauceOptions.getCapabilities());
     }
+
+    @Test
+    public void createsVisualValues() {
+        SauceOptions sauceOptions = SauceOptionsFactory.edge()
+                .visual()
+                    .setProjectName("Project Name")
+                    .build()
+                .sauce()
+                    .setBuild("My Build")
+                    .build()
+                .build();
+        assertEquals("Project Name", sauceOptions.visual().getProjectName());
+        assertEquals("My Build", sauceOptions.sauce().getBuild());
+        assertEquals(Browser.EDGE, sauceOptions.getBrowserName());
+    }
 }

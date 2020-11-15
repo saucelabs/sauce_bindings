@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Accessors(chain = true) @Setter @Getter
-public class SauceFirefoxBuilder extends BaseOptions {
+public class SauceFirefoxBuilder extends BaseOptions implements Builder<SauceFirefoxBuilder> {
     public SauceOptions sauceOptions;
 
     private Browser browserName = Browser.FIREFOX;

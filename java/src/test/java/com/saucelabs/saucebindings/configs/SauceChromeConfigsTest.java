@@ -138,4 +138,19 @@ public class SauceChromeConfigsTest {
         assertEquals("77", sauceOptions.getBrowserVersion());
         assertEquals(chromeOptions, sauceOptions.getCapabilities());
     }
+
+    @Test
+    public void createsVisualValues() {
+        SauceOptions sauceOptions = SauceOptionsFactory.chrome()
+                .visual()
+                    .setProjectName("Project Name")
+                    .build()
+                .sauce()
+                    .setBuild("My Build")
+                    .build()
+                .build();
+        assertEquals("Project Name", sauceOptions.visual().getProjectName());
+        assertEquals("My Build", sauceOptions.sauce().getBuild());
+        assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
+    }
 }

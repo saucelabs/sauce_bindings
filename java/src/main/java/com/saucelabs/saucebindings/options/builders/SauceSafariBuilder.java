@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Accessors(chain = true) @Setter @Getter
-public class SauceSafariBuilder extends BaseOptions {
+public class SauceSafariBuilder extends BaseOptions implements Builder<SauceSafariBuilder> {
     public SauceOptions sauceOptions;
 
     private Browser browserName = Browser.SAFARI;

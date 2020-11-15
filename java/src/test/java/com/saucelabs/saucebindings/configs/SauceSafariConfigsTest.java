@@ -134,4 +134,19 @@ public class SauceSafariConfigsTest {
         assertEquals("77", sauceOptions.getBrowserVersion());
         assertEquals(safariOptions, sauceOptions.getCapabilities());
     }
+
+    @Test
+    public void createsVisualValues() {
+        SauceOptions sauceOptions = SauceOptionsFactory.safari()
+                .visual()
+                    .setProjectName("Project Name")
+                    .build()
+                .sauce()
+                    .setBuild("My Build")
+                    .build()
+                .build();
+        assertEquals("Project Name", sauceOptions.visual().getProjectName());
+        assertEquals("My Build", sauceOptions.sauce().getBuild());
+        assertEquals(Browser.SAFARI, sauceOptions.getBrowserName());
+    }
 }

@@ -136,4 +136,19 @@ public class SauceIEConfigsTest {
         assertEquals("77", sauceOptions.getBrowserVersion());
         assertEquals(internetExplorerOptions, sauceOptions.getCapabilities());
     }
+
+    @Test
+    public void createsVisualValues() {
+        SauceOptions sauceOptions = SauceOptionsFactory.internetExplorer()
+                .visual()
+                    .setProjectName("Project Name")
+                    .build()
+                .sauce()
+                    .setBuild("My Build")
+                    .build()
+                .build();
+        assertEquals("Project Name", sauceOptions.visual().getProjectName());
+        assertEquals("My Build", sauceOptions.sauce().getBuild());
+        assertEquals(Browser.INTERNET_EXPLORER, sauceOptions.getBrowserName());
+    }
 }

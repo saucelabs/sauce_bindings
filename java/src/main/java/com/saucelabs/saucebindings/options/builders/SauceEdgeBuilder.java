@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Accessors(chain = true) @Setter @Getter
-public class SauceEdgeBuilder extends BaseOptions {
+public class SauceEdgeBuilder extends BaseOptions implements Builder<SauceEdgeBuilder> {
     public SauceOptions sauceOptions;
 
     private Browser browserName = Browser.EDGE;

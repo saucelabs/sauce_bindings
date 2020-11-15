@@ -136,4 +136,19 @@ public class SauceFirefoxConfigsTest {
         assertEquals("77", sauceOptions.getBrowserVersion());
         assertEquals(firefoxOptions, sauceOptions.getCapabilities());
     }
+
+    @Test
+    public void createsVisualValues() {
+        SauceOptions sauceOptions = SauceOptionsFactory.firefox()
+                .visual()
+                    .setProjectName("Project Name")
+                    .build()
+                .sauce()
+                    .setBuild("My Build")
+                    .build()
+                .build();
+        assertEquals("Project Name", sauceOptions.visual().getProjectName());
+        assertEquals("My Build", sauceOptions.sauce().getBuild());
+        assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
+    }
 }

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Accessors(chain = true) @Setter @Getter
-public class SauceChromeBuilder extends BaseOptions {
+public class SauceChromeBuilder extends BaseOptions implements Builder<SauceChromeBuilder> {
     public SauceOptions sauceOptions;
 
     private Browser browserName = Browser.CHROME;

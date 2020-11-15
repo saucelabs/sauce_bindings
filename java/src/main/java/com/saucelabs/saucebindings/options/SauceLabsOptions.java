@@ -1,5 +1,9 @@
-package com.saucelabs.saucebindings;
+package com.saucelabs.saucebindings.options;
 
+import com.saucelabs.saucebindings.CapabilityManager;
+import com.saucelabs.saucebindings.JobVisibility;
+import com.saucelabs.saucebindings.Prerun;
+import com.saucelabs.saucebindings.SystemManager;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -21,6 +25,7 @@ public class SauceLabsOptions extends BaseOptions {
     private Integer commandTimeout = null;
     private Map<String, Object> customData = null;
     private Boolean extendedDebugging = null;
+    private String geckodriverVersion;
     private Integer idleTimeout = null;
     private String iedriverVersion;
     private Integer maxDuration = null;
@@ -92,8 +97,13 @@ public class SauceLabsOptions extends BaseOptions {
         return capabilities;
     }
 
-    @Override
-    protected void setCapability(String key, Object value) {
+    /**
+     * @deprecated public access to this method will be going away
+     * @param key
+     * @param value
+     */
+    @Override @Deprecated
+    public void setCapability(String key, Object value) {
         if ("jobVisibility".equals(key)) {
             capabilityManager.validateCapability("JobVisibility", JobVisibility.keys(), (String) value);
             setJobVisibility(JobVisibility.valueOf(JobVisibility.fromString((String) value)));

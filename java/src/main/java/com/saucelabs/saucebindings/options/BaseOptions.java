@@ -1,5 +1,7 @@
-package com.saucelabs.saucebindings;
+package com.saucelabs.saucebindings.options;
 
+import com.saucelabs.saucebindings.CapabilityManager;
+import com.saucelabs.saucebindings.SystemManager;
 import lombok.Getter;
 import org.openqa.selenium.MutableCapabilities;
 
@@ -9,6 +11,7 @@ import java.util.Map;
 public abstract class BaseOptions {
     @Getter protected MutableCapabilities capabilities = new MutableCapabilities();
     protected CapabilityManager capabilityManager;
+    protected SystemManager systemManager;
     @Getter public final List<String> validOptions = null;
 
     // Use Case is pulling serialized information from JSON/YAML, converting it to a HashMap and passing it in

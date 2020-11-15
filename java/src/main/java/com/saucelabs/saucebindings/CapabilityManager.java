@@ -1,5 +1,7 @@
 package com.saucelabs.saucebindings;
 
+import com.saucelabs.saucebindings.options.BaseOptions;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Set;
@@ -15,7 +17,7 @@ public class CapabilityManager {
         options.getValidOptions().forEach((capability) -> {
             Object value = getCapability(capability);
             if (value != null) {
-                options.capabilities.setCapability(capability, value);
+                options.getCapabilities().setCapability(capability, value);
             }
         });
     }

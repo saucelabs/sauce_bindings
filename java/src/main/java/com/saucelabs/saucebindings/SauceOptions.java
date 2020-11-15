@@ -1,5 +1,7 @@
 package com.saucelabs.saucebindings;
 
+import com.saucelabs.saucebindings.options.BaseOptions;
+import com.saucelabs.saucebindings.options.SauceLabsOptions;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;

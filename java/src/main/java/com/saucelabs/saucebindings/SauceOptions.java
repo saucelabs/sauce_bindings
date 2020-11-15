@@ -19,12 +19,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Accessors(chain = true)
 @Setter @Getter
 public class SauceOptions {
-    @Setter(AccessLevel.NONE) private MutableCapabilities seleniumCapabilities;
+    @Setter(AccessLevel.NONE) private MutableCapabilities capabilities;
+    @Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE) private CapabilityManager capabilityManager;
     public TimeoutStore timeout = new TimeoutStore();
 
     // w3c Settings
@@ -65,20 +65,6 @@ public class SauceOptions {
     private String timeZone;
     private String tunnelIdentifier;
     private Boolean videoUploadOnPass = null;
-
-    public static final List<String> primaryEnum = Arrays.asList(
-            "browserName",
-            "jobVisibility",
-            "pageLoadStrategy",
-            "platformName",
-            "timeouts",
-            "unhandledPromptBehavior"
-    );
-
-    public static final List<String> secondaryEnum = Arrays.asList(
-            "prerun",
-            "timeouts"
-    );
 
     public static final List<String> w3cDefinedOptions = Arrays.asList(
             "browserName",
@@ -161,64 +147,58 @@ public class SauceOptions {
     }
 
     private SauceOptions(MutableCapabilities options) {
-        seleniumCapabilities = new MutableCapabilities(options.asMap());
+        capabilities = new MutableCapabilities(options.asMap());
+        capabilityManager = new CapabilityManager(this);
         if (options.getCapability("browserName") != null) {
             setCapability("browserName", options.getCapability("browserName"));
         }
     }
 
     public MutableCapabilities toCapabilities() {
-        MutableCapabilities sauceCapabilities = addAuthentication();
+        capabilityManager.addCapabilities(capabilities, w3cDefinedOptions);
 
-        if (getCapability("jobVisibility") != null) {
-            sauceCapabilities.setCapability("public", getCapability("jobVisibility"));
+        MutableCapabilities sauceCapabilities = new MutableCapabilities();
+        sauceCapabilities.setCapability("username", getSauceUsername());
+        sauceCapabilities.setCapability("accessKey", getSauceAccessKey());
+
+        capabilityManager.addCapabilities(sauceCapabilities, sauceDefinedOptions);
+
+        Object visibilityValue = capabilityManager.getCapability("jobVisibility");
+        if (visibilityValue != null) {
+            sauceCapabilities.setCapability("public", visibilityValue);
         }
 
-        if (getCapability("prerunUrl") != null) {
-            sauceCapabilities.setCapability("prerun", getCapability("prerunUrl"));
+        Object prerunValue = capabilityManager.getCapability("prerunUrl");
+        if (prerunValue != null) {
+            sauceCapabilities.setCapability("prerun", prerunValue);
         }
 
-        w3cDefinedOptions.forEach((capability) -> {
-            addCapabilityIfDefined(seleniumCapabilities, capability);
-        });
-
-        sauceDefinedOptions.forEach((capability) -> {
-            addCapabilityIfDefined(sauceCapabilities, capability);
-        });
-
-        seleniumCapabilities.setCapability("sauce:options", sauceCapabilities);
-        return seleniumCapabilities;
-    }
-
-    private void addCapabilityIfDefined(MutableCapabilities capabilities, String capability) {
-        Object value = getCapability(capability);
-        if (value != null) {
-            capabilities.setCapability(capability, value);
-        }
+        capabilities.setCapability("sauce:options", sauceCapabilities);
+        return capabilities;
     }
 
     public String getBuild() {
         if (build != null) {
             return build;
-        } else if (getEnvironmentVariable(knownCITools.get("Jenkins")) != null) {
-            return getEnvironmentVariable("BUILD_NAME") + ": " + getEnvironmentVariable("BUILD_NUMBER");
-        } else if (getEnvironmentVariable(knownCITools.get("Bamboo")) != null) {
-            return getEnvironmentVariable("bamboo_shortJobName") + ": " + getEnvironmentVariable("bamboo_buildNumber");
-        } else if (getEnvironmentVariable(knownCITools.get("Travis")) != null) {
-            return getEnvironmentVariable("TRAVIS_JOB_NAME") + ": " + getEnvironmentVariable("TRAVIS_JOB_NUMBER");
-        } else if (getEnvironmentVariable(knownCITools.get("Circle")) != null) {
-            return getEnvironmentVariable("CIRCLE_JOB") + ": " + getEnvironmentVariable("CIRCLE_BUILD_NUM");
-        } else if (getEnvironmentVariable(knownCITools.get("GitLab")) != null) {
-            return getEnvironmentVariable("CI_JOB_NAME") + ": " + getEnvironmentVariable("CI_JOB_ID");
-        } else if (getEnvironmentVariable(knownCITools.get("TeamCity")) != null) {
-            return getEnvironmentVariable("TEAMCITY_PROJECT_NAME") + ": " + getEnvironmentVariable("BUILD_NUMBER");
+        } else if (SystemManager.get(knownCITools.get("Jenkins")) != null) {
+            return SystemManager.get("BUILD_NAME") + ": " + SystemManager.get("BUILD_NUMBER");
+        } else if (SystemManager.get(knownCITools.get("Bamboo")) != null) {
+            return SystemManager.get("bamboo_shortJobName") + ": " + SystemManager.get("bamboo_buildNumber");
+        } else if (SystemManager.get(knownCITools.get("Travis")) != null) {
+            return SystemManager.get("TRAVIS_JOB_NAME") + ": " + SystemManager.get("TRAVIS_JOB_NUMBER");
+        } else if (SystemManager.get(knownCITools.get("Circle")) != null) {
+            return SystemManager.get("CIRCLE_JOB") + ": " + SystemManager.get("CIRCLE_BUILD_NUM");
+        } else if (SystemManager.get(knownCITools.get("GitLab")) != null) {
+            return SystemManager.get("CI_JOB_NAME") + ": " + SystemManager.get("CI_JOB_ID");
+        } else if (SystemManager.get(knownCITools.get("TeamCity")) != null) {
+            return SystemManager.get("TEAMCITY_PROJECT_NAME") + ": " + SystemManager.get("BUILD_NUMBER");
         } else {
             return "Build Time: " + System.currentTimeMillis();
         }
     }
 
     public boolean isKnownCI() {
-        return !knownCITools.keySet().stream().allMatch((key) -> getEnvironmentVariable(key) == null);
+        return !knownCITools.keySet().stream().allMatch((key) -> SystemManager.get(key) == null);
     }
 
     // Use Case is pulling serialized information from JSON/YAML, converting it to a HashMap and passing it in
@@ -227,24 +207,38 @@ public class SauceOptions {
         capabilities.forEach(this::setCapability);
     }
 
-    // This might be made public in future version; For now, no good reason to prefer it over direct accessor
-    private Object getCapability(String capability) {
-        try {
-            String getter = "get" + capability.substring(0, 1).toUpperCase() + capability.substring(1);
-            Method declaredMethod = null;
-            declaredMethod = SauceOptions.class.getDeclaredMethod(getter);
-            return declaredMethod.invoke(this);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     public void setCapability(String key, Object value) {
-        if (primaryEnum.contains(key) && value.getClass().equals(String.class)) {
-            setEnumCapability(key, (String) value);
-        } else if (secondaryEnum.contains(key) && isKeyString((HashMap) value)) {
-            setEnumCapability(key, (HashMap) value);
+        if ("browserName".equals(key)) {
+            capabilityManager.validateCapability("Browser", Browser.keys(), (String) value);
+            setBrowserName(Browser.valueOf(Browser.fromString((String) value)));
+        } else if ("platformName".equals(key)) {
+            capabilityManager.validateCapability("SaucePlatform", SaucePlatform.keys(), (String) value);
+            setPlatformName(SaucePlatform.valueOf(SaucePlatform.fromString((String) value)));
+        } else if ("pageLoadStrategy".equals(key)) {
+            capabilityManager.validateCapability("PageLoadStrategy", PageLoadStrategy.keys(), (String) value);
+            setPageLoadStrategy(PageLoadStrategy.valueOf(PageLoadStrategy.fromString((String) value)));
+        } else if ("unhandledPromptBehavior".equals(key)) {
+            capabilityManager.validateCapability("UnhandledPromptBehavior", UnhandledPromptBehavior.keys(), (String) value);
+            setUnhandledPromptBehavior(UnhandledPromptBehavior.valueOf(UnhandledPromptBehavior.fromString((String) value)));
+        } else if ("timeouts".equals(key)) {
+            Map<Timeouts, Integer> timeoutsMap = new HashMap<>();
+            ((Map) value).forEach((oldKey, val) -> {
+                capabilityManager.validateCapability("Timeouts", Timeouts.keys(), (String) oldKey);
+                String keyString = Timeouts.fromString((String) oldKey);
+                timeoutsMap.put(Timeouts.valueOf(keyString), (Integer) val);
+            });
+            setTimeouts(timeoutsMap);
+        } else if ("jobVisibility".equals(key)) {
+            capabilityManager.validateCapability("JobVisibility", JobVisibility.keys(), (String) value);
+            setJobVisibility(JobVisibility.valueOf(JobVisibility.fromString((String) value)));
+        } else if ("prerun".equals(key)) {
+            Map<Prerun, Object> prerunMap = new HashMap<>();
+            ((Map) value).forEach((oldKey, val) -> {
+                capabilityManager.validateCapability("Prerun", Prerun.keys(), (String) oldKey);
+                String keyString = Prerun.fromString((String) oldKey);
+                prerunMap.put(Prerun.valueOf(keyString), val);
+            });
+            setPrerun(prerunMap);
         } else {
             try {
                 Class<?> type = SauceOptions.class.getDeclaredField(key).getType();
@@ -257,96 +251,20 @@ public class SauceOptions {
         }
     }
 
-    private boolean isKeyString(HashMap map) {
-        return map.keySet().toArray()[0].getClass().equals(String.class);
-    }
-
-    // this method is only used when setting capabilities from mergeCapabilities method
-    private void setEnumCapability(String key, HashMap value) {
-        if ("prerun".equals(key)) {
-            Map<Prerun, Object> prerunMap = new HashMap<>();
-            value.forEach((oldKey, val) -> {
-                enumValidator("Prerun", Prerun.keys(), (String) oldKey);
-                String keyString = Prerun.fromString((String) oldKey);
-                prerunMap.put(Prerun.valueOf(keyString), val);
-            });
-            setPrerun(prerunMap);
-        } else if ("timeouts".equals(key)) {
-            Map<Timeouts, Integer> timeoutsMap = new HashMap<>();
-            value.forEach((oldKey, val) -> {
-                enumValidator("Timeouts", Timeouts.keys(), (String) oldKey);
-                String keyString = Timeouts.fromString((String) oldKey);
-                timeoutsMap.put(Timeouts.valueOf(keyString), (Integer) val);
-            });
-            setTimeouts(timeoutsMap);
-        }
-    }
-
-    // this method is only used when setting capabilities from mergeCapabilities method
-    private void setEnumCapability(String key, String value) {
-        switch (key) {
-            case "browserName":
-                enumValidator("Browser", Browser.keys(), value);
-                setBrowserName(Browser.valueOf(Browser.fromString(value)));
-                break;
-            case "platformName":
-                enumValidator("SaucePlatform", SaucePlatform.keys(), value);
-                setPlatformName(SaucePlatform.valueOf(SaucePlatform.fromString(value)));
-                break;
-            case "jobVisibility":
-                enumValidator("JobVisibility", JobVisibility.keys(), value);
-                setJobVisibility(JobVisibility.valueOf(JobVisibility.fromString(value)));
-                break;
-            case "pageLoadStrategy":
-                enumValidator("PageLoadStrategy", PageLoadStrategy.keys(), value);
-                setPageLoadStrategy(PageLoadStrategy.valueOf(PageLoadStrategy.fromString(value)));
-                break;
-            case "unhandledPromptBehavior":
-                enumValidator("UnhandledPromptBehavior", UnhandledPromptBehavior.keys(), value);
-                setUnhandledPromptBehavior(UnhandledPromptBehavior.valueOf(UnhandledPromptBehavior.fromString(value)));
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void enumValidator(String name, Set values, String value) {
-        if (!values.contains(value)) {
-            String message = value + " is not a valid " + name + ", please choose from: " + values;
-            throw new InvalidSauceOptionsArgumentException(message);
-        }
-    }
-
-    private MutableCapabilities addAuthentication() {
-        MutableCapabilities caps = new MutableCapabilities();
-        caps.setCapability("username", getSauceUsername());
-        caps.setCapability("accessKey", getSauceAccessKey());
-        return caps;
-    }
-
     protected String getSauceUsername() {
-        return tryToGetVariable("SAUCE_USERNAME", "Sauce Username was not provided");
-    }
-
-    private String tryToGetVariable(String key, String errorMessage) {
-        if (getSystemProperty(key) != null) {
-            return getSystemProperty(key);
-        } else if (getEnvironmentVariable(key) != null) {
-            return getEnvironmentVariable(key);
-        } else {
-            throw new SauceEnvironmentVariablesNotSetException(errorMessage);
-        }
+        return SystemManager.get("SAUCE_USERNAME", "Sauce Username was not provided");
     }
 
     protected String getSauceAccessKey() {
-        return tryToGetVariable("SAUCE_ACCESS_KEY", "Sauce Access Key was not provided");
+        return SystemManager.get("SAUCE_ACCESS_KEY", "Sauce Access Key was not provided");
     }
 
-    protected String getSystemProperty(String key) {
-        return System.getProperty(key);
-    }
-
-    protected String getEnvironmentVariable(String key) {
-        return System.getenv(key);
+    /**
+     * @deprecated Use getCapabilities() instead
+     * @return
+     */
+    @Deprecated
+    public MutableCapabilities getSeleniumCapabilities() {
+        return capabilities;
     }
 }

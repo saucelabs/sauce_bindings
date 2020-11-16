@@ -22,6 +22,7 @@ import java.util.Map;
 @Setter @Getter
 public class SauceOptions extends BaseOptions {
     @Setter(AccessLevel.NONE) @Getter(AccessLevel.NONE) private SauceLabsOptions sauceLabsOptions = null;
+    @Setter(AccessLevel.NONE) @Getter(AccessLevel.NONE) private VisualOptions visualOptions = null;
     public TimeoutStore timeout = new TimeoutStore();
 
     // w3c Settings
@@ -50,6 +51,13 @@ public class SauceOptions extends BaseOptions {
 
     public SauceLabsOptions sauce() {
         return sauceLabsOptions;
+    }
+
+    public VisualOptions visual() {
+        if (visualOptions == null) {
+            visualOptions = new VisualOptions();
+        }
+        return visualOptions;
     }
 
     public SauceOptions() {
@@ -95,6 +103,9 @@ public class SauceOptions extends BaseOptions {
     public MutableCapabilities toCapabilities() {
         capabilityManager.addCapabilities();
         capabilities.setCapability("sauce:options", sauce().toCapabilities());
+        if (visualOptions != null) {
+            capabilities.setCapability("sauce:visual", visualOptions.toCapabilities());
+        }
         return capabilities;
     }
 
@@ -123,6 +134,8 @@ public class SauceOptions extends BaseOptions {
             setTimeouts(timeoutsMap);
         } else if ("sauce".equals(key)) {
             sauce().mergeCapabilities((HashMap<String, Object>) value);
+        } else if ("visual".equals(key)) {
+            visual().mergeCapabilities((HashMap<String, Object>) value);
         } else if (sauce().getValidOptions().contains(key)) {
             deprecatedSetCapability(key, value);
         } else {

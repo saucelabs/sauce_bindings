@@ -86,3 +86,24 @@ invalidSauceOption:
   platformName: "MacOS 10.12"
   sauce:
     foo: "bar"
+
+visualValues:
+  browserName: 'firefox'
+  browserVersion: '68'
+  platformName: 'macOS 10.13'
+  sauce:
+    build: 'Sample Build Name'
+  visual:
+    projectName: 'fromYAML'
+    viewportSize: '1280x1024'
+    diffOptions:
+      structure: true
+      layout: true
+      style: true
+      content: true
+      minLayoutPosition: 3
+      minLayoutDimension: 12
+    ignore: '#foo, .bar'
+    failOnNewStates: true
+    scrollAndStitchScreenshots: true
+    disableCORS: true

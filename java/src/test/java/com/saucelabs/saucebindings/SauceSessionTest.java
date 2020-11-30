@@ -52,6 +52,16 @@ public class SauceSessionTest {
     }
 
     @Test
+    public void sauceSessionUsesProvidedSauceConfigs() {
+        SauceSession sauceSession = new SauceSession(SauceOptions.chrome().setPlatformName(SaucePlatform.MAC_MOJAVE));
+        SauceOptions sauceOptions = sauceSession.getSauceOptions();
+
+        assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
+        assertEquals(SaucePlatform.MAC_MOJAVE, sauceOptions.getPlatformName());
+        assertEquals("latest", sauceOptions.getBrowserVersion());
+    }
+
+    @Test
     public void defaultsToUSWestDataCenter() {
         String expectedDataCenterEndpoint = DataCenter.US_WEST.getValue();
         assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().getValue());

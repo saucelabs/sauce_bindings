@@ -1,5 +1,6 @@
 package com.saucelabs.saucebindings;
 
+import com.saucelabs.saucebindings.configs.SauceConfigsChrome;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -127,6 +128,22 @@ public class SauceOptions {
         knownCITools.put("Circle", "CIRCLE_JOB");
         knownCITools.put("GitLab", "CI");
         knownCITools.put("TeamCity", "TEAMCITY_PROJECT_NAME");
+    }
+
+    /**
+     * @return SauceConfigsChrome,
+     *   note: constructor implementation is deprecated for public use, but usage here is intentional
+     */
+    public static SauceConfigsChrome chrome() {
+        return new SauceConfigsChrome(new ChromeOptions());
+    }
+
+    /**
+     * @return SauceConfigsChrome,
+     *   note: constructor implementation is deprecated for public use, but usage here is intentional
+     */
+    public static SauceConfigsChrome chrome(ChromeOptions chromeOptions) {
+        return new SauceConfigsChrome(chromeOptions);
     }
 
     public SauceOptions() {

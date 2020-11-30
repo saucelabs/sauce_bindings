@@ -1,5 +1,6 @@
 package com.saucelabs.saucebindings;
 
+import com.saucelabs.saucebindings.configs.SauceConfigs;
 import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.InvalidArgumentException;
@@ -18,6 +19,10 @@ public class SauceSession {
 
     public SauceSession() {
         this(new SauceOptions());
+    }
+
+    public SauceSession(SauceConfigs configs) {
+        this(configs.build());
     }
 
     public SauceSession(SauceOptions options) {

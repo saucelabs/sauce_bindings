@@ -17,7 +17,7 @@ import com.saucelabs.saucebindings.*;
 import org.junit.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class SauceSpecificOptions {
+public class SauceLabsOptionsTest {
 
     @Test
     public void sauceOptions() {

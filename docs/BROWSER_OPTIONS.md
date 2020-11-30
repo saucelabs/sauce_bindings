@@ -17,7 +17,7 @@ import org.junit.Test;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class BrowserOptions {
+public class BrowserOptionsTest {
 
     @Test
     public void browserOptions() {

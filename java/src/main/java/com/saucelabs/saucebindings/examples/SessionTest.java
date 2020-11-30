@@ -4,7 +4,7 @@ import com.saucelabs.saucebindings.*;
 import org.junit.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class StartSession {
+public class SessionTest {
 
     @Test
     public void startSession() {

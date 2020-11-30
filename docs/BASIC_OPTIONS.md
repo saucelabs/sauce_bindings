@@ -23,7 +23,7 @@ import com.saucelabs.saucebindings.*;
 import org.junit.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class BasicOptions {
+public class BasicOptionsTest {
 
     @Test
     public void basicOptions() {

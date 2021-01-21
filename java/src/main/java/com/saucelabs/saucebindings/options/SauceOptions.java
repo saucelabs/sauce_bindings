@@ -1,6 +1,8 @@
-package com.saucelabs.saucebindings;
+package com.saucelabs.saucebindings.options;
 
-import com.saucelabs.saucebindings.configs.SauceConfigsChrome;
+import com.saucelabs.saucebindings.exceptions.InvalidSauceOptionsArgumentException;
+import com.saucelabs.saucebindings.exceptions.SauceEnvironmentVariablesNotSetException;
+import com.saucelabs.saucebindings.options.capabilities.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -134,16 +136,16 @@ public class SauceOptions {
      * @return SauceConfigsChrome,
      *   note: constructor implementation is deprecated for public use, but usage here is intentional
      */
-    public static SauceConfigsChrome chrome() {
-        return new SauceConfigsChrome(new ChromeOptions());
+    public static ChromeConfigurations chrome() {
+        return new ChromeConfigurations(new ChromeOptions());
     }
 
     /**
      * @return SauceConfigsChrome,
      *   note: constructor implementation is deprecated for public use, but usage here is intentional
      */
-    public static SauceConfigsChrome chrome(ChromeOptions chromeOptions) {
-        return new SauceConfigsChrome(chromeOptions);
+    public static ChromeConfigurations chrome(ChromeOptions chromeOptions) {
+        return new ChromeConfigurations(chromeOptions);
     }
 
     public SauceOptions() {
@@ -363,7 +365,7 @@ public class SauceOptions {
         return System.getProperty(key);
     }
 
-    protected String getEnvironmentVariable(String key) {
+    public String getEnvironmentVariable(String key) {
         return System.getenv(key);
     }
 }

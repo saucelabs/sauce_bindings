@@ -13,7 +13,7 @@ All of these configurations can now be easily set with the `SauceOptions` class
 <!--Java-->
 
 ```java
-import com.saucelabs.saucebindings.*;
+import com.saucelabs.saucebindings.options.SauceOptions;
 import org.junit.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 

@@ -1,4 +1,4 @@
-package com.saucelabs.saucebindings;
+package com.saucelabs.saucebindings.options.capabilities;
 
 import lombok.Getter;
 
@@ -6,34 +6,32 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public enum Timeouts {
-
-    IMPLICIT("implicit"),
-    PAGE_LOAD("pageLoad"),
-    SCRIPT("script");
+public enum PageLoadStrategy {
+    NONE("none"),
+    EAGER("eager"),
+    NORMAL("normal");
 
     @Getter
     private final String value;
 
-    private static final class TimeoutsLookup {
+    private static final class PageLoadStrategyLookup {
         private static final Map<String, String> lookup = new HashMap<String, String>();
     }
 
     public static Set keys() {
-        return TimeoutsLookup.lookup.keySet();
+        return PageLoadStrategyLookup.lookup.keySet();
     }
 
-    Timeouts(String value) {
+    PageLoadStrategy(String value) {
         this.value = value;
-        TimeoutsLookup.lookup.put(value, this.name());
+        PageLoadStrategyLookup.lookup.put(value, this.name());
     }
 
     public static String fromString(String value) {
-        return TimeoutsLookup.lookup.get(value);
+        return PageLoadStrategyLookup.lookup.get(value);
     }
 
     public String toString() {
         return this.value;
     }
 }
-

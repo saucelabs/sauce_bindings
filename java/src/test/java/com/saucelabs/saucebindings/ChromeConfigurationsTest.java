@@ -1,5 +1,8 @@
 package com.saucelabs.saucebindings;
 
+import com.saucelabs.saucebindings.exceptions.InvalidSauceOptionsArgumentException;
+import com.saucelabs.saucebindings.options.SauceOptions;
+import com.saucelabs.saucebindings.options.capabilities.*;
 import org.junit.Test;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -13,7 +16,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class SauceConfigsChromeTest {
+public class ChromeConfigurationsTest {
 
     @Test
     public void buildsDefaultSauceOptions() {
@@ -42,7 +45,7 @@ public class SauceConfigsChromeTest {
         SauceOptions sauceOptions = SauceOptions.chrome()
                 .setPlatformName(SaucePlatform.MAC_HIGH_SIERRA)
                 .setBrowserVersion("68")
-                .setExtendedDebugging(true)
+                .setExtendedDebugging()
                 .build();
 
         assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
@@ -53,11 +56,10 @@ public class SauceConfigsChromeTest {
     @Test
     public void acceptsOtherW3CValues() {
         SauceOptions sauceOptions = SauceOptions.chrome()
-                .setAcceptInsecureCerts(true)
+                .setAcceptInsecureCerts()
                 .setPageLoadStrategy(PageLoadStrategy.EAGER)
-                .setSetWindowRect(true)
                 .setUnhandledPromptBehavior(UnhandledPromptBehavior.IGNORE)
-                .setStrictFileInteractability(true)
+                .setStrictFileInteractability()
                 .setImplicitWaitTimeout(Duration.ofSeconds(1))
                 .setPageLoadTimeout(Duration.ofSeconds(100))
                 .setScriptTimeout(Duration.ofSeconds(10))
@@ -70,10 +72,14 @@ public class SauceConfigsChromeTest {
 
         assertEquals(true, sauceOptions.getAcceptInsecureCerts());
         assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
-        assertEquals(true, sauceOptions.getSetWindowRect());
         assertEquals(UnhandledPromptBehavior.IGNORE, sauceOptions.getUnhandledPromptBehavior());
         assertEquals(true, sauceOptions.getStrictFileInteractability());
         assertEquals(timeouts, sauceOptions.getTimeouts());
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void capturePerformanceRequiresName() {
+        SauceOptions.chrome().setCapturePerformance().build();
     }
 
     @Test
@@ -100,26 +106,26 @@ public class SauceConfigsChromeTest {
 
         SauceOptions sauceOptions = SauceOptions.chrome()
                 .setBuild("Sample Build Name")
-                .setCapturePerformance(true)
-                .setChromedriverVersion("71")
-                .setCommandTimeout(2)
-                .setCustomData(customData)
-                .setExtendedDebugging(true)
-                .setIdleTimeout(3)
-                .setMaxDuration(300)
                 .setName("Test name")
+                .setCapturePerformance()
+                .setChromedriverVersion("71")
+                .setCommandTimeout(Duration.ofSeconds(2))
+                .setCustomData(customData)
+                .setExtendedDebugging()
+                .setIdleTimeout(Duration.ofSeconds(20))
+                .setMaxDuration(Duration.ofSeconds(300))
                 .setParentTunnel("Mommy")
                 .setPrerun(prerun)
                 .setPriority(0)
                 .setJobVisibility(JobVisibility.TEAM)
-                .setRecordLogs(false)
-                .setRecordScreenshots(false)
-                .setRecordVideo(false)
-                .setScreenResolution("10x10")
+                .disableRecordLogs()
+                .disableRecordScreenshots()
+                .disableRecordVideo()
+                .setScreenResolution(ScreenResolution.XGA)
                 .setTags(tags)
                 .setTimeZone("San Francisco")
                 .setTunnelIdentifier("tunnelname")
-                .setVideoUploadOnPass(false)
+                .disableVideoUploadOnPass()
                 .build();
 
         assertEquals("Sample Build Name", sauceOptions.getBuild());
@@ -128,7 +134,7 @@ public class SauceConfigsChromeTest {
         assertEquals(Integer.valueOf(2), sauceOptions.getCommandTimeout());
         assertEquals(customData, sauceOptions.getCustomData());
         assertEquals(true, sauceOptions.getExtendedDebugging());
-        assertEquals(Integer.valueOf(3), sauceOptions.getIdleTimeout());
+        assertEquals(Integer.valueOf(20), sauceOptions.getIdleTimeout());
         assertEquals(Integer.valueOf(300), sauceOptions.getMaxDuration());
         assertEquals("Test name", sauceOptions.getName());
         assertEquals("Mommy", sauceOptions.getParentTunnel());
@@ -138,7 +144,7 @@ public class SauceConfigsChromeTest {
         assertEquals(false, sauceOptions.getRecordLogs());
         assertEquals(false, sauceOptions.getRecordScreenshots());
         assertEquals(false, sauceOptions.getRecordVideo());
-        assertEquals("10x10", sauceOptions.getScreenResolution());
+        assertEquals("1024x768", sauceOptions.getScreenResolution());
         assertEquals(tags, sauceOptions.getTags());
         assertEquals("San Francisco", sauceOptions.getTimeZone());
         assertEquals("tunnelname", sauceOptions.getTunnelIdentifier());

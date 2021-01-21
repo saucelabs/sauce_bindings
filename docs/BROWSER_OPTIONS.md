@@ -13,6 +13,7 @@ one of these objects:
 
 ```java
 import com.saucelabs.saucebindings.*;
+import com.saucelabs.saucebindings.options.SauceOptions;
 import org.junit.Test;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;

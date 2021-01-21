@@ -1,5 +1,9 @@
 package com.saucelabs.saucebindings;
 
+import com.saucelabs.saucebindings.options.SauceOptions;
+import com.saucelabs.saucebindings.options.capabilities.Browser;
+import com.saucelabs.saucebindings.options.capabilities.SaucePlatform;
+import com.saucelabs.saucebindings.exceptions.SauceEnvironmentVariablesNotSetException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

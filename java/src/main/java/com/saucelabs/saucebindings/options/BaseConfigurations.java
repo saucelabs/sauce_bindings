@@ -1,13 +1,12 @@
-package com.saucelabs.saucebindings.configs;
+package com.saucelabs.saucebindings.options;
 
-import com.saucelabs.saucebindings.JobVisibility;
-import com.saucelabs.saucebindings.SauceOptions;
-import com.saucelabs.saucebindings.SaucePlatform;
+import com.saucelabs.saucebindings.options.capabilities.JobVisibility;
+import com.saucelabs.saucebindings.options.capabilities.SaucePlatform;
 
 import java.util.List;
 import java.util.Map;
 
-public class SauceConfigs<T extends SauceConfigs<T>> {
+public abstract class BaseConfigurations<T extends BaseConfigurations<T>> {
     // Needs to be instantiated in subclass
     SauceOptions sauceOptions = null;
 

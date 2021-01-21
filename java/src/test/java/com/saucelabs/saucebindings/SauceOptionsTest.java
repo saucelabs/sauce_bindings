@@ -1,5 +1,8 @@
 package com.saucelabs.saucebindings;
 
+import com.saucelabs.saucebindings.options.SauceOptions;
+import com.saucelabs.saucebindings.options.capabilities.*;
+import com.saucelabs.saucebindings.exceptions.InvalidSauceOptionsArgumentException;
 import lombok.SneakyThrows;
 import org.junit.Rule;
 import org.junit.Test;

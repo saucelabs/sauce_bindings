@@ -1,7 +1,6 @@
 package com.saucelabs.saucebindings;
 
 import com.saucelabs.saucebindings.options.InvalidSauceOptionsArgumentException;
-import com.saucelabs.saucebindings.options.SauceOptions;
 import lombok.SneakyThrows;
 import org.junit.Rule;
 import org.junit.Test;
@@ -28,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.openqa.selenium.UnexpectedAlertBehaviour.DISMISS;
 
-public class SauceOptionsTest {
+public class SauceOptionsDeprecatedTest {
     private SauceOptions sauceOptions = new SauceOptions();
 
     @Rule
@@ -170,7 +169,7 @@ public class SauceOptionsTest {
         sauceOptions = new SauceOptions(chromeOptions);
 
         assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
-        assertEquals(chromeOptions, sauceOptions.getCapabilities());
+        assertEquals(chromeOptions, sauceOptions.getSeleniumCapabilities());
     }
 
     @Test
@@ -181,7 +180,7 @@ public class SauceOptionsTest {
         sauceOptions = new SauceOptions(edgeOptions);
 
         assertEquals(Browser.EDGE, sauceOptions.getBrowserName());
-        assertEquals(edgeOptions, sauceOptions.getCapabilities());
+        assertEquals(edgeOptions, sauceOptions.getSeleniumCapabilities());
     }
 
     @Test
@@ -194,7 +193,7 @@ public class SauceOptionsTest {
         sauceOptions = new SauceOptions(firefoxOptions);
 
         assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
-        assertEquals(firefoxOptions, sauceOptions.getCapabilities());
+        assertEquals(firefoxOptions, sauceOptions.getSeleniumCapabilities());
     }
 
     @Test
@@ -207,7 +206,7 @@ public class SauceOptionsTest {
         sauceOptions = new SauceOptions(internetExplorerOptions);
 
         assertEquals(Browser.INTERNET_EXPLORER, sauceOptions.getBrowserName());
-        assertEquals(internetExplorerOptions, sauceOptions.getCapabilities());
+        assertEquals(internetExplorerOptions, sauceOptions.getSeleniumCapabilities());
     }
 
     @Test
@@ -219,7 +218,7 @@ public class SauceOptionsTest {
         sauceOptions = new SauceOptions(safariOptions);
 
         assertEquals(Browser.SAFARI, sauceOptions.getBrowserName());
-        assertEquals(safariOptions, sauceOptions.getCapabilities());
+        assertEquals(safariOptions, sauceOptions.getSeleniumCapabilities());
     }
 
     @Test

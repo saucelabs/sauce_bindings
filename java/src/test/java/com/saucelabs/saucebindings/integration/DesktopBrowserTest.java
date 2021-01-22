@@ -1,7 +1,7 @@
 package com.saucelabs.saucebindings.integration;
 
 import com.saucelabs.saucebindings.DataCenter;
-import com.saucelabs.saucebindings.SauceOptions;
+import com.saucelabs.saucebindings.options.SauceOptions;;
 import com.saucelabs.saucebindings.SaucePlatform;
 import com.saucelabs.saucebindings.SauceSession;
 import org.junit.After;

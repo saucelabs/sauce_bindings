@@ -1,5 +1,6 @@
 package com.saucelabs.saucebindings;
 
+import com.saucelabs.saucebindings.options.SauceOptions;
 import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.InvalidArgumentException;

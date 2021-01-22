@@ -1,7 +1,6 @@
 package com.saucelabs.saucebindings;
 
 import com.saucelabs.saucebindings.options.InvalidSauceOptionsArgumentException;
-import com.saucelabs.saucebindings.options.SauceOptions;
 import lombok.SneakyThrows;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,9 +14,7 @@ import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.safari.SafariOptions;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +25,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.openqa.selenium.UnexpectedAlertBehaviour.DISMISS;
 
-public class SauceOptionsTest {
+public class SauceOptionsDeprecatedTest {
     private SauceOptions sauceOptions = new SauceOptions();
 
     @Rule
@@ -170,7 +167,7 @@ public class SauceOptionsTest {
         sauceOptions = new SauceOptions(chromeOptions);
 
         assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
-        assertEquals(chromeOptions, sauceOptions.getCapabilities());
+        assertEquals(chromeOptions, sauceOptions.getSeleniumCapabilities());
     }
 
     @Test
@@ -181,7 +178,7 @@ public class SauceOptionsTest {
         sauceOptions = new SauceOptions(edgeOptions);
 
         assertEquals(Browser.EDGE, sauceOptions.getBrowserName());
-        assertEquals(edgeOptions, sauceOptions.getCapabilities());
+        assertEquals(edgeOptions, sauceOptions.getSeleniumCapabilities());
     }
 
     @Test
@@ -194,7 +191,7 @@ public class SauceOptionsTest {
         sauceOptions = new SauceOptions(firefoxOptions);
 
         assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
-        assertEquals(firefoxOptions, sauceOptions.getCapabilities());
+        assertEquals(firefoxOptions, sauceOptions.getSeleniumCapabilities());
     }
 
     @Test
@@ -207,7 +204,7 @@ public class SauceOptionsTest {
         sauceOptions = new SauceOptions(internetExplorerOptions);
 
         assertEquals(Browser.INTERNET_EXPLORER, sauceOptions.getBrowserName());
-        assertEquals(internetExplorerOptions, sauceOptions.getCapabilities());
+        assertEquals(internetExplorerOptions, sauceOptions.getSeleniumCapabilities());
     }
 
     @Test
@@ -219,7 +216,7 @@ public class SauceOptionsTest {
         sauceOptions = new SauceOptions(safariOptions);
 
         assertEquals(Browser.SAFARI, sauceOptions.getBrowserName());
-        assertEquals(safariOptions, sauceOptions.getCapabilities());
+        assertEquals(safariOptions, sauceOptions.getSeleniumCapabilities());
     }
 
     @Test
@@ -229,14 +226,14 @@ public class SauceOptionsTest {
 
     @SneakyThrows
     public Map<String, Object> serialize(String key) {
-        InputStream input = new FileInputStream(new File("src/test/java/com/saucelabs/saucebindings/options.yml"));
+        InputStream input = new FileInputStream("src/test/java/com/saucelabs/saucebindings/options.yml");
         Yaml yaml = new Yaml();
         Map<String, Object> data = yaml.load(input);
         return (Map<String, Object>) data.get(key);
     }
 
     @Test
-    public void setsCapabilitiesFromMap() throws FileNotFoundException {
+    public void setsCapabilitiesFromMap() {
         Map<String, Object> map = serialize("exampleValues");
 
         sauceOptions.mergeCapabilities(map);
@@ -346,7 +343,7 @@ public class SauceOptionsTest {
     @Test
     public void parsesCapabilitiesFromW3CValues() {
         sauceOptions.setBrowserName(Browser.FIREFOX);
-        sauceOptions.setPlatformName(SaucePlatform.MAC_BIG_SUR);
+        sauceOptions.setPlatformName(SaucePlatform.MAC_HIGH_SIERRA);
         sauceOptions.setBrowserVersion("77");
         sauceOptions.setAcceptInsecureCerts(true);
         sauceOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
@@ -366,7 +363,7 @@ public class SauceOptionsTest {
         MutableCapabilities expectedCapabilities = new MutableCapabilities();
         expectedCapabilities.setCapability("browserName", "firefox");
         expectedCapabilities.setCapability("browserVersion", "77");
-        expectedCapabilities.setCapability("platformName", "macOS 11.00");
+        expectedCapabilities.setCapability("platformName", "macOS 10.13");
         expectedCapabilities.setCapability("acceptInsecureCerts", true);
         expectedCapabilities.setCapability("setWindowRect", true);
         expectedCapabilities.setCapability("strictFileInteractability", true);

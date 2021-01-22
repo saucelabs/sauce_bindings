@@ -1,4 +1,4 @@
-package com.saucelabs.saucebindings;
+package com.saucelabs.saucebindings.options;
 
 import org.openqa.selenium.MutableCapabilities;
 

@@ -11,9 +11,9 @@ public class SauceLabsOptionsTest {
     public void sauceOptions() {
         // 1. Specify Sauce Specific Options
         SauceOptions sauceOptions = new SauceOptions();
-        sauceOptions.setExtendedDebugging(true);
-        sauceOptions.setIdleTimeout(100);
-        sauceOptions.setTimeZone("Alaska");
+        sauceOptions.sauce().setExtendedDebugging(true);
+        sauceOptions.sauce().setIdleTimeout(100);
+        sauceOptions.sauce().setTimeZone("Alaska");
 
         // 2. Create Session object with the Options object instance
         SauceSession session = new SauceSession(sauceOptions);

@@ -26,7 +26,7 @@ public class BrowserOptionsTest {
         browserOptions.addArguments("--foo");
 
         // 2. Create Sauce Options object with the Browser Options object instance
-        SauceOptions sauceOptions = new SauceOptions(browserOptions);
+        SauceOptions sauceOptions = SauceOptions.firefox(browserOptions);
 
         // 3. Create Session object with the Sauce Options object instance
         SauceSession session = new SauceSession(sauceOptions);

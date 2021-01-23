@@ -1,5 +1,6 @@
 package com.saucelabs.saucebindings;
 
+import com.saucelabs.saucebindings.options.SauceOptions;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -49,6 +50,17 @@ public class SauceSessionTest {
         sauceOptsSession.start();
 
         verify(sauceOptions).toCapabilities();
+    }
+
+    @Test
+    public void sauceSessionUsesProvidedSauceConfigs() {
+        SauceSession sauceSession = new SauceSession(SauceOptions.chrome()
+                .setPlatformName(SaucePlatform.MAC_MOJAVE));
+        SauceOptions sauceOptions = sauceSession.getSauceOptions();
+
+        assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
+        assertEquals(SaucePlatform.MAC_MOJAVE, sauceOptions.getPlatformName());
+        assertEquals("latest", sauceOptions.getBrowserVersion());
     }
 
     @Test

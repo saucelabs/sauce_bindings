@@ -1,5 +1,6 @@
 package com.saucelabs.saucebindings;
 
+import com.saucelabs.saucebindings.options.BaseConfigurations;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,16 @@ public class SauceSession {
 
     public SauceSession() {
         this(new SauceOptions());
+    }
+
+    /**
+     * Ideally the end user calls build() on Configurations instance
+     * this constructor is being accommodating in case they do not
+     *
+     * @param configs
+     */
+    public SauceSession(BaseConfigurations configs) {
+        this(configs.build());
     }
 
     public SauceSession(SauceOptions options) {

@@ -48,32 +48,52 @@ public class SauceOptions extends BaseOptions {
             "strictFileInteractability",
             "unhandledPromptBehavior");
 
+    public static ChromeConfigurations chrome() {
+        return chrome(new ChromeOptions());
+    }
+
+    public static ChromeConfigurations chrome(ChromeOptions chromeOptions) {
+        return new ChromeConfigurations(chromeOptions);
+    }
+
+    public static EdgeConfigurations edge() {
+        return edge(new EdgeOptions());
+    }
+
+    public static EdgeConfigurations edge(EdgeOptions edgeOptions) {
+        return new EdgeConfigurations(edgeOptions);
+    }
+
+    public static FirefoxConfigurations firefox() {
+        return firefox(new FirefoxOptions());
+    }
+
+    public static FirefoxConfigurations firefox(FirefoxOptions firefoxOptions) {
+        return new FirefoxConfigurations(firefoxOptions);
+    }
+
+    public static InternetExplorerConfigurations ie() {
+        return ie(new InternetExplorerOptions());
+    }
+
+    public static InternetExplorerConfigurations ie(InternetExplorerOptions internetExplorerOptions) {
+        return new InternetExplorerConfigurations(internetExplorerOptions);
+    }
+
+    public static SafariConfigurations safari() {
+        return safari(new SafariOptions());
+    }
+
+    public static SafariConfigurations safari(SafariOptions safariOptions) {
+        return new SafariConfigurations(safariOptions);
+    }
+
     public SauceLabsOptions sauce() {
         return sauceLabsOptions;
     }
 
     public SauceOptions() {
         this(new MutableCapabilities());
-    }
-
-    public SauceOptions(ChromeOptions options) {
-        this(new MutableCapabilities(options));
-    }
-
-    public SauceOptions(EdgeOptions options) {
-        this(new MutableCapabilities(options));
-    }
-
-    public SauceOptions(FirefoxOptions options) {
-        this(new MutableCapabilities(options));
-    }
-
-    public SauceOptions(InternetExplorerOptions options) {
-        this(new MutableCapabilities(options));
-    }
-
-    public SauceOptions(SafariOptions options) {
-        this(new MutableCapabilities(options));
     }
 
     public Map<Timeouts, Integer> getTimeouts() {
@@ -83,7 +103,7 @@ public class SauceOptions extends BaseOptions {
         return timeout.getTimeouts();
     }
 
-    private SauceOptions(MutableCapabilities options) {
+    SauceOptions(MutableCapabilities options) {
         capabilities = new MutableCapabilities(options.asMap());
         capabilityManager = new CapabilityManager(this);
         sauceLabsOptions = new SauceLabsOptions();
@@ -144,7 +164,6 @@ public class SauceOptions extends BaseOptions {
         }
     }
 
-    @Deprecated
     private void deprecatedSetCapability(String key, Object value) {
         System.out.println("WARNING: using merge() of Map with value of (" + key + ") is DEPRECATED");
         System.out.println("place this value inside a nested Map with the keyword 'sauce'");

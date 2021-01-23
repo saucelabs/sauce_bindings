@@ -8,16 +8,11 @@ import org.junit.Test;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.ie.InternetExplorerOptions;
-import org.openqa.selenium.safari.SafariOptions;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -162,67 +157,6 @@ public class SauceOptionsTest {
     }
 
     @Test
-    public void acceptsChromeOptionsClass() {
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--foo");
-        chromeOptions.setUnhandledPromptBehaviour(DISMISS);
-
-        sauceOptions = new SauceOptions(chromeOptions);
-
-        assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
-        assertEquals(chromeOptions, sauceOptions.getCapabilities());
-    }
-
-    @Test
-    public void acceptsEdgeOptionsClass() {
-        EdgeOptions edgeOptions = new EdgeOptions();
-        edgeOptions.setPageLoadStrategy("eager");
-
-        sauceOptions = new SauceOptions(edgeOptions);
-
-        assertEquals(Browser.EDGE, sauceOptions.getBrowserName());
-        assertEquals(edgeOptions, sauceOptions.getCapabilities());
-    }
-
-    @Test
-    public void acceptsFirefoxOptionsClass() {
-        FirefoxOptions firefoxOptions = new FirefoxOptions();
-        firefoxOptions.addArguments("--foo");
-        firefoxOptions.addPreference("foo", "bar");
-        firefoxOptions.setUnhandledPromptBehaviour(DISMISS);
-
-        sauceOptions = new SauceOptions(firefoxOptions);
-
-        assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
-        assertEquals(firefoxOptions, sauceOptions.getCapabilities());
-    }
-
-    @Test
-    public void acceptsInternetExplorerOptionsClass() {
-        InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
-        internetExplorerOptions.requireWindowFocus();
-        internetExplorerOptions.setPageLoadStrategy(org.openqa.selenium.PageLoadStrategy.EAGER);
-        internetExplorerOptions.setUnhandledPromptBehaviour(DISMISS);
-
-        sauceOptions = new SauceOptions(internetExplorerOptions);
-
-        assertEquals(Browser.INTERNET_EXPLORER, sauceOptions.getBrowserName());
-        assertEquals(internetExplorerOptions, sauceOptions.getCapabilities());
-    }
-
-    @Test
-    public void acceptsSafariOptionsClass() {
-        SafariOptions safariOptions = new SafariOptions();
-        safariOptions.setAutomaticInspection(true);
-        safariOptions.setAutomaticProfiling(true);
-
-        sauceOptions = new SauceOptions(safariOptions);
-
-        assertEquals(Browser.SAFARI, sauceOptions.getBrowserName());
-        assertEquals(safariOptions, sauceOptions.getCapabilities());
-    }
-
-    @Test
     public void createsDefaultBuildName() {
         assertNotNull(sauceOptions.sauce().getBuild());
     }
@@ -236,7 +170,7 @@ public class SauceOptionsTest {
     }
 
     @Test
-    public void setsCapabilitiesFromMap() throws FileNotFoundException {
+    public void setsCapabilitiesFromMap() {
         Map<String, Object> map = serialize("exampleValues");
 
         sauceOptions.mergeCapabilities(map);
@@ -478,7 +412,7 @@ public class SauceOptionsTest {
         firefoxOptions.addPreference("foo", "bar");
         firefoxOptions.setUnhandledPromptBehaviour(DISMISS);
 
-        sauceOptions = new SauceOptions(firefoxOptions);
+        sauceOptions = SauceOptions.firefox(firefoxOptions).build();
         sauceOptions.sauce().setBuild("Build Name");
 
         MutableCapabilities expectedCapabilities = new MutableCapabilities();
@@ -506,7 +440,7 @@ public class SauceOptionsTest {
         firefoxOptions.addArguments("--foo");
         firefoxOptions.setUnhandledPromptBehaviour(DISMISS);
 
-        sauceOptions = new SauceOptions(firefoxOptions);
+        sauceOptions = SauceOptions.firefox(firefoxOptions).build();
 
         expectedCapabilities.merge(firefoxOptions);
         expectedCapabilities.setCapability("browserVersion", "latest");

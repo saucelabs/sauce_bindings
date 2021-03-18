@@ -54,7 +54,7 @@ public class DesktopBrowserTest {
     }
 
     @Test
-    public void allSupportedOSsWork() {
+    public void allSupportedPlatformsWork() {
         SauceOptions options = new SauceOptions();
         options.setPlatformName(getRandomPlatform());
         webDriver = session.start();

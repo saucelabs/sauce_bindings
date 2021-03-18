@@ -352,7 +352,7 @@ public class SauceOptionsTest {
         doReturn("test-accesskey").when(sauceOptions).getEnvironmentVariable("SAUCE_ACCESS_KEY");
 
         sauceOptions.setBrowserName(Browser.FIREFOX);
-        sauceOptions.setPlatformName(SaucePlatform.MAC_HIGH_SIERRA);
+        sauceOptions.setPlatformName(SaucePlatform.MAC_BIG_SUR);
         sauceOptions.setBrowserVersion("77");
         sauceOptions.setAcceptInsecureCerts(true);
         sauceOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
@@ -372,7 +372,7 @@ public class SauceOptionsTest {
         MutableCapabilities expectedCapabilities = new MutableCapabilities();
         expectedCapabilities.setCapability("browserName", "firefox");
         expectedCapabilities.setCapability("browserVersion", "77");
-        expectedCapabilities.setCapability("platformName", "macOS 10.13");
+        expectedCapabilities.setCapability("platformName", "macOS 11.00");
         expectedCapabilities.setCapability("acceptInsecureCerts", true);
         expectedCapabilities.setCapability("setWindowRect", true);
         expectedCapabilities.setCapability("strictFileInteractability", true);

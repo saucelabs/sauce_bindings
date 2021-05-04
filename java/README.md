@@ -85,7 +85,7 @@ Tests will also be automatically executed as part of the building process.
         * Minor Releases indicate new features available in all languages
         * Point Releases are for updates to language specific functionality
     * "What is SCM release tag or label for "saucebindings"? (com.saucelabs:sauce_bindings) sauce_bindings-1.0.1"
-        * use format: "v1.0.1"
+        * use format: "java-1.0.1"
     * "What is the new development version for "saucebindings"? (com.saucelabs:sauce_bindings) 1.0.2-SNAPSHOT"
         * hit enter
 

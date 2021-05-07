@@ -26,7 +26,7 @@ public class SauceSession {
      * Ideally the end user calls build() on Configurations instance
      * this constructor is being accommodating in case they do not
      *
-     * @param configs
+     * @param configs the instance of Configuration used to create the Options
      */
     public SauceSession(BaseConfigurations configs) {
         this(configs.build());

@@ -83,8 +83,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param avoidProxy
-     * @return
      */
     @Deprecated
     public BaseOptions setAvoidProxy(Boolean avoidProxy) {
@@ -93,8 +91,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param build
-     * @return
      */
     @Deprecated
     public BaseOptions setBuild(String build) {
@@ -103,8 +99,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param capturePerformance
-     * @return
      */
     @Deprecated
     public BaseOptions setCapturePerformance(Boolean capturePerformance) {
@@ -113,8 +107,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param chromedriverVersion
-     * @return
      */
     @Deprecated
     public BaseOptions setChromedriverVersion(String chromedriverVersion) {
@@ -123,8 +115,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param commandTimeout
-     * @return
      */
     @Deprecated
     public BaseOptions setCommandTimeout(Integer commandTimeout) {
@@ -133,8 +123,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param customData
-     * @return
      */
     @Deprecated
     public BaseOptions setCustomData(Map<String, Object> customData) {
@@ -143,8 +131,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param extendedDebugging
-     * @return
      */
     @Deprecated
     public BaseOptions setExtendedDebugging(Boolean extendedDebugging) {
@@ -153,8 +139,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param idleTimeout
-     * @return
      */
     @Deprecated
     public BaseOptions setIdleTimeout(Integer idleTimeout) {
@@ -163,8 +147,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param iedriverVersion
-     * @return
      */
     @Deprecated
     public BaseOptions setIedriverVersion(String iedriverVersion) {
@@ -173,8 +155,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param maxDuration
-     * @return
      */
     @Deprecated
     public BaseOptions setMaxDuration(Integer maxDuration) {
@@ -183,8 +163,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param name
-     * @return
      */
     @Deprecated
     public BaseOptions setName(String name) {
@@ -193,8 +171,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param parentTunnel
-     * @return
      */
     @Deprecated
     public BaseOptions setParentTunnel(String parentTunnel) {
@@ -203,8 +179,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param prerun
-     * @return
      */
     @Deprecated
     public BaseOptions setPrerun(Map<Prerun, Object> prerun) {
@@ -213,8 +187,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param prerunUrl
-     * @return
      */
     @Deprecated
     public BaseOptions setPrerunUrl(URL prerunUrl) {
@@ -223,8 +195,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param priority
-     * @return
      */
     @Deprecated
     public BaseOptions setPriority(Integer priority) {
@@ -233,8 +203,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param jobVisibility
-     * @return
      */
     @Deprecated
     public BaseOptions setJobVisibility(JobVisibility jobVisibility) {
@@ -243,8 +211,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param recordLogs
-     * @return
      */
     @Deprecated
     public BaseOptions setRecordLogs(Boolean recordLogs) {
@@ -253,8 +219,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param recordScreenshots
-     * @return
      */
     @Deprecated
     public BaseOptions setRecordScreenshots(Boolean recordScreenshots) {
@@ -263,8 +227,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param recordVideo
-     * @return
      */
     @Deprecated
     public BaseOptions setRecordVideo(Boolean recordVideo) {
@@ -273,8 +235,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param screenResolution
-     * @return
      */
     @Deprecated
     public BaseOptions setScreenResolution(String screenResolution) {
@@ -283,8 +243,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param seleniumVersion
-     * @return
      */
     @Deprecated
     public BaseOptions setSeleniumVersion(String seleniumVersion) {
@@ -293,8 +251,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param tags
-     * @return
      */
     @Deprecated
     public BaseOptions setTags(List<String> tags) {
@@ -303,8 +259,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param timeZone
-     * @return
      */
     @Deprecated
     public BaseOptions setTimeZone(String timeZone) {
@@ -313,8 +267,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param tunnelIdentifier
-     * @return
      */
     @Deprecated
     public BaseOptions setTunnelIdentifier (String tunnelIdentifier) {
@@ -323,8 +275,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @param videoUploadOnPass
-     * @return
      */
     @Deprecated
     public BaseOptions setVideoUploadOnPass(Boolean videoUploadOnPass) {
@@ -333,7 +283,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public Boolean getAvoidProxy() {
@@ -342,7 +291,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public String getBuild() {
@@ -351,7 +299,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public Boolean getCapturePerformance() {
@@ -360,7 +307,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public String getChromedriverVersion() {
@@ -369,7 +315,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public Integer getCommandTimeout() {
@@ -378,7 +323,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public Map<String, Object> getCustomData() {
@@ -387,7 +331,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public Boolean getExtendedDebugging() {
@@ -396,7 +339,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public Integer getIdleTimeout() {
@@ -405,7 +347,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public String getIedriverVersion() {
@@ -414,7 +355,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public Integer getMaxDuration() {
@@ -423,7 +363,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public String getName() {
@@ -432,7 +371,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public String getParentTunnel() {
@@ -441,7 +379,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public Map<Prerun, Object> getPrerun() {
@@ -450,7 +387,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public URL getPrerunUrl() {
@@ -459,7 +395,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public Integer getPriority() {
@@ -468,7 +403,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public JobVisibility getJobVisibility() {
@@ -477,7 +411,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public Boolean getRecordLogs() {
@@ -486,7 +419,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public Boolean getRecordScreenshots() {
@@ -495,7 +427,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public Boolean getRecordVideo() {
@@ -504,7 +435,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public String getScreenResolution() {
@@ -513,7 +443,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public String getSeleniumVersion() {
@@ -522,7 +451,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public List<String> getTags() {
@@ -531,7 +459,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public String getTimeZone() {
@@ -540,7 +467,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public String getTunnelIdentifier () {
@@ -549,7 +475,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
-     * @return
      */
     @Deprecated
     public Boolean getVideoUploadOnPass() {
@@ -558,21 +483,18 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use validOptions instead
-     * @return
      */
     @Deprecated
     public final List<String> w3cDefinedOptions = this.validOptions;
 
     /**
      * @deprecated Use sauce().validOptions instead
-     * @return
      */
     @Deprecated
     public final List<String> sauceDefinedOptions = sauce().validOptions;
 
     /**
      * @deprecated Use sauce().validOptions instead
-     * @return
      */
     @Deprecated
     public boolean isKnownCI() {
@@ -581,7 +503,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
 
     /**
      * @deprecated Use SauceLabsOptions.knownCITools instead
-     * @return
      */
     @Deprecated
     public static final Map<String, String> knownCITools = SauceLabsOptions.knownCITools;

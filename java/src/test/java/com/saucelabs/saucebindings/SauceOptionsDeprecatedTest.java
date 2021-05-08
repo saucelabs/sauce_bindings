@@ -434,7 +434,7 @@ public class SauceOptionsDeprecatedTest {
         sauceCapabilities.setCapability("capturePerformance", true);
         sauceCapabilities.setCapability("chromedriverVersion", "71");
         sauceCapabilities.setCapability("commandTimeout", 2);
-        sauceCapabilities.setCapability("customData", customData);
+        sauceCapabilities.setCapability("custom-data", customData);
         sauceCapabilities.setCapability("extendedDebugging", true);
         sauceCapabilities.setCapability("idleTimeout", 3);
         sauceCapabilities.setCapability("iedriverVersion", "3.141.0");

@@ -87,6 +87,12 @@ public class SauceLabsOptions extends BaseOptions {
             setJobVisibility(null);
         }
 
+        Object customDataValue = capabilityManager.getCapability("customData");
+        if (customDataValue != null) {
+            capabilities.setCapability("custom-data", customDataValue);
+            setCustomData(null);
+        }
+
         Object prerunValue = capabilityManager.getCapability("prerunUrl");
         if (prerunValue != null) {
             capabilities.setCapability("prerun", prerunValue);

@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class EdgeConfigurationsTest {
 
@@ -42,12 +41,12 @@ public class EdgeConfigurationsTest {
         SauceOptions sauceOptions = SauceOptions.edge()
                 .setPlatformName(SaucePlatform.MAC_HIGH_SIERRA)
                 .setBrowserVersion("68")
-                .setExtendedDebugging()
+                .setSeleniumVersion("3.141.1")
                 .build();
 
         assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
         assertEquals("68", sauceOptions.getBrowserVersion());
-        assertTrue(sauceOptions.sauce().getExtendedDebugging());
+        assertEquals("3.141.1", sauceOptions.sauce().getSeleniumVersion());
     }
 
     @Test
@@ -99,10 +98,8 @@ public class EdgeConfigurationsTest {
         SauceOptions sauceOptions = SauceOptions.edge()
                 .setBuild("Sample Build Name")
                 .setName("Test name")
-                .setCapturePerformance()
                 .setCommandTimeout(Duration.ofSeconds(2))
                 .setCustomData(customData)
-                .setExtendedDebugging()
                 .setIdleTimeout(Duration.ofSeconds(20))
                 .setMaxDuration(Duration.ofSeconds(300))
                 .setParentTunnel("Mommy")
@@ -124,7 +121,6 @@ public class EdgeConfigurationsTest {
         assertEquals("Sample Build Name", sauceOptions.sauce().getBuild());
         assertEquals(Integer.valueOf(2), sauceOptions.sauce().getCommandTimeout());
         assertEquals(customData, sauceOptions.sauce().getCustomData());
-        assertEquals(true, sauceOptions.sauce().getExtendedDebugging());
         assertEquals(Integer.valueOf(20), sauceOptions.sauce().getIdleTimeout());
         assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
         assertEquals("Test name", sauceOptions.sauce().getName());

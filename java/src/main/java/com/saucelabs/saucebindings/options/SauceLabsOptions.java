@@ -141,10 +141,18 @@ public class SauceLabsOptions extends BaseOptions {
         }
     }
 
+    /**
+     * @deprecated This method is no longer supported
+     */
+    @Deprecated
     public boolean isKnownCI() {
         return !knownCITools.keySet().stream().allMatch((key) -> SystemManager.get(key) == null);
     }
 
+    /**
+     * @deprecated This method will no longer be public
+     */
+    @Deprecated
     public static final Map<String, String> knownCITools;
 
     static {

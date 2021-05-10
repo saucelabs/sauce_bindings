@@ -494,7 +494,7 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     public final List<String> sauceDefinedOptions = sauce().validOptions;
 
     /**
-     * @deprecated Use sauce().validOptions instead
+     * @deprecated This method is no longer supported
      */
     @Deprecated
     public boolean isKnownCI() {
@@ -502,7 +502,7 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
-     * @deprecated Use SauceLabsOptions.knownCITools instead
+     * @deprecated This method is no longer supported
      */
     @Deprecated
     public static final Map<String, String> knownCITools = SauceLabsOptions.knownCITools;

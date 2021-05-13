@@ -13,6 +13,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.safari.SafariOptions;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -96,6 +97,7 @@ public class SauceOptions extends BaseOptions {
         this(new MutableCapabilities());
     }
 
+    // TODO: Make this private
     public Map<Timeouts, Integer> getTimeouts() {
         if (timeout.getTimeouts().isEmpty()) {
             return timeouts;
@@ -162,6 +164,18 @@ public class SauceOptions extends BaseOptions {
                     super.setCapability(key, value);
                 }
         }
+    }
+
+    public Duration getImplicitWaitTimeout() {
+        return Duration.ofMillis(getTimeouts().get(Timeouts.IMPLICIT));
+    }
+
+    public Duration getPageLoadTimeout() {
+        return Duration.ofMillis(getTimeouts().get(Timeouts.PAGE_LOAD));
+    }
+
+    public Duration getScriptTimeout() {
+        return Duration.ofMillis(getTimeouts().get(Timeouts.SCRIPT));
     }
 
     private void deprecatedSetCapability(String key, Object value) {

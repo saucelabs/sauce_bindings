@@ -68,14 +68,14 @@ public class SauceOptionsDeprecatedTest {
         sauceOptions.setUnhandledPromptBehavior(UnhandledPromptBehavior.IGNORE);
         sauceOptions.setStrictFileInteractability(true);
 
-        sauceOptions.timeout.setImplicitWait(1);
-        sauceOptions.timeout.setPageLoad(100);
-        sauceOptions.timeout.setScript(10);
+        sauceOptions.timeout.setImplicitWait(1000);
+        sauceOptions.timeout.setPageLoad(100000);
+        sauceOptions.timeout.setScript(10000);
 
         Map<Timeouts, Integer> timeouts = new HashMap<>();
-        timeouts.put(Timeouts.IMPLICIT, 1);
-        timeouts.put(Timeouts.PAGE_LOAD, 100);
-        timeouts.put(Timeouts.SCRIPT, 10);
+        timeouts.put(Timeouts.IMPLICIT, 1000);
+        timeouts.put(Timeouts.PAGE_LOAD, 100000);
+        timeouts.put(Timeouts.SCRIPT, 10000);
 
         assertEquals(true, sauceOptions.getAcceptInsecureCerts());
         assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
@@ -259,9 +259,9 @@ public class SauceOptionsDeprecatedTest {
         tags.add("foobar");
 
         Map<Timeouts, Integer> timeouts = new HashMap<>();
-        timeouts.put(Timeouts.IMPLICIT, 1);
-        timeouts.put(Timeouts.PAGE_LOAD, 59);
-        timeouts.put(Timeouts.SCRIPT, 29);
+        timeouts.put(Timeouts.IMPLICIT, 1000);
+        timeouts.put(Timeouts.PAGE_LOAD, 59000);
+        timeouts.put(Timeouts.SCRIPT, 29000);
 
         assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
         assertEquals("68", sauceOptions.getBrowserVersion());
@@ -350,15 +350,15 @@ public class SauceOptionsDeprecatedTest {
         sauceOptions.setSetWindowRect(true);
         sauceOptions.setUnhandledPromptBehavior(UnhandledPromptBehavior.IGNORE);
         sauceOptions.setStrictFileInteractability(true);
-        sauceOptions.timeout.setImplicitWait(1);
-        sauceOptions.timeout.setPageLoad(100);
-        sauceOptions.timeout.setScript(10);
+        sauceOptions.timeout.setImplicitWait(1000);
+        sauceOptions.timeout.setPageLoad(100000);
+        sauceOptions.timeout.setScript(10000);
         sauceOptions.setBuild("Build Name");
 
         Map<Timeouts, Integer> timeouts = new HashMap<>();
-        timeouts.put(Timeouts.IMPLICIT, 1);
-        timeouts.put(Timeouts.SCRIPT, 10);
-        timeouts.put(Timeouts.PAGE_LOAD, 100);
+        timeouts.put(Timeouts.IMPLICIT, 1000);
+        timeouts.put(Timeouts.SCRIPT, 10000);
+        timeouts.put(Timeouts.PAGE_LOAD, 100000);
 
         MutableCapabilities expectedCapabilities = new MutableCapabilities();
         expectedCapabilities.setCapability("browserName", "firefox");
@@ -517,13 +517,13 @@ public class SauceOptionsDeprecatedTest {
         expectedCapabilities.setCapability("pageLoadStrategy", PageLoadStrategy.EAGER);
         sauceOptions.setAcceptInsecureCerts(true);
         expectedCapabilities.setCapability("acceptInsecureCerts", true);
-        sauceOptions.timeout.setImplicitWait(1)
-                .setPageLoad(100)
-                .setScript(10);
+        sauceOptions.timeout.setImplicitWait(1000)
+                .setPageLoad(100000)
+                .setScript(10000);
         Map<Timeouts, Integer> timeouts = new HashMap<>();
-        timeouts.put(Timeouts.IMPLICIT, 1);
-        timeouts.put(Timeouts.SCRIPT, 10);
-        timeouts.put(Timeouts.PAGE_LOAD, 100);
+        timeouts.put(Timeouts.IMPLICIT, 1000);
+        timeouts.put(Timeouts.SCRIPT, 10000);
+        timeouts.put(Timeouts.PAGE_LOAD, 100000);
         expectedCapabilities.setCapability("timeouts", timeouts);
         sauceOptions.setUnhandledPromptBehavior(UnhandledPromptBehavior.IGNORE);
         expectedCapabilities.setCapability("unhandledPromptBehavior", UnhandledPromptBehavior.IGNORE);

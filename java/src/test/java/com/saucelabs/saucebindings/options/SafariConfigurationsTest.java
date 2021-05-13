@@ -64,16 +64,13 @@ public class SafariConfigurationsTest {
                 .setScriptTimeout(Duration.ofSeconds(10))
                 .build();
 
-        Map<Timeouts, Integer> timeouts = new HashMap<>();
-        timeouts.put(Timeouts.IMPLICIT, 1);
-        timeouts.put(Timeouts.PAGE_LOAD, 100);
-        timeouts.put(Timeouts.SCRIPT, 10);
-
         assertEquals(true, sauceOptions.getAcceptInsecureCerts());
         assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
         assertEquals(UnhandledPromptBehavior.IGNORE, sauceOptions.getUnhandledPromptBehavior());
         assertEquals(true, sauceOptions.getStrictFileInteractability());
-        assertEquals(timeouts, sauceOptions.getTimeouts());
+        assertEquals(Duration.ofSeconds(1), sauceOptions.getImplicitWaitTimeout());
+        assertEquals(Duration.ofSeconds(100), sauceOptions.getPageLoadTimeout());
+        assertEquals(Duration.ofSeconds(10), sauceOptions.getScriptTimeout());
     }
 
     @Test

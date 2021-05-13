@@ -8,9 +8,9 @@ exampleValues:
   unhandledPromptBehavior: "accept"
   strictFileInteractability: true
   timeouts:
-    implicit: 1
-    pageLoad: 59
-    script: 29
+    implicit: 1000
+    pageLoad: 59000
+    script: 29000
   sauce:
     avoidProxy: true
     build: 'Sample Build Name'

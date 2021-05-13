@@ -44,6 +44,21 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
         return (T) this;
     }
 
+    public T setImplicitWaitTimeout(Duration timeout) {
+        sauceOptions.timeout.setImplicitWait((int) timeout.toMillis());
+        return (T) this;
+    }
+
+    public T setPageLoadTimeout(Duration timeout) {
+        sauceOptions.timeout.setPageLoad((int) timeout.toMillis());
+        return (T) this;
+    }
+
+    public T setScriptTimeout(Duration timeout) {
+        sauceOptions.timeout.setScript((int) timeout.toMillis());
+        return (T) this;
+    }
+
     // Sauce Values common to all browser sessions:
     public T disableRecordVideo() {
         sauceOptions.sauce().setRecordVideo(false);
@@ -101,21 +116,6 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
 
     public T setTimeZone(String timeZone) {
         sauceOptions.sauce().setTimeZone(timeZone);
-        return (T) this;
-    }
-
-    public T setImplicitWaitTimeout(Duration timeout) {
-        sauceOptions.timeout.setImplicitWait((int) timeout.getSeconds());
-        return (T) this;
-    }
-
-    public T setPageLoadTimeout(Duration timeout) {
-        sauceOptions.timeout.setPageLoad((int) timeout.getSeconds());
-        return (T) this;
-    }
-
-    public T setScriptTimeout(Duration timeout) {
-        sauceOptions.timeout.setScript((int) timeout.getSeconds());
         return (T) this;
     }
 }

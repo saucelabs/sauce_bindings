@@ -8,11 +8,6 @@ import org.junit.After;
 import org.junit.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -22,7 +17,9 @@ public class DesktopBrowserTest {
 
     @After
     public void cleanUp() {
-        session.stop(true);
+        if (session != null) {
+            session.stop(true);
+        }
     }
 
     @Test
@@ -51,22 +48,5 @@ public class DesktopBrowserTest {
 
         assertNotNull(webDriver);
         assertTrue(session.getSauceUrl().toString().contains("eu-central-1"));
-    }
-
-    @Test
-    public void allSupportedPlatformsWork() {
-        SauceOptions options = new SauceOptions();
-        options.setPlatformName(getRandomPlatform());
-        webDriver = session.start();
-
-        assertNotNull(webDriver);
-    }
-
-    private SaucePlatform getRandomPlatform() {
-        Random randomGenerator = new Random();
-        List<SaucePlatform> saucePlatformList =
-                Collections.unmodifiableList(Arrays.asList(SaucePlatform.values()));
-        int listSize = saucePlatformList.size();
-        return saucePlatformList.get(randomGenerator.nextInt(listSize));
     }
 }

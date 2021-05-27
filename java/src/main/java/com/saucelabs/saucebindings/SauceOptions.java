@@ -11,6 +11,7 @@ import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.safari.SafariOptions;
 
 import java.net.URL;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
@@ -79,6 +80,21 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     @Deprecated
     public MutableCapabilities getSeleniumCapabilities() {
         return capabilities;
+    }
+
+    /**
+     * @return Map of timeout values from the TimeoutStore
+     * @deprecated Set the timeout you are interested in directly instead of using a Map
+     * @see com.saucelabs.saucebindings.options.VDCConfigurations#setImplicitWaitTimeout(Duration)
+     * @see com.saucelabs.saucebindings.options.VDCConfigurations#setScriptTimeout(Duration)
+     * @see com.saucelabs.saucebindings.options.VDCConfigurations#setPageLoadTimeout(Duration)
+     */
+    @Deprecated
+    public Map<Timeouts, Integer> getTimeouts() {
+        if (timeout.getTimeouts().isEmpty()) {
+            return timeouts;
+        }
+        return timeout.getTimeouts();
     }
 
     /**

@@ -37,6 +37,10 @@ public class SauceOptions extends BaseOptions {
     protected Boolean strictFileInteractability = null;
     protected UnhandledPromptBehavior unhandledPromptBehavior;
 
+    /**
+     * This needs to be public for Capabilities Manager to use it
+     * Valid list Sauce Labs specific options for currently supported platforms
+     */
     public final List<String> validOptions = Arrays.asList(
             "browserName",
             "browserVersion",
@@ -49,46 +53,115 @@ public class SauceOptions extends BaseOptions {
             "strictFileInteractability",
             "unhandledPromptBehavior");
 
+    /**
+     * This method allows building a default Sauce Options instance for Chrome
+     * Call build() method on return value rather than using directly
+     * @see ChromeConfigurations#build()
+     */
     public static ChromeConfigurations chrome() {
         return chrome(new ChromeOptions());
     }
 
+    /**
+     * This method allows building a Sauce Options instance for Chrome using a provided Selenium ChromeOptions instance
+     * Call build() method on return value rather than using directly
+     *
+     * @param chromeOptions an instance of a Selenium ChromeOptions class
+     * @see ChromeConfigurations#build()
+     */
     public static ChromeConfigurations chrome(ChromeOptions chromeOptions) {
         return new ChromeConfigurations(chromeOptions);
     }
 
+    /**
+     * This method allows building a default Sauce Options instance for Edge
+     * Call build() method on return value rather than using directly
+     *
+     * @see EdgeConfigurations#build()
+     */
     public static EdgeConfigurations edge() {
         return edge(new EdgeOptions());
     }
 
+    /**
+     * This method allows building a Sauce Options instance for Edge using a provided Selenium EdgeOptions instance
+     * Call build() method on return value rather than using directly
+     *
+     * @param edgeOptions an instance of a Selenium EdgeOptions class
+     * @see EdgeConfigurations#build()
+     */
     public static EdgeConfigurations edge(EdgeOptions edgeOptions) {
         return new EdgeConfigurations(edgeOptions);
     }
 
+    /**
+     * This method allows building a default Sauce Options instance for Firefox
+     * Call build() method on return value rather than using directly
+     *
+     * @see FirefoxConfigurations#build()
+     */
     public static FirefoxConfigurations firefox() {
         return firefox(new FirefoxOptions());
     }
 
+    /**
+     * This method allows building a Sauce Options instance for Firefox using a provided Selenium FirefoxOptions instance
+     * Call build() method on return value rather than using directly
+     *
+     * @param firefoxOptions an instance of a Selenium FirefoxOptions class
+     * @see FirefoxConfigurations#build()
+     */
     public static FirefoxConfigurations firefox(FirefoxOptions firefoxOptions) {
         return new FirefoxConfigurations(firefoxOptions);
     }
 
+    /**
+     * This method allows building a default Sauce Options instance for Internet Explorer
+     * Call build() method on return value rather than using directly
+     *
+     * @see InternetExplorerConfigurations#build()
+     */
     public static InternetExplorerConfigurations ie() {
         return ie(new InternetExplorerOptions());
     }
 
+    /**
+     * This method allows building a Sauce Options instance for Internet Explorer using a provided Selenium InternetExplorerOptions instance
+     * Call build() method on return value rather than using directly
+     *
+     * @param internetExplorerOptions an instance of a Selenium InternetExplorerOptions class
+     * @see InternetExplorerConfigurations#build()
+     */
     public static InternetExplorerConfigurations ie(InternetExplorerOptions internetExplorerOptions) {
         return new InternetExplorerConfigurations(internetExplorerOptions);
     }
 
+    /**
+     * This method allows building a default Sauce Options instance for Safari
+     * Call build() method on return value rather than using directly
+     *
+     * @see SafariConfigurations#build()
+     */
     public static SafariConfigurations safari() {
         return safari(new SafariOptions());
     }
 
+    /**
+     * This method allows building a Sauce Options instance for Safari using a provided Selenium SafariOptions instance
+     * Call build() method on return value rather than using directly
+     *
+     * @param safariOptions an instance of a Selenium SafariOptions class
+     * @see SafariConfigurations#build()
+     */
     public static SafariConfigurations safari(SafariOptions safariOptions) {
         return new SafariConfigurations(safariOptions);
     }
 
+    /**
+     * This method does not need to be used if working with the static methods and the build() method
+     *
+     * @return an instance of SauceLabsOptions built by configurations
+     */
     public SauceLabsOptions sauce() {
         return sauceLabsOptions;
     }
@@ -114,6 +187,10 @@ public class SauceOptions extends BaseOptions {
         }
     }
 
+    /**
+     * @return instance of MutableCapabilities representing all key value pairs set in SauceOptions
+     * @see SauceSession#start()
+     */
     public MutableCapabilities toCapabilities() {
         capabilityManager.addCapabilities();
         capabilities.setCapability("sauce:options", sauce().toCapabilities());
@@ -166,14 +243,23 @@ public class SauceOptions extends BaseOptions {
         }
     }
 
+    /**
+     * @return duration to wait for finding an element
+     */
     public Duration getImplicitWaitTimeout() {
         return Duration.ofMillis(getTimeouts().get(Timeouts.IMPLICIT));
     }
 
+    /**
+     * @return duration to wait for page to load
+     */
     public Duration getPageLoadTimeout() {
         return Duration.ofMillis(getTimeouts().get(Timeouts.PAGE_LOAD));
     }
 
+    /**
+     * @return duration to wait for script to execute
+     */
     public Duration getScriptTimeout() {
         return Duration.ofMillis(getTimeouts().get(Timeouts.SCRIPT));
     }

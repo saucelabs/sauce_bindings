@@ -2,6 +2,7 @@ package com.saucelabs.saucebindings.options;
 
 import com.saucelabs.saucebindings.JobVisibility;
 import com.saucelabs.saucebindings.Prerun;
+import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.SystemManager;
 import lombok.Getter;
 import lombok.Setter;
@@ -77,6 +78,10 @@ public class SauceLabsOptions extends BaseOptions {
         capabilityManager = new CapabilityManager(this);
     }
 
+    /**
+     * @return instance of MutableCapabilities representing all key value pairs set in SauceOptions
+     * @see SauceSession#start()
+     */
     public MutableCapabilities toCapabilities() {
         capabilities.setCapability("username", getSauceUsername());
         capabilities.setCapability("accessKey", getSauceAccessKey());
@@ -127,6 +132,9 @@ public class SauceLabsOptions extends BaseOptions {
         }
     }
 
+    /**
+     * @return a String representing the best default build name and number for your test based on CI Tool ENV Variables
+     */
     public String getBuild() {
         if (build != null) {
             return build;

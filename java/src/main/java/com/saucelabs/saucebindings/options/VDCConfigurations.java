@@ -244,4 +244,22 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
         sauceOptions.sauce().setTimeZone(timeZone);
         return (T) this;
     }
+
+    /**
+     * Toggle on executing as Visual Test with default options
+     *
+     * @return instance of Configuration
+     */
+    public T setVisual() {
+        return setVisualOptions(new VisualOptions());
+    }
+
+    /**
+     * @param options specify the visual options to use with the test
+     * @return instance of Configuration
+     */
+    public T setVisualOptions(VisualOptions options) {
+        sauceOptions.setVisualOptions(options);
+        return (T) this;
+    }
 }

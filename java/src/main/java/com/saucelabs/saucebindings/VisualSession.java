@@ -3,11 +3,8 @@ package com.saucelabs.saucebindings;
 import com.saucelabs.saucebindings.options.VisualOptions;
 import lombok.Getter;
 import lombok.Setter;
-import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Map;
 
 public class VisualSession {
@@ -26,14 +23,6 @@ public class VisualSession {
 
     public void init(String name) {
         driver.executeScript("/*@visual.init*/", name);
-    }
-
-    public URL getUrl() {
-        try {
-            return new URL(dataCenter.getValue());
-        } catch (MalformedURLException e) {
-            throw new InvalidArgumentException("Invalid URL");
-        }
     }
 
     public Map getResults() {

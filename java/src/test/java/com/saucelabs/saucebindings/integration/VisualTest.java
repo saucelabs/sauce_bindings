@@ -1,5 +1,6 @@
 package com.saucelabs.saucebindings.integration;
 
+import com.saucelabs.saucebindings.DataCenter;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.SystemManager;
 import com.saucelabs.saucebindings.options.InvalidSauceOptionsArgumentException;
@@ -31,9 +32,20 @@ public class VisualTest {
     }
 
     @Test
-    public void usesVisualWhenSet() {
+    public void usesVisualWhenOptionSet() {
         SauceOptions options = SauceOptions.chrome().setName("Visual uses this name").setVisual().build();
         session = new SauceSession(options);
+        webDriver = session.start();
+        session.visual().takeSnapshot("Snapshot necessary to for Visual test to pass");
+        assertNotNull(webDriver);
+        assertTrue(session.getIsVisualSession());
+    }
+
+    @Test
+    public void usesVisualWhenDataCenterSet() {
+        SauceOptions options = SauceOptions.chrome().setName("Visual uses this name").build();
+        session = new SauceSession(options);
+        session.setDataCenter(DataCenter.VISUAL);
         webDriver = session.start();
         session.visual().takeSnapshot("Snapshot necessary to for Visual test to pass");
         assertNotNull(webDriver);

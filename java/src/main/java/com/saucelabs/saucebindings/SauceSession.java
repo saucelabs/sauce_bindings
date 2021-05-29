@@ -3,6 +3,7 @@ package com.saucelabs.saucebindings;
 import com.saucelabs.saucebindings.options.BaseConfigurations;
 import com.saucelabs.saucebindings.options.InvalidSauceOptionsArgumentException;
 import com.saucelabs.saucebindings.options.SauceOptions;
+import com.saucelabs.saucebindings.options.VisualOptions;
 import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.InvalidArgumentException;
@@ -11,7 +12,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.Duration;
 
 public class SauceSession {
     @Getter @Setter private DataCenter dataCenter = DataCenter.US_WEST;
@@ -39,23 +39,27 @@ public class SauceSession {
     public SauceSession(SauceOptions options) {
         sauceOptions = options;
         if (sauceOptions.visual() != null) {
-            isVisualSession = true;
-            visualSession = new VisualSession(sauceOptions.visual());
+            dataCenter = DataCenter.VISUAL;
+            setVisual();
         }
     }
 
     public RemoteWebDriver start() {
-        if (isVisualSession) {
-            if (sauceOptions.sauce().getName() == null) {
-                String msg = "Visual Tests Require setting a name in options: SauceOptions#setName(Name)";
-                throw new InvalidSauceOptionsArgumentException(msg);
-            } else {
-                driver = createRemoteWebDriver(visualSession.getUrl(), sauceOptions.toCapabilities());
-                visualSession.start(driver, sauceOptions.sauce().getName());
-            }
-        } else {
-            driver = createRemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities());
+        if (dataCenter.equals(DataCenter.VISUAL) && sauceOptions.visual() == null) {
+            sauceOptions.setVisualOptions(new VisualOptions());
+            setVisual();
         }
+
+        if (isVisualSession && sauceOptions.sauce().getName() == null) {
+            String msg = "Visual Tests Require setting a name in options: SauceOptions#setName(Name)";
+            throw new InvalidSauceOptionsArgumentException(msg);
+        }
+        driver = createRemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities());
+
+        if (isVisualSession) {
+            visualSession.start(driver, sauceOptions.sauce().getName());
+        }
+
         return driver;
 	}
 
@@ -113,11 +117,8 @@ public class SauceSession {
         driver.quit();
     }
 
-    public void sleep(Duration time) {
-        try {
-            Thread.sleep(time.toMillis());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    private void setVisual() {
+        isVisualSession = true;
+        visualSession = new VisualSession(sauceOptions.visual());
     }
 }

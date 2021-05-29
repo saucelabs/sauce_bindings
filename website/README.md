@@ -26,7 +26,7 @@ $ yarn start
 3. Publish your changes to the site
 
 ```sh
-GIT_USER=your_user_name CURRENT_BRANCH=master yarn run publish-gh-pages
+GIT_USER=your_user_name CURRENT_BRANCH=main USE_SSH=true yarn run publish-gh-pages
 ```
 ## Directory Structure
 

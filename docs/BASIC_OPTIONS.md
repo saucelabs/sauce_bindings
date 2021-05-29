@@ -19,6 +19,7 @@ Here's an example of running a test on Firefox and Windows 8.0.
 <!--Java-->
 
 ```java
+import com.saucelabs.saucebindings.options.SauceOptions;
 import com.saucelabs.saucebindings.*;
 import org.junit.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -27,8 +28,8 @@ public class BasicOptionsTest {
 
     @Test
     public void basicOptions() {
-        // 1. Specify the 3 basic parameters of a SauceOptions instance
-        SauceOptions sauceOptions = SauceOptions.chrome()
+        // 1. Create SauceOptions instance with static browser method and build()
+        SauceOptions sauceOptions = SauceOptions.firefox()
                 .setBrowserVersion("85.0")
                 .setPlatformName(SaucePlatform.WINDOWS_8)
                 .build();

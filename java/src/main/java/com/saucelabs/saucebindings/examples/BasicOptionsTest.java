@@ -9,11 +9,11 @@ public class BasicOptionsTest {
 
     @Test
     public void basicOptions() {
-        // 1. Specify the 3 basic parameters of a SauceOptions instance
-        SauceOptions sauceOptions = new SauceOptions();
-        sauceOptions.setBrowserName(Browser.FIREFOX);
-        sauceOptions.setBrowserVersion("73.0");
-        sauceOptions.setPlatformName(SaucePlatform.WINDOWS_8);
+        // 1. Create SauceOptions instance with static browser method and build()
+        SauceOptions sauceOptions = SauceOptions.firefox()
+                .setBrowserVersion("85.0")
+                .setPlatformName(SaucePlatform.WINDOWS_8)
+                .build();
 
         // 2. Create Session object with the Options object instance
         SauceSession session = new SauceSession(sauceOptions);

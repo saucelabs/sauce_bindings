@@ -14,17 +14,20 @@ All of these configurations can now be easily set with the `SauceOptions` class
 
 ```java
 import com.saucelabs.saucebindings.*;
+import com.saucelabs.saucebindings.options.SauceOptions;
 import org.junit.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
+
+import java.time.Duration;
 
 public class SauceLabsOptionsTest {
 
     @Test
     public void sauceOptions() {
-        // 1. Specify Sauce Specific Options
+        // 1. Specify Sauce Specific Options Based on Browser
         SauceOptions sauceOptions = SauceOptions.firefox()
                 .setExtendedDebugging()
-                .setIdleTimeout(100)
+                .setIdleTimeout(Duration.ofSeconds(100))
                 .setTimeZone("Alaska")
                 .build();
 

@@ -14,7 +14,7 @@ public class BrowserOptionsTest {
         FirefoxOptions browserOptions = new FirefoxOptions();
         browserOptions.addArguments("--foo");
 
-        // 2. Create Sauce Options object with the Browser Options object instance
+        // 2. Create SauceOptions instance with static browser method and build()
         SauceOptions sauceOptions = SauceOptions.firefox(browserOptions).build();
 
         // 3. Create Session object with the Sauce Options object instance

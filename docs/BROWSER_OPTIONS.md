@@ -13,6 +13,7 @@ one of these objects:
 
 ```java
 import com.saucelabs.saucebindings.*;
+import com.saucelabs.saucebindings.options.SauceOptions;
 import org.junit.Test;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -25,8 +26,8 @@ public class BrowserOptionsTest {
         FirefoxOptions browserOptions = new FirefoxOptions();
         browserOptions.addArguments("--foo");
 
-        // 2. Create Sauce Options object with the Browser Options object instance
-        SauceOptions sauceOptions = SauceOptions.firefox(browserOptions);
+        // 2. Create SauceOptions instance with static browser method and build()
+        SauceOptions sauceOptions = SauceOptions.firefox(browserOptions).build();
 
         // 3. Create Session object with the Sauce Options object instance
         SauceSession session = new SauceSession(sauceOptions);

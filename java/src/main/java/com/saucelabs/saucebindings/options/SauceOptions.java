@@ -56,6 +56,7 @@ public class SauceOptions extends BaseOptions {
     /**
      * This method allows building a default Sauce Options instance for Chrome
      * Call build() method on return value rather than using directly
+     * @return instance of ChromeConfigurations
      * @see ChromeConfigurations#build()
      */
     public static ChromeConfigurations chrome() {
@@ -67,6 +68,7 @@ public class SauceOptions extends BaseOptions {
      * Call build() method on return value rather than using directly
      *
      * @param chromeOptions an instance of a Selenium ChromeOptions class
+     * @return instance of ChromeConfigurations
      * @see ChromeConfigurations#build()
      */
     public static ChromeConfigurations chrome(ChromeOptions chromeOptions) {
@@ -77,6 +79,7 @@ public class SauceOptions extends BaseOptions {
      * This method allows building a default Sauce Options instance for Edge
      * Call build() method on return value rather than using directly
      *
+     * @return instance of EdgeConfigurations
      * @see EdgeConfigurations#build()
      */
     public static EdgeConfigurations edge() {
@@ -88,6 +91,7 @@ public class SauceOptions extends BaseOptions {
      * Call build() method on return value rather than using directly
      *
      * @param edgeOptions an instance of a Selenium EdgeOptions class
+     * @return instance of EdgeConfigurations
      * @see EdgeConfigurations#build()
      */
     public static EdgeConfigurations edge(EdgeOptions edgeOptions) {
@@ -98,6 +102,7 @@ public class SauceOptions extends BaseOptions {
      * This method allows building a default Sauce Options instance for Firefox
      * Call build() method on return value rather than using directly
      *
+     * @return instance of FirefoxConfigurations
      * @see FirefoxConfigurations#build()
      */
     public static FirefoxConfigurations firefox() {
@@ -109,6 +114,7 @@ public class SauceOptions extends BaseOptions {
      * Call build() method on return value rather than using directly
      *
      * @param firefoxOptions an instance of a Selenium FirefoxOptions class
+     * @return instance of FirefoxConfigurations
      * @see FirefoxConfigurations#build()
      */
     public static FirefoxConfigurations firefox(FirefoxOptions firefoxOptions) {
@@ -119,6 +125,7 @@ public class SauceOptions extends BaseOptions {
      * This method allows building a default Sauce Options instance for Internet Explorer
      * Call build() method on return value rather than using directly
      *
+     * @return instance of InternetExplorerConfigurations
      * @see InternetExplorerConfigurations#build()
      */
     public static InternetExplorerConfigurations ie() {
@@ -130,6 +137,7 @@ public class SauceOptions extends BaseOptions {
      * Call build() method on return value rather than using directly
      *
      * @param internetExplorerOptions an instance of a Selenium InternetExplorerOptions class
+     * @return instance of InternetExplorerConfigurations
      * @see InternetExplorerConfigurations#build()
      */
     public static InternetExplorerConfigurations ie(InternetExplorerOptions internetExplorerOptions) {
@@ -140,6 +148,7 @@ public class SauceOptions extends BaseOptions {
      * This method allows building a default Sauce Options instance for Safari
      * Call build() method on return value rather than using directly
      *
+     * @return instance of SafariConfigurations
      * @see SafariConfigurations#build()
      */
     public static SafariConfigurations safari() {
@@ -151,6 +160,7 @@ public class SauceOptions extends BaseOptions {
      * Call build() method on return value rather than using directly
      *
      * @param safariOptions an instance of a Selenium SafariOptions class
+     * @return instance of SafariConfigurations
      * @see SafariConfigurations#build()
      */
     public static SafariConfigurations safari(SafariOptions safariOptions) {

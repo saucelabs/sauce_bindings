@@ -157,6 +157,7 @@ public class SauceLabsOptions extends BaseOptions {
 
     /**
      * @deprecated This method is no longer supported
+     * @return whether CI is accounted for in code
      */
     @Deprecated
     public boolean isKnownCI() {

@@ -55,7 +55,7 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
     }
 
     /**
-     * Toggle on requirement that <input type=file> elements need to be displayed and enabled in order to use
+     * Toggle on requirement that input elements with type=file need to be displayed and enabled in order to use
      * Keep the default if the input fields on your site are never displayed
      * Set with this method if you have an automated synchronization strategy that the default incorrectly bypasses
      *

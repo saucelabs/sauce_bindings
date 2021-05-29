@@ -42,6 +42,15 @@ public class DesktopBrowserTest {
     }
 
     @Test
+    public void runsAPACSoutheast() {
+        session.setDataCenter(DataCenter.APAC_SOUTHEAST);
+        webDriver = session.start();
+
+        assertNotNull(webDriver);
+        assertTrue(session.getSauceUrl().toString().contains("apac-southeast"));
+    }
+
+    @Test
     public void runsEUCentral() {
         session.setDataCenter(DataCenter.EU_CENTRAL);
         webDriver = session.start();

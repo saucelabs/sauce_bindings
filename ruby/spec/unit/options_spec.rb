@@ -10,6 +10,56 @@ module SauceBindings
       allow(ENV).to receive(:[]).with('BUILD_NUMBER').and_return('11')
     end
 
+    describe 'self#chrome' do
+      it 'creates Options for Chrome' do
+        options = Options.chrome
+
+        expect(options.browser_name).to eq 'chrome'
+        expect(options.browser_version).to eq 'latest'
+        expect(options.platform_name).to eq 'Windows 10'
+      end
+    end
+
+    describe 'self#edge' do
+      it 'creates Options for Edge' do
+        options = Options.edge
+
+        expect(options.browser_name).to eq 'MicrosoftEdge'
+        expect(options.browser_version).to eq 'latest'
+        expect(options.platform_name).to eq 'Windows 10'
+      end
+    end
+
+    describe 'self#firefox' do
+      it 'creates Options for Firefox' do
+        options = Options.firefox
+
+        expect(options.browser_name).to eq 'firefox'
+        expect(options.browser_version).to eq 'latest'
+        expect(options.platform_name).to eq 'Windows 10'
+      end
+    end
+
+    describe 'self#ie' do
+      it 'creates Options for Chrome' do
+        options = Options.ie
+
+        expect(options.browser_name).to eq 'internet explorer'
+        expect(options.browser_version).to eq 'latest'
+        expect(options.platform_name).to eq 'Windows 10'
+      end
+    end
+
+    describe 'self#safari' do
+      it 'creates Options for Safari' do
+        options = Options.safari
+
+        expect(options.browser_name).to eq 'safari'
+        expect(options.browser_version).to eq 'latest'
+        expect(options.platform_name).to eq 'Windows 10'
+      end
+    end
+
     describe '#new' do
       let(:default_options) do
         {'browserName' => 'chrome',

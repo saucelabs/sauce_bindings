@@ -8,9 +8,8 @@ describe 'Basic Options' do
 
   it 'creates session' do
     # 1. Create a SauceOptions instance with the 3 primary parameters
-    sauce_options = SauceBindings::Options.new(browser_name: 'firefox',
-                                               browser_version: '73.0',
-                                               platform_name: 'Windows 8')
+    sauce_options = SauceBindings::Options.firefox(browser_version: '73.0',
+                                                   platform_name: 'Windows 8')
 
     # 2. Create Session object with SauceOptions object instance
     session = SauceBindings::Session.new(sauce_options)

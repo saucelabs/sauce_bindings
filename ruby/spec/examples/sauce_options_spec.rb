@@ -8,9 +8,9 @@ describe 'Sauce Options' do
 
   it 'creates session' do
     # 1. Create a SauceOptions instance with Sauce Labs Specific Options
-    sauce_options = SauceBindings::Options.new(extended_debugging: true,
-                                               idle_timeout: 100,
-                                               time_zone: 'Alaska')
+    sauce_options = SauceBindings::Options.firefox(extended_debugging: true,
+                                                   idle_timeout: 100,
+                                                   time_zone: 'Alaska')
 
     # 2. Create Session object with SauceOptions object instance
     session = SauceBindings::Session.new(sauce_options)

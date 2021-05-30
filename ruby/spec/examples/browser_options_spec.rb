@@ -11,7 +11,7 @@ describe 'Browser Options' do
     browser_options = Selenium::WebDriver::Firefox::Options.new(args: ['--foo'])
 
     # 2. Create Sauce Options object with the Browser Options object instance
-    sauce_options = SauceBindings::Options.new(selenium_options: browser_options)
+    sauce_options = SauceBindings::Options.firefox(selenium_options: browser_options)
 
     # 3. Create Session object with SauceOptions object instance
     session = SauceBindings::Session.new(sauce_options)

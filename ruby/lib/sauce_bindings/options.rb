@@ -8,6 +8,31 @@ module SauceBindings
       def camel_case(str)
         str.to_s.gsub(/_([a-z])/) { Regexp.last_match(1).upcase }
       end
+
+      def chrome(**opts)
+        opts[:browser_name] = 'chrome'
+        Options.new(**opts)
+      end
+
+      def edge(**opts)
+        opts[:browser_name] = 'MicrosoftEdge'
+        Options.new(**opts)
+      end
+
+      def firefox(**opts)
+        opts[:browser_name] = 'firefox'
+        Options.new(**opts)
+      end
+
+      def ie(**opts)
+        opts[:browser_name] = 'internet explorer'
+        Options.new(**opts)
+      end
+
+      def safari(**opts)
+        opts[:browser_name] = 'safari'
+        Options.new(**opts)
+      end
     end
 
     BROWSER_NAMES = {Selenium::WebDriver::Chrome::Options => 'chrome',

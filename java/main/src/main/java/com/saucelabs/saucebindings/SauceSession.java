@@ -1,5 +1,7 @@
 package com.saucelabs.saucebindings;
 
+import com.deque.html.axecore.results.Results;
+import com.deque.html.axecore.selenium.AxeBuilder;
 import com.saucelabs.saucebindings.options.BaseConfigurations;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import lombok.Getter;
@@ -55,6 +57,22 @@ public class SauceSession {
 
     protected RemoteWebDriver createRemoteWebDriver(URL url, MutableCapabilities capabilities) {
         return new RemoteWebDriver(url, capabilities);
+    }
+
+    public Results getAccessibilityResults() {
+        return getAccessibilityResults(true);
+    }
+
+    public Results getAccessibilityResults(boolean frames) {
+        AxeBuilder axeBuilder = new AxeBuilder();
+        if (!frames) {
+            axeBuilder.disableIframeTesting();
+        }
+        return getAccessibilityResults(axeBuilder);
+    }
+
+    public Results getAccessibilityResults(AxeBuilder builder) {
+        return builder.analyze(driver);
     }
 
     public void stop(Boolean passed) {

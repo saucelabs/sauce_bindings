@@ -94,6 +94,11 @@
             <version>1.26</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.deque.html.axe-core</groupId>
+            <artifactId>selenium</artifactId>
+            <version>4.2.2</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

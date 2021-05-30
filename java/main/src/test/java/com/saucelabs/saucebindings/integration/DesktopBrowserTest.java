@@ -1,9 +1,9 @@
 package com.saucelabs.saucebindings.integration;
 
 import com.saucelabs.saucebindings.DataCenter;
-import com.saucelabs.saucebindings.options.SauceOptions;
 import com.saucelabs.saucebindings.SaucePlatform;
 import com.saucelabs.saucebindings.SauceSession;
+import com.saucelabs.saucebindings.options.SauceOptions;
 import org.junit.After;
 import org.junit.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;

@@ -7,7 +7,8 @@ from .options import SauceOptions
 data_centers = {
     'us-west': 'ondemand.us-west-1.saucelabs.com',
     'us-east': 'ondemand.us-east-1.saucelabs.com',
-    'eu-central': 'ondemand.eu-central-1.saucelabs.com'
+    'eu-central': 'ondemand.eu-central-1.saucelabs.com',
+    'apac-southeast': 'ondemand.apac-southeast-1.saucelabs.com'
 }
 
 
@@ -29,7 +30,7 @@ class SauceSession():
     @data_center.setter
     def data_center(self, data_center):
         if data_center.lower() not in data_centers.keys():
-            raise ValueError("Invalid Data Center value, please select from 'us-west', 'us-east' or 'eu-central'")
+            raise ValueError("Invalid Data Center value, please select from:", list(data_centers.keys()))
 
         self._data_center = data_center
 

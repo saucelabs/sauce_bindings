@@ -7,7 +7,8 @@ module SauceBindings
   class Session
     DATA_CENTERS = {US_WEST: 'ondemand.us-west-1.saucelabs.com',
                     US_EAST: 'ondemand.us-east-1.saucelabs.com',
-                    EU_CENTRAL: 'ondemand.eu-central-1.saucelabs.com'}.freeze
+                    EU_CENTRAL: 'ondemand.eu-central-1.saucelabs.com',
+                    APAC_SOUTHEAST: 'ondemand.apac-southeast-1.saucelabs.com'}.freeze
 
     attr_writer :url
     attr_reader :driver, :options, :data_center
@@ -44,7 +45,7 @@ module SauceBindings
 
     def data_center=(data_center)
       unless DATA_CENTERS.key?(data_center)
-        msg = "#{data_center} is an invalid data center; specify :US_WEST, :US_EAST or :EU_CENTRAL"
+        msg = "#{data_center} is an invalid data center; specify one of: #{DATA_CENTERS.keys}"
         raise ArgumentError, msg
       end
 

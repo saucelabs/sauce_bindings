@@ -2,35 +2,35 @@
   "docs": {
     "Sauce Bindings": [
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "Introduction",
-        "ids": [
+        "items": [
           "overview",
           "getting-started",
           "create-session"
         ]
       },
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "Configuration",
-        "ids": [
+        "items": [
           "basic-options",
           "sauce-options",
           "browser-options"
         ]
       },
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "Integration",
-        "ids": [
+        "items": [
           "data-center",
           "upcoming-features"
         ]
       },
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "Support",
-        "ids": [
+        "items": [
           "contributing",
           "code-of-conduct"
         ]

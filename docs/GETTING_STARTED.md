@@ -28,9 +28,9 @@ Here are instructions for setting environment variables on each Operating System
 <!--Java-->
 <br />
 
-1. Install ***Java version 8*** or greater <br />
+1. Install ***Java version 8*** or greater
 2. Install your favorite Java IDE (we really like IntelliJ and the Community Edition is free).
-2. The project is designed as a standard Maven project and follows Maven conventions.</br>
+3. The project is designed as a standard Maven project and follows Maven conventions.
 Add the following to your .pom file:
 
 ```xml

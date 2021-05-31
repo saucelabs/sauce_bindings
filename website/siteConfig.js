@@ -38,10 +38,10 @@ const siteConfig = {
   //   organizationName: "JoelMarcey"
 
   // For no header links in the top nav bar -> headerLinks: [],
-  headerLinks: [
-    { href: "https://saucelabs.com/sign-up", label: "Try Sauce Labs", external: true },
-    { href: "https://app.saucelabs.com/login", label: "Sign in to Sauce Labs", external: true }
-  ],
+  // headerLinks: [
+  //   { href: "https://saucelabs.com/sign-up", label: "Try Sauce Labs", external: true },
+  //   { href: "https://app.saucelabs.com/login", label: "Sign in to Sauce Labs", external: true }
+  // ],
 
   // If you have users set above, you add it here:
   users,

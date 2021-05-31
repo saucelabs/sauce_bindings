@@ -9,7 +9,9 @@
     "rename-version": "docusaurus-rename-version",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
-    "docusaurus": "docusaurus"
+    "docusaurus": "docusaurus",
+    "serve": "docusaurus serve",
+    "clear": "docusaurus clear"
   },
   "devDependencies": {},
   "dependencies": {

@@ -1,4 +1,4 @@
-This website was created with [Docusaurus](https://docusaurus.io/).
+This website is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
 
 # How to update Sauce Bindings website
 
@@ -14,7 +14,7 @@ This website was created with [Docusaurus](https://docusaurus.io/).
 
 ```sh
 # Install dependencies
-$ yarn
+$ yarn install
 ```
 2. Run your dev server:
 
@@ -26,31 +26,7 @@ $ yarn start
 3. Publish your changes to the site
 
 ```sh
-GIT_USER=your_user_name CURRENT_BRANCH=main USE_SSH=true yarn run publish-gh-pages
-```
-## Directory Structure
-
-Your project file structure should look something like this
-
-```
-root/
-  docs/
-    doc-1.md
-    doc-2.md
-    doc-3.md
-  website/
-    blog/
-      2016-3-11-oldest-post.md
-      2017-10-24-newest-post.md
-    core/
-    node_modules/
-    pages/
-    static/
-      css/
-      img/
-    package.json
-    sidebar.json
-    siteConfig.js
+GIT_USER=<Your GitHub username> USE_SSH=true yarn deploy
 ```
 
 # Editing Content

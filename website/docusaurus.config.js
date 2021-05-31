@@ -45,9 +45,9 @@ module.exports={
           "sidebarPath": "../website/sidebars.json"
         },
         "blog": {},
-        "theme": {
-          "customCss": "../src/css/customTheme.css"
-        }
+        theme: {
+          customCss: [require.resolve('./src/css/custom.css')],
+        },
       }
     ]
   ],
@@ -65,7 +65,7 @@ module.exports={
       "links": [],
       "copyright": "Copyright © 2020-2021 Sauce Labs",
       "logo": {
-        "src": "img/favicon.ico"
+        "src": "img/logo-saucelabs.png"
       }
     },
     "gtag": {

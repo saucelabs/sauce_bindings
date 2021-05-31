@@ -41,7 +41,7 @@ module.exports={
         "docs": {
           "showLastUpdateAuthor": true,
           "showLastUpdateTime": true,
-          "path": "../docs",
+          "path": "docs/",
           "sidebarPath": "../website/sidebars.json"
         },
         "blog": {},

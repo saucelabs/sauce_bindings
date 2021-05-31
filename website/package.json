@@ -15,6 +15,8 @@
   },
   "devDependencies": {},
   "dependencies": {
+    "@babel/plugin-transform-modules-commonjs": "7.12.1",
+    "@saucelabs/theme-github-codeblock": "0.0.4",
     "@docusaurus/mdx-loader": "^2.0.0-alpha.75",
     "@docusaurus/core": "2.0.0-beta.0",
     "@docusaurus/preset-classic": "2.0.0-beta.0",

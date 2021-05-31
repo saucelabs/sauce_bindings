@@ -21,12 +21,22 @@ Here are instructions for setting environment variables on each Operating System
 * [MacOS](https://apple.stackexchange.com/questions/106778/how-do-i-set-environment-variables-on-os-x)
 * [Linux](https://askubuntu.com/questions/58814/how-do-i-add-environment-variables)
 
-
 ## Language Specific  Prerequisites
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Java-->
-<br />
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs
+defaultValue="java"
+values={[
+{ label: 'Java', value: 'java', },
+{ label: 'Python', value: 'python', },
+{ label: 'Ruby', value: 'ruby', },
+{ label: 'C#', value: 'csharp', },
+]
+}>
+
+<TabItem value="java">
 
 1. Install ***Java version 8*** or greater
 2. Install your favorite Java IDE (we really like IntelliJ and the Community Edition is free).
@@ -51,8 +61,8 @@ Examples in the docs are written to use JUnit 4, so to execute the examples you 
 </dependency>
 ``` 
 
-<!--Python-->
-<br />
+</TabItem>
+<TabItem value="python">
 
 1. Install the package:
 ```bash
@@ -64,8 +74,9 @@ from saucebindings.options import SauceOptions
 from saucebindings.session import SauceSession
 ```
 
-<!--Ruby-->
-<br />
+</TabItem>
+<TabItem value="ruby">
+
 1. Add it to your Gemfile:
 ```ruby
 gem 'sauce_bindings'
@@ -86,11 +97,10 @@ Examples on this site are written to use RSpec, so to execute them you must also
 gem 'rspec'
 ```
 
-<!--C#-->
-<br />
+</TabItem>
+<TabItem value="csharp">
 
 **C# bindings are coming soon...**
 
-<!--END_DOCUSAURUS_CODE_TABS-->
-
-___
+</TabItem>
+</Tabs>

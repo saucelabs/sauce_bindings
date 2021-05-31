@@ -8,106 +8,44 @@ Selenium provides options classes for each of the supported browsers with all of
 Rather than re-implement these, the `SauceOptions` class can be constructed with an instance of
 one of these objects:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Java-->
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-```java
-import com.saucelabs.saucebindings.*;
-import com.saucelabs.saucebindings.options.SauceOptions;
-import org.junit.Test;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.remote.RemoteWebDriver;
+<Tabs
+defaultValue="java"
+values={[
+{ label: 'Java', value: 'java', },
+{ label: 'Python', value: 'python', },
+{ label: 'Ruby', value: 'ruby', },
+{ label: 'C#', value: 'csharp', },
+]
+}>
 
-public class BrowserOptionsTest {
+<TabItem value="java">
 
-    @Test
-    public void browserOptions() {
-        // 1. Create Selenium Browser Options instance
-        FirefoxOptions browserOptions = new FirefoxOptions();
-        browserOptions.addArguments("--foo");
-
-        // 2. Create SauceOptions instance with static browser method and build()
-        SauceOptions sauceOptions = SauceOptions.firefox(browserOptions).build();
-
-        // 3. Create Session object with the Sauce Options object instance
-        SauceSession session = new SauceSession(sauceOptions);
-
-        // 4. Start Session to get the Driver
-        RemoteWebDriver driver = session.start();
-
-        // 5. Use the driver in your tests just like normal
-        driver.get("https://www.saucedemo.com/");
-
-        // 6. Stop the Session with whether the test passed or failed
-        session.stop(true);
-    }
-}
+```java reference
+https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/java/src/main/java/com/saucelabs/saucebindings/examples/BrowserOptionsTest.java
 ```
 
-<!--Python-->
-```python
-from saucebindings.options import SauceOptions
-from saucebindings.session import SauceSession
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
+</TabItem>
+<TabItem value="python">
 
-
-class TestBrowserOptions(object):
-
-    def test_creates_session(self):
-
-        # 1. Create Selenium Browser Options instance
-        browserOptions = FirefoxOptions()
-        browserOptions.add_argument('--foo')
-
-        # 2. Create Sauce Options object with the Browser Options object instance
-        sauceOptions = SauceOptions(seleniumOptions=browserOptions)
-
-        # 3. Create Session object with SauceOptions object instance
-        session = SauceSession(sauceOptions)
-
-        # 4. Start Session to get the Driver
-        driver = session.start()
-
-        # 5. Use the driver in your tests just like normal
-        driver.get('https://www.saucedemo.com/')
-
-        # 6. Stop the Session with whether the test passed or failed
-        session.stop(True)
+```python reference
+https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/python/tests/examples/test_browser_options.py
 ```
 
-<!--Ruby-->
-```ruby
-require 'sauce_bindings'
-require 'rspec'
+</TabItem>
+<TabItem value="ruby">
 
-describe 'Browser Options' do
-  it 'creates session' do
-    # 1. Create Selenium Browser Options instance
-    browser_options = Selenium::WebDriver::Firefox::Options.new(args: ['--foo'])
-
-    # 2. Create Sauce Options object with the Browser Options object instance
-    sauce_options = SauceBindings::Options.new(browser_options)
-
-    # 3. Create Session object with SauceOptions object instance
-    session = SauceBindings::Session.new(sauce_options)
-
-    # 4. Start Session to get the Driver
-    driver = session.start
-
-    # 5. Use the driver in your tests just like normal
-    driver.get('https://www.saucedemo.com/')
-
-    # 6. Stop the Session with whether the test passed or failed
-    session.stop(true)
-  end
-end
+```ruby reference
+https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/ruby/spec/examples/browser_options_spec.rb
 ```
 
-<!--C#-->
-<br />
+</TabItem>
+<TabItem value="csharp">
 
 **C# bindings are coming soon...**
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
-___

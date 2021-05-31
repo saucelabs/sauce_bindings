@@ -52,12 +52,18 @@ module.exports={
       }
     ]
   ],
+  themes: [
+    '@saucelabs/theme-github-codeblock'
+  ],
   plugins: [],
   themeConfig: {
     googleAnalytics: {
       trackingID: 'UA-6735579-21',
     },
     hideableSidebar: true,
+    prism: {
+      additionalLanguages: ['java', 'ruby', 'csharp', 'bash', 'powershell', 'python'],
+    },
 
     navbar: {
       title: null,

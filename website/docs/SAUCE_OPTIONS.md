@@ -9,100 +9,43 @@ Here is a [full list with exhaustive descriptions](https://wiki.saucelabs.com/di
 
 All of these configurations can now be easily set with the `SauceOptions` class
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Java-->
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-```java
-import com.saucelabs.saucebindings.*;
-import com.saucelabs.saucebindings.options.SauceOptions;
-import org.junit.Test;
-import org.openqa.selenium.remote.RemoteWebDriver;
+<Tabs
+defaultValue="java"
+values={[
+{ label: 'Java', value: 'java', },
+{ label: 'Python', value: 'python', },
+{ label: 'Ruby', value: 'ruby', },
+{ label: 'C#', value: 'csharp', },
+]
+}>
 
-import java.time.Duration;
+<TabItem value="java">
 
-public class SauceLabsOptionsTest {
-
-    @Test
-    public void sauceOptions() {
-        // 1. Specify Sauce Specific Options Based on Browser
-        SauceOptions sauceOptions = SauceOptions.firefox()
-                .setExtendedDebugging()
-                .setIdleTimeout(Duration.ofSeconds(100))
-                .setTimeZone("Alaska")
-                .build();
-
-        // 2. Create Session object with the Options object instance
-        SauceSession session = new SauceSession(sauceOptions);
-
-        // 3. Start Session to get the Driver
-        RemoteWebDriver driver = session.start();
-
-        // 4. Use the driver in your tests just like normal
-        driver.get("https://www.saucedemo.com/");
-
-        // 5. Stop the Session with whether the test passed or failed
-        session.stop(true);
-    }
-}
+```java reference
+https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/java/src/main/java/com/saucelabs/saucebindings/examples/SauceLabsOptionsTest.java
 ```
 
-<!--Python-->
-```python
-from saucebindings.options import SauceOptions
-from saucebindings.session import SauceSession
+</TabItem>
+<TabItem value="python">
 
-
-class TestSauceOptions(object):
-
-    def test_creates_session(self):
-        # 1. Create a SauceOptions instance with Sauce Labs Specific Options
-        sauceOptions = SauceOptions(extendedDebugging=True,
-                                    idleTimeout=100,
-                                    timeZone='Alaska')
-
-        # 2. Create Session object with SauceOptions object instance
-        session = SauceSession(sauceOptions)
-
-        # 3. Start Session to get the Driver
-        driver = session.start()
-
-        # 4. Use the driver in your tests just like normal
-        driver.get('https://www.saucedemo.com/')
-
-        # 5. Stop the Session with whether the test passed or failed
-        session.stop(True)
+```python reference
+https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/python/tests/examples/test_sauce_options.py
 ```
-<!--Ruby-->
-```ruby
-require 'sauce_bindings'
-require 'rspec'
 
-describe 'Sauce Options' do
-  it 'creates session' do
-    # 1. Create a SauceOptions instance with Sauce Labs Specific Options
-    sauce_options = SauceBindings::Options.new(extended_debugging: true,
-                                               idle_timeout: 100,
-                                               time_zone: 'Alaska')
+</TabItem>
+<TabItem value="ruby">
 
-    # 2. Create Session object with SauceOptions object instance
-    session = SauceBindings::Session.new(sauce_options)
-
-    # 3. Start Session to get the Driver
-    driver = session.start
-
-    # 4. Use the driver in your tests just like normal
-    driver.get('https://www.saucedemo.com/')
-
-    # 5. Stop the Session with whether the test passed or failed
-    session.stop(true)
-  end
-end
+```ruby reference
+https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/ruby/spec/examples/sauce_options_spec.rb
 ```
-<!--C#-->
-<br />
+
+</TabItem>
+<TabItem value="csharp">
 
 **C# bindings are coming soon...**
 
-<!--END_DOCUSAURUS_CODE_TABS-->
-
-___
+</TabItem>
+</Tabs>

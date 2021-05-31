@@ -9,82 +9,43 @@ you may also want to adjust where your tests are run with the Sauce Session clas
 By default tests are executed on our US West Coast Data Center. 
 You can Specify US East or Central EU on the Session class:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Java-->
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-```java
-import com.saucelabs.saucebindings.*;
-import org.junit.Test;
-import org.openqa.selenium.remote.RemoteWebDriver;
+<Tabs
+defaultValue="java"
+values={[
+{ label: 'Java', value: 'java', },
+{ label: 'Python', value: 'python', },
+{ label: 'Ruby', value: 'ruby', },
+{ label: 'C#', value: 'csharp', },
+]
+}>
 
-public class DataCenterTest {
+<TabItem value="java">
 
-    @Test
-    public void changeDataCenter() {
-        // 1. Create Session object with the defaults
-        SauceSession session = new SauceSession();
-
-        // 2. Set Data Center
-        session.setDataCenter(DataCenter.EU_CENTRAL);
-
-        // 3. Start Session to get the Driver
-        RemoteWebDriver driver = session.start();
-
-        // 4. Use the driver in your tests just like normal
-        driver.get("https://www.saucedemo.com/");
-
-        // 5. Stop the Session with whether the test passed or failed
-        session.stop(true);
-    }
-}
+```java reference
+https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/java/src/main/java/com/saucelabs/saucebindings/examples/DataCenterTest.java
 ```
 
-<!--Python-->
-```python
-from saucebindings.session import SauceSession
+</TabItem>
+<TabItem value="python">
 
-
-class TestDataCenter(object):
-
-    def test_creates_session(self):
-        # 1. Create Session object with the desired Data Center
-        session = SauceSession(data_center='eu-central')
-
-        # 2. Start Session to get the Driver
-        driver = session.start()
-
-        # 3. Use the driver in your tests just like normal
-        driver.get('https://www.saucedemo.com/')
-
-        # 4. Stop the Session with whether the test passed or failed
-        session.stop(True)
+```python reference
+https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/python/tests/examples/test_data_center.py
 ```
-<!--Ruby-->
-```ruby
-require 'sauce_bindings'
-require 'rspec'
 
-describe 'Create Session' do
-  it 'starts session' do
-    # 1. Create Session object with the desired Data Center
-    session = SauceBindings::Session.new(data_center: :EU_CENTRAL)
+</TabItem>
+<TabItem value="ruby">
 
-    # 2. Start Session to get the Driver
-    driver = session.start
-
-    # 3. Use the driver in your tests just like normal
-    driver.get('https://www.saucedemo.com/')
-
-    # 4. Stop the Session with whether the test passed or failed
-    session.stop(true)
-  end
-end
+```ruby reference
+https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/ruby/spec/examples/data_center_spec.rb
 ```
-<!--C#-->
-<br />
+
+</TabItem>
+<TabItem value="csharp">
 
 **C# bindings are coming soon...**
 
-<!--END_DOCUSAURUS_CODE_TABS-->
-
-___
+</TabItem>
+</Tabs>

@@ -15,97 +15,43 @@ To see what values are supported by Sauce Labs for these capabilities, take a lo
 
 Here's an example of running a test on Firefox and Windows 8.0.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Java-->
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-```java
-import com.saucelabs.saucebindings.options.SauceOptions;
-import com.saucelabs.saucebindings.*;
-import org.junit.Test;
-import org.openqa.selenium.remote.RemoteWebDriver;
+<Tabs
+defaultValue="java"
+values={[
+{ label: 'Java', value: 'java', },
+{ label: 'Python', value: 'python', },
+{ label: 'Ruby', value: 'ruby', },
+{ label: 'C#', value: 'csharp', },
+]
+}>
 
-public class BasicOptionsTest {
+<TabItem value="java">
 
-    @Test
-    public void basicOptions() {
-        // 1. Create SauceOptions instance with static browser method and build()
-        SauceOptions sauceOptions = SauceOptions.firefox()
-                .setBrowserVersion("85.0")
-                .setPlatformName(SaucePlatform.WINDOWS_8)
-                .build();
-
-        // 2. Create Session object with the Options object instance
-        SauceSession session = new SauceSession(sauceOptions);
-
-        // 3. Start Session to get the Driver
-        RemoteWebDriver driver = session.start();
-
-        // 4. Use the driver in your tests just like normal
-        driver.get("https://www.saucedemo.com/");
-
-        // 5. Stop the Session with whether the test passed or failed
-        session.stop(true);
-    }
-}
+```java reference
+https://github.com/saucelabs/sauce_bindings/commit//e9e56f0/java/src/main/java/com/saucelabs/saucebindings/examples/BasicOptionsTest.java
 ```
 
-<!--Python-->
-```python
-from saucebindings.options import SauceOptions
-from saucebindings.session import SauceSession
+</TabItem>
+<TabItem value="python">
 
-
-class TestBasicOptions(object):
-
-    def test_creates_session(self):
-        # 1. Create a SauceOptions instance with the 3 primary parameters
-        sauceOptions = SauceOptions(browserName='firefox',
-                                    browserVersion='73.0',
-                                    platformName='Windows 8')
-
-        # 2. Create Session object with SauceOptions object instance
-        session = SauceSession(sauceOptions)
-
-        # 3. Start Session to get the Driver
-        driver = session.start()
-
-        # 4. Use the driver in your tests just like normal
-        driver.get('https://www.saucedemo.com/')
-
-        # 5. Stop the Session with whether the test passed or failed
-        session.stop(True)
+```python reference
+https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/python/tests/examples/test_basic_options.py
 ```
-<!--Ruby-->
-```ruby
-require 'sauce_bindings'
-require 'rspec'
 
-describe 'Basic Options' do
-  it 'creates session' do
-    # 1. Create a SauceOptions instance with the 3 primary parameters
-    sauce_options = SauceBindings::Options.new(browser_name: 'firefox',
-                                               browser_version: '73.0',
-                                               platform_name: 'Windows 8')
+</TabItem>
+<TabItem value="ruby">
 
-    # 2. Create Session object with SauceOptions object instance
-    session = SauceBindings::Session.new(sauce_options)
-
-    # 3. Start Session to get the Driver
-    driver = session.start
-
-    # 4. Use the driver in your tests just like normal
-    driver.get('https://www.saucedemo.com/')
-
-    # 5. Stop the Session with whether the test passed or failed
-    session.stop(true)
-  end
-end
+```ruby reference
+https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/ruby/spec/examples/basic_options_spec.rb
 ```
-<!--C#-->
-<br />
+
+</TabItem>
+<TabItem value="csharp">
 
 **C# bindings are coming soon...**
 
-<!--END_DOCUSAURUS_CODE_TABS-->
-
-___
+</TabItem>
+</Tabs>

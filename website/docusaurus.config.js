@@ -1,75 +1,92 @@
 module.exports={
-  "title": "Sauce Bindings",
-  "tagline": "Provide Convenient Way to Use Sauce Labs",
-  "url": "https://saucelabs.github.io",
-  "baseUrl": "/sauce_bindings/",
-  "organizationName": "saucelabs",
-  "projectName": "sauce_bindings",
-  "scripts": [
-    "https://buttons.github.io/buttons.js"
+  title: 'Sauce Bindings',
+  tagline: 'Provide Convenient Way to Use Sauce Labs',
+  url: 'https://saucelabs.github.io',
+  baseUrl: '/sauce_bindings/',
+  organizationName: 'saucelabs',
+  projectName: 'sauce_bindings',
+  scripts: [
+    'https://buttons.github.io/buttons.js'
   ],
-  "stylesheets": [
-    "https://use.typekit.net/zmt8tam.css"
+  stylesheets: [
+    'https://use.typekit.net/zmt8tam.css'
   ],
-  "favicon": "img/favicon.png",
-  "customFields": {
-    "disableHeaderTitle": true,
-    "users": [
+  favicon: 'img/favicon.png',
+  customFields: {
+    disableHeaderTitle: true,
+    users: [
       {
-        "caption": "Sauce Labs",
-        "image": "/img/sauce-badge.png",
-        "infoLink": "https://saucelabs.com",
-        "pinned": true
+        caption: 'Sauce Labs',
+        image: '/img/sauce-badge.png',
+        infoLink: 'https://saucelabs.com',
+        pinned: true
       }
     ],
-    "fonts": {
-      "saucelabsFont": [
-        "museo-sans",
-        "HelveticaNeue",
-        "Helvetica Neue",
-        "Serif"
+    fonts: {
+      saucelabsFont: [
+        'museo-sans',
+        'HelveticaNeue',
+        'Helvetica Neue',
+        'Serif'
       ]
     },
-    "repoUrl": "https://github.com/saucelabs/sauce_bindings"
+    repoUrl: 'https://github.com/saucelabs/sauce_bindings'
   },
-  "onBrokenLinks": "log",
-  "onBrokenMarkdownLinks": "log",
-  "presets": [
+  onBrokenLinks: 'log',
+  onBrokenMarkdownLinks: 'log',
+  presets: [
     [
-      "@docusaurus/preset-classic",
+      '@docusaurus/preset-classic',
       {
-        "docs": {
-          "showLastUpdateAuthor": true,
-          "showLastUpdateTime": true,
-          "path": "docs/",
-          "sidebarPath": "../website/sidebars.json"
+        docs: {
+          sidebarPath: 'sidebars.json',
+          routeBasePath: 'docs/',
+          editUrl:
+              'https://github.com/saucelabs/sauce_bindings/edit/main/',
+          showLastUpdateAuthor: true,
+          showLastUpdateTime: true,
         },
-        "blog": {},
         theme: {
-          customCss: [require.resolve('./src/css/custom.css')],
+          customCss: require.resolve('./src/css/custom.css')
         },
       }
     ]
   ],
-  "plugins": [],
-  "themeConfig": {
-    "navbar": {
-      "title": "Sauce Bindings",
-      "logo": {
-        "src": "img/logo-saucelabs.png"
+  plugins: [],
+  themeConfig: {
+    googleAnalytics: {
+      trackingID: 'UA-6735579-21',
+    },
+    hideableSidebar: true,
+
+    navbar: {
+      title: null,
+      hideOnScroll: false,
+      logo: {
+        alt: 'Sauce Labs logo',
+        src: 'img/logo-saucelabs.png',
       },
-      "items": []
+      items: [
+        {
+          label: 'Try it Free',
+          position: 'right',
+          href: 'https://saucelabs.com/sign-up',
+        },
+        {
+          label: 'Sign In',
+          position: 'right',
+          href: 'https://accounts.saucelabs.com/',
+        },
+      ]
     },
-    "image": "img/undraw_online.svg",
-    "footer": {
-      "links": [],
-      "copyright": "Copyright © 2020-2021 Sauce Labs",
-      "logo": {
-        "src": "img/logo-saucelabs.png"
-      }
+    footer: {
+      logo: {
+        alt: 'Sauce Logo',
+        src: 'img/logo-saucelabs-inverted.png',
+        href: 'https://saucelabs.com',
+      },
+      style: 'light',
+      copyright: `Copyright © ${new Date().getFullYear()} Sauce Labs, Inc. Built with Docusaurus.`,
     },
-    "gtag": {
-      "trackingID": "UA-6735579-21"
-    }
   }
 }

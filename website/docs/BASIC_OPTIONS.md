@@ -31,7 +31,7 @@ values={[
 <TabItem value="java">
 
 ```java reference
-https://github.com/saucelabs/sauce_bindings/commit//e9e56f0/java/src/main/java/com/saucelabs/saucebindings/examples/BasicOptionsTest.java
+https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/java/src/main/java/com/saucelabs/saucebindings/examples/BasicOptionsTest.java
 ```
 
 </TabItem>

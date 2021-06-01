@@ -42,7 +42,7 @@ module.exports={
           sidebarPath: 'sidebars.json',
           routeBasePath: 'docs/',
           editUrl:
-              'https://github.com/saucelabs/sauce_bindings/edit/main/',
+              'https://github.com/saucelabs/sauce_bindings/edit/main/website/',
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
         },

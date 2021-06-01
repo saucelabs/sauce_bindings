@@ -39,7 +39,8 @@ public class VisualSession extends SauceSession {
 
     @Override
     public void stop() {
-        System.out.println("\n Visual Results: " + getResults());
+        VisualResults results = getResults();
+        System.out.println(results.resultSummary());
         super.stop();
     }
 
@@ -47,8 +48,9 @@ public class VisualSession extends SauceSession {
         driver.executeScript("/*@visual.init*/", name);
     }
 
-    public Map getResults() {
-        return (Map) driver.executeScript("/*@visual.end*/");
+    public VisualResults getResults() {
+        Map results = (Map) driver.executeScript("/*@visual.end*/");
+        return new VisualResults(results);
     }
 
     public void takeSnapshot(String name) {

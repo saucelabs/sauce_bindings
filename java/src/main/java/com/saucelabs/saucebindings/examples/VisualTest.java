@@ -1,13 +1,12 @@
 package com.saucelabs.saucebindings.examples;
 
 import com.saucelabs.saucebindings.SaucePlatform;
+import com.saucelabs.saucebindings.VisualResults;
 import com.saucelabs.saucebindings.VisualSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import com.saucelabs.saucebindings.options.VisualOptions;
 import org.junit.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
-
-import java.util.Map;
 
 public class VisualTest {
 
@@ -39,7 +38,7 @@ public class VisualTest {
         session.takeSnapshot("Sauce Demo Page");
 
         // 7. Use the session to get visual results if desired
-        Map results = session.getResults();
+        VisualResults results = session.getResults();
 
         // 8. Stop the Session with whether the test passed or failed
         session.stop(true);

@@ -3,6 +3,8 @@ package com.saucelabs.saucebindings.options;
 import com.saucelabs.saucebindings.SaucePlatform;
 import com.saucelabs.saucebindings.SystemManager;
 import com.saucelabs.saucebindings.VisualSession;
+import com.saucelabs.saucebindings.screen_resolutions.Google;
+import com.saucelabs.saucebindings.screen_resolutions.ScreenDimensions;
 import org.junit.Test;
 import org.openqa.selenium.MutableCapabilities;
 
@@ -34,7 +36,7 @@ public class VisualOptionsTest {
         VisualOptions visualOptions = new VisualOptions();
         visualOptions
                 .setProjectName("My Project")
-                .setViewportSize("1024x768")
+                .setViewportSize(ScreenDimensions.google(Google.PIXEL_3))
                 .setBranch("branch")
                 .setBaseBranch("baseBranch")
                 .setDiffOptions(diffOptions)
@@ -54,7 +56,7 @@ public class VisualOptionsTest {
                 .build();
 
         assertEquals("My Project", sauceOptions.visual().getProjectName());
-        assertEquals("1024x768", sauceOptions.visual().getViewportSize());
+        assertEquals("393x786", sauceOptions.visual().getViewportSize());
         assertEquals("baseBranch", sauceOptions.visual().getBaseBranch());
         assertEquals(diffOptions, sauceOptions.visual().getDiffOptions());
         assertEquals("#some-id, .some-selector", sauceOptions.visual().getIgnore());
@@ -96,7 +98,7 @@ public class VisualOptionsTest {
         VisualOptions visualOptions = new VisualOptions();
         visualOptions
                 .setProjectName("My Project")
-                .setViewportSize("1024x768")
+                .setViewportSize(ScreenDimensions.google(Google.PIXEL_3))
                 .setBranch("branch")
                 .setBaseBranch("baseBranch")
                 .setDiffOptions(diffOptions)
@@ -118,7 +120,7 @@ public class VisualOptionsTest {
 
         MutableCapabilities visualCapabilities = new MutableCapabilities();
         visualCapabilities.setCapability("projectName", "My Project");
-        visualCapabilities.setCapability("viewportSize", "1024x768");
+        visualCapabilities.setCapability("viewportSize", "393x786");
         visualCapabilities.setCapability("branch", "branch");
         visualCapabilities.setCapability("baseBranch", "baseBranch");
         visualCapabilities.setCapability("diffOptions", diffOptions);

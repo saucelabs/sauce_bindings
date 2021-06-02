@@ -3,6 +3,8 @@ package com.saucelabs.saucebindings.options;
 import com.saucelabs.saucebindings.PageLoadStrategy;
 import com.saucelabs.saucebindings.Prerun;
 import com.saucelabs.saucebindings.UnhandledPromptBehavior;
+import com.saucelabs.saucebindings.screen_resolutions.Desktop;
+import com.saucelabs.saucebindings.screen_resolutions.ScreenDimensions;
 import org.openqa.selenium.Proxy;
 
 import java.net.URL;
@@ -230,6 +232,7 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
      *
      * @param resolution The screen resolution to be used
      * @return instance of configuration
+     * @see ScreenDimensions#desktop(Desktop)
      */
     public T setScreenResolution(String resolution) {
         sauceOptions.sauce().setScreenResolution(resolution);

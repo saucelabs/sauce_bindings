@@ -20,8 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 import static org.openqa.selenium.UnexpectedAlertBehaviour.DISMISS;
 
 public class SauceOptionsTest {
@@ -193,6 +193,17 @@ public class SauceOptionsTest {
         tags.add("bar");
         tags.add("foobar");
 
+        Map<String, Object> diffOptions = new HashMap<>();
+        diffOptions.put("structure", true);
+        diffOptions.put("layout", true);
+        diffOptions.put("style", true);
+        diffOptions.put("content", true);
+        diffOptions.put("minLayoutPosition", 4);
+        diffOptions.put("minLayoutDimension", 10);
+
+        Map<String, Object> iframesOptions = new HashMap<>();
+        iframesOptions.put("maxFrames", "Infinity");
+
         assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
         assertEquals("68", sauceOptions.getBrowserVersion());
         assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
@@ -228,6 +239,19 @@ public class SauceOptionsTest {
         assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
         assertEquals("tunnelname", sauceOptions.sauce().getTunnelIdentifier());
         assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());
+
+        assertEquals("My Project", sauceOptions.visual().getProjectName());
+        assertEquals("393x786", sauceOptions.visual().getViewportSize());
+        assertEquals("baseBranch", sauceOptions.visual().getBaseBranch());
+        assertEquals(diffOptions, sauceOptions.visual().getDiffOptions());
+        assertEquals("#some-id, .some-selector", sauceOptions.visual().getIgnore());
+        assertTrue(sauceOptions.visual().getFailOnNewStates());
+        assertTrue(sauceOptions.visual().getAlwaysAcceptBaseBranch());
+        assertTrue(sauceOptions.visual().getDisableBranchBaseline());
+        assertTrue(sauceOptions.visual().getScrollAndStitchScreenshots());
+        assertTrue(sauceOptions.visual().getDisableCORS());
+        assertTrue(sauceOptions.visual().getIframes());
+        assertEquals(iframesOptions, sauceOptions.visual().getIframesOptions());
     }
 
     @Test(expected = InvalidSauceOptionsArgumentException.class)

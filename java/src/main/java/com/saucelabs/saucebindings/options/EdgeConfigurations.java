@@ -8,6 +8,15 @@ public class EdgeConfigurations extends VDCConfigurations<EdgeConfigurations> {
     }
 
     /**
+     * @param version the specific version of Driver to use with the job
+     * @return instance of configuration
+     */
+    public EdgeConfigurations setEdgedriverVersion(String version) {
+        sauceOptions.sauce().setEdgedriverVersion(version);
+        return this;
+    }
+
+    /**
      * You should almost always use the latest version of Selenium
      * @param version the version of Selenium Server to use for the test
      * @return instance of configuration

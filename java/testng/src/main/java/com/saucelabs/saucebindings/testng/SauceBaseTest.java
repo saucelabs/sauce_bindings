@@ -11,8 +11,15 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 public class SauceBaseTest {
-    protected RemoteWebDriver driver;
-    protected SauceSession session;
+    private static ThreadLocal<SauceSession> session = new ThreadLocal<>();
+
+    public  RemoteWebDriver getDriver() {
+        return getSession().getDriver();
+    }
+
+    public SauceSession getSession() {
+        return session.get();
+    }
 
     /**
      * This is designed to be able to be overridden in a subclass
@@ -33,26 +40,26 @@ public class SauceBaseTest {
         if (sauceOptions.sauce().getName() == null) {
             sauceOptions.sauce().setName(method.getName());
         }
-        session = new SauceSession(sauceOptions);
-        driver = session.start();
+        session.set(new SauceSession(sauceOptions));
+        getSession().start();
     }
 
     @AfterMethod
     public void teardown(ITestResult result) {
         if (result.isSuccess()) {
-            session.stop(true);
+            getSession().stop(true);
         } else {
             Throwable e = result.getThrowable();
-            driver.executeScript("sauce:context=Failure Reason: " + e.getMessage());
+            getDriver().executeScript("sauce:context=Failure Reason: " + e.getMessage());
 
             for (Object trace : Arrays.stream(e.getStackTrace()).toArray()) {
                 if (trace.toString().contains("sun")) {
                     break;
                 }
-                driver.executeScript("sauce:context=Backtrace: " + trace);
+                getDriver().executeScript("sauce:context=Backtrace: " + trace);
             }
 
-            session.stop(false);
+            getSession().stop(false);
         }
     }
 }

@@ -22,7 +22,7 @@ public class AdjustOptionsTest extends SauceBaseTest {
 
     @Test
     public void useCustomOptions() {
-        Capabilities caps = driver.getCapabilities();
+        Capabilities caps = getDriver().getCapabilities();
         assertEquals("firefox", caps.getBrowserName());
         assertEquals("87.0", caps.getCapability("browserVersion"));
     }

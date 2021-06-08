@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public enum Desktop implements DeviceDimensions {
+public enum Desktop implements PixelDimensions {
     SVGA("800x600"),
     XGA("1024x768"),
     XGA_PLUS("1152x864"),

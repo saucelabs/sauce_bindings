@@ -13,7 +13,7 @@ public class VisualResults {
     private final Boolean passed;
     private final String message;
     private final String status;
-    private final List<VisualState> states = new ArrayList<>();
+    private final List<VisualSnapshot> snapshots = new ArrayList<>();
     private final Long totalNew;
     private final Long totalChanged;
     private final Long totalRejected;
@@ -26,7 +26,7 @@ public class VisualResults {
         this.status = (String) results.get("status"); // success, failure, error, timeout, cancelled
 
         for (Map state : (List<Map>) results.get("states")) {
-            states.add(new VisualState(state));
+            snapshots.add(new VisualSnapshot(state));
         }
 
         Map totals = (Map) results.get("totals");
@@ -51,15 +51,15 @@ public class VisualResults {
         return results;
     }
 
-    public List<VisualState> printTests(String status) {
-        return getStates().stream().filter(s -> s.getStatus().equals(status)).collect(Collectors.toList());
+    public List<VisualSnapshot> printTests(String status) {
+        return getSnapshots().stream().filter(s -> s.getStatus().equals(status)).collect(Collectors.toList());
     }
 
     public String printRejected() {
-        return printTests("rejected").stream().map(VisualState::toString).collect(Collectors.joining("\n"));
+        return printTests("rejected").stream().map(VisualSnapshot::toString).collect(Collectors.joining("\n"));
     }
 
     public String printChanged() {
-        return printTests("changed").stream().map(VisualState::toString).collect(Collectors.joining("\n"));
+        return printTests("changed").stream().map(VisualSnapshot::toString).collect(Collectors.joining("\n"));
     }
 }

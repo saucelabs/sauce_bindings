@@ -2,7 +2,7 @@ package com.saucelabs.saucebindings.screen_resolutions;
 
 import lombok.Getter;
 
-public enum Google implements DeviceDimensions {
+public enum Google implements PixelDimensions {
     PIXEL("412x732"),
     PIXEL_2("412x732"),
     PIXEL_2_XL("412x823"),

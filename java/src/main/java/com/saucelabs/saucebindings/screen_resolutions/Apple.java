@@ -2,7 +2,7 @@ package com.saucelabs.saucebindings.screen_resolutions;
 
 import lombok.Getter;
 
-public enum Apple implements DeviceDimensions {
+public enum Apple implements PixelDimensions {
     IPAD_10_2("810x1080"),
     IPAD_9_7("768x1024"),
     IPAD_AIR_2019("834x1112"),
@@ -32,7 +32,6 @@ public enum Apple implements DeviceDimensions {
     IPHONE_XR("414x896"),
     IPHONE_XS("375x812"),
     IPHONE_XS_MAX("414x896");
-
 
     @Getter private final String value;
     @Getter private final String displayName;

@@ -17,7 +17,7 @@ public class ScreenDimensions {
         return String.valueOf(Samsung.valueOf(value.toString()));
     }
 
-    public static DeviceDimensions getResolution(String key) {
+    public static PixelDimensions getResolution(String key) {
         if (Desktop.hasKey(key)) {
             return Desktop.valueOf(key);
         }

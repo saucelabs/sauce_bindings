@@ -3,7 +3,7 @@ package com.saucelabs.saucebindings.integration;
 import com.saucelabs.saucebindings.SystemManager;
 import com.saucelabs.saucebindings.VisualResults;
 import com.saucelabs.saucebindings.VisualSession;
-import com.saucelabs.saucebindings.VisualState;
+import com.saucelabs.saucebindings.VisualSnapshot;
 import com.saucelabs.saucebindings.options.InvalidSauceOptionsArgumentException;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import org.junit.After;
@@ -38,7 +38,7 @@ public class VisualTest {
         driver.get("https://www.saucedemo.com");
         session.takeSnapshot("Snapshot necessary to for Visual test to pass");
         assertEquals("Snapshot necessary to for Visual test to pass",
-                session.getResults().getStates().get(0).getName());
+                session.getVisualResults().getSnapshots().get(0).getName());
     }
 
     @Test
@@ -48,7 +48,7 @@ public class VisualTest {
         RemoteWebDriver driver = session.start();
         driver.get("https://www.saucedemo.com");
         session.takeSnapshot("Name of Snapshot");
-        assertEquals("Name of Snapshot", session.getResults().getStates().get(0).getName());
+        assertEquals("Name of Snapshot", session.getVisualResults().getSnapshots().get(0).getName());
     }
 
     @Test
@@ -58,7 +58,7 @@ public class VisualTest {
         RemoteWebDriver driver = session.start();
         driver.get("https://www.saucedemo.com");
         session.takeSnapshot("Name-of-Snapshot");
-        VisualResults results = session.getResults();
+        VisualResults results = session.getVisualResults();
         assertTrue(results.getPassed());
         assertEquals("success", results.getStatus());
         assertNull(results.getMessage());
@@ -69,10 +69,10 @@ public class VisualTest {
         assertEquals(Long.valueOf(0), results.getTotalChanged());
         assertEquals(Long.valueOf(0), results.getTotalRejected());
 
-        List<VisualState> states = results.getStates();
+        List<VisualSnapshot> states = results.getSnapshots();
         assertEquals(1, states.size());
 
-        VisualState snapshot = results.getStates().get(0);
+        VisualSnapshot snapshot = results.getSnapshots().get(0);
         assertEquals("Name-of-Snapshot", snapshot.getName());
         assertEquals("Provides Test Results", snapshot.getGroupName());
         assertEquals("accepted", snapshot.getStatus());

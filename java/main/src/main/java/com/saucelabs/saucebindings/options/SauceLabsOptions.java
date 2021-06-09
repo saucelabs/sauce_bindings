@@ -26,6 +26,7 @@ public class SauceLabsOptions extends BaseOptions {
     private Map<String, Object> customData = null;
     private Boolean extendedDebugging = null;
     private String geckodriverVersion;
+    private String edgedriverVersion;
     private Integer idleTimeout = null;
     private String iedriverVersion;
     private Integer maxDuration = null;
@@ -54,6 +55,7 @@ public class SauceLabsOptions extends BaseOptions {
             "customData",
             "extendedDebugging",
             "geckodriverVersion",
+            "edgedriverVersion",
             "idleTimeout",
             "iedriverVersion",
             "jobVisibility",

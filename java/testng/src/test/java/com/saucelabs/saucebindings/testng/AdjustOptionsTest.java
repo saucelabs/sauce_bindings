@@ -12,7 +12,7 @@ import static org.testng.Assert.assertEquals;
 public class AdjustOptionsTest extends SauceBaseTest {
 
     @Override
-    public SauceOptions createSauceOptions() {
+    protected SauceOptions createSauceOptions() {
         return SauceOptions.firefox()
                 .setMaxDuration(Duration.ofMinutes(30))
                 .setJobVisibility(JobVisibility.TEAM)

@@ -30,7 +30,7 @@ public class SubclassTest extends SauceBaseTest {
     }
 
     @BeforeMethod
-    public void setup(Method method) {
+    protected void setup(Method method) {
         if (System.getProperty("SELENIUM_TARGET").equals("SAUCE_LABS")) {
             super.setup(method);
         } else {
@@ -39,7 +39,7 @@ public class SubclassTest extends SauceBaseTest {
     }
 
     @AfterMethod
-    public void teardown(ITestResult result) {
+    protected void teardown(ITestResult result) {
         if (getSession() == null) {
             getDriver().quit();
         } else {

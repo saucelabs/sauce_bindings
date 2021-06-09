@@ -31,7 +31,7 @@ public abstract class SauceParameterizedBaseTest {
     }
 
     @BeforeMethod
-    public void setup(Method method, Object[] parameters) {
+    protected void setup(Method method, Object[] parameters) {
         SauceOptions sauceOptions = createSauceOptions(method, parameters);
         if (sauceOptions.sauce().getName() == null) {
             sauceOptions.sauce().setName(method.getName());
@@ -42,7 +42,7 @@ public abstract class SauceParameterizedBaseTest {
 
 
     @AfterMethod
-    public void teardown(ITestResult result) {
+    protected void teardown(ITestResult result) {
         if (result.isSuccess()) {
             getSession().stop(true);
         } else {

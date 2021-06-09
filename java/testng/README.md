@@ -48,7 +48,7 @@ to specify your `SauceOptions`. Just add a `createSauceOptions` method to your t
 extends `SauceBaseTest`:
 ```java
 @Override
-public SauceOptions createSauceOptions() {
+protected SauceOptions createSauceOptions() {
     return SauceOptions.firefox()
             .setMaxDuration(Duration.ofMinutes(30))
             .setJobVisibility(JobVisibility.TEAM)
@@ -75,7 +75,7 @@ public class LocalToggleTest extends SauceBaseTest {
     }
 
     @BeforeMethod
-    public void setup(Method method) {
+    protected void setup(Method method) {
         if (System.getProperty("SELENIUM_TARGET").equals("SAUCE_LABS")) {
             super.setup(method);
         } else {
@@ -84,7 +84,7 @@ public class LocalToggleTest extends SauceBaseTest {
     }
 
     @AfterMethod
-    public void teardown(ITestResult result) {
+    protected void teardown(ITestResult result) {
         if (getSession() == null) {
             getDriver().quit();
         } else {

@@ -26,7 +26,7 @@ public class SauceBaseTest {
      *
      * @return default instance of SauceOptions
      */
-    public SauceOptions createSauceOptions() {
+    protected SauceOptions createSauceOptions() {
         return new SauceOptions();
     }
 
@@ -35,7 +35,7 @@ public class SauceBaseTest {
      * It creates a session and a driver
      */
     @BeforeMethod
-    public void setup(Method method) {
+    protected void setup(Method method) {
         SauceOptions sauceOptions = createSauceOptions();
         if (sauceOptions.sauce().getName() == null) {
             sauceOptions.sauce().setName(method.getName());
@@ -45,7 +45,7 @@ public class SauceBaseTest {
     }
 
     @AfterMethod
-    public void teardown(ITestResult result) {
+    protected void teardown(ITestResult result) {
         if (result.isSuccess()) {
             getSession().stop(true);
         } else {

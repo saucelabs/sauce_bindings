@@ -11,13 +11,13 @@ public class AddHooksTest extends SauceBaseTest {
     Boolean working = null;
 
     @BeforeMethod
-    public void setup(Method method) {
+    protected void setup(Method method) {
         working = true;
         super.setup(method);
     }
 
     @AfterMethod
-    public void teardown() {
+    protected void teardown() {
         System.out.println("Can do something in teardown before test watcher methods");
     }
 

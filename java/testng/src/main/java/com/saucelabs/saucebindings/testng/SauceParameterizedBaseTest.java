@@ -24,6 +24,8 @@ public abstract class SauceParameterizedBaseTest {
     /**
      * This is designed to be able to be overridden in a subclass if using parameterization
      *
+     * @param method the Method instance required for starting Parameterized tests in subclass
+     * @param parameters the DataProvider parameters object defined in the subclass
      * @return default instance of SauceOptions
      */
     protected SauceOptions createSauceOptions(Method method, Object[] parameters) {

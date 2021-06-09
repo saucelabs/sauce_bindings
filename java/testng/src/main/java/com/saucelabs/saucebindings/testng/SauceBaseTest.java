@@ -33,6 +33,8 @@ public class SauceBaseTest {
     /**
      * This method ensures a test name is set by default, and then starts the session
      * It creates a session and a driver
+     *
+     * @param method the default parameter for BeforeMethod
      */
     @BeforeMethod
     protected void setup(Method method) {

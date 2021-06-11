@@ -1,8 +1,8 @@
-package com.saucelabs.saucebindings.screen_resolutions;
+package com.saucelabs.saucebindings.pixels;
 
 import lombok.Getter;
 
-public enum Samsung implements PixelDimensions {
+public enum Samsung implements SauceEnums {
     GALAXY_A51("412x914"),
     GALAXY_A6("360x720"),
     GALAXY_A70("412x914"),

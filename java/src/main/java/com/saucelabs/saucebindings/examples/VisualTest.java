@@ -5,8 +5,8 @@ import com.saucelabs.saucebindings.VisualResults;
 import com.saucelabs.saucebindings.VisualSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import com.saucelabs.saucebindings.options.VisualOptions;
-import com.saucelabs.saucebindings.screen_resolutions.Google;
-import com.saucelabs.saucebindings.screen_resolutions.ScreenDimensions;
+import com.saucelabs.saucebindings.pixels.Google;
+import com.saucelabs.saucebindings.pixels.DeviceDimensions;
 import org.junit.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -17,9 +17,11 @@ public class VisualTest {
         // 1. Create Visual Options instance
         VisualOptions visualOptions = new VisualOptions();
         visualOptions.setProjectName("My Project")
-                .setViewportSize(ScreenDimensions.google(Google.PIXEL_3));
+                .setViewportSize(DeviceDimensions.google(Google.PIXEL_3));
 
-        // 2. Use setVisualOptions() to add the visual options; Make sure setName() has a value
+        // 2. Create Sauce Options.
+        //    Use setVisualOptions() to add the visual options
+        //    Make sure setName() has a value
         SauceOptions sauceOptions = SauceOptions.chrome()
                 .setName("My Test Name")
                 .setPlatformName(SaucePlatform.MAC_HIGH_SIERRA)

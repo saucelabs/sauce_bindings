@@ -1,8 +1,8 @@
-package com.saucelabs.saucebindings.screen_resolutions;
+package com.saucelabs.saucebindings.pixels;
 
 import lombok.Getter;
 
-public enum Apple implements PixelDimensions {
+public enum Apple implements SauceEnums {
     IPAD_10_2("810x1080"),
     IPAD_9_7("768x1024"),
     IPAD_AIR_2019("834x1112"),

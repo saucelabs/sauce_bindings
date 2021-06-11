@@ -1,10 +1,6 @@
-package com.saucelabs.saucebindings.screen_resolutions;
+package com.saucelabs.saucebindings.pixels;
 
-public class ScreenDimensions {
-    public static String desktop(Desktop value) {
-        return String.valueOf(Desktop.valueOf(value.toString()));
-    }
-
+public class DeviceDimensions {
     public static String apple(Apple value) {
         return String.valueOf(Apple.valueOf(value.toString()));
     }
@@ -17,10 +13,7 @@ public class ScreenDimensions {
         return String.valueOf(Samsung.valueOf(value.toString()));
     }
 
-    public static PixelDimensions getResolution(String key) {
-        if (Desktop.hasKey(key)) {
-            return Desktop.valueOf(key);
-        }
+    public static SauceEnums getResolution(String key) {
         if (Google.hasKey(key)) {
             return Google.valueOf(key);
         }

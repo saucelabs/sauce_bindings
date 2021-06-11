@@ -1,6 +1,7 @@
 package com.saucelabs.saucebindings.options;
 
 import com.saucelabs.saucebindings.*;
+import com.saucelabs.saucebindings.pixels.DesktopResolutions;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
@@ -111,7 +112,7 @@ public class InternetExplorerConfigurationsTest {
                 .disableRecordLogs()
                 .disableRecordScreenshots()
                 .disableRecordVideo()
-                .setScreenResolution("1024x768")
+                .setScreenResolution(DesktopResolutions.XGA.getValue())
                 .setTags(tags)
                 .setTimeZone("San Francisco")
                 .setTunnelIdentifier("tunnelname")

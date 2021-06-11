@@ -1,4 +1,4 @@
-package com.saucelabs.saucebindings.screen_resolutions;
+package com.saucelabs.saucebindings.pixels;
 
 import lombok.Getter;
 
@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public enum Desktop implements PixelDimensions {
+public enum DesktopResolutions implements SauceEnums {
     SVGA("800x600"),
     XGA("1024x768"),
     XGA_PLUS("1152x864"),
@@ -33,7 +33,7 @@ public enum Desktop implements PixelDimensions {
         return ResolutionLookup.lookup.keySet();
     }
 
-    Desktop(String value) {
+    DesktopResolutions(String value) {
         this.value = value;
         this.displayName = this.name();
         ResolutionLookup.lookup.put(value, this.name());

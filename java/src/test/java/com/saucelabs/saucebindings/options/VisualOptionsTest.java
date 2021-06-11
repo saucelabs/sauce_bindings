@@ -3,8 +3,8 @@ package com.saucelabs.saucebindings.options;
 import com.saucelabs.saucebindings.SaucePlatform;
 import com.saucelabs.saucebindings.SystemManager;
 import com.saucelabs.saucebindings.VisualSession;
-import com.saucelabs.saucebindings.screen_resolutions.Google;
-import com.saucelabs.saucebindings.screen_resolutions.ScreenDimensions;
+import com.saucelabs.saucebindings.pixels.Google;
+import com.saucelabs.saucebindings.pixels.DeviceDimensions;
 import org.junit.Test;
 import org.openqa.selenium.MutableCapabilities;
 
@@ -36,7 +36,7 @@ public class VisualOptionsTest {
         VisualOptions visualOptions = new VisualOptions();
         visualOptions
                 .setProjectName("My Project")
-                .setViewportSize(ScreenDimensions.google(Google.PIXEL_3))
+                .setViewportSize(DeviceDimensions.google(Google.PIXEL_3))
                 .setBranch("branch")
                 .setBaseBranch("baseBranch")
                 .setDiffOptions(diffOptions)
@@ -98,7 +98,7 @@ public class VisualOptionsTest {
         VisualOptions visualOptions = new VisualOptions();
         visualOptions
                 .setProjectName("My Project")
-                .setViewportSize(ScreenDimensions.google(Google.PIXEL_3))
+                .setViewportSize(DeviceDimensions.google(Google.PIXEL_3))
                 .setBranch("branch")
                 .setBaseBranch("baseBranch")
                 .setDiffOptions(diffOptions)

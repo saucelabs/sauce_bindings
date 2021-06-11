@@ -230,6 +230,7 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
      *
      * @param resolution The screen resolution to be used
      * @return instance of configuration
+     * @see com.saucelabs.saucebindings.pixels.ScreenResolution
      */
     public T setScreenResolution(String resolution) {
         sauceOptions.sauce().setScreenResolution(resolution);

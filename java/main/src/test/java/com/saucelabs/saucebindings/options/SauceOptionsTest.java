@@ -1,6 +1,7 @@
 package com.saucelabs.saucebindings.options;
 
 import com.saucelabs.saucebindings.*;
+import com.saucelabs.saucebindings.pixels.ScreenResolution;
 import lombok.SneakyThrows;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -122,7 +123,7 @@ public class SauceOptionsTest {
         sauceOptions.sauce().setRecordLogs(false);
         sauceOptions.sauce().setRecordScreenshots(false);
         sauceOptions.sauce().setRecordVideo(false);
-        sauceOptions.sauce().setScreenResolution("10x10");
+        sauceOptions.sauce().setScreenResolution(ScreenResolution.XGA.getValue());
         sauceOptions.sauce().setSeleniumVersion("3.141.59");
         sauceOptions.sauce().setTags(tags);
         sauceOptions.sauce().setTimeZone("San Francisco");
@@ -147,7 +148,7 @@ public class SauceOptionsTest {
         assertEquals(false, sauceOptions.sauce().getRecordLogs());
         assertEquals(false, sauceOptions.sauce().getRecordScreenshots());
         assertEquals(false, sauceOptions.sauce().getRecordVideo());
-        assertEquals("10x10", sauceOptions.sauce().getScreenResolution());
+        assertEquals("1024x768", sauceOptions.sauce().getScreenResolution());
         assertEquals("3.141.59", sauceOptions.sauce().getSeleniumVersion());
         assertEquals(tags, sauceOptions.sauce().getTags());
         assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
@@ -378,7 +379,7 @@ public class SauceOptionsTest {
         sauceOptions.sauce().setRecordLogs(false);
         sauceOptions.sauce().setRecordScreenshots(false);
         sauceOptions.sauce().setRecordVideo(false);
-        sauceOptions.sauce().setScreenResolution("10x10");
+        sauceOptions.sauce().setScreenResolution(ScreenResolution.XGA.getValue());
         sauceOptions.sauce().setSeleniumVersion("3.141.59");
         sauceOptions.sauce().setTags(tags);
         sauceOptions.sauce().setTimeZone("San Francisco");
@@ -404,7 +405,7 @@ public class SauceOptionsTest {
         sauceCapabilities.setCapability("recordLogs", false);
         sauceCapabilities.setCapability("recordScreenshots", false);
         sauceCapabilities.setCapability("recordVideo", false);
-        sauceCapabilities.setCapability("screenResolution", "10x10");
+        sauceCapabilities.setCapability("screenResolution", "1024x768");
         sauceCapabilities.setCapability("seleniumVersion", "3.141.59");
         sauceCapabilities.setCapability("tags", tags);
         sauceCapabilities.setCapability("timeZone", "San Francisco");

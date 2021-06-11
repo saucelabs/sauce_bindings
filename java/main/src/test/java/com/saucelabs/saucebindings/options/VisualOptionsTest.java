@@ -1,6 +1,7 @@
 package com.saucelabs.saucebindings.options;
 
 import com.saucelabs.saucebindings.SaucePlatform;
+import com.saucelabs.saucebindings.SystemManager;
 import org.junit.Test;
 import org.openqa.selenium.MutableCapabilities;
 
@@ -73,6 +74,7 @@ public class VisualOptionsTest {
 
         MutableCapabilities visualCapabilities = new MutableCapabilities();
         visualCapabilities.setCapability("apiKey", System.getenv("SCREENER_API_KEY"));
+        visualCapabilities.setCapability("branch", SystemManager.getCurrentGitBranch());
         visualCapabilities.setCapability("projectName", visualOptions.getDefaultBuildName());
 
         SauceOptions sauceOptions = new SauceOptions().setVisualOptions(visualOptions);

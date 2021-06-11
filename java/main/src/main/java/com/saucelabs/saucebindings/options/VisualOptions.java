@@ -59,6 +59,10 @@ public class VisualOptions extends BaseOptions {
             projectName = getDefaultBuildName();
         }
 
+        if (branch == null) {
+            branch = SystemManager.getCurrentGitBranch();
+        }
+
         capabilityManager.addCapabilities();
         return capabilities;
     }

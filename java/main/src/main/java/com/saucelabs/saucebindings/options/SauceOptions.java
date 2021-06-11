@@ -259,7 +259,8 @@ public class SauceOptions extends BaseOptions {
                 sauce().mergeCapabilities((HashMap<String, Object>) value);
                 break;
             case "visual":
-                visual().mergeCapabilities((HashMap<String, Object>) value);
+                visualOptions = new VisualOptions();
+                visualOptions.mergeCapabilities((HashMap<String, Object>) value);
                 break;
             default:
                 if (sauce().getValidOptions().contains(key)) {

@@ -90,11 +90,7 @@ module SauceBindings
       opts.each do |key, value|
         raise ArgumentError, "#{key} is not a valid parameter for Options class" unless respond_to?("#{key}=")
 
-        if value.is_a?(Hash)
-          value = value.each_with_object({}) do |(old_key, val), updated|
-            updated[old_key.to_sym] = val
-          end
-        end
+        value = value.transform_keys(&:to_sym) if value.is_a?(Hash)
 
         send("#{key}=", value)
       end
@@ -106,8 +102,8 @@ module SauceBindings
       if key == 'proxy' && value
         value.as_json
       elsif key == 'timeouts' && value
-        value.each_with_object({}) do |(old_key, val), updated|
-          updated[self.class.camel_case(old_key)] = val
+        value.transform_keys do |old_key|
+          self.class.camel_case(old_key)
         end
       else
         value
@@ -116,12 +112,12 @@ module SauceBindings
 
     def parse_sauce_key(key, value)
       if key == 'prerun' && value.is_a?(Hash)
-        value.each_with_object({}) do |(old_key, val), updated|
-          updated[self.class.camel_case(old_key)] = val
+        value.transform_keys do |old_key|
+          self.class.camel_case(old_key)
         end
       elsif key == 'customData' && value.is_a?(Hash)
-        value.each_with_object({}) do |(old_key, val), updated|
-          updated[self.class.camel_case(old_key)] = val
+        value.transform_keys do |old_key|
+          self.class.camel_case(old_key)
         end
       else
         value

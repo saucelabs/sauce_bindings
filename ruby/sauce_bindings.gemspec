@@ -9,6 +9,7 @@ Gem::Specification.new do |spec|
   spec.version       = SauceBindings::VERSION
   spec.authors       = ['Titus Fortner']
   spec.email         = ['titusfortner@gmail.com']
+  spec.required_ruby_version = '>= 2.5.0'
 
   spec.summary       = 'Simple interface for interacting with Sauce Labs.'
   spec.description   = 'Reduces complexity in user code for running Selenium tests on Sauce Labs'
@@ -23,9 +24,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'capybara', '~> 3.16'
   spec.add_development_dependency 'rake', '>= 12.3.3'
   spec.add_development_dependency 'rspec', '~> 3.0'
-  spec.add_development_dependency 'rubocop', '~>0.66'
+  spec.add_development_dependency 'rubocop', '~> 1.0'
   spec.add_development_dependency 'rubocop-performance'
-  spec.add_development_dependency 'rubocop-rspec', '~>1.32'
+  spec.add_development_dependency 'rubocop-rspec', '~> 2.0'
   spec.add_development_dependency 'webmock', '~> 3.5'
 
   spec.add_runtime_dependency 'sauce_whisk'

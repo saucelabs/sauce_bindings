@@ -24,21 +24,21 @@ values={[
 <TabItem value="java">
 
 ```java reference
-https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/java/src/main/java/com/saucelabs/saucebindings/examples/SessionTest.java
+https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/main/src/main/java/com/saucelabs/saucebindings/examples/SessionTest.java
 ```
 
 </TabItem>
 <TabItem value="python">
 
 ```python reference
-https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/python/tests/examples/test_create_session.py
+https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/python/tests/examples/test_create_session.py
 ```
 
 </TabItem>
 <TabItem value="ruby">
 
 ```ruby reference
-https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/ruby/spec/examples/create_session_spec.rb
+https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/ruby/spec/examples/create_session_spec.rb
 ```
 
 </TabItem>

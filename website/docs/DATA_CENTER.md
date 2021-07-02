@@ -25,21 +25,21 @@ values={[
 <TabItem value="java">
 
 ```java reference
-https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/java/src/main/java/com/saucelabs/saucebindings/examples/DataCenterTest.java
+https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/main/src/main/java/com/saucelabs/saucebindings/examples/DataCenterTest.java
 ```
 
 </TabItem>
 <TabItem value="python">
 
 ```python reference
-https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/python/tests/examples/test_data_center.py
+https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/python/tests/examples/test_data_center.py
 ```
 
 </TabItem>
 <TabItem value="ruby">
 
 ```ruby reference
-https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/ruby/spec/examples/data_center_spec.rb
+https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/ruby/spec/examples/data_center_spec.rb
 ```
 
 </TabItem>

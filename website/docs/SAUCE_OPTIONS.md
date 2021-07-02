@@ -5,7 +5,7 @@ sidebar_label: Sauce Options
 ---
 
 Sauce Labs provides dozens of ways to configure your tests on our platform.
-Here is a [full list with exhaustive descriptions](https://wiki.saucelabs.com/display/DOCS/Test+Configuration+Options)
+Here is a [full list with exhaustive descriptions](https://docs.saucelabs.com/dev/test-configuration-options/index.html)
 
 All of these configurations can now be easily set with the `SauceOptions` class
 
@@ -25,21 +25,21 @@ values={[
 <TabItem value="java">
 
 ```java reference
-https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/java/src/main/java/com/saucelabs/saucebindings/examples/SauceLabsOptionsTest.java
+https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/main/src/main/java/com/saucelabs/saucebindings/examples/SauceLabsOptionsTest.java
 ```
 
 </TabItem>
 <TabItem value="python">
 
 ```python reference
-https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/python/tests/examples/test_sauce_options.py
+https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/python/tests/examples/test_sauce_options.py
 ```
 
 </TabItem>
 <TabItem value="ruby">
 
 ```ruby reference
-https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/ruby/spec/examples/sauce_options_spec.rb
+https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/ruby/spec/examples/sauce_options_spec.rb
 ```
 
 </TabItem>

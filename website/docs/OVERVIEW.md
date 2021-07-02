@@ -12,7 +12,7 @@ We've created Sauce Bindings, an interface to simplify working with Sauce Labs s
 Sauce Bindings has three main goals:
 
 -   Provide test developers with a wrapper or _binding_ for the most popular programming languages
- used for web and mobile testing (Mobile support coming soon, see our [roadmap](UPCOMING_FEATURES.md)).
+ used for web and mobile testing (Mobile support coming soon, see our [roadmap](ROADMAP.md)).
 -   Provide a concise API for connecting to Sauce Labs in test frameworks and making use of Sauce Labs features.
 -   Provide an excellent developer user experience for using Sauce Labs in a straightforward way.
 
@@ -34,4 +34,4 @@ We support the most popular automation programming languages:
 
 Sauce Bindings are written and maintained by [Sauce Labs Experts](https://saucelabs.com/our-experts)
 
-We're here for you if you [have questions](mailto:techserv@saucelabs.com).
+We're here for you if you [have questions](mailto:opensource@saucelabs.com).

@@ -16,15 +16,17 @@
         "items": [
           "basic-options",
           "sauce-options",
-          "browser-options"
+          "browser-options",
+          "data-center"
         ]
       },
       {
         "type": "category",
-        "label": "Integration",
+        "label": "Features",
         "items": [
-          "data-center",
-          "upcoming-features"
+          "desktop-browsers",
+          "accessibility",
+          "roadmap"
         ]
       },
       {

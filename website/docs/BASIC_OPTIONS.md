@@ -11,7 +11,7 @@ Sauce Bindings are designed to enforce compatibility with the [W3C WebDriver Sta
 * `platformName`
 
 To see what values are supported by Sauce Labs for these capabilities, take a look at our
-[Platform Configurator](https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/)
+[Platform Configurator](https://saucelabs.com/platform/platform-configurator#/)
 
 Here's an example of running a test on Firefox and Windows 8.0.
 
@@ -31,21 +31,21 @@ values={[
 <TabItem value="java">
 
 ```java reference
-https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/java/src/main/java/com/saucelabs/saucebindings/examples/BasicOptionsTest.java
+https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/main/src/main/java/com/saucelabs/saucebindings/examples/BasicOptionsTest.java
 ```
 
 </TabItem>
 <TabItem value="python">
 
 ```python reference
-https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/python/tests/examples/test_basic_options.py
+https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/python/tests/examples/test_basic_options.py
 ```
 
 </TabItem>
 <TabItem value="ruby">
 
 ```ruby reference
-https://github.com/saucelabs/sauce_bindings/commit/e9e56f0/ruby/spec/examples/basic_options_spec.rb
+https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/ruby/spec/examples/basic_options_spec.rb
 ```
 
 </TabItem>

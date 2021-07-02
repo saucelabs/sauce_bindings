@@ -12,12 +12,12 @@ The project offers a variety of ways to contribute:
 
 * submit code features
 * improve documentation (the code for this website is 
-[on github](https://github.com/saucelabs/sauce_bindings/tree/master/docs))
+[on github](https://github.com/saucelabs/sauce_bindings/tree/main/website/docs))
 * create educational content (blog posts, tutorials, videos, etc.)
 * spread the good word about Sauce Bindings (e.g. via Twitter)
 * [report bugs](https://github.com/saucelabs/sauce_bindings/issues) if you discover them while using Sauce Bindings
 * See something you'd like fixed? Have a good idea for how to improve something? 
-[Create an issue](https://github.com/saucelabs/sauce_bindings/issues) or add to an existing issue. 
+[Create an issue](https://github.com/saucelabs/sauce_bindings/issues/new) or add to an existing issue. 
 
 ### Contributing Docs
 

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'sauce_whisk'
+require 'sa11y/analyze'
 require 'selenium-webdriver'
 
 module SauceBindings
@@ -51,6 +52,11 @@ module SauceBindings
 
       SauceWhisk.data_center = data_center == :EU_CENTRAL ? :EU_VDC : data_center
       @data_center = data_center
+    end
+
+    def accessibility_results(js_lib: nil, frames: true, cross_origin: false)
+      sa11y = Sa11y::Analyze.new(driver, js_lib: js_lib, frames: frames, cross_origin: cross_origin)
+      sa11y.results
     end
 
     def url

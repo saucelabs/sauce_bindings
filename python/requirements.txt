@@ -1,4 +1,5 @@
 selenium==3.141.0
+sa11y==0.2.3
 pytest
 flake8
 pyyaml

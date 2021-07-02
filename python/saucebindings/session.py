@@ -1,4 +1,6 @@
 import os
+
+from sa11y.analyze import Analyze
 from selenium import webdriver
 from selenium.webdriver.remote.remote_connection import RemoteConnection
 from .options import SauceOptions
@@ -58,6 +60,10 @@ class SauceSession():
     def stop(self, result):
         self.update_test_result(result)
         self.driver.quit()
+
+
+    def accessibility_results(self, js_lib=None, frames=True, cross_origin=False):
+        return Analyze(self.driver, js_lib=js_lib, frames=frames, cross_origin=cross_origin).results()
 
     def update_test_result(self, result_in):
         result = ''

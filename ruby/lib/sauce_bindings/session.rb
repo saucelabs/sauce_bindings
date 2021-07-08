@@ -15,7 +15,7 @@ module SauceBindings
     attr_accessor :http_client, :listener
 
     def initialize(options = nil, data_center: nil, http_client: nil, listener: nil)
-      @options = options || Options.new
+      @options = options || Options.chrome
       @http_client = http_client
       @listener = listener
 

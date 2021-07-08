@@ -16,7 +16,7 @@ module SauceBindings
       end
 
       it 'executes on US East' do
-        options = Options.new(platform_name: 'Linux')
+        options = Options.chrome(platform_name: 'Linux')
         @session = Session.new(options, data_center: :US_EAST)
         driver = @session.start
 

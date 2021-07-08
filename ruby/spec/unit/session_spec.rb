@@ -45,7 +45,7 @@ module SauceBindings
       end
 
       it 'uses provided Options class' do
-        sauce_opts = Options.new(browser_version: '123',
+        sauce_opts = Options.chrome(browser_version: '123',
                                  platform_name: 'Mac',
                                  idle_timeout: 4)
         session = Session.new(sauce_opts)

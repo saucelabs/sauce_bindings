@@ -4,8 +4,6 @@ require 'sauce_bindings'
 require 'rspec'
 
 describe 'Browser Options' do
-  before { WebMock.allow_net_connect! }
-
   it 'creates session' do
     # 1. Create Selenium Browser Options instance
     browser_options = Selenium::WebDriver::Firefox::Options.new(args: ['--foo'])

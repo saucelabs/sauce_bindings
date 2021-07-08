@@ -4,11 +4,9 @@ require 'sauce_bindings'
 require 'rspec'
 
 describe 'Basic Options' do
-  before { WebMock.allow_net_connect! }
-
   it 'creates session' do
     # 1. Create a SauceOptions instance with the 3 primary parameters
-    sauce_options = SauceBindings::Options.firefox(browser_version: '73.0',
+    sauce_options = SauceBindings::Options.firefox(browser_version: '88.0',
                                                    platform_name: 'Windows 8')
 
     # 2. Create Session object with SauceOptions object instance

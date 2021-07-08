@@ -16,7 +16,7 @@ Metrics/BlockLength:
     - "**/*_spec.rb"
 
 Metrics/CyclomaticComplexity:
-  Max: 8
+  Max: 9
 
 Metrics/PerceivedComplexity:
   Max: 9

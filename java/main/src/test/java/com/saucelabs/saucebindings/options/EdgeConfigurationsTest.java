@@ -27,7 +27,6 @@ public class EdgeConfigurationsTest {
     @Test
     public void acceptsEdgeOptionsClass() {
         EdgeOptions edgeOptions = new EdgeOptions();
-        edgeOptions.setPageLoadStrategy("eager");
 
         SauceOptions sauceOptions = SauceOptions.edge(edgeOptions).build();
 

@@ -414,7 +414,7 @@ public class SauceOptionsTest {
         expectedCapabilities.setCapability("browserName", "firefox");
         expectedCapabilities.setCapability("browserVersion", "latest");
         expectedCapabilities.setCapability("platformName", "Windows 10");
-        expectedCapabilities.merge(firefoxOptions);
+        expectedCapabilities = expectedCapabilities.merge(firefoxOptions);
 
         MutableCapabilities sauceCapabilities = new MutableCapabilities();
         sauceCapabilities.setCapability("build", "Build Name");
@@ -437,7 +437,7 @@ public class SauceOptionsTest {
 
         sauceOptions = SauceOptions.firefox(firefoxOptions).build();
 
-        expectedCapabilities.merge(firefoxOptions);
+        expectedCapabilities = expectedCapabilities.merge(firefoxOptions);
         expectedCapabilities.setCapability("browserVersion", "latest");
         expectedCapabilities.setCapability("platformName", "Windows 10");
         expectedCapabilities.setCapability("acceptInsecureCerts", true);

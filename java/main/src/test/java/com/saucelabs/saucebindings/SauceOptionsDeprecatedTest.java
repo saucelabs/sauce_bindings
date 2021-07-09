@@ -173,7 +173,6 @@ public class SauceOptionsDeprecatedTest {
     @Test
     public void acceptsEdgeOptionsClass() {
         EdgeOptions edgeOptions = new EdgeOptions();
-        edgeOptions.setPageLoadStrategy("eager");
 
         sauceOptions = new SauceOptions(edgeOptions);
 
@@ -482,7 +481,7 @@ public class SauceOptionsDeprecatedTest {
         expectedCapabilities.setCapability("browserName", "firefox");
         expectedCapabilities.setCapability("browserVersion", "latest");
         expectedCapabilities.setCapability("platformName", "Windows 10");
-        expectedCapabilities.merge(firefoxOptions);
+        expectedCapabilities = expectedCapabilities.merge(firefoxOptions);
 
         MutableCapabilities sauceCapabilities = new MutableCapabilities();
         sauceCapabilities.setCapability("build", "Build Name");
@@ -505,7 +504,7 @@ public class SauceOptionsDeprecatedTest {
 
         sauceOptions = new SauceOptions(firefoxOptions);
 
-        expectedCapabilities.merge(firefoxOptions);
+        expectedCapabilities = expectedCapabilities.merge(firefoxOptions);
         expectedCapabilities.setCapability("browserVersion", "latest");
         expectedCapabilities.setCapability("platformName", "Windows 10");
         expectedCapabilities.setCapability("acceptInsecureCerts", true);

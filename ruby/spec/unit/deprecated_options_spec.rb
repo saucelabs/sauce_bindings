@@ -354,12 +354,14 @@ module SauceBindings
                               strict_file_interactability: true,
                               timeouts: timeouts)
 
+        proxy_type = Selenium::WebDriver::VERSION[0] == '3' ? 'MANUAL' : 'manual'
+
         expect(options.capabilities).to eq('browserName' => 'firefox',
                                            'browserVersion' => 'latest',
                                            'platformName' => 'Mac',
                                            'acceptInsecureCerts' => true,
                                            'pageLoadStrategy' => 'eager',
-                                           'proxy' => {'proxyType' => 'MANUAL', 'sslProxy' => 'foo'},
+                                           'proxy' => {'proxyType' => proxy_type, 'sslProxy' => 'foo'},
                                            'setWindowRect' => true,
                                            'unhandledPromptBehavior' => 'accept',
                                            'strictFileInteractability' => true,
@@ -461,7 +463,9 @@ module SauceBindings
                          'sauce:options' => {'build' => 'TEMP BUILD: 11'},
                          'goog:chromeOptions' => {'args' => ['--foo']}}
 
-        expect(options.capabilities).to eq(jwp_defaults.merge(expected_caps))
+        expected = Selenium::WebDriver::VERSION[0] == '3' ? jwp_defaults.merge(expected_caps) : expected_caps
+
+        expect(options.capabilities).to eq expected
       end
     end
   end

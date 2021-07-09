@@ -15,9 +15,14 @@ module SauceBindings
         Options.new(**opts)
       end
 
-      def edge(**_opts)
-        raise ArgumentError, 'Sauce Bindings currently only support Selenium 3, which is not yet compatible with the ' \
-        'Chromium based Microsoft Edge. Look for Selenium 4 support in Sauce Bindings soon.'
+      def edge(**opts)
+        if Selenium::WebDriver::VERSION[0] == '3'
+          raise ArgumentError, 'Selenium 3 is not compatible with the Chromium based Microsoft Edge.'
+        end
+
+        opts[:browser_name] = 'MicrosoftEdge'
+        opts[:valid_options] = EdgeConfigurations.valid_options
+        Options.new(**opts)
       end
 
       def firefox(**opts)
@@ -66,8 +71,8 @@ module SauceBindings
       end
 
       create_variables(valid_options, opts)
-      parse_selenium_options(se_options)
       @selenium_options = se_options.map(&:as_json).inject(:merge) || {}
+      parse_selenium_options(se_options)
       @build ||= build_name
 
       @browser_name ||= selenium_options['browserName'] || 'chrome'
@@ -171,21 +176,29 @@ module SauceBindings
 
     def parse_selenium_options(selenium_opts)
       selenium_opts.each do |opt|
-        browser = BROWSER_NAMES[opt.class]
-        if browser
-          @browser_name ||= browser
-          validate_browser_name(browser)
-        else
-          W3C.each do |capability|
-            next if capability == :timeouts && opt[:timeouts] && opt[:timeouts].empty?
+        W3C.each do |capability|
+          value = option_value(opt, capability)
+          next if capability == :timeouts && value&.empty?
 
-            if capability == :browser_name
-              validate_browser_name(opt[:browser_name])
-            else
-              send("#{capability}=", opt[capability]) if opt[capability]
-            end
+          if capability == :browser_name
+            @browser_name ||= BROWSER_NAMES[opt.class]
+            validate_browser_name(value || BROWSER_NAMES[opt.class])
+          elsif value
+            send("#{capability}=", value)
           end
         end
+      end
+    end
+
+    def option_value(opt, capability)
+      if opt.respond_to?(capability)
+        begin
+          opt.send(capability)
+        rescue KeyError
+          # Ignored
+        end
+      elsif opt.respond_to?(:[])
+        opt[capability]
       end
     end
 

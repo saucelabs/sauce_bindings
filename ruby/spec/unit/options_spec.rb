@@ -75,10 +75,83 @@ module SauceBindings
     end
 
     describe '::edge' do
-      # Note that Selenium 3 only supports "Old Edge"
-      it 'raises exception' do
-        msg = /Sauce Bindings currently only support Selenium 3/
-        expect { Options.edge }.to raise_error(ArgumentError, msg)
+      context 'with Selenium 3' do
+        before do
+          skip('test only applies with Selenium 3') unless Selenium::WebDriver::VERSION[0] == '3'
+        end
+
+        it 'raises exception' do
+          msg = /Selenium 3 is not compatible with the Chromium based Microsoft Edge/
+          expect { Options.edge }.to raise_error(ArgumentError, msg)
+        end
+      end
+
+      context 'with Selenium 4' do
+        before do
+          skip('test only applies with Selenium 4') unless Selenium::WebDriver::VERSION[0] == '4'
+        end
+
+        it 'uses latest Edge version on Windows 10 by default' do
+          options = Options.edge
+
+          expect(options.browser_name).to eq 'MicrosoftEdge'
+          expect(options.browser_version).to eq 'latest'
+          expect(options.platform_name).to eq 'Windows 10'
+        end
+
+        it 'accepts correct Selenium Options class' do
+          browser_opts = Selenium::WebDriver::Edge::Options.new(args: ['-foo'])
+          options = Options.edge(selenium_options: browser_opts)
+
+          expect(options.selenium_options.dig('ms:edgeOptions', 'args')).to eq ['-foo']
+        end
+
+        it 'does not accept incorrect Selenium Options class' do
+          browser_opts = Selenium::WebDriver::Chrome::Options.new
+
+          expect { Options.edge(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+        end
+
+        it 'accepts correct Selenium Capabilities class' do
+          browser_opts = Selenium::WebDriver::Remote::Capabilities.edge(browser_version: '99')
+          options = Options.edge(selenium_options: browser_opts)
+
+          expect(options.browser_version).to eq '99'
+        end
+
+        it 'does not accept incorrect Selenium Capabilities class' do
+          browser_opts = Selenium::WebDriver::Remote::Capabilities.chrome(browser_version: '99')
+
+          expect { Options.edge(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+        end
+
+        it 'accepts base configurations' do
+          options = Options.edge(custom_data: {foo: 'bar'})
+          options.tags = %w[foo bar]
+
+          expect(options.custom_data).to eq(foo: 'bar')
+          expect(options.tags).to eq %w[foo bar]
+        end
+
+        it 'accepts vdc configurations' do
+          options = Options.edge(browser_version: '42.0')
+          options.page_load_strategy = 'eager'
+
+          expect(options.browser_version).to eq '42.0'
+          expect(options.page_load_strategy).to eq 'eager'
+        end
+
+        it 'accepts valid configurations' do
+          options = Options.edge(edgedriver_version: '99')
+          options.selenium_version = '3.14'
+
+          expect(options.selenium_version).to eq '3.14'
+          expect(options.edgedriver_version).to eq '99'
+        end
+
+        it 'does not accept invalid configurations' do
+          expect { Options.edge(chromedriver_version: 'anything') }.to raise_exception(ArgumentError)
+        end
       end
     end
 
@@ -439,13 +512,14 @@ module SauceBindings
                                   implicit_wait_timeout: 1,
                                   page_load_timeout: 59,
                                   script_timeout: 29)
+        proxy_type = Selenium::WebDriver::VERSION[0] == '3' ? 'MANUAL' : 'manual'
 
         expect(options.capabilities).to eq('browserName' => 'firefox',
                                            'browserVersion' => 'latest',
                                            'platformName' => 'Mac',
                                            'acceptInsecureCerts' => true,
                                            'pageLoadStrategy' => 'eager',
-                                           'proxy' => {'proxyType' => 'MANUAL', 'sslProxy' => 'foo'},
+                                           'proxy' => {'proxyType' => proxy_type, 'sslProxy' => 'foo'},
                                            'setWindowRect' => true,
                                            'unhandledPromptBehavior' => 'accept',
                                            'strictFileInteractability' => true,
@@ -519,7 +593,9 @@ module SauceBindings
                                                                'videoUploadOnPass' => false})
       end
 
-      it 'correctly generates capabilities for selenium object values' do
+      it 'correctly generates capabilities for selenium object values Selenium 3' do
+        skip unless Selenium::WebDriver::VERSION[0] == '3'
+
         caps = Selenium::WebDriver::Remote::Capabilities.chrome(accept_insecure_certs: true,
                                                                 page_load_strategy: 'eager')
         browser_opts = Selenium::WebDriver::Chrome::Options.new(args: ['--foo'])
@@ -542,6 +618,29 @@ module SauceBindings
                          'goog:chromeOptions' => {'args' => ['--foo']}}
 
         expect(options.capabilities).to eq(jwp_defaults.merge(expected_caps))
+      end
+
+      it 'correctly generates capabilities for selenium object values Selenium 4' do
+        skip if Selenium::WebDriver::VERSION[0] == '3'
+
+        caps = Selenium::WebDriver::Remote::Capabilities.chrome(accept_insecure_certs: true)
+        browser_opts = Selenium::WebDriver::Chrome::Options.new(args: ['--foo'],
+                                                                page_load_strategy: 'eager')
+        options = Options.chrome(selenium_options: [caps, browser_opts])
+
+        expect(options.accept_insecure_certs).to eq true
+        expect(options.page_load_strategy).to eq 'eager'
+        expect(options.selenium_options.dig('goog:chromeOptions', 'args')).to eq ['--foo']
+
+        expected_caps = {'browserName' => 'chrome',
+                         'browserVersion' => 'latest',
+                         'platformName' => 'Windows 10',
+                         'acceptInsecureCerts' => true,
+                         'pageLoadStrategy' => 'eager',
+                         'sauce:options' => {'build' => 'TEMP BUILD: 11'},
+                         'goog:chromeOptions' => {'args' => ['--foo']}}
+
+        expect(options.capabilities).to eq expected_caps
       end
     end
   end

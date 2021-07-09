@@ -16,9 +16,13 @@ module SauceBindings
        'sauce:options': {build: 'TEMP BUILD: 11'}}
     end
 
-    def expect_request(body: nil, endpoint: nil)
-      body = (body || {desiredCapabilities: default_capabilities,
-                       capabilities: {firstMatch: [default_capabilities]}}).to_json
+    def expect_request
+      se3 = {desiredCapabilities: default_capabilities,
+             capabilities: {firstMatch: [default_capabilities]}}.to_json
+      se4 = {capabilities: {alwaysMatch: default_capabilities}}.to_json
+
+      body = Selenium::WebDriver::VERSION[0] == '3' ? se3 : se4
+
       endpoint ||= 'https://ondemand.us-west-1.saucelabs.com/wd/hub/session'
       stub_request(:post, endpoint).with(body: body).to_return(valid_response)
     end
@@ -46,8 +50,8 @@ module SauceBindings
 
       it 'uses provided Options class' do
         sauce_opts = Options.chrome(browser_version: '123',
-                                 platform_name: 'Mac',
-                                 idle_timeout: 4)
+                                    platform_name: 'Mac',
+                                    idle_timeout: 4)
         session = Session.new(sauce_opts)
 
         expected_results = {url: 'https://foo:123@ondemand.us-west-1.saucelabs.com:443/wd/hub',

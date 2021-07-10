@@ -4,6 +4,7 @@ import pytest
 
 from saucebindings.options import SauceOptions
 from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver import __version__ as seleniumVersion
 
 
 class TestInit(object):
@@ -425,5 +426,8 @@ class TestCapabilitiesCreation(object):
                                  'sauce:options': {'build': 'Sample Build Name'},
                                  'platform': 'ANY',
                                  'version': ''}
+
+        if seleniumVersion[0] == '4':
+            expected_capabilities['pageLoadStrategy'] = 'normal'
 
         assert options.to_capabilities() == expected_capabilities

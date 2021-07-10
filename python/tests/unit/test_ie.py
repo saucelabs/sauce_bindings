@@ -4,6 +4,7 @@ import pytest
 
 from saucebindings.options import SauceOptions
 from selenium.webdriver.ie.options import Options as IEOptions
+from selenium.webdriver import __version__ as seleniumVersion
 
 
 class TestInit(object):
@@ -420,5 +421,8 @@ class TestCapabilitiesCreation(object):
                                  'platform': 'WINDOWS',
                                  'version': ''
                                  }
+
+        if seleniumVersion[0] == '4':
+            expected_capabilities['pageLoadStrategy'] = 'normal'
 
         assert options.to_capabilities() == expected_capabilities

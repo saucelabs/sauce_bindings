@@ -5,6 +5,7 @@ import yaml
 
 from saucebindings.options import SauceOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver import __version__ as seleniumVersion
 
 
 class TestInit(object):
@@ -474,8 +475,13 @@ class TestCapabilitiesCreation(object):
                                  'platformName': 'Windows 10',
                                  'moz:firefoxOptions': {'args': ['--foo']},
                                  'sauce:options': {'build': 'Sample Build Name'},
-                                 'marionette': True,
                                  'acceptInsecureCerts': True
                                  }
+
+        if seleniumVersion[0] == '4':
+            expected_capabilities['pageLoadStrategy'] = 'normal'
+            expected_capabilities['moz:debuggerAddress'] = True
+        else:
+            expected_capabilities['marionette'] = True
 
         assert options.to_capabilities() == expected_capabilities

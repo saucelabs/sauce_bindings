@@ -6,9 +6,9 @@ class TestSauceOptions(object):
 
     def test_creates_session(self):
         # 1. Create a SauceOptions instance with Sauce Labs Specific Options
-        sauceOptions = SauceOptions(extendedDebugging=True,
-                                    idleTimeout=100,
-                                    timeZone='Alaska')
+        sauceOptions = SauceOptions.chrome(extendedDebugging=True,
+                                           idleTimeout=100,
+                                           timeZone='Alaska')
 
         # 2. Create Session object with SauceOptions object instance
         session = SauceSession(sauceOptions)

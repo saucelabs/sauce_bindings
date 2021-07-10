@@ -15,7 +15,7 @@ data_centers = {
 class SauceSession():
 
     def __init__(self, options=None, data_center='us-west', resolve_ip=False):
-        self.options = options if options else SauceOptions()
+        self.options = options if options else SauceOptions.chrome()
         self._username = os.getenv('SAUCE_USERNAME', None)
         self._access_key = os.getenv('SAUCE_ACCESS_KEY', None)
         self.data_center = data_center if data_center else 'us-west'

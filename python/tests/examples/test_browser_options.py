@@ -12,7 +12,7 @@ class TestBrowserOptions(object):
         browserOptions.add_argument('--foo')
 
         # 2. Create Sauce Options object with the Browser Options object instance
-        sauceOptions = SauceOptions(seleniumOptions=browserOptions)
+        sauceOptions = SauceOptions.firefox(seleniumOptions=browserOptions)
 
         # 3. Create Session object with SauceOptions object instance
         session = SauceSession(sauceOptions)

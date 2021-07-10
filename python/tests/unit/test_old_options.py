@@ -367,15 +367,11 @@ class TestAddingCapabilities(object):
         assert options.unhandled_prompt_behavior == 'accept'
         assert options.strict_file_interactability is True
         assert options.timeouts == timeouts
-        assert options.avoid_proxy is True
         assert options.build == 'Sample Build Name'
-        assert options.capture_performance is True
-        assert options.chromedriver_version == '71'
         assert options.command_timeout == 2
         assert options.custom_data == custom_data
         assert options.extended_debugging is True
         assert options.idle_timeout == 3
-        assert options.iedriver_version == '3.141.0'
         assert options.max_duration == 300
         assert options.name == 'Sample Test Name'
         assert options.parent_tunnel == 'Mommy'

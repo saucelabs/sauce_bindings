@@ -11,17 +11,14 @@ exampleValues:
     implicit: 1
     pageLoad: 59
     script: 29
-  avoidProxy: true
   build: 'Sample Build Name'
-  capturePerformance: true
-  chromedriverVersion: '71'
   commandTimeout: 2
   customData:
     foo: 'foo'
     bar: 'bar'
-  extendedDebugging: true
   idleTimeout: 3
-  iedriverVersion: '3.141.0'
+  extendedDebugging: true
+  geckodriverVersion: '0.23'
   maxDuration: 300
   name: 'Sample Test Name'
   parentTunnel: 'Mommy'

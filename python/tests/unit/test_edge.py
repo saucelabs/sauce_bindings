@@ -1,11 +1,11 @@
-from saucebindings.options import SauceOptions
+import pytest
 
+from saucebindings.options import SauceOptions
+from selenium.webdriver import __version__ as seleniumVersion
 
 class TestEdge(object):
 
-    def test_defaults(self):
-        sauce = SauceOptions('MicrosoftEdge')
-
-        assert sauce.browser_name == 'MicrosoftEdge'
-        assert sauce.browser_version == 'latest'
-        assert sauce.platform_name == 'Windows 10'
+    @pytest.mark.skipif(seleniumVersion[0] == '4', reason="requires Selenium 4")
+    def test_selenium3_error(self):
+        with pytest.raises(NotImplementedError):
+            SauceOptions.edge()

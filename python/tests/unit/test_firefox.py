@@ -1,23 +1,25 @@
 import os
 
 import pytest
+import yaml
 
 from saucebindings.options import SauceOptions
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
 
 class TestInit(object):
 
     def test_defaults(self):
-        sauce = SauceOptions.safari()
+        sauce = SauceOptions.firefox()
 
-        assert sauce.browser_name == 'safari'
+        assert sauce.browser_name == 'firefox'
         assert sauce.browser_version == 'latest'
         assert sauce.platform_name == 'Windows 10'
 
     def test_accepts_browser_version_platform_name(self):
-        sauce = SauceOptions.safari(browserVersion='75.0', platformName='macOS 10.13')
+        sauce = SauceOptions.firefox(browserVersion='75.0', platformName='macOS 10.13')
 
-        assert sauce.browser_name == 'safari'
+        assert sauce.browser_name == 'firefox'
         assert sauce.browser_version == '75.0'
         assert sauce.platform_name == 'macOS 10.13'
 
@@ -32,7 +34,7 @@ class TestInit(object):
                    'strictFileInteractability': True,
                    'timeouts': timeouts}
 
-        sauce = SauceOptions.safari(**options)
+        sauce = SauceOptions.firefox(**options)
 
         assert sauce.accept_insecure_certs is True
         assert sauce.page_load_strategy == 'eager'
@@ -46,7 +48,7 @@ class TestInit(object):
                     'pageLoad': 59,
                     'script': 29}
 
-        sauce = SauceOptions.safari(acceptInsecureCerts=True,
+        sauce = SauceOptions.firefox(acceptInsecureCerts=True,
                                      pageLoadStrategy='eager',
                                      setWindowRect=True,
                                      unhandledPromptBehavior='accept',
@@ -62,6 +64,7 @@ class TestInit(object):
 
     def test_accepts_sauce_values_with_dict(self):
         options = {'build': 'bar',
+                   'geckodriverVersion': "71",
                    'commandTimeout': 2,
                    'customData': {'foo': 'foo',
                                   'bar': 'bar'},
@@ -85,9 +88,10 @@ class TestInit(object):
                    'tunnelIdentifier': 'foobar',
                    'videoUploadOnPass': False}
 
-        sauce = SauceOptions.safari(**options)
+        sauce = SauceOptions.firefox(**options)
 
         assert sauce.build == 'bar'
+        assert sauce.geckodriver_version == '71'
         assert sauce.command_timeout == 2
         assert sauce.custom_data == {'foo': 'foo',
                                      'bar': 'bar'}
@@ -118,29 +122,29 @@ class TestInit(object):
                   'args': ['--silent', '-a', '-q'],
                   'background': False,
                   'timeout': 120}
-        sauce = SauceOptions.safari(avoidProxy=True,
-                             build='bar',
-                             commandTimeout=2,
-                             customData=custom_data,
-                             idleTimeout=3,
-                             maxDuration=1,
-                             name='foo',
-                             parentTunnel='bar',
-                             prerun=prerun,
-                             priority=0,
-                             public='team',
-                             recordLogs=False,
-                             recordScreenshots=False,
-                             recordVideo=False,
-                             screenResolution='10x10',
-                             seleniumVersion='3.14',
-                             tags=['foo', 'bar'],
-                             timeZone='Foo',
-                             tunnelIdentifier='foobar',
-                             videoUploadOnPass=False)
+        sauce = SauceOptions.firefox(build='bar',
+                                     geckodriverVersion='71',
+                                     commandTimeout=2,
+                                     customData=custom_data,
+                                     idleTimeout=3,
+                                     maxDuration=1,
+                                     name='foo',
+                                     parentTunnel='bar',
+                                     prerun=prerun,
+                                     priority=0,
+                                     public='team',
+                                     recordLogs=False,
+                                     recordScreenshots=False,
+                                     recordVideo=False,
+                                     screenResolution='10x10',
+                                     seleniumVersion='3.14',
+                                     tags=['foo', 'bar'],
+                                     timeZone='Foo',
+                                     tunnelIdentifier='foobar',
+                                     videoUploadOnPass=False)
 
-        assert sauce.avoid_proxy is True
         assert sauce.build == 'bar'
+        assert sauce.geckodriver_version == '71'
         assert sauce.command_timeout == 2
         assert sauce.custom_data == {'foo': 'foo',
                                      'bar': 'bar'}
@@ -164,7 +168,19 @@ class TestInit(object):
         assert sauce.tunnel_identifier == 'foobar'
         assert sauce.video_upload_on_pass is False
 
+    def test_accepts_selenium_browser_options_instance(self):
+        options = FirefoxOptions()
+        options.add_argument('--foo')
+
+        sauce = SauceOptions.firefox(seleniumOptions=options)
+
+        assert sauce.browser_name == 'firefox'
+        assert sauce.selenium_options['moz:firefoxOptions'] == {'args': ['--foo']}
+
     def test_accepts_w3c_sauce_options_capabilities(self):
+        browser_options = FirefoxOptions()
+        browser_options.add_argument('--foo')
+
         options = {'maxDuration': 1,
                    'commandTimeout': 2}
 
@@ -172,20 +188,21 @@ class TestInit(object):
                        'pageLoadStrategy': 'eager'}
 
         options.update(w3c_options)
-        sauce = SauceOptions.safari(**options)
+        sauce = SauceOptions.firefox(seleniumOptions=browser_options, **options)
 
-        assert sauce.browser_name == 'safari'
+        assert sauce.browser_name == 'firefox'
         assert sauce.accept_insecure_certs is True
         assert sauce.page_load_strategy == 'eager'
         assert sauce.max_duration == 1
         assert sauce.command_timeout == 2
+        assert sauce.selenium_options['moz:firefoxOptions'] == {'args': ['--foo']}
 
     def test_default_build_name(self):
         os.environ['BUILD_TAG'] = ' '
         os.environ['BUILD_NAME'] = 'BUILD NAME'
         os.environ['BUILD_NUMBER'] = '123'
 
-        sauce = SauceOptions.safari()
+        sauce = SauceOptions.firefox()
 
         assert sauce.build == 'BUILD NAME: 123'
 
@@ -195,12 +212,12 @@ class TestInit(object):
 
     def test_argument_error_as_param(self):
         with pytest.raises(AttributeError):
-            SauceOptions.safari(foo='Bar')
+            SauceOptions.firefox(foo='Bar')
 
     def test_argument_error_from_dict(self):
         options = {'foo': 'Bar'}
         with pytest.raises(AttributeError):
-            SauceOptions.safari(**options)
+            SauceOptions.firefox(**options)
 
 
 class TestSettingSpecificOptions(object):
@@ -210,7 +227,7 @@ class TestSettingSpecificOptions(object):
                     'pageLoad': 59,
                     'script': 29}
 
-        options = SauceOptions.safari()
+        options = SauceOptions.firefox()
         options.browser_version = '7'
         options.platform_name = 'macOS 10.14'
         options.accept_insecure_certs = True
@@ -220,7 +237,7 @@ class TestSettingSpecificOptions(object):
         options.strict_file_interactability = True
         options.timeouts = timeouts
 
-        assert options.browser_name == 'safari'
+        assert options.browser_name == 'firefox'
         assert options.browser_version == '7'
         assert options.platform_name == 'macOS 10.14'
         assert options.accept_insecure_certs is True
@@ -239,9 +256,10 @@ class TestSettingSpecificOptions(object):
                        'bar': 'bar'}
         tags = ['foo', 'bar']
 
-        options = SauceOptions.safari()
+        options = SauceOptions.firefox()
 
         options.build = 'Sample Build Name'
+        options.geckodriver_version = '71'
         options.command_timeout = 2
         options.custom_data = custom_data
         options.idle_timeout = 3
@@ -262,6 +280,7 @@ class TestSettingSpecificOptions(object):
         options.video_upload_on_pass = False
 
         assert options.build == 'Sample Build Name'
+        assert options.geckodriver_version == '71'
         assert options.command_timeout == 2
         assert options.custom_data == custom_data
         assert options.idle_timeout == 3
@@ -282,22 +301,80 @@ class TestSettingSpecificOptions(object):
         assert options.video_upload_on_pass is False
 
     def test_setting_browser_name(self):
-        options = SauceOptions.safari()
+        options = SauceOptions.firefox()
 
         with pytest.raises(AttributeError):
-            options.browser_name = 'safari'
+            options.browser_name = 'firefox'
 
     def test_setting_invalid_option(self):
-        options = SauceOptions.safari()
+        options = SauceOptions.firefox()
 
         with pytest.raises(AttributeError):
             options.iedriver_version = '3.14'
 
 
+class TestAddingCapabilities(object):
+
+    def test_setting_capabilities(self):
+        file_location = r'./tests/options.yml'
+        # file_location = r'../options.yml'  # If running locally
+        with open(file_location) as file:
+            yml = yaml.safe_load(file)
+
+        prerun = {'executable': 'http://url.to/your/executable.exe',
+                  'args': ['--silent', '-a', '-q'],
+                  'background': False,
+                  'timeout': 120}
+        custom_data = {'foo': 'foo',
+                       'bar': 'bar'}
+        tags = ['foo', 'bar', 'foobar']
+
+        timeouts = {'implicit': 1,
+                    'pageLoad': 59,
+                    'script': 29}
+
+        example_values = yml.get("exampleValues")
+
+        options = getattr(SauceOptions, example_values['browserName'])()
+        del example_values['browserName']
+        options.merge_capabilities(example_values)
+
+        assert options.browser_name == 'firefox'
+        assert options.browser_version == '68'
+        assert options.platform_name == 'macOS 10.13'
+        assert options.accept_insecure_certs is True
+        assert options.page_load_strategy == 'eager'
+        assert options.set_window_rect is True
+        assert options.unhandled_prompt_behavior == 'accept'
+        assert options.strict_file_interactability is True
+        assert options.timeouts == timeouts
+        assert options.build == 'Sample Build Name'
+        assert options.command_timeout == 2
+        assert options.custom_data == custom_data
+        assert options.extended_debugging == True
+        assert options.idle_timeout == 3
+        assert options.geckodriver_version == '0.23'
+        assert options.max_duration == 300
+        assert options.name == 'Sample Test Name'
+        assert options.parent_tunnel == 'Mommy'
+        assert options.prerun == prerun
+        assert options.priority == 0
+        assert options.public == 'team'
+        assert options.record_logs is False
+        assert options.record_screenshots is False
+        assert options.record_video is False
+        assert options.screen_resolution == '10x10'
+        assert options.selenium_version == '3.141.59'
+        assert options.tags == tags
+        assert options.time_zone == 'San Francisco'
+        assert options.tunnel_identifier == 'tunnelname'
+        assert options.video_upload_on_pass is False
+
+
 class TestCapabilitiesCreation(object):
 
     def test_capabilities_for_w3c(self):
-        options = SauceOptions.safari()
+        options = SauceOptions.firefox()
 
         options.browser_version = '7'
         options.platform_name = 'macOS 10.14'
@@ -311,7 +388,7 @@ class TestCapabilitiesCreation(object):
                             'script': 29}
         options.build = "Build Name"
 
-        expected_capabilities = {'browserName': 'safari',
+        expected_capabilities = {'browserName': 'firefox',
                                  'browserVersion': '7',
                                  'platformName': 'macOS 10.14',
                                  'acceptInsecureCerts': True,
@@ -335,9 +412,10 @@ class TestCapabilitiesCreation(object):
                        'bar': 'bar'}
         tags = ['foo', 'bar']
 
-        options = SauceOptions.safari()
+        options = SauceOptions.firefox()
 
         options.build = 'Sample Build Name'
+        options.geckodriver_version = '71'
         options.command_timeout = 2
         options.custom_data = custom_data
         options.idle_timeout = 3
@@ -357,10 +435,11 @@ class TestCapabilitiesCreation(object):
         options.tunnel_identifier = 'tunnelname'
         options.video_upload_on_pass = False
 
-        expected_capabilities = {'browserName': 'safari',
+        expected_capabilities = {'browserName': 'firefox',
                                  'browserVersion': 'latest',
                                  'platformName': 'Windows 10',
                                  'sauce:options': {'build': 'Sample Build Name',
+                                                   'geckodriverVersion': '71',
                                                    'commandTimeout': 2,
                                                    'customData': {'foo': 'foo',
                                                                   'bar': 'bar'},
@@ -384,13 +463,19 @@ class TestCapabilitiesCreation(object):
         assert options.to_capabilities() == expected_capabilities
 
     def test_capabilities_for_selenium(self):
-        options = SauceOptions.safari()
+        browser_options = FirefoxOptions()
+        browser_options.add_argument('--foo')
+
+        options = SauceOptions.firefox(seleniumOptions=browser_options)
         options.build = 'Sample Build Name'
 
-        expected_capabilities = {'browserName': 'safari',
+        expected_capabilities = {'browserName': 'firefox',
                                  'browserVersion': 'latest',
                                  'platformName': 'Windows 10',
-                                 'sauce:options': {'build': 'Sample Build Name'}
+                                 'moz:firefoxOptions': {'args': ['--foo']},
+                                 'sauce:options': {'build': 'Sample Build Name'},
+                                 'marionette': True,
+                                 'acceptInsecureCerts': True
                                  }
 
         assert options.to_capabilities() == expected_capabilities

@@ -1,5 +1,6 @@
 package com.saucelabs.saucebindings.testng;
 
+import com.saucelabs.saucebindings.DataCenter;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -12,6 +13,7 @@ import java.util.Arrays;
 
 public class SauceBaseTest {
     private static ThreadLocal<SauceSession> session = new ThreadLocal<>();
+    private static ThreadLocal<DataCenter> dataCenterThreadLocal = new ThreadLocal<>();
 
     public  RemoteWebDriver getDriver() {
         return getSession().getDriver();
@@ -19,6 +21,10 @@ public class SauceBaseTest {
 
     public SauceSession getSession() {
         return session.get();
+    }
+
+    public DataCenter getDataCenter() {
+        return dataCenterThreadLocal.get();
     }
 
     /**
@@ -43,6 +49,10 @@ public class SauceBaseTest {
             sauceOptions.sauce().setName(method.getName());
         }
         session.set(new SauceSession(sauceOptions));
+        DataCenter dataCenter = getDataCenter();
+        if (dataCenter != null) {
+            getSession().setDataCenter(getDataCenter());
+        }
         getSession().start();
     }
 

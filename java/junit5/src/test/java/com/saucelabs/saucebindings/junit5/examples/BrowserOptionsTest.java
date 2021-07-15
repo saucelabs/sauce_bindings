@@ -1,0 +1,28 @@
+package com.saucelabs.saucebindings.junit5.examples;
+
+import com.saucelabs.saucebindings.junit5.SauceBaseTest;
+import com.saucelabs.saucebindings.options.SauceOptions;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.firefox.FirefoxOptions;
+
+// 1. Extend the provided base test class
+public class BrowserOptionsTest extends SauceBaseTest {
+
+    // 2. Create Sauce Options with Sauce Labs class for browser specific details
+    public SauceOptions createSauceOptions() {
+        FirefoxOptions firefoxOptions = new FirefoxOptions();
+        firefoxOptions.addArguments("--foo");
+
+        return SauceOptions.firefox(firefoxOptions).build();
+    }
+
+    @Test
+    public void browserOptions() {
+        // 3. Session and Driver are created automatically by superclass
+
+        // 4. Use the driver in your tests just like normal
+        driver.get("https://www.saucedemo.com/");
+
+        // 5. Session is stopped and results are sent to Sauce Labs automatically by the superclass
+    }
+}

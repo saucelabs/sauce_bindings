@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.saucelabs</groupId>
-    <artifactId>sauce_bindings_junit4</artifactId>
+    <artifactId>saucebindings-junit4</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>SauceBindings JUnit4</name>
     <description>Provides tools for interacting with SauceLabs with JUnit 4</description>
@@ -44,14 +44,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>3.141.59</version>
-        </dependency>
-        <dependency>
             <groupId>com.saucelabs</groupId>
             <artifactId>sauce_bindings</artifactId>
-            <version>1.1.0</version>
+            <version>1.2.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

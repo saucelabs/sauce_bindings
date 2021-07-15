@@ -14,12 +14,12 @@ going with executing your tests on Sauce Labs.
 * Completely customizable
 
 ### Requirements
-Just add sauce_bindings_junit4 to your pom file:
+Just add saucebindings-junit4 to your pom file:
 
 ```xml
 <dependency>
     <groupId>com.saucelabs</groupId>
-    <artifactId>sauce_bindings_junit4</artifactId>
+    <artifactId>saucebindings-junit4</artifactId>
     <version>1.0.0</version>
     <scope>test</scope>
 </dependency>

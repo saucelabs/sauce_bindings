@@ -14,12 +14,12 @@ If you use TestNG, you can use this package to remove even more boilerplate code
 * Completely customizable
 
 ### Requirements
-Just add sauce_bindings_testng to your pom file:
+Just add saucebindings-testng to your pom file:
 
 ```xml
 <dependency>
     <groupId>com.saucelabs</groupId>
-    <artifactId>sauce_bindings_testng</artifactId>
+    <artifactId>saucebindings-testng</artifactId>
     <version>1.0.0</version>
     <scope>test</scope>
 </dependency>

@@ -4,7 +4,7 @@
 
     <groupId>com.saucelabs</groupId>
     <artifactId>sauce_bindings_testng</artifactId>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.9.0-SNAPSHOT</version>
     <name>SauceBindings TestNG</name>
     <description>Provides tools for interacting with SauceLabs with TestNG</description>
     <url>https://opensource.saucelabs.com/sauce_bindings</url>

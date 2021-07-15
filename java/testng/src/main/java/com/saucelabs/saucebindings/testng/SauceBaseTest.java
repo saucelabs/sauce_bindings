@@ -10,12 +10,6 @@ import org.testng.annotations.BeforeMethod;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-/**
- * @deprecated
- * The name for this project has been changed; Please update your POM to use saucebindings-junit4.
- * @see <a href="https://opensource.saucelabs.com/sauce_bindings/docs/getting-started">Getting Started With Sauce Bindings</a> for more information
- */
-@Deprecated
 public class SauceBaseTest {
     private static ThreadLocal<SauceSession> session = new ThreadLocal<>();
 

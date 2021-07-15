@@ -11,6 +11,12 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.util.Arrays;
 
+/**
+ * @deprecated
+ * The name for this project has been changed; Please update your POM to use saucebindings-junit4.
+ * @see <a href="https://opensource.saucelabs.com/sauce_bindings/docs/getting-started">Getting Started With Sauce Bindings</a> for more information
+ */
+@Deprecated
 public class SauceBaseTest {
     protected RemoteWebDriver driver;
     protected SauceSession session;

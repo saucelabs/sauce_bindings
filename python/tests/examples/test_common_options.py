@@ -2,12 +2,13 @@ from saucebindings.options import SauceOptions
 from saucebindings.session import SauceSession
 
 
-class TestBasicOptions(object):
+class TestCommonOptions(object):
 
     def test_creates_session(self):
-        # 1. Create a SauceOptions instance with the 3 primary parameters
+        # 1. Create SauceOptions instance with common w3c options
         sauceOptions = SauceOptions.firefox(browserVersion='73.0',
-                                            platformName='Windows 8')
+                                            platformName='Windows 8',
+                                            unhandledPromptBehavior="ignore")
 
         # 2. Create Session object with SauceOptions object instance
         session = SauceSession(sauceOptions)

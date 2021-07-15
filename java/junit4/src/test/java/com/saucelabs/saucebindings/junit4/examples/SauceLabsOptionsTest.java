@@ -13,7 +13,7 @@ public class SauceLabsOptionsTest extends SauceBaseTest {
     public SauceOptions createSauceOptions() {
         return SauceOptions.firefox()
                 .setExtendedDebugging()
-                .setIdleTimeout(Duration.ofSeconds(100))
+                .setIdleTimeout(Duration.ofSeconds(45))
                 .setTimeZone("Alaska")
                 .build();
     }

@@ -14,7 +14,7 @@ public class SauceLabsOptionsTest {
         // 1. Specify Sauce Specific Options Based on Browser
         SauceOptions sauceOptions = SauceOptions.firefox()
                 .setExtendedDebugging()
-                .setIdleTimeout(Duration.ofSeconds(100))
+                .setIdleTimeout(Duration.ofSeconds(45))
                 .setTimeZone("Alaska")
                 .build();
 

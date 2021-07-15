@@ -3,17 +3,17 @@ package com.saucelabs.saucebindings.junit5.examples;
 import com.saucelabs.saucebindings.junit5.SauceBaseTest;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 // 1. Extend the provided base test class
 public class BrowserOptionsTest extends SauceBaseTest {
 
     // 2. Create Sauce Options with Sauce Labs class for browser specific details
     public SauceOptions createSauceOptions() {
-        FirefoxOptions firefoxOptions = new FirefoxOptions();
-        firefoxOptions.addArguments("--foo");
+        ChromeOptions browserOptions = new ChromeOptions();
+        browserOptions.addArguments("--start-fullscreen");
 
-        return SauceOptions.firefox(firefoxOptions).build();
+        return SauceOptions.chrome(browserOptions).build();
     }
 
     @Test

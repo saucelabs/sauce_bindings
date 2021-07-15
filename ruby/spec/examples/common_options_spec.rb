@@ -3,11 +3,12 @@
 require 'sauce_bindings'
 require 'rspec'
 
-describe 'Basic Options' do
+describe 'Common Options' do
   it 'creates session' do
-    # 1. Create a SauceOptions instance with the 3 primary parameters
+    # 1. Create Options instance with common w3c options
     sauce_options = SauceBindings::Options.firefox(browser_version: '88.0',
-                                                   platform_name: 'Windows 8')
+                                                   platform_name: 'Windows 8',
+                                                   unhandled_prompt_behavior: 'ignore')
 
     # 2. Create Session object with SauceOptions object instance
     session = SauceBindings::Session.new(sauce_options)

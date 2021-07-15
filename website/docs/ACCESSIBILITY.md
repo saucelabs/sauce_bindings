@@ -13,7 +13,7 @@ As of version 1.2, Sauce Bindings supports the new Sauce Labs
     * Returns the specific violations found in the code. The format of these results varies by language, and it is left to the user 
       to determine how best to make use of them in their code if so desired.
 * The Java code is implemented using Deque's [Axe Core Maven HTML Jar](https://github.com/dequelabs/axe-core-maven-html)
-    * This is slightly less efficient than the other implementations, but provides access to all the advanced features.
+    * This implementation provides access to all the advanced features.
     * As a wrapper, Sauce bindings provides 3 method signatures for getting accessibility results, as outlined below.
 * The Ruby and Python code is implemented with the new [sa11y](https://github.com/saucelabs/sa11y) project
     * Sa11y is a minimalist implementation of Deque's axe™ functionality.
@@ -28,15 +28,52 @@ defaultValue="java"
 values={[
 { label: 'Java', value: 'java', },
 { label: 'Python', value: 'python', },
-{ label: 'Ruby', value: 'ruby', }
+{ label: 'Ruby', value: 'ruby', },
+{ label: 'C#', value: 'csharp', },
 ]
 }>
 
 <TabItem value="java">
 
+<Tabs
+defaultValue="junit5"
+values={[
+{ label: 'JUnit 5', value: 'junit5', },
+{ label: 'JUnit 4', value: 'junit4', },
+{ label: 'TestNG', value: 'testng', },
+{ label: 'Direct', value: 'direct', },
+]
+}>
+
+<TabItem value="junit5">
+
 ```java reference
-https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/main/src/main/java/com/saucelabs/saucebindings/examples/AccessibilityTest.java
+https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/junit5/src/test/java/com/saucelabs/saucebindings/junit5/examples/AccessibilityTest.java
 ```
+
+</TabItem>
+<TabItem value="junit4">
+
+```java reference
+https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/junit4/src/test/java/com/saucelabs/saucebindings/junit4/examples/AccessibilityTest.java
+```
+
+</TabItem>
+<TabItem value="testng">
+
+```java reference
+https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/testng/src/test/java/com/saucelabs/saucebindings/testng/examples/AccessibilityTest.java
+```
+
+</TabItem>
+<TabItem value="direct">
+
+```java reference
+https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/main/src/test/java/com/saucelabs/saucebindings/examples/AccessibilityTest.java
+```
+
+</TabItem>
+</Tabs>
 
 </TabItem>
 <TabItem value="python">
@@ -51,6 +88,11 @@ https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/python/tests/example
 ```ruby reference
 https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/ruby/spec/examples/accessibility_spec.rb
 ```
+
+</TabItem>
+<TabItem value="csharp">
+
+**C# bindings are coming soon...**
 
 </TabItem>
 </Tabs>

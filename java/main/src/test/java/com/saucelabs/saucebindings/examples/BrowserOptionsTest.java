@@ -1,9 +1,9 @@
 package com.saucelabs.saucebindings.examples;
 
-import com.saucelabs.saucebindings.*;
+import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import org.junit.Test;
-import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class BrowserOptionsTest {
@@ -11,11 +11,11 @@ public class BrowserOptionsTest {
     @Test
     public void browserOptions() {
         // 1. Create Selenium Browser Options instance
-        FirefoxOptions browserOptions = new FirefoxOptions();
-        browserOptions.addArguments("--foo");
+        ChromeOptions browserOptions = new ChromeOptions();
+        browserOptions.addArguments("--start-fullscreen");
 
         // 2. Create SauceOptions instance with static browser method and build()
-        SauceOptions sauceOptions = SauceOptions.firefox(browserOptions).build();
+        SauceOptions sauceOptions = SauceOptions.chrome(browserOptions).build();
 
         // 3. Create Session object with the Sauce Options object instance
         SauceSession session = new SauceSession(sauceOptions);

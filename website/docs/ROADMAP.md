@@ -31,3 +31,4 @@ to address language-specific bugs.
 * Methods for managing assets (screenshots, video, etc)
 * Methods to work with Extended Debugging Functionality (convert from language data structures instead of requiring JSON)
 * Access to improved Failure Analysis
+* Additional [Test Runners](TEST_RUNNERS.md), and test runner specific functionality

@@ -14,6 +14,7 @@
         "type": "category",
         "label": "Configuration",
         "items": [
+          "configurations",
           "basic-options",
           "sauce-options",
           "browser-options",
@@ -25,6 +26,7 @@
         "label": "Features",
         "items": [
           "desktop-browsers",
+          "test-runners",
           "accessibility",
           "roadmap"
         ]

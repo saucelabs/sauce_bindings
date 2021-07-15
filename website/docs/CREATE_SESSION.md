@@ -23,9 +23,48 @@ values={[
 
 <TabItem value="java">
 
+Select the [test runner](test-runners/) tab based on which library you [added to your `.pom` file](getting-started#language-specific--prerequisites)
+
+<Tabs
+defaultValue="junit5"
+values={[
+{ label: 'JUnit 5', value: 'junit5', },
+{ label: 'JUnit 4', value: 'junit4', },
+{ label: 'TestNG', value: 'testng', },
+{ label: 'Direct', value: 'direct', },
+]
+}>
+
+<TabItem value="junit5">
+
 ```java reference
-https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/main/src/main/java/com/saucelabs/saucebindings/examples/SessionTest.java
+https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/junit5/src/test/java/com/saucelabs/saucebindings/junit5/examples/SessionTest.java
 ```
+
+</TabItem>
+<TabItem value="junit4">
+
+```java reference
+https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/junit4/src/test/java/com/saucelabs/saucebindings/junit4/examples/SessionTest.java
+```
+
+</TabItem>
+<TabItem value="testng">
+
+```java reference
+https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/testng/src/test/java/com/saucelabs/saucebindings/testng/examples/SessionTest.java
+```
+
+</TabItem>
+<TabItem value="direct">
+
+```java reference
+https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/main/src/test/java/com/saucelabs/saucebindings/examples/SessionTest.java
+```
+
+</TabItem>
+</Tabs>
+
 
 </TabItem>
 <TabItem value="python">

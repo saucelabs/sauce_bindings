@@ -2,6 +2,7 @@ package com.saucelabs.saucebindings.testng.examples;
 
 import com.saucelabs.saucebindings.options.SauceOptions;
 import com.saucelabs.saucebindings.testng.SauceBaseTest;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.annotations.Test;
 
@@ -11,10 +12,10 @@ public class BrowserOptionsTest extends SauceBaseTest {
     // 2. Create Sauce Options with Sauce Labs class for browser specific details
     @Override
     protected SauceOptions createSauceOptions() {
-        FirefoxOptions firefoxOptions = new FirefoxOptions();
-        firefoxOptions.addArguments("--foo");
+        ChromeOptions browserOptions = new ChromeOptions();
+        browserOptions.addArguments("--start-fullscreen");
 
-        return SauceOptions.firefox(firefoxOptions).build();
+        return SauceOptions.firefox(browserOptions).build();
     }
 
     @Test

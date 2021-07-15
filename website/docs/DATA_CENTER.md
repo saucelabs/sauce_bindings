@@ -38,28 +38,28 @@ values={[
 <TabItem value="junit5">
 
 ```java reference
-https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/junit5/src/test/java/com/saucelabs/saucebindings/junit5/examples/DataCenterTest.java
+https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/java/junit5/src/test/java/com/saucelabs/saucebindings/junit5/examples/DataCenterTest.java
 ```
 
 </TabItem>
 <TabItem value="junit4">
 
 ```java reference
-https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/junit4/src/test/java/com/saucelabs/saucebindings/junit4/examples/DataCenterTest.java
+https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/java/junit4/src/test/java/com/saucelabs/saucebindings/junit4/examples/DataCenterTest.java
 ```
 
 </TabItem>
 <TabItem value="testng">
 
 ```java reference
-https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/testng/src/test/java/com/saucelabs/saucebindings/testng/examples/DataCenterTest.java
+https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/java/testng/src/test/java/com/saucelabs/saucebindings/testng/examples/DataCenterTest.java
 ```
 
 </TabItem>
 <TabItem value="direct">
 
 ```java reference
-https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/main/src/test/java/com/saucelabs/saucebindings/examples/DataCenterTest.java
+https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/java/main/src/test/java/com/saucelabs/saucebindings/examples/DataCenterTest.java
 ```
 
 </TabItem>
@@ -69,14 +69,14 @@ https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/main/src/test/j
 <TabItem value="python">
 
 ```python reference
-https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/python/tests/examples/test_data_center.py
+https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/python/tests/examples/test_data_center.py
 ```
 
 </TabItem>
 <TabItem value="ruby">
 
 ```ruby reference
-https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/ruby/spec/examples/data_center_spec.rb
+https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/ruby/spec/examples/data_center_spec.rb
 ```
 
 </TabItem>

@@ -48,28 +48,28 @@ values={[
 <TabItem value="junit5">
 
 ```java reference
-https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/junit5/src/test/java/com/saucelabs/saucebindings/junit5/examples/AccessibilityTest.java
+https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/java/junit5/src/test/java/com/saucelabs/saucebindings/junit5/examples/AccessibilityTest.java
 ```
 
 </TabItem>
 <TabItem value="junit4">
 
 ```java reference
-https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/junit4/src/test/java/com/saucelabs/saucebindings/junit4/examples/AccessibilityTest.java
+https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/java/junit4/src/test/java/com/saucelabs/saucebindings/junit4/examples/AccessibilityTest.java
 ```
 
 </TabItem>
 <TabItem value="testng">
 
 ```java reference
-https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/testng/src/test/java/com/saucelabs/saucebindings/testng/examples/AccessibilityTest.java
+https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/java/testng/src/test/java/com/saucelabs/saucebindings/testng/examples/AccessibilityTest.java
 ```
 
 </TabItem>
 <TabItem value="direct">
 
 ```java reference
-https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/main/src/test/java/com/saucelabs/saucebindings/examples/AccessibilityTest.java
+https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/java/main/src/test/java/com/saucelabs/saucebindings/examples/AccessibilityTest.java
 ```
 
 </TabItem>
@@ -79,14 +79,14 @@ https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/java/main/src/test/j
 <TabItem value="python">
 
 ```python reference
-https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/python/tests/examples/test_accessibility.py
+https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/python/tests/examples/test_accessibility.py
 ```
 
 </TabItem>
 <TabItem value="ruby">
 
 ```ruby reference
-https://github.com/saucelabs/sauce_bindings/tree/java-1.2.0/ruby/spec/examples/accessibility_spec.rb
+https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/ruby/spec/examples/accessibility_spec.rb
 ```
 
 </TabItem>

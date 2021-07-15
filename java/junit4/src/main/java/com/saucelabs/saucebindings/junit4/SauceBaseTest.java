@@ -1,5 +1,6 @@
 package com.saucelabs.saucebindings.junit4;
 
+import com.saucelabs.saucebindings.DataCenter;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import org.junit.Before;
@@ -20,6 +21,7 @@ import java.util.Arrays;
 public class SauceBaseTest {
     protected RemoteWebDriver driver;
     protected SauceSession session;
+    protected DataCenter dataCenter = DataCenter.US_WEST;
 
     @Rule
     public SauceTestWatcher watcher = new SauceTestWatcher();
@@ -47,7 +49,12 @@ public class SauceBaseTest {
             sauceOptions.sauce().setName(testName.getMethodName());
         }
         session = new SauceSession(sauceOptions);
+        session.setDataCenter(getDataCenter());
         driver = session.start();
+    }
+
+    public DataCenter getDataCenter() {
+        return this.dataCenter;
     }
 
     /**

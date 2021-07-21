@@ -54,6 +54,51 @@ public class SauceOptions extends BaseOptions {
             "unhandledPromptBehavior");
 
     /**
+     *
+     * @param browserName the name of the browser
+     * @return instance of VDCConfigurations
+     */
+    public static VDCConfigurations buildOptionsFromBrowser(String browserName) {
+        switch(browserName) {
+        case "chrome":
+            return buildOptionsFromBrowser(browserName, new ChromeOptions());
+        case "edge":
+            return buildOptionsFromBrowser(browserName, new EdgeOptions());
+        case "firefox":
+            return buildOptionsFromBrowser(browserName, new FirefoxOptions());
+        case "ie":
+            return buildOptionsFromBrowser(browserName, new InternetExplorerOptions());
+        case "safari":
+            return buildOptionsFromBrowser(browserName, new SafariOptions());
+        default:
+            throw new IllegalArgumentException("Browser not supported: " + browserName);
+        }
+    }
+
+    /**
+     *
+     * @param browserName the name of the browser
+     * @param capabilities instance of BrowerOptions corresponding to browser name
+     * @return instance of VDCConfigurations
+     */
+    public static VDCConfigurations buildOptionsFromBrowser(String browserName, MutableCapabilities capabilities) {
+        switch(browserName) {
+        case "chrome":
+            return SauceOptions.chrome((ChromeOptions) capabilities);
+        case "edge":
+            return SauceOptions.edge((EdgeOptions) capabilities);
+        case "firefox":
+            return SauceOptions.firefox((FirefoxOptions) capabilities);
+        case "ie":
+            return SauceOptions.ie((InternetExplorerOptions) capabilities);
+        case "safari":
+            return SauceOptions.safari((SafariOptions) capabilities);
+        default:
+            throw new IllegalArgumentException("Browser not supported: " + browserName);
+        }
+    }
+
+    /**
      * This method allows building a default Sauce Options instance for Chrome
      * Call build() method on return value rather than using directly
      * @return instance of ChromeConfigurations

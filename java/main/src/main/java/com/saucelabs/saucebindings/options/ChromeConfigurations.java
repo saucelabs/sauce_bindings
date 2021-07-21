@@ -15,9 +15,6 @@ public class ChromeConfigurations extends VDCConfigurations<ChromeConfigurations
     public ChromeConfigurations setCapturePerformance() {
         sauceOptions.sauce().setExtendedDebugging(true);
         sauceOptions.sauce().setCapturePerformance(true);
-        if (sauceOptions.sauce().getName() == null) {
-            throw new InvalidSauceOptionsArgumentException("Need to call `setName()` before `setCapturePerformance`");
-        }
         return this;
     }
 
@@ -42,5 +39,13 @@ public class ChromeConfigurations extends VDCConfigurations<ChromeConfigurations
     public ChromeConfigurations setExtendedDebugging() {
         sauceOptions.sauce().setExtendedDebugging(true);
         return this;
+    }
+
+    @Override
+    public SauceOptions build() {
+        if (sauceOptions.sauce().getCapturePerformance() && sauceOptions.sauce().getName() == null) {
+            throw new InvalidSauceOptionsArgumentException("Unable to setCapturePerformance() without also doing setName()");
+        }
+        return super.build();
     }
 }

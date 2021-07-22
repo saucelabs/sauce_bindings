@@ -1,27 +1,21 @@
 package com.saucelabs.saucebindings.performance;
 
+import lombok.Getter;
+
 import java.util.Map;
 
+@Getter
 public class PerformanceResults {
-    private String reason;
-    private boolean result;
-    private Map details;
+    private final String reason;
+    private final boolean passed;
+    private final Map<String, Object> details;
 
+    /**
+     * @param performance Map of the raw results from Sauce Labs when executing performance result
+     */
     public PerformanceResults(Map<String, Object> performance) {
         this.reason = (String) performance.get("reason");
-        this.result = performance.get("result").equals("pass");
+        this.passed = performance.get("result").equals("pass");
         this.details = (Map<String, Object>) performance.get("details");
-    }
-
-    public boolean isPassed() {
-        return result;
-    }
-
-    public String getReason() {
-        return this.reason;
-    }
-
-    public Map getDetails() {
-        return details;
     }
 }

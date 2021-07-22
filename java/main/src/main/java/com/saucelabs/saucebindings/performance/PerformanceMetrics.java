@@ -25,6 +25,9 @@ public class PerformanceMetrics {
     private final Long largestContentfulPaint;
     private final Map<String, Object> rawData;
 
+    /**
+     * @param performance Map of the raw results from Sauce Labs when obtaining log of performance metrics
+     */
     public PerformanceMetrics(Map<String, Object> performance) {
         this.rawData = performance;
         this.load = (Long) performance.get("load");

@@ -12,6 +12,10 @@ public class JankinessResults {
     private final Double score;
     private final String type;
 
+    /**
+     * @param jankiness Map of the raw results from Sauce Labs when executing Jankiness Check
+     * @see <a href="https://docs.saucelabs.com/performance/motion">Measuring On-Page Motion Effects</a>
+     */
     public JankinessResults(Map<String, Object> jankiness) {
         this.url = (String) jankiness.get("url");
         this.metrics = (Map) jankiness.get("metrics");

@@ -2,6 +2,7 @@ package com.saucelabs.saucebindings.integration;
 
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
+import com.saucelabs.saucebindings.performance.JankinessResults;
 import com.saucelabs.saucebindings.performance.PerformanceMetrics;
 import com.saucelabs.saucebindings.performance.PerformanceResults;
 import org.junit.After;
@@ -40,6 +41,14 @@ public class PerformanceTest {
                 .build();
         session = new SauceSession(sauceOptions);
         driver = session.start();
+    }
+
+    @Test
+    public void jankinessResults() {
+        driver.get("https://www.saucedemo.com");
+
+        JankinessResults jankinessResults = session.performance().getJankinessResults();
+        Assert.assertTrue(jankinessResults.getScore() > 0.7);
     }
 
     @Test

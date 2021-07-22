@@ -37,6 +37,11 @@ public class Performance {
         return new PerformanceResults(performance);
     }
 
+    public JankinessResults getJankinessResults() {
+        Map<String, Object> jankiness = (Map<String, Object>) driver.executeScript("sauce:jankinessCheck");
+        return new JankinessResults(jankiness);
+    }
+
     public PerformanceMetrics getMetrics() {
         HashMap<String, Object> metricsLog = new HashMap<>();
         metricsLog.put("type", "sauce:performance");

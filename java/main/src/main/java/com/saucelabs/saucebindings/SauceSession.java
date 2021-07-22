@@ -3,7 +3,9 @@ package com.saucelabs.saucebindings;
 import com.deque.html.axecore.results.Results;
 import com.deque.html.axecore.selenium.AxeBuilder;
 import com.saucelabs.saucebindings.options.BaseConfigurations;
+import com.saucelabs.saucebindings.options.InvalidSauceOptionsArgumentException;
 import com.saucelabs.saucebindings.options.SauceOptions;
+import com.saucelabs.saucebindings.performance.Performance;
 import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.Capabilities;
@@ -104,6 +106,13 @@ public class SauceSession {
     public Results getAccessibilityResults(AxeBuilder builder) {
         validateSessionStarted("getAccessibilityResults()");
         return builder.analyze(driver);
+    }
+
+    public Performance performance() {
+        if (!sauceOptions.sauce().getCapturePerformance()) {
+            throw new InvalidSauceOptionsArgumentException("Can not use performance methods without using `setCapturePerformance()`");
+        }
+        return new Performance(driver, sauceOptions.sauce().getName());
     }
 
     /**

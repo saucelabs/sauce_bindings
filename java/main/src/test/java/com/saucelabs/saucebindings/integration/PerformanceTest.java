@@ -13,6 +13,10 @@ import org.junit.rules.TestName;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class PerformanceTest {
     private SauceSession session;
     private RemoteWebDriver driver;
@@ -30,6 +34,7 @@ public class PerformanceTest {
     @Before
     public void setup() {
         SauceOptions sauceOptions = SauceOptions.chrome()
+                .setBrowserVersion("85.0")
                 .setName(testName.getMethodName())
                 .setCapturePerformance()
                 .build();
@@ -49,6 +54,40 @@ public class PerformanceTest {
         } else {
             Assert.assertTrue(performanceResults.getReason().contains("Metrics"));
             Assert.assertFalse(performanceResults.getDetails().isEmpty());
+        }
+    }
+
+    @Test
+    public void performanceMetricResults() {
+        driver.get("https://www.saucedemo.com");
+
+        PerformanceResults performanceResults = session.performance().getResults("firstInteractive");
+        if (performanceResults.isPassed()) {
+            Assert.assertTrue(performanceResults.getDetails().isEmpty());
+            Assert.assertNull(performanceResults.getReason());
+        } else {
+            Map<String, Object> firstInteractive = (Map<String, Object>) performanceResults.getDetails().get("firstInteractive");
+            Assert.assertTrue((Long) firstInteractive.get("actual") < 5000);
+        }
+    }
+
+    @Test
+    public void performanceMetricsResults() {
+        driver.get("https://www.saucedemo.com");
+
+        List<String> metrics = new ArrayList<String>();
+        metrics.add("firstInteractive");
+        metrics.add("load");
+
+        PerformanceResults performanceResults = session.performance().getResults(metrics);
+        if (performanceResults.isPassed()) {
+            Assert.assertTrue(performanceResults.getDetails().isEmpty());
+            Assert.assertNull(performanceResults.getReason());
+        } else if (performanceResults.getDetails().get("firstInteractive") == null) {
+            Assert.assertNotNull(performanceResults.getDetails().get("load"));
+        } else {
+            Map<String, Object> firstInteractive = (Map<String, Object>) performanceResults.getDetails().get("firstInteractive");
+            Assert.assertTrue((Long) firstInteractive.get("actual") < 5000);
         }
     }
 

@@ -18,13 +18,15 @@ public class PerformanceMetrics {
     private final Long estimatedInputLatency;
     private final Long firstContentfulPaint;
     private final Long totalBlockingTime;
-    private final Long score;
+    private final Double score;
     private final Long domContentLoaded;
     private final Long cumulativeLayoutShift;
     private final Long serverResponseTime;
     private final Long largestContentfulPaint;
+    private final Map<String, Object> rawData;
 
     public PerformanceMetrics(Map<String, Object> performance) {
+        this.rawData = performance;
         this.load = (Long) performance.get("load");
         this.speedIndex = (Long) performance.get("speedIndex");
         this.firstInteractive = (Long) performance.get("firstInteractive");
@@ -37,10 +39,15 @@ public class PerformanceMetrics {
         this.estimatedInputLatency = (Long) performance.get("estimatedInputLatency");
         this.firstContentfulPaint = (Long) performance.get("firstContentfulPaint");
         this.totalBlockingTime = (Long) performance.get("totalBlockingTime");
-        this.score = (Long) performance.get("score");
         this.domContentLoaded = (Long) performance.get("domContentLoaded");
         this.cumulativeLayoutShift = (Long) performance.get("cumulativeLayoutShift");
         this.serverResponseTime = (Long) performance.get("serverResponseTime");
         this.largestContentfulPaint = (Long) performance.get("largestContentfulPaint");
+
+        if (performance.get("score").getClass().equals(Long.class)) {
+            this.score = ((Long) performance.get("score")).doubleValue();
+        } else {
+            this.score = (Double) performance.get("score");
+        }
     }
 }

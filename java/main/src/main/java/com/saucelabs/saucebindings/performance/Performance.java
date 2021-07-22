@@ -2,12 +2,14 @@ package com.saucelabs.saucebindings.performance;
 
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Performance {
-    private RemoteWebDriver driver;
-    private String testName;
+    private final RemoteWebDriver driver;
+    private final String testName;
 
     public Performance(RemoteWebDriver driver, String testName) {
         this.testName = testName;
@@ -17,6 +19,20 @@ public class Performance {
     public PerformanceResults getResults() {
         HashMap<String, Object> perf = new HashMap<>();
         perf.put("name", testName);
+        Map<String, Object> performance = (Map<String, Object>) driver.executeScript("sauce:performance", perf);
+        return new PerformanceResults(performance);
+    }
+
+    public PerformanceResults getResults(String metric) {
+        List<String> metrics = new ArrayList<>();
+        metrics.add(metric);
+        return getResults(metrics);
+    }
+
+    public PerformanceResults getResults(List<String> metrics) {
+        HashMap<String, Object> perf = new HashMap<>();
+        perf.put("name", testName);
+        perf.put("metrics", metrics);
         Map<String, Object> performance = (Map<String, Object>) driver.executeScript("sauce:performance", perf);
         return new PerformanceResults(performance);
     }

@@ -58,4 +58,25 @@ public class Performance {
         driver.executeScript("sauce:performanceDisable");
     }
 
+    // https://docs.saucelabs.com/performance/transitions#defining-a-performance-budget
+    // Can pull this from yaml or json
+    public Map<String, Object> getBudgetFailures(Map<String, Map<String, Object>> budget) {
+        Map<String, Object> violations = new HashMap<>();
+
+        budget.forEach((url, values) -> {
+            driver.get(url);
+            PerformanceMetrics metrics = getMetrics();
+            values.forEach((metric, value) -> {
+                if ("score".equals(metric)) {
+                    Double score = (Double) metrics.getRawData().get(metric);
+                    if (score < (Double) value) {
+                        violations.put(metric, value);
+                    }
+                } else if (((Number) metrics.getRawData().get(metric)).longValue() > ((Number) value).longValue()) {
+                    violations.put(metric, value);
+                }
+            });
+        });
+        return violations;
+    }
 }

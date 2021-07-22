@@ -13,7 +13,12 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.yaml.snakeyaml.Yaml;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +40,6 @@ public class PerformanceTest {
     @Before
     public void setup() {
         SauceOptions sauceOptions = SauceOptions.chrome()
-                .setBrowserVersion("85.0")
                 .setName(testName.getMethodName())
                 .setCapturePerformance()
                 .build();
@@ -141,5 +145,24 @@ public class PerformanceTest {
 
         PerformanceMetrics performanceMetrics = session.performance().getMetrics();
         Assert.assertNull(performanceMetrics.getLoad());
+    }
+
+    @Test
+    public void useBudget() {
+        File budget = new File("src/test/java/com/saucelabs/saucebindings/budget.yml");
+        Map<String, Object> failures = session.performance().getBudgetFailures(serialize(budget));
+
+        Assert.assertTrue(failures.isEmpty());
+    }
+
+    public Map<String, Map<String, Object>> serialize(File file) {
+        InputStream input = null;
+        try {
+            input = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        Yaml yaml = new Yaml();
+        return yaml.load(input);
     }
 }

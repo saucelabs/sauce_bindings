@@ -112,7 +112,7 @@ public class SauceSession {
         if (!sauceOptions.sauce().getCapturePerformance()) {
             throw new InvalidSauceOptionsArgumentException("Can not use performance methods without using `setCapturePerformance()`");
         }
-        return new Performance(driver, sauceOptions.sauce().getName());
+        return new Performance(this);
     }
 
     /**

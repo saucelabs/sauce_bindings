@@ -12,6 +12,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 public class SauceSession {
     @Getter protected RemoteWebDriver driver;
@@ -101,6 +102,7 @@ public class SauceSession {
      * @return an object with the accessibility analysis
      */
     public Results getAccessibilityResults(AxeBuilder builder) {
+        validateSessionStarted("getAccessibilityResults()");
         return builder.analyze(driver);
     }
 
@@ -116,6 +118,118 @@ public class SauceSession {
             updateResult(update);
             quit();
         }
+    }
+
+    /**
+     * Add a comment to the command list displayed in the Sauce Labs UI.
+     *
+     * @param comment the value to be displayed in the Sauce Labs UI.
+     * @see <a href="https://docs.saucelabs.com/basics/test-config-annotation/test-annotation/#providing-context-for-selenium-commands">
+     *     Providing Context for Selenium Commands</a>
+     */
+    public void annotate(String comment) {
+        validateSessionStarted("annotate()");
+        driver.executeScript("sauce:context=" + comment);
+    }
+
+    /**
+     * Stops the session to allow the user to take manual control of the session.
+     * No more automated commands will be processed after this command
+     *
+     * @see <a href="https://docs.saucelabs.com/basics/test-config-annotation/test-annotation/#methods">
+     *     Test Annotation Methods</a>
+     */
+    public void pause() {
+        validateSessionStarted("pause()");
+        String sauceTestLink = String.format("https://app.saucelabs.com/tests/%s",
+                this.driver.getSessionId());
+        driver.executeScript("sauce: break");
+        System.out.println("\nThis test has been stopped; no more driver commands will be accepted");
+        System.out.println("\nYou can take manual control of the test from the Sauce Labs UI here: "
+                + sauceTestLink);
+        this.driver = null;
+    }
+
+    /**
+     * Turns off logging of commands within the test in order to omit sensitive data from the log.json file.
+     * Using this feature will prevent access to other logs in their entirety
+     *
+     * @see #enableLogging()
+     * @see <a href="https://docs.saucelabs.com/basics/test-config-annotation/test-annotation/#methods">
+     *     Test Annotation Methods</a>
+     */
+    public void disableLogging() {
+        validateSessionStarted("disableLogging()");
+        driver.executeScript("sauce: disable log");
+    }
+
+    /**
+     * Turns logging back on after logging has been disabled.
+     *
+     * @see #disableLogging()
+     * @see <a href="https://docs.saucelabs.com/basics/test-config-annotation/test-annotation/#methods">
+     *     Test Annotation Methods</a>
+     */
+    public void enableLogging() {
+        validateSessionStarted("enableLogging()");
+        driver.executeScript("sauce: enable log");
+    }
+
+    /**
+     * Stops VM’s network connection.
+     *
+     * @see #startNetwork()
+     * @see <a href="https://docs.saucelabs.com/basics/test-config-annotation/test-annotation/#methods">
+     *     Test Annotation Methods</a>
+     */
+    public void stopNetwork() {
+        validateSessionStarted("stopNetwork()");
+        validateMac("Can only stop network for a Mac Platform;");
+
+        driver.executeScript("sauce: stop network");
+    }
+
+    /**
+     * Restarts the VM’s network connection after it has been stopped.
+     *
+     * @see #stopNetwork()
+     * @see <a href="https://docs.saucelabs.com/basics/test-config-annotation/test-annotation/#methods">
+     *     Test Annotation Methods</a>
+     */
+    public void startNetwork() {
+        validateSessionStarted("startNetwork()");
+        validateMac("Can only start network for a Mac Platform;");
+
+        driver.executeScript("sauce: start network");
+    }
+
+    /**
+     * This is typically set in SauceOptions before starting the Session.
+     * This allows dynamially updating if necessary (e.g. name based on discovered state).
+     *
+     * @param name the test name
+     * @see <a href="https://docs.saucelabs.com/basics/test-config-annotation/test-annotation/#methods">
+     *     Test Annotation Methods</a>
+     * @see BaseConfigurations#setName(String)
+     */
+    public void changeTestName(String name) {
+        validateSessionStarted("changeName()");
+        driver.executeScript("sauce:job-name=" + name);
+    }
+
+    /**
+     * This is typically set in SauceOptions before starting the Session.
+     * This allows updating dynamically based on information available after starting session.
+     *
+     * @param tags the tags to associate with the test
+     * @see <a href="https://docs.saucelabs.com/basics/test-config-annotation/test-annotation/#methods">
+     *     Test Annotation Methods</a>
+     * @see BaseConfigurations#setTags(List)
+     */
+    public void addTags(List<String> tags) {
+        validateSessionStarted("setTags()");
+        String tagString = String.join(",", tags);
+        driver.executeScript("sauce:job-tags=" + tagString);
     }
 
     /**
@@ -153,8 +267,23 @@ public class SauceSession {
         System.out.print(sauceReporter + "\n" + sauceTestLink + "\n");
     }
 
+    private void validateSessionStarted(String method) {
+        if (driver == null) {
+            throw new SauceSessionNotStartedException(method);
+        }
+    }
+
     private void quit() {
         driver.quit();
         driver = null;
+    }
+
+    private void validateMac(String msg) {
+        SaucePlatform platformName = sauceOptions.getPlatformName();
+
+        if (!platformName.isMac()) {
+            String error = msg + " current platform is: " + platformName;
+            throw new InvalidArgumentException(error);
+        }
     }
 }

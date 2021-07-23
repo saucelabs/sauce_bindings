@@ -41,6 +41,24 @@ public enum SaucePlatform {
         return PlatformLookup.lookup.get(value);
     }
 
+    /**
+     * Whether the platform is on an Apple Mac OS.
+     *
+     * @return true if platform is OS X or macOS
+     */
+    public boolean isMac() {
+        return this.value.contains("macOS") || this.value.contains("OS X");
+    }
+
+    /**
+     * Whether the platform is Microsoft Windows.
+     *
+     * @return true if platform is Windows OS
+     */
+    public boolean isWindows() {
+        return this.value.contains("Windows");
+    }
+
     public String toString() {
         return this.value;
     }

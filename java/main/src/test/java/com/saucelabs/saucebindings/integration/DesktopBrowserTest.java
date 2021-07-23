@@ -11,7 +11,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class DesktopBrowserTest {
     private SauceSession session = new SauceSession();
-    private RemoteWebDriver webDriver;
+    private RemoteWebDriver driver;
 
     @After
     public void cleanUp() {
@@ -22,8 +22,8 @@ public class DesktopBrowserTest {
 
     @Test
     public void defaultsToUSWest() {
-        webDriver = session.start();
-        Assert.assertNotNull(webDriver);
+        driver = session.start();
+        Assert.assertNotNull(driver);
         Assert.assertTrue(session.getSauceUrl().toString().contains("us-west-"));
     }
 
@@ -33,27 +33,27 @@ public class DesktopBrowserTest {
         options.setPlatformName(SaucePlatform.LINUX);
         session = new SauceSession(options);
         session.setDataCenter(DataCenter.US_EAST);
-        webDriver = session.start();
+        driver = session.start();
 
-        Assert.assertNotNull(webDriver);
+        Assert.assertNotNull(driver);
         Assert.assertTrue(session.getSauceUrl().toString().contains("us-east-1"));
     }
 
     @Test
     public void runsAPACSoutheast() {
         session.setDataCenter(DataCenter.APAC_SOUTHEAST);
-        webDriver = session.start();
+        driver = session.start();
 
-        Assert.assertNotNull(webDriver);
+        Assert.assertNotNull(driver);
         Assert.assertTrue(session.getSauceUrl().toString().contains("apac-southeast"));
     }
 
     @Test
     public void runsEUCentral() {
         session.setDataCenter(DataCenter.EU_CENTRAL);
-        webDriver = session.start();
+        driver = session.start();
 
-        Assert.assertNotNull(webDriver);
+        Assert.assertNotNull(driver);
         Assert.assertTrue(session.getSauceUrl().toString().contains("eu-central-1"));
     }
 
@@ -69,9 +69,26 @@ public class DesktopBrowserTest {
 
     @Test
     public void nullsDriver() {
-        webDriver = session.start();
+        driver = session.start();
         session.stop(true);
 
         Assert.assertNull(session.getDriver());
+    }
+
+    @Test
+    public void stopsNetwork() {
+        session = new SauceSession(SauceOptions.safari());
+        driver = session.start();
+
+        session.stopNetwork();
+
+        driver.get("https://www.saucedemo.com");
+
+        Assert.assertEquals("Failed to open page", driver.getTitle());
+
+        session.startNetwork();
+        driver.get("https://www.saucedemo.com");
+
+        Assert.assertEquals("Swag Labs", driver.getTitle());
     }
 }

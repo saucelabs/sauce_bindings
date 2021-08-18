@@ -3,7 +3,6 @@ This website is built using [Docusaurus 2](https://docusaurus.io/), a modern sta
 # How to update Sauce Bindings website
 
 * [Get Started in 5 Minutes](#get-started-in-5-minutes)
-* [Directory Structure](#directory-structure)
 * [Editing Content](#editing-content)
 * [Adding Content](#adding-content)
 * [Full Documentation](#full-documentation)

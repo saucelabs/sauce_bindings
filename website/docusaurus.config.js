@@ -40,7 +40,7 @@ module.exports={
       {
         docs: {
           sidebarPath: 'sidebars.json',
-          routeBasePath: 'docs/',
+          routeBasePath: '/',
           editUrl:
               'https://github.com/saucelabs/sauce_bindings/edit/main/website/',
           showLastUpdateAuthor: true,
@@ -88,7 +88,7 @@ module.exports={
     footer: {
       logo: {
         alt: 'Sauce Logo',
-        src: 'img/logo-saucelabs-inverted.png',
+        src: '/img/logo-saucelabs-inverted.png',
         href: 'https://saucelabs.com',
       },
       style: 'light',

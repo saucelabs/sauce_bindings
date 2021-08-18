@@ -54,7 +54,7 @@ function Footer() {
     <div>
       <footer>
           <div className="footer__image">
-          <img src="../img/logo-saucelabs-inverted.png" />
+            <img src={logoUrl}/>
         </div>
         <div className="footer__inner">
 

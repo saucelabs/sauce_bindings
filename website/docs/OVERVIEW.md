@@ -2,6 +2,7 @@
 id: overview
 title: Overview
 sidebar_label: Overview
+slug: /
 ---
 ### Making test automation with Sauce Labs intuitively simple
 

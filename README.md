@@ -12,11 +12,11 @@
 
 ## Making Sauce Simple To Use
 
-***[Learn More Here](https://opensource.saucelabs.com/sauce_bindings/docs/overview.html)***
+***[Learn More Here](https://opensource.saucelabs.com/sauce_bindings/overview.html)***
 
 ## Contributing
 
-[Instructions here](https://opensource.saucelabs.com/sauce_bindings/docs/contributing)
+[Instructions here](https://opensource.saucelabs.com/sauce_bindings/contributing)
 
 ## Building and Installing
 

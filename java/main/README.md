@@ -12,7 +12,7 @@ driver.findElement("id").click();
 
 ## Installation
 
-[Installation instructions](https://opensource.saucelabs.com/sauce_bindings/docs/getting-started)
+[Installation instructions](https://opensource.saucelabs.com/sauce_bindings/getting-started)
 
 ## Building
 

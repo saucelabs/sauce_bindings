@@ -20,8 +20,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{8D1592F6-2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sauce.Bindings", "Sauce.Bindings.csproj", "{14CDEF4F-FE78-4FA7-AD7C-A535C555BED9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotnetCore.Test", "..\DotnetCore.Test\DotnetCore.Test.csproj", "{EAEF175B-778D-4207-8E0A-F04D4F0A10F8}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,10 +34,6 @@ Global
 		{14CDEF4F-FE78-4FA7-AD7C-A535C555BED9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14CDEF4F-FE78-4FA7-AD7C-A535C555BED9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14CDEF4F-FE78-4FA7-AD7C-A535C555BED9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EAEF175B-778D-4207-8E0A-F04D4F0A10F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EAEF175B-778D-4207-8E0A-F04D4F0A10F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EAEF175B-778D-4207-8E0A-F04D4F0A10F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EAEF175B-778D-4207-8E0A-F04D4F0A10F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,7 +41,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{DBD7C90F-9514-4EDD-AAB2-63F699CA0BED} = {8D1592F6-2723-4AD2-A792-3FEC4408BDC2}
 		{14CDEF4F-FE78-4FA7-AD7C-A535C555BED9} = {A87FACF6-AEFA-45FB-B73C-56378772CE57}
-		{EAEF175B-778D-4207-8E0A-F04D4F0A10F8} = {8D1592F6-2723-4AD2-A792-3FEC4408BDC2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B63DCFB9-E2DF-4886-AF33-8280A869A7F5}

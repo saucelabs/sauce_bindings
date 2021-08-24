@@ -1,8 +1,8 @@
-from selenium.webdriver.chrome.options import Options as ChromeOptions
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
-from selenium.webdriver.edge.options import Options as EdgeOptions
-from selenium.webdriver.ie.options import Options as IEOptions
+import warnings
 from datetime import datetime
+
+from .configs import *
+from selenium.webdriver import __version__ as seleniumVersion
 import os
 
 
@@ -25,7 +25,9 @@ sauce_configs = {
     'chromedriver_version': 'chromedriverVersion',
     'command_timeout': 'commandTimeout',
     'custom_data': 'customData',
+    'edgedriver_version': 'edgedriverVersion',
     'extended_debugging': 'extendedDebugging',
+    'geckodriver_version': 'geckodriverVersion',
     'idle_timeout': 'idleTimeout',
     'iedriver_version': 'iedriverVersion',
     'max_duration': 'maxDuration',
@@ -46,15 +48,33 @@ sauce_configs = {
     'capture_performance': 'capturePerformance'
 }
 
-browser_names = {
-    FirefoxOptions: 'firefox',
-    ChromeOptions: 'chrome',
-    IEOptions: 'internet explorer',
-    EdgeOptions: 'MicrosoftEdge'
-}
+class SauceOptions(object):
 
+    @classmethod
+    def chrome(cls, **kwargs):
+        return cls('chrome', validOptions=Configs().chromeConfigs(), **kwargs)
 
-class SauceOptions:
+    @classmethod
+    def edge(cls, **kwargs):
+        if seleniumVersion[0] == '3':
+            raise NotImplementedError('Selenium 3 does not support Chromium Edge. Look for SauceBindings Support of '
+                                      'Selenium 4 soon.')
+        return cls('MicrosoftEdge', validOptions=Configs().edgeConfigs(), **kwargs)
+
+    @classmethod
+    def firefox(cls, **kwargs):
+        return cls('firefox', validOptions=Configs().firefoxConfigs(), **kwargs)
+
+    @classmethod
+    def ie(cls, **kwargs):
+        return cls('internet explorer', validOptions=Configs().ieConfigs(), **kwargs)
+
+    @classmethod
+    def safari(cls, **kwargs):
+        if 'platformName' not in kwargs:
+            kwargs['platformName'] = 'macOS 11.00'
+
+        return cls('safari', validOptions=Configs().safariConfigs(), **kwargs)
 
     def _set_default_build_name(self):
         if 'build' in self.options['sauce:options']:
@@ -71,8 +91,11 @@ class SauceOptions:
         # Circle
         elif os.environ.get('CIRCLE_JOB'):
             self.build = "{}: {}".format(os.environ['CIRCLE_JOB'], os.environ['CIRCLE_BUILD_NUM'])
+        # GitHub Actions
+        elif os.environ.get("GITHUB_SHA"):
+            self.build = "{}: {}".format(os.environ['GITHUB_WORKFLOW'], os.environ['GITHUB_SHA'])
         # Gitlab
-        elif os.environ.get('CI'):
+        elif os.environ.get('CI_JOB_ID'):
             self.build = "{}: {}".format(os.environ['CI_JOB_NAME'], os.environ['CI_JOB_ID'])
         # Team City
         elif os.environ.get('TEAMCITY_PROJECT_NAME'):
@@ -80,18 +103,26 @@ class SauceOptions:
         else:
             self.build = 'Build Time: {}'.format(datetime.utcnow())
 
-    def __init__(self, browserName=None, **kwargs):
+    def __init__(self, browserName=None, validOptions=None, seleniumOptions=None, **kwargs):
         super(SauceOptions, self).__setattr__('options', {'sauce:options': {}})
-        super(SauceOptions, self).__setattr__('seleniumOptions', {})
+        super(SauceOptions, self).__setattr__('seleniumOpts', {})
+        if validOptions == None:
+            warnings.warn('Options() is deprecated, use class methods like Options.chrome() instead',
+                          DeprecationWarning)
+            validOptions = {**w3c_configs, **sauce_configs}
+        super(SauceOptions, self).__setattr__('validOptions', validOptions)
+
+        if self.validOptions == None:
+            self.validOptions = {**w3c_configs, **sauce_configs}
+
+        self.validateOptions(kwargs)
+
+        if seleniumOptions is not None:
+            self.set_capability('browserName', seleniumOptions.capabilities['browserName'])
+            self.seleniumOpts['caps'] = seleniumOptions.to_capabilities()
 
         for key, value in kwargs.items():
-            if key == 'seleniumOptions':
-                if isinstance(value, tuple(browser_names)):
-                    self.set_capability('browserName', browser_names[type(value)])
-
-                self.seleniumOptions['caps'] = value.to_capabilities()
-            else:
-                self.set_capability(key, value)
+            self.set_capability(key, value)
 
         if self.browser_version is None:
             self.set_capability('browserVersion', 'latest')
@@ -109,12 +140,15 @@ class SauceOptions:
         self._set_default_build_name()
 
     def __setattr__(self, key, value):
-        self.set_option(key, value)
+        if (self.validOptions == None and key == 'validOptions') or key in self.validOptions.keys():
+            self.set_option(key, value)
+        else:
+            raise AttributeError('parameter ' + key + ' not available for this configuration')
 
     def __getattr__(self, key):
         if key == 'selenium_options':
-            if 'caps' in self.seleniumOptions.keys():
-                return self.seleniumOptions['caps']
+            if 'caps' in self.seleniumOpts.keys():
+                return self.seleniumOpts['caps']
             else:
                 return None
         try:
@@ -127,8 +161,15 @@ class SauceOptions:
         except KeyError:
             return None
 
+    def validateOptions(self, kwargs):
+        for k in kwargs.keys():
+            if k not in self.validOptions.values():
+                raise AttributeError('parameter ' + k + ' not available for this configuration')
+
     def merge_capabilities(self, capabilities):
         for key, value in capabilities.items():
+            if key not in self.validOptions.values():
+                raise AttributeError('parameter ' + key + ' not available for this configuration')
             self.set_capability(key, value)
 
     # Sets with camelCase

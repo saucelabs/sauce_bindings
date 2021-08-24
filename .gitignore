@@ -136,8 +136,9 @@ typings/
 # Output of 'npm pack'
 *.tgz
 
-# Yarn Integrity file
+# Yarn fils
 .yarn-integrity
+yarn.lock
 
 # dotenv environment variables file
 .env
@@ -178,3 +179,5 @@ dist
 .vscode-test
 
 out
+website/build
+website/.docusaurus

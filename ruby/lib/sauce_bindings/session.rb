@@ -1,20 +1,22 @@
 # frozen_string_literal: true
 
 require 'sauce_whisk'
+require 'sa11y/analyze'
 require 'selenium-webdriver'
 
 module SauceBindings
   class Session
     DATA_CENTERS = {US_WEST: 'ondemand.us-west-1.saucelabs.com',
                     US_EAST: 'ondemand.us-east-1.saucelabs.com',
-                    EU_CENTRAL: 'ondemand.eu-central-1.saucelabs.com'}.freeze
+                    EU_CENTRAL: 'ondemand.eu-central-1.saucelabs.com',
+                    APAC_SOUTHEAST: 'ondemand.apac-southeast-1.saucelabs.com'}.freeze
 
     attr_writer :url
     attr_reader :driver, :options, :data_center
     attr_accessor :http_client, :listener
 
     def initialize(options = nil, data_center: nil, http_client: nil, listener: nil)
-      @options = options || Options.new
+      @options = options || Options.chrome
       @http_client = http_client
       @listener = listener
 
@@ -36,7 +38,7 @@ module SauceBindings
       SauceWhisk::Jobs.change_status(@driver.session_id, result)
       # Add output for the Sauce OnDemand Jenkins plugin
       # The first print statement will automatically populate links on Jenkins to Sauce
-      # The second print statement will output the job link to logging/console  
+      # The second print statement will output the job link to logging/console
       puts "SauceOnDemandSessionID=#{@driver.session_id} job-name=#{@options.name}"
       puts "Test Job Link: https://app.saucelabs.com/tests/#{@driver.session_id}"
       @driver.quit
@@ -44,12 +46,17 @@ module SauceBindings
 
     def data_center=(data_center)
       unless DATA_CENTERS.key?(data_center)
-        msg = "#{data_center} is an invalid data center; specify :US_WEST, :US_EAST or :EU_CENTRAL"
+        msg = "#{data_center} is an invalid data center; specify one of: #{DATA_CENTERS.keys}"
         raise ArgumentError, msg
       end
 
       SauceWhisk.data_center = data_center == :EU_CENTRAL ? :EU_VDC : data_center
       @data_center = data_center
+    end
+
+    def accessibility_results(js_lib: nil, frames: true, cross_origin: false)
+      sa11y = Sa11y::Analyze.new(driver, js_lib: js_lib, frames: frames, cross_origin: cross_origin)
+      sa11y.results
     end
 
     def url

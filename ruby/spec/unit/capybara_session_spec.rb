@@ -17,10 +17,14 @@ module SauceBindings
        'sauce:options': {build: 'TEMP BUILD: 11'}}
     end
 
-    def expect_request(body: nil, endpoint: nil)
-      body = (body || {desiredCapabilities: default_capabilities,
-                       capabilities: {firstMatch: [default_capabilities]}}).to_json
-      endpoint ||= 'https://ondemand.us-west-1.saucelabs.com/wd/hub/session'
+    def expect_request
+      se3 = {desiredCapabilities: default_capabilities,
+             capabilities: {firstMatch: [default_capabilities]}}.to_json
+      se4 = {capabilities: {alwaysMatch: default_capabilities}}.to_json
+
+      body = Selenium::WebDriver::VERSION[0] == '3' ? se3 : se4
+
+      endpoint = 'https://ondemand.us-west-1.saucelabs.com/wd/hub/session'
       stub_request(:post, endpoint).with(body: body).to_return(valid_response)
     end
 

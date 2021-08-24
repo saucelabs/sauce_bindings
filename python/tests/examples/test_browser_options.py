@@ -1,6 +1,6 @@
 from saucebindings.options import SauceOptions
 from saucebindings.session import SauceSession
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 
 
 class TestBrowserOptions(object):
@@ -8,11 +8,11 @@ class TestBrowserOptions(object):
     def test_creates_session(self):
 
         # 1. Create Selenium Browser Options instance
-        browserOptions = FirefoxOptions()
-        browserOptions.add_argument('--foo')
+        browserOptions = ChromeOptions()
+        browserOptions.add_argument('--start-fullscreen')
 
         # 2. Create Sauce Options object with the Browser Options object instance
-        sauceOptions = SauceOptions(seleniumOptions=browserOptions)
+        sauceOptions = SauceOptions.firefox(seleniumOptions=browserOptions)
 
         # 3. Create Session object with SauceOptions object instance
         session = SauceSession(sauceOptions)

@@ -6,20 +6,7 @@ env:
 
 matrix:
   before_install: export | grep SAUCE_
-  include:
-    - language: python
-      python: 3.6
-      script:
-      - "make python_tests"
-
     - language: ruby
       rvm: 2.5.3
       script:
       - "make ruby_tests"
-
-    - language: java
-      jdk: openjdk9
-      script:
-      - "make java_tests"
-      after_success:
-      - bash <(curl -s https://codecov.io/bash)

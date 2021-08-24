@@ -1,4 +1,6 @@
 import os
+
+from sa11y.analyze import Analyze
 from selenium import webdriver
 from selenium.webdriver.remote.remote_connection import RemoteConnection
 from .options import SauceOptions
@@ -7,14 +9,15 @@ from .options import SauceOptions
 data_centers = {
     'us-west': 'ondemand.us-west-1.saucelabs.com',
     'us-east': 'ondemand.us-east-1.saucelabs.com',
-    'eu-central': 'ondemand.eu-central-1.saucelabs.com'
+    'eu-central': 'ondemand.eu-central-1.saucelabs.com',
+    'apac-southeast': 'ondemand.apac-southeast-1.saucelabs.com'
 }
 
 
 class SauceSession():
 
     def __init__(self, options=None, data_center='us-west', resolve_ip=False):
-        self.options = options if options else SauceOptions()
+        self.options = options if options else SauceOptions.chrome()
         self._username = os.getenv('SAUCE_USERNAME', None)
         self._access_key = os.getenv('SAUCE_ACCESS_KEY', None)
         self.data_center = data_center if data_center else 'us-west'
@@ -29,7 +32,7 @@ class SauceSession():
     @data_center.setter
     def data_center(self, data_center):
         if data_center.lower() not in data_centers.keys():
-            raise ValueError("Invalid Data Center value, please select from 'us-west', 'us-east' or 'eu-central'")
+            raise ValueError("Invalid Data Center value, please select from:", list(data_centers.keys()))
 
         self._data_center = data_center
 
@@ -57,6 +60,10 @@ class SauceSession():
     def stop(self, result):
         self.update_test_result(result)
         self.driver.quit()
+
+
+    def accessibility_results(self, js_lib=None, frames=True, cross_origin=False):
+        return Analyze(self.driver, js_lib=js_lib, frames=frames, cross_origin=cross_origin).results()
 
     def update_test_result(self, result_in):
         result = ''

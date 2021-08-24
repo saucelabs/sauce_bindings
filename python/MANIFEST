@@ -3,5 +3,6 @@ README.rst
 setup.cfg
 setup.py
 saucebindings/__init__.py
+saucebindings/configs.py
 saucebindings/options.py
 saucebindings/session.py

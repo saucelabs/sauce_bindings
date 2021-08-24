@@ -7,21 +7,17 @@ example_values:
   set_window_rect: true
   unhandled_prompt_behavior: "accept"
   strict_file_interactability: true
-  timeouts:
-    implicit: 1
-    page_load: 59
-    script: 29
-  avoid_proxy: true
+  implicit_wait_timeout: 1
+  page_load_timeout: 59
+  script_timeout: 29
   build: 'Sample Build Name'
-  capture_performance: true
-  chromedriver_version: '71'
   command_timeout: 2
   custom_data:
     foo: 'foo'
     bar: 'bar'
   extended_debugging: true
+  geckodriver_version: '0.23'
   idle_timeout: 3
-  iedriver_version: '3.141.0'
   max_duration: 300
   name: 'Sample Test Name'
   parent_tunnel: 'Mommy'

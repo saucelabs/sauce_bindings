@@ -9,17 +9,17 @@ Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
 
 Metrics/AbcSize:
-  Max: 22
+  Max: 25
 
 Metrics/BlockLength:
   Exclude:
     - "**/*_spec.rb"
 
 Metrics/CyclomaticComplexity:
-  Max: 7
+  Max: 10
 
 Metrics/PerceivedComplexity:
-  Max: 8
+  Max: 11
 
 Metrics/ClassLength:
   Exclude:
@@ -29,7 +29,7 @@ Metrics/LineLength:
   Max: 120
 
 Metrics/MethodLength:
-  Max: 16
+  Max: 17
 
 Metrics/ModuleLength:
   CountComments: false
@@ -39,7 +39,16 @@ Metrics/ModuleLength:
 Style/Documentation:
   Enabled: false
 
+RSpec/AnyInstance:
+  Enabled: false
+
 RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/DescribeClass:
+  Enabled: false
+
+RSpec/FilePath:
   Enabled: false
 
 RSpec/MultipleExpectations:

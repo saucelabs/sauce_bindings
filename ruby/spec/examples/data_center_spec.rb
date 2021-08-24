@@ -4,8 +4,6 @@ require 'sauce_bindings'
 require 'rspec'
 
 describe 'Create Session' do
-  before { WebMock.allow_net_connect! }
-
   it 'starts session' do
     # 1. Create Session object with the desired Data Center
     session = SauceBindings::Session.new(data_center: :EU_CENTRAL)

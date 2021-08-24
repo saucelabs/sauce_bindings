@@ -1,0 +1,88 @@
+exampleValues:
+  browserName: 'firefox'
+  browserVersion: '68'
+  platformName: 'macOS 10.13'
+  acceptInsecureCerts: true
+  pageLoadStrategy: 'eager'
+  setWindowRect: true
+  unhandledPromptBehavior: "accept"
+  strictFileInteractability: true
+  timeouts:
+    implicit: 1000
+    pageLoad: 59000
+    script: 29000
+  sauce:
+    avoidProxy: true
+    build: 'Sample Build Name'
+    capturePerformance: true
+    chromedriverVersion: '71'
+    commandTimeout: 2
+    customData:
+      foo: 'foo'
+      bar: 'bar'
+    extendedDebugging: true
+    idleTimeout: 3
+    iedriverVersion: '3.141.0'
+    maxDuration: 300
+    name: 'Sample Test Name'
+    parentTunnel: 'Mommy'
+    prerun:
+      executable: "http://url.to/your/executable.exe"
+      args:
+        - --silent
+        - -a
+        - -q
+      background: false
+      timeout: 120
+    priority: 0
+    jobVisibility: 'team'
+    recordLogs: false
+    recordScreenshots: false
+    recordVideo: false
+    screenResolution: '10x10'
+    seleniumVersion: '3.141.59'
+    tags:
+      - foo
+      - bar
+      - foobar
+    timeZone: 'San Francisco'
+    tunnelIdentifier: 'tunnelname'
+    videoUploadOnPass: false
+
+badBrowser:
+  browserName: "netscape"
+
+badPlatform:
+  platformName: "MAC"
+
+badJobVisibility:
+  sauce:
+    jobVisibility: "me"
+
+badPageLoad:
+  browserName: "fast"
+
+badPrompt:
+  browserName: "consume"
+
+badTimeout:
+  timeouts:
+    bad: 1
+
+badPrerun:
+  sauce:
+    prerun:
+      nope: ""
+
+invalidOption:
+  foo: "bar"
+  browser_Nme: "firefox"
+  browserVersion: "70"
+  platformName: "MacOS 10.12"
+
+invalidSauceOption:
+  browser_Nme: "firefox"
+  browserVersion: "70"
+  platformName: "MacOS 10.12"
+  sauce:
+    foo: "bar"

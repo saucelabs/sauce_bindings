@@ -6,7 +6,7 @@ with open('./README.rst', 'r') as f:
 setup(
   name = 'saucebindings',
   packages = ['saucebindings'],
-  version = '1.0.0',
+  version = '1.2.0',
   license='MIT',
   description = 'Sauce Labs Python bindings library',
   long_description=readme,

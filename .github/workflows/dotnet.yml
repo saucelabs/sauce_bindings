@@ -27,11 +27,11 @@ jobs:
       - name: Install dependencies
         run: |
           cd ./dotnet/SimpleSauce.Test
-          dotnet restore
+          dotnet restore --verbosity normal
       - name: Build
         run: |
           cd ./dotnet/SimpleSauce.Test
-          dotnet build --configuration Release --no-restore
+          dotnet build --configuration Release --no-restore --verbosity normal
       - name: Test
         run: |
           cd ./dotnet/SimpleSauce.Test

@@ -31,15 +31,7 @@ jobs:
       with:
         dotnet-version: ${{ matrix.dotnet }}
 
-    - name: Install dependencies
-      run: |
-        cd ./dotnet/SimpleSauce.Test
-        dotnet restore --verbosity normal
-    - name: Build
-      run: |
-        cd ./dotnet/SimpleSauce.Test
-        dotnet build --configuration Release --no-restore --verbosity normal
     - name: Test
       run: |
         cd ./dotnet/SimpleSauce.Test
-        dotnet test --no-restore --verbosity normal
+        dotnet test --verbosity normal

@@ -2,7 +2,7 @@
 {
     public class Browser
     {
-        
+
 
         private Browser(string browserName)
         {

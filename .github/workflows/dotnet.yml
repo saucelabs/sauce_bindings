@@ -9,7 +9,6 @@ on:
     - '**.csproj'
 
 env:
-  DOTNET_VERSION: '5.x' # The .NET SDK version to use
   SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
   SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
   SCREENER_API_KEY: ${{ secrets.SCREENER_API_KEY }}
@@ -18,17 +17,19 @@ jobs:
   build-and-test:
 
     name: build-and-test-${{matrix.os}}
-    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [windows-latest, macOS-latest]
+        dotnet: ['3.0', '3.1.x', '5.0.x']
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup .NET Core
+    - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+        dotnet-version: ${{ matrix.dotnet }}
 
     - name: Install dependencies
       run: |

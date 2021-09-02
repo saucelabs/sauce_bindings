@@ -1,10 +1,9 @@
-using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Sauce.Bindings;
 using System;
 using System.Collections.Generic;
+using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace SauceBindings.Test.Browsers
+namespace Sauce.Bindings.Test.Browsers
 {
     [TestClass]
     public class EdgeTests : BaseTest

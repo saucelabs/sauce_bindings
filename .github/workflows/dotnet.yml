@@ -9,7 +9,10 @@ on:
     - '**.csproj'
 
 env:
-  DOTNET_VERSION: '5.0.301' # The .NET SDK version to use
+  DOTNET_VERSION: '5.x' # The .NET SDK version to use
+  SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+  SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+  SCREENER_API_KEY: ${{ secrets.SCREENER_API_KEY }}
 
 jobs:
   build-and-test:
@@ -28,10 +31,14 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Install dependencies
-      run: dotnet restore --verbosity normal
-      
+      run: |
+        cd ./dotnet/SimpleSauce.Test
+        dotnet restore --verbosity normal
     - name: Build
-      run: dotnet build --configuration Release --no-restore --verbosity normal
-    
+      run: |
+        cd ./dotnet/SimpleSauce.Test
+        dotnet build --configuration Release --no-restore --verbosity normal
     - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: |
+        cd ./dotnet/SimpleSauce.Test
+        dotnet test --no-restore --verbosity normal

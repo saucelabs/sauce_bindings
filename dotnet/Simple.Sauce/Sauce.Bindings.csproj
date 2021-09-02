@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFrameworks>net5.0;netstandard2.1;netstandard2.0</TargetFrameworks>
     <PackageId>Sauce.Bindings</PackageId>
     <description>An API wrapper arounds the Sauce Labs API to make test automation extremely easy</description>
     <PackageTags>Sauce Labs, Simple Sauce, Selenium</PackageTags>

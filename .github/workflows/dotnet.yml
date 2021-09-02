@@ -1,38 +1,37 @@
-name: dotnet windows
-env:
-  SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
-  SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-  SCREENER_API_KEY: ${{ secrets.SCREENER_API_KEY }}
+name: .net
 
 on:
   push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
+    paths:
+    - '**.cs'
+    - '**.csproj'
+
+env:
+  DOTNET_VERSION: '5.0.301' # The .NET SDK version to use
 
 jobs:
-  build:
+  build-and-test:
 
-    runs-on: windows-latest
+    name: build-and-test-${{matrix.os}}
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        dotnet-version: [ '5.0.x' ]
+        os: [windows-latest, macOS-latest]
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
-        uses: actions/setup-dotnet@v1.7.2
-        with:
-          dotnet-version: ${{ matrix.dotnet-version }}
-      - name: Install dependencies
-        run: |
-          cd ./dotnet/SimpleSauce.Test
-          dotnet restore --verbosity normal
-      - name: Build
-        run: |
-          cd ./dotnet/SimpleSauce.Test
-          dotnet build --configuration Release --no-restore --verbosity normal
-      - name: Test
-        run: |
-          cd ./dotnet/SimpleSauce.Test
-          dotnet test --no-restore --verbosity normal
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Install dependencies
+      run: dotnet restore --verbosity normal
+      
+    - name: Build
+      run: dotnet build --configuration Release --no-restore --verbosity normal
+    
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal

@@ -1,4 +1,8 @@
-name: dotnet
+name: dotnet windows
+env:
+  SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+  SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+  SCREENER_API_KEY: ${{ secrets.SCREENER_API_KEY }}
 
 on:
   push:
@@ -10,32 +14,6 @@ jobs:
   build:
 
     runs-on: windows-latest
-    strategy:
-      matrix:
-        dotnet-version: ['3.0', '3.1.x', '5.0.x' ]
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
-        uses: actions/setup-dotnet@v1.7.2
-        with:
-          dotnet-version: ${{ matrix.dotnet-version }}
-      - name: Install dependencies
-        run: |
-          cd ./dotnet/SimpleSauce.Test
-          dotnet restore
-      - name: Build
-        run: |
-          cd ./dotnet/SimpleSauce.Test
-          dotnet build --configuration Release --no-restore
-      - name: Test
-        run: |
-          cd ./dotnet/SimpleSauce.Test
-          dotnet test --no-restore --verbosity normal
-  
-  build:
-
-    runs-on: macOS-latest
     strategy:
       matrix:
         dotnet-version: ['3.0', '3.1.x', '5.0.x' ]

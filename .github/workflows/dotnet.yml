@@ -32,11 +32,11 @@ jobs:
         dotnet-version: ${{ matrix.dotnet }}
     - name: Install dependencies
       run: |
-        cd ./dotnet/
+        cd ./dotnet/SimpleSauce.Test
         dotnet restore
     - name: Build
       run: |
-        cd ./dotnet/
+        cd ./dotnet/SimpleSauce.Test
         dotnet build --no-restore
     - name: Test
       run: |

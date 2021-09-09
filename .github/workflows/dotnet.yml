@@ -34,15 +34,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ matrix.dotnet }}
-    - name: Install dependencies
-      run: |
-        cd ./dotnet/SimpleSauce.Test
-        dotnet restore
-    - name: Build
-      run: |
-        cd ./dotnet/SimpleSauce.Test
-        dotnet build --no-restore
     - name: Test
       run: |
         cd ./dotnet/SimpleSauce.Test
-        dotnet test --verbosity normal --no-restore
+        dotnet test --verbosity normal

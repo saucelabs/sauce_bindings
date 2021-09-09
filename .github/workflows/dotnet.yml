@@ -2,6 +2,10 @@ name: .net
 
 on:
   push:
+    branches: [ main ]
+    paths:
+    - '**.cs'
+    - '**.csproj'
   pull_request:
     branches: [ main ]
     paths:

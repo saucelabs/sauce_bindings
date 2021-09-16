@@ -1,8 +1,7 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Sauce.Bindings;
 
-namespace SauceBindings.Test
+namespace Sauce.Bindings.Test
 {
     [TestClass]
     public class DataCenterTests

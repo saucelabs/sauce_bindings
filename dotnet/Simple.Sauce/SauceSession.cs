@@ -115,7 +115,7 @@ namespace Sauce.Bindings
 
         public Uri GetSauceUrl()
         {
-            return _sauceUrl ?? new Uri(DataCenter.ToString() ?? string.Empty);
+            return _sauceUrl ?? new Uri(DataCenter.Value);
         }
     }
 }

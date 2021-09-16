@@ -6,6 +6,8 @@ namespace Sauce.Bindings
 {
     public class SauceSession
     {
+        private Uri _sauceUrl;
+
         public SauceSession()
         {
             Driver = new SauceDriver();
@@ -109,6 +111,11 @@ namespace Sauce.Bindings
             var script = "sauce:job-result=" + (isPassed ? "passed" : "failed");
             Driver.ExecuteScript(script);
             Driver.Quit();
+        }
+
+        public Uri GetSauceUrl()
+        {
+            return _sauceUrl ?? new Uri(DataCenter.ToString() ?? string.Empty);
         }
     }
 }

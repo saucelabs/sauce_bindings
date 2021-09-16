@@ -3,10 +3,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 
-namespace Sauce.Bindings.Test
+namespace Sauce.Bindings.Test.Integration
 {
     [TestClass]
-    [TestCategory("Acceptance")]
     public class DesktopBrowserTests
     {
         private SauceOptions _sauceOptions;
@@ -18,6 +17,14 @@ namespace Sauce.Bindings.Test
         public void Cleanup()
         {
             _session.Stop(true);
+        }
+        [TestMethod]
+        public void DefaultsToUSWest()
+        {
+            _session = new SauceSession();
+            _driver = _session.Start();
+            _driver.Should().NotBeNull();
+            _session.GetSauceUrl().ToString().Should().Contain("us-west-");
         }
 
         [TestMethod]

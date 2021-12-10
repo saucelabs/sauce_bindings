@@ -1,7 +1,5 @@
 # Sauce Bindings
 
-
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0b21fa72ecaa4a3c92bf7ac9481f4d7d)](https://app.codacy.com/app/sauce_bindings?utm_source=github.com&utm_medium=referral&utm_content=saucelabs/sauce_bindings&utm_campaign=Badge_Grade_Dashboard)
 ![JDK 8](https://github.com/saucelabs/sauce_bindings/workflows/JDK%208/badge.svg)
 ![JDK 9+](https://github.com/saucelabs/sauce_bindings/workflows/JDK%209+/badge.svg)
 ![.NET](https://github.com/saucelabs/sauce_bindings/actions/workflows/dotnet.yml/badge.svg)
@@ -12,11 +10,11 @@
 
 ## Making Sauce Simple To Use
 
-***[Learn More Here](https://opensource.saucelabs.com/sauce_bindings/overview.html)***
+[Docs](https://opensource.saucelabs.com/sauce_bindings/)
 
 ## Contributing
 
-[Instructions here](https://opensource.saucelabs.com/sauce_bindings/contributing)
+[Instructions](https://opensource.saucelabs.com/sauce_bindings/contributing)
 
 ## Building and Installing
 

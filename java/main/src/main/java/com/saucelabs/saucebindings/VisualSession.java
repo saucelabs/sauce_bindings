@@ -1,18 +1,25 @@
 package com.saucelabs.saucebindings;
 
 import com.saucelabs.saucebindings.options.SauceOptions;
+import com.saucelabs.saucebindings.options.VisualOptions;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 
 public class VisualSession extends SauceSession {
+    private VisualOptions visualOptions;
+
     public VisualSession(String testName) {
-        super(SauceOptions.chrome().setName(testName).build());
+        this(new VisualOptions(SauceOptions.chrome().setName(testName).build()));
+    }
+
+    public VisualSession(VisualOptions options) {
+        super(options.getSauceOptions());
+        this.visualOptions = options;
     }
 
     @Override
@@ -25,15 +32,7 @@ public class VisualSession extends SauceSession {
     }
 
     public RemoteWebDriver start() {
-        MutableCapabilities capabilities = getSauceOptions().toCapabilities();
-
-        String sauceVisualApiKey = SystemManager.get("SCREENER_API_KEY");
-        Map<String, Object> visual = new HashMap<>();
-        visual.put("apiKey", sauceVisualApiKey);
-        visual.put("projectName", new CITools().getBuildName());
-        visual.put("branch", "_default_");
-
-        capabilities.setCapability("sauce:visual", visual);
+        MutableCapabilities capabilities = visualOptions.toCapabilities();
 
         this.driver = createRemoteWebDriver(getSauceUrl(), capabilities);
         driver.executeScript("/*@visual.init*/", getSauceOptions().sauce().getName());

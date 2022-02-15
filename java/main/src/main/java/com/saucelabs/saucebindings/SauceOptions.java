@@ -595,7 +595,7 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
      */
     @Deprecated
     public boolean isKnownCI() {
-        return sauce().isKnownCI();
+        return CITools.getBuildName() != null;
     }
 
     /**

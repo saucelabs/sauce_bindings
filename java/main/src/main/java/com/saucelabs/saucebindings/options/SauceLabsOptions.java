@@ -1,5 +1,6 @@
 package com.saucelabs.saucebindings.options;
 
+import com.saucelabs.saucebindings.CITools;
 import com.saucelabs.saucebindings.JobVisibility;
 import com.saucelabs.saucebindings.Prerun;
 import com.saucelabs.saucebindings.SauceSession;
@@ -138,23 +139,7 @@ public class SauceLabsOptions extends BaseOptions {
      * @return a String representing the best default build name and number for your test based on CI Tool ENV Variables
      */
     public String getBuild() {
-        if (build != null) {
-            return build;
-        } else if (SystemManager.get(knownCITools.get("Jenkins")) != null) {
-            return SystemManager.get("BUILD_NAME") + ": " + SystemManager.get("BUILD_NUMBER");
-        } else if (SystemManager.get(knownCITools.get("Bamboo")) != null) {
-            return SystemManager.get("bamboo_shortJobName") + ": " + SystemManager.get("bamboo_buildNumber");
-        } else if (SystemManager.get(knownCITools.get("Travis")) != null) {
-            return SystemManager.get("TRAVIS_JOB_NAME") + ": " + SystemManager.get("TRAVIS_JOB_NUMBER");
-        } else if (SystemManager.get(knownCITools.get("Circle")) != null) {
-            return SystemManager.get("CIRCLE_JOB") + ": " + SystemManager.get("CIRCLE_BUILD_NUM");
-        } else if (SystemManager.get(knownCITools.get("GitLab")) != null) {
-            return SystemManager.get("CI_JOB_NAME") + ": " + SystemManager.get("CI_JOB_ID");
-        } else if (SystemManager.get(knownCITools.get("TeamCity")) != null) {
-            return SystemManager.get("TEAMCITY_PROJECT_NAME") + ": " + SystemManager.get("BUILD_NUMBER");
-        } else {
-            return "Build Time: " + System.currentTimeMillis();
-        }
+        return build != null ? build : CITools.getBuildName() + ": " + CITools.getBuildNumber();
     }
 
     /**
@@ -163,24 +148,14 @@ public class SauceLabsOptions extends BaseOptions {
      */
     @Deprecated
     public boolean isKnownCI() {
-        return !knownCITools.keySet().stream().allMatch((key) -> SystemManager.get(key) == null);
+        return CITools.getBuildName() != null;
     }
 
     /**
-     * @deprecated This method will no longer be public
+     * @deprecated use CITools.knownTools instead
      */
     @Deprecated
-    public static final Map<String, String> knownCITools;
-
-    static {
-        knownCITools = new HashMap<>();
-        knownCITools.put("Jenkins", "BUILD_TAG");
-        knownCITools.put("Bamboo", "bamboo_agentId");
-        knownCITools.put("Travis", "TRAVIS_JOB_ID");
-        knownCITools.put("Circle", "CIRCLE_JOB");
-        knownCITools.put("GitLab", "CI");
-        knownCITools.put("TeamCity", "TEAMCITY_PROJECT_NAME");
-    }
+    public static final Map<String, String> knownCITools = CITools.KNOWN_TOOLS;
 
     protected String getSauceUsername() {
         return SystemManager.get("SAUCE_USERNAME", "Sauce Username was not provided");

@@ -3,7 +3,6 @@ package com.saucelabs.saucebindings.testng.examples;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import com.saucelabs.saucebindings.testng.SauceBaseTest;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.annotations.Test;
 
 // 1. Extend the provided base test class
@@ -15,7 +14,7 @@ public class BrowserOptionsTest extends SauceBaseTest {
         ChromeOptions browserOptions = new ChromeOptions();
         browserOptions.addArguments("--start-fullscreen");
 
-        return SauceOptions.firefox(browserOptions).build();
+        return SauceOptions.chrome(browserOptions).build();
     }
 
     @Test

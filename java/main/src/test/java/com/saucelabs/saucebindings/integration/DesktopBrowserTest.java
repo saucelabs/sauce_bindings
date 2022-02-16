@@ -8,6 +8,7 @@ import org.junit.After;
 import org.junit.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -57,5 +58,15 @@ public class DesktopBrowserTest {
 
         assertNotNull(webDriver);
         assertTrue(session.getSauceUrl().toString().contains("eu-central-1"));
+    }
+
+    @Test
+    public void storesResultOfFirstStop() {
+        session.start();
+
+        session.stop(true);
+        session.stop(false);
+
+        assertEquals("passed", session.getResult());
     }
 }

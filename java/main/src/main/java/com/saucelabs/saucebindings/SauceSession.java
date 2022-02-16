@@ -17,6 +17,7 @@ public class SauceSession {
     @Getter @Setter private DataCenter dataCenter = DataCenter.US_WEST;
     @Getter private final SauceOptions sauceOptions;
     @Setter private URL sauceUrl;
+    @Getter private String result;
 
     @Getter private RemoteWebDriver driver;
 
@@ -86,6 +87,7 @@ public class SauceSession {
     }
 
     private void updateResult(String result) {
+        this.result = result;
         getDriver().executeScript("sauce:job-result=" + result);
         // Add output for the Sauce OnDemand Jenkins plugin
         // The first print statement will automatically populate links on Jenkins to Sauce

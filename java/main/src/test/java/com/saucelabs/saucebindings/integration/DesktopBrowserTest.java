@@ -10,6 +10,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class DesktopBrowserTest {
@@ -68,5 +69,13 @@ public class DesktopBrowserTest {
         session.stop(false);
 
         assertEquals("passed", session.getResult());
+    }
+
+    @Test
+    public void nullsDriver() {
+        webDriver = session.start();
+        session.stop(true);
+
+        assertNull(session.getDriver());
     }
 }

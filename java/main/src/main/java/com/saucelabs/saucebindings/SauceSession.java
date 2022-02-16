@@ -102,6 +102,7 @@ public class SauceSession {
     private void stop() {
         if(driver !=null) {
             driver.quit();
+            driver = null;
         }
     }
 }

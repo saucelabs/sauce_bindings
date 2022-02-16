@@ -84,4 +84,22 @@ public class VisualOptions extends BaseOptions {
 
         return toReturn;
     }
+
+    /**
+     * Use Case is pulling serialized information from JSON/YAML, converting it to a HashMap and passing it in
+     * This is a preferred pattern as it avoids conditionals in code
+     * Warning: For VisualOptions this adds a hard coded Test Name that needs to be updated
+     *
+     * @param capabilitiesToMerge a Map object representing key value pairs to convert to capabilities
+     */
+    public void mergeCapabilities(Map<String, Object> capabilitiesToMerge) {
+        for (Map.Entry<String, Object> entry : capabilitiesToMerge.entrySet()) {
+            String key = entry.getKey();
+            if (key.equals("visual")) {
+                ((Map<String, Object>) entry.getValue()).forEach(this::setCapability);
+            } else {
+                sauceOptions.setCapability(key, entry.getValue());
+            }
+        }
+    }
 }

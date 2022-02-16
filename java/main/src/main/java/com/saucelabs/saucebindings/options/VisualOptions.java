@@ -1,6 +1,7 @@
 package com.saucelabs.saucebindings.options;
 
 import com.saucelabs.saucebindings.CITools;
+import com.saucelabs.saucebindings.GitManager;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.SystemManager;
 import lombok.AccessLevel;
@@ -73,7 +74,7 @@ public class VisualOptions extends BaseOptions {
         }
 
         if (branch == null) {
-            branch = "_default_";
+            branch = GitManager.getCurrentBranch();
         }
 
         capabilityManager.addCapabilities();

@@ -2,6 +2,7 @@ package com.saucelabs.saucebindings.options;
 
 import com.saucelabs.saucebindings.Browser;
 import com.saucelabs.saucebindings.CITools;
+import com.saucelabs.saucebindings.GitManager;
 import com.saucelabs.saucebindings.SaucePlatform;
 import com.saucelabs.saucebindings.SystemManager;
 import org.junit.Test;
@@ -21,7 +22,7 @@ public class VisualOptionsTest {
 
         MutableCapabilities visualCapabilities = new MutableCapabilities();
         visualCapabilities.setCapability("apiKey", System.getenv("SCREENER_API_KEY"));
-        visualCapabilities.setCapability("branch", "_default_");
+        visualCapabilities.setCapability("branch", GitManager.getCurrentBranch());
         visualCapabilities.setCapability("projectName", CITools.getBuildName());
 
         assertEquals(visualCapabilities, visualOptions.toCapabilities().getCapability("sauce:visual"));

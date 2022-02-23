@@ -62,7 +62,7 @@ browser_options = Selenium::WebDriver::Firefox::Options.new('args' => ['-foo'])
 ```
 
 ### Session class
-#### Intializing a Session
+#### Initializing a Session
 `Session` class gets initialized with an `Options` instance. If you want the
 default settings (latest Chrome version on Windows 10), you don't even need to use an `Options` instance:
 ```ruby

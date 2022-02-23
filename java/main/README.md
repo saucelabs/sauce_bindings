@@ -75,9 +75,9 @@ Tests will also be automatically executed as part of the building process.
     * This does:
         * Runs the tests to ensure passing
         * Removes the `SNAPSHOT` from the version in the `pom.xml`
-        * Commits changes and tags the release
+        * Commit changes and tags the release
         * Bumps version to next development version with `SNAPSHOT`
-        * Commits changes
+        * Commit changes
 
 2. Answer Questions:
     * "What is the release version for "saucebindings"? (com.saucelabs:sauce_bindings) 1.0.1"

@@ -75,7 +75,7 @@ values={[
 <dependency>
     <groupId>com.saucelabs</groupId>
     <artifactId>saucebindings-junit4</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 

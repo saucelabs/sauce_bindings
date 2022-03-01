@@ -72,7 +72,7 @@ class SauceOptions(object):
     @classmethod
     def safari(cls, **kwargs):
         if 'platformName' not in kwargs:
-            kwargs['platformName'] = 'macOS 11.00'
+            kwargs['platformName'] = 'macOS 11'
 
         return cls('safari', validOptions=Configs().safariConfigs(), **kwargs)
 

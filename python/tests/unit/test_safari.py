@@ -12,7 +12,7 @@ class TestInit(object):
 
         assert sauce.browser_name == 'safari'
         assert sauce.browser_version == 'latest'
-        assert sauce.platform_name == 'macOS 11.00'
+        assert sauce.platform_name == 'macOS 11'
 
     def test_accepts_browser_version_platform_name(self):
         sauce = SauceOptions.safari(browserVersion='75.0', platformName='macOS 10.13')
@@ -359,7 +359,7 @@ class TestCapabilitiesCreation(object):
 
         expected_capabilities = {'browserName': 'safari',
                                  'browserVersion': 'latest',
-                                 'platformName': 'macOS 11.00',
+                                 'platformName': 'macOS 11',
                                  'sauce:options': {'build': 'Sample Build Name',
                                                    'commandTimeout': 2,
                                                    'customData': {'foo': 'foo',
@@ -389,7 +389,7 @@ class TestCapabilitiesCreation(object):
 
         expected_capabilities = {'browserName': 'safari',
                                  'browserVersion': 'latest',
-                                 'platformName': 'macOS 11.00',
+                                 'platformName': 'macOS 11',
                                  'sauce:options': {'build': 'Sample Build Name'}
                                  }
 

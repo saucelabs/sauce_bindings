@@ -289,7 +289,7 @@ module SauceBindings
 
         expect(options.browser_name).to eq 'safari'
         expect(options.browser_version).to eq 'latest'
-        expect(options.platform_name).to eq 'macOS 11.00'
+        expect(options.platform_name).to eq 'macOS 11'
       end
 
       it 'accepts correct Selenium Options class' do

@@ -1,0 +1,32 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Ruby
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: [ 2.7.5, 3.1.1 ]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+    - name: Install dependencies
+      run: cd ruby && bundle install
+    - name: Test with Ruby
+      run: cd ruby && bundle exec rake
+      env:
+          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}

@@ -31,6 +31,15 @@ module SauceBindings
         expect(driver).not_to be_nil
         expect(@session.url).to include('eu-central-1')
       end
+
+      it 'executes on APAC' do
+        pending 'Adding Data Center to Sauce Whisk'
+        @session = Session.new(data_center: :APAC_SOUTHEAST)
+        driver = @session.start
+
+        expect(driver).not_to be_nil
+        expect(@session.url).to include('apac-southeast-1')
+      end
     end
   end
 end

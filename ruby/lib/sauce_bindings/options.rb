@@ -39,7 +39,7 @@ module SauceBindings
 
       def safari(**opts)
         opts[:browser_name] = 'safari'
-        opts[:platform_name] ||= 'macOS 11.00'
+        opts[:platform_name] ||= 'macOS 11'
         opts[:valid_options] = SafariConfigurations.valid_options
         Options.new(**opts)
       end

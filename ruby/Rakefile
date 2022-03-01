@@ -5,4 +5,16 @@ require 'rspec/core/rake_task'
 
 RSpec::Core::RakeTask.new(:spec)
 
-task default: :spec
+RSpec::Core::RakeTask.new(:examples) do |spec|
+  spec.pattern = 'spec/examples/*_spec.rb'
+end
+
+RSpec::Core::RakeTask.new(:unit) do |spec|
+  spec.pattern = 'spec/unit/*_spec.rb'
+end
+
+RSpec::Core::RakeTask.new(:integration) do |spec|
+  spec.pattern = 'spec/integration/*_spec.rb'
+end
+
+task default: %i[examples unit integration]

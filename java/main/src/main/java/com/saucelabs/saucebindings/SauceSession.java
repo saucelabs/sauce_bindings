@@ -111,21 +111,19 @@ public class SauceSession {
      * @param passed true if the test has passed, otherwise false
      */
     public void stop(Boolean passed) {
-        String result = passed ? "passed" : "failed";
-        stop(result);
+        if (this.driver != null) {
+            String update = passed ? "passed" : "failed";
+            updateResult(update);
+            quit();
+        }
     }
 
     /**
-     * Ends the session on Sauce Labs and quits the driver.
-     * It requires reporting whether the test has passed or failed.
-     *
-     * @param result only allowed "passed" or "failed"
+     * @deprecated Do not use magic strings, pass in boolean for whether test has passed.
      */
+    @Deprecated
     public void stop(String result) {
-        if (this.driver != null) {
-            updateResult(result);
-            quit();
-        }
+        stop(result.equals("passed"));
     }
 
     /**

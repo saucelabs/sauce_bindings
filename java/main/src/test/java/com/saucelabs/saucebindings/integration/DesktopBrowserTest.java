@@ -5,13 +5,9 @@ import com.saucelabs.saucebindings.SaucePlatform;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 public class DesktopBrowserTest {
     private SauceSession session = new SauceSession();
@@ -27,8 +23,8 @@ public class DesktopBrowserTest {
     @Test
     public void defaultsToUSWest() {
         webDriver = session.start();
-        assertNotNull(webDriver);
-        assertTrue(session.getSauceUrl().toString().contains("us-west-"));
+        Assert.assertNotNull(webDriver);
+        Assert.assertTrue(session.getSauceUrl().toString().contains("us-west-"));
     }
 
     @Test
@@ -39,8 +35,8 @@ public class DesktopBrowserTest {
         session.setDataCenter(DataCenter.US_EAST);
         webDriver = session.start();
 
-        assertNotNull(webDriver);
-        assertTrue(session.getSauceUrl().toString().contains("us-east-1"));
+        Assert.assertNotNull(webDriver);
+        Assert.assertTrue(session.getSauceUrl().toString().contains("us-east-1"));
     }
 
     @Test
@@ -48,8 +44,8 @@ public class DesktopBrowserTest {
         session.setDataCenter(DataCenter.APAC_SOUTHEAST);
         webDriver = session.start();
 
-        assertNotNull(webDriver);
-        assertTrue(session.getSauceUrl().toString().contains("apac-southeast"));
+        Assert.assertNotNull(webDriver);
+        Assert.assertTrue(session.getSauceUrl().toString().contains("apac-southeast"));
     }
 
     @Test
@@ -57,8 +53,8 @@ public class DesktopBrowserTest {
         session.setDataCenter(DataCenter.EU_CENTRAL);
         webDriver = session.start();
 
-        assertNotNull(webDriver);
-        assertTrue(session.getSauceUrl().toString().contains("eu-central-1"));
+        Assert.assertNotNull(webDriver);
+        Assert.assertTrue(session.getSauceUrl().toString().contains("eu-central-1"));
     }
 
     @Test
@@ -68,7 +64,7 @@ public class DesktopBrowserTest {
         session.stop(true);
         session.stop(false);
 
-        assertEquals("passed", session.getResult());
+        Assert.assertEquals("passed", session.getResult());
     }
 
     @Test
@@ -76,6 +72,6 @@ public class DesktopBrowserTest {
         webDriver = session.start();
         session.stop(true);
 
-        assertNull(session.getDriver());
+        Assert.assertNull(session.getDriver());
     }
 }

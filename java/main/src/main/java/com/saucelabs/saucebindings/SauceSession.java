@@ -14,20 +14,19 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class SauceSession {
+    @Getter protected RemoteWebDriver driver;
     @Getter @Setter private DataCenter dataCenter = DataCenter.US_WEST;
     @Getter private final SauceOptions sauceOptions;
     @Setter private URL sauceUrl;
     @Getter private String result;
-
-    @Getter protected RemoteWebDriver driver;
 
     public SauceSession() {
         this(new SauceOptions());
     }
 
     /**
-     * Ideally the end user calls build() on Configurations instance
-     * this constructor is being accommodating in case they do not
+     * Ideally the end user calls build() on Configurations instance.
+     * This constructor is being accommodating in case they do not.
      *
      * @param configs the instance of Configuration used to create the Options
      */
@@ -39,11 +38,19 @@ public class SauceSession {
         sauceOptions = options;
     }
 
+    /**
+     * Starts the session on Sauce Labs.
+     *
+     * @return the driver instance for using as normal in your tests.
+     */
     public RemoteWebDriver start() {
         this.driver = createRemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities());
         return driver;
 	}
 
+    /**
+     * @return the full URL for sending to Sauce Labs based on the desired data center.
+     */
     public URL getSauceUrl() {
         try {
             if (sauceUrl != null) {
@@ -56,14 +63,26 @@ public class SauceSession {
         }
     }
 
-    protected RemoteWebDriver createRemoteWebDriver(URL url, Capabilities capabilities) {
-        return new RemoteWebDriver(url, capabilities);
-    }
-
+    /**
+     * Analyzes Accessibility for the current page.
+     * User can work with the results from the Results object or see them
+     * in the accessibility tab in the Sauce Labs UI.
+     *
+     * @return an object with the accessibility analysis
+     */
     public Results getAccessibilityResults() {
         return getAccessibilityResults(true);
     }
 
+    /**
+     * Analyzes Accessibility for the current page.
+     * User can work with the results from the Results object or see them
+     * in the accessibility tab in the Sauce Labs UI.
+     *
+     * @param frames whether the page being evaluated needs to dig into frames.
+     *               passing false here will slightly improve performance.
+     * @return an object with the accessibility analysis
+     */
     public Results getAccessibilityResults(boolean frames) {
         AxeBuilder axeBuilder = new AxeBuilder();
         if (!frames) {
@@ -72,20 +91,53 @@ public class SauceSession {
         return getAccessibilityResults(axeBuilder);
     }
 
+    /**
+     * Analyzes Accessibility for the current page.
+     * User can work with the results from the Results object or see them
+     * in the accessibility tab in the Sauce Labs UI.
+     *
+     * @param builder for advanced accessibility information provide your own
+     *                instance of an AxeBuilder.
+     * @return an object with the accessibility analysis
+     */
     public Results getAccessibilityResults(AxeBuilder builder) {
         return builder.analyze(driver);
     }
 
+    /**
+     * Ends the session on Sauce Labs and quits the driver.
+     * It requires reporting whether the test has passed or failed.
+     *
+     * @param passed true if the test has passed, otherwise false
+     */
     public void stop(Boolean passed) {
         String result = passed ? "passed" : "failed";
         stop(result);
     }
 
+    /**
+     * Ends the session on Sauce Labs and quits the driver.
+     * It requires reporting whether the test has passed or failed.
+     *
+     * @param result only allowed "passed" or "failed"
+     */
     public void stop(String result) {
         if (this.driver != null) {
             updateResult(result);
             quit();
         }
+    }
+
+    /**
+     * Not intended for subclassing.
+     * Package-private for testing.
+     *
+     * @param url to send session commands to
+     * @param capabilities configuration for session
+     * @return driver instance
+     */
+    RemoteWebDriver createRemoteWebDriver(URL url, Capabilities capabilities) {
+        return new RemoteWebDriver(url, capabilities);
     }
 
     private void updateResult(String result) {

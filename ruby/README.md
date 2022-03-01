@@ -1,23 +1,13 @@
 # Sauce Bindings 
+
 ## A library for interacting with Sauce Labs using Ruby
 
 This gem is intended as a way to interact with Sauce Labs in an obvious and straightforward way. 
 
-## Installation
+## User Installation & Usage
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'sauce_bindings'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install sauce_bindings
+Please see the [documentation on our website](https://opensource.saucelabs.com/sauce_bindings), 
+and select the "Ruby" tab for code examples. 
 
 ## Running Tests
 
@@ -25,79 +15,13 @@ To run tests for the Ruby Sauce Bindings, execute
 
     $ bundle exec rake
 
-## Usage
+## Building and Releasing
 
-`SauceBindings` is broken into two main components, `Options` and `Session`
+Use `gem` instead of `rake` so that it isn't auto-tagged on github
 
-### Options class
-`Options` provides an easy interface to the Sauce Labs specific settings you want in your tests.
-
-If you want the default settings (the latest Chrome version on Windows 10) with no other settings,
-this is all the code you need:
-```
-sauce_opts = SauceBindings::Options.new
-```
-To specify additional 
-[Sauce Labs supported settings](https://wiki.saucelabs.com/display/DOCS/Test+Configuration+Options),
-simply pass these in as a `Hash`, or use an accessor:
-```
-sauce_options = {screen_resolution: '1080x720',
-                 browser_name: 'Firefox',
-                 platform_name: 'Mac OS'}
-sauce_opts = SauceBindings::Options.new(sauce_options)
-sauce_opts.idle_timeout = 100
-```
-if you have additional browser specific settings, or 
-[webdriver w3c spec compliant settings](http://w3c.github.io/webdriver/webdriver-spec.html#capabilities), in 
-Selenium 3.x you need to generate each of these separately; see the `Session` class below for how to use it:
-```
-sauce_options = SauceBindings::Options.new(screen_resolution: '1080x720',
-                                         browser_name: 'Firefox',
-                                         platform_name: 'Mac OS')
-
-selenium_options = Selenium::WebDriver::Remote::Capabilities.new(accept_insecure_certs: false,
-                                                                 page_load_strategy: 'eager'}
-
-browser_options = Selenium::WebDriver::Firefox::Options.new('args' => ['-foo'])
-```
-
-### Session class
-#### Initializing a Session
-`Session` class gets initialized with an `Options` instance. If you want the
-default settings (latest Chrome version on Windows 10), you don't even need to use an `Options` instance:
-```ruby
-@session = SauceBindings::Session.new
-```
-If you want something other than the default, create a Sauce `Option` instance (as generated in the section above,
-then pass it into the constructor:
-```ruby
-@session = SauceBindings::Session.new(sauce_opts)
-```
-If you also have Selenium or Browser options as described above, then you pass them in with an `Array` like so:
-```ruby
-@session = SauceBindings::Session.new([sauce_opts, se_opts, browser_opts])
-```
-
-#### Creating a driver instance
-The `#start` method is required, and will return a `Selenium::WebDriver::<Browser>::Driver` instance,
-and the `#stop` method will automatically quit the driver as well as ending the Sauce Labs session.
-```ruby
-session = SauceBindings::Session.new
-driver = session.start
-# Use the driver
-session.stop
-```
-Note that the `Driver` instance can also be obtained at any time with the `#driver` method:
-```ruby
-session = SauceBindings::Session.new
-session.start
-driver = session.driver
-# Use the driver
-session.stop
-```
-#### Additional Session methods
-We have a number of features we plan to add; stay tuned to see what additional features are made available. If you
-have any request, please contact the Sauce Labs Solution Architect team.
+* Bump `SauceBindings::VERSION`
+* `$ gem build sauce_bindings.gemspec`
+* `$ gem push pkg/sauce_bindings-<VERSION>.gem`
 
 ## Contributing
 

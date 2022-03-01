@@ -61,3 +61,10 @@ To run all tests, run the following:
 
 
 .. _pip: https://pip.pypa.io/en/stable/
+
+Package and Release
+-------------------
+
+    python setup.py sdist
+    twine check dist/*
+    twine upload dist/*

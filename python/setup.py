@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 
 with open('./README.rst', 'r') as f:
   readme = f.read()
@@ -6,7 +6,7 @@ with open('./README.rst', 'r') as f:
 setup(
   name = 'saucebindings',
   packages = ['saucebindings'],
-  version = '1.2.0',
+  version = '1.2.1',
   license='MIT',
   description = 'Sauce Labs Python bindings library',
   long_description=readme,

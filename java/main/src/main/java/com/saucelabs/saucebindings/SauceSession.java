@@ -56,7 +56,7 @@ public class SauceSession {
             if (sauceUrl != null) {
                 return sauceUrl;
             } else {
-                return new URL(getDataCenter().getValue());
+                return new URL(getDataCenter().getEndpoint());
             }
         } catch (MalformedURLException e) {
             throw new InvalidArgumentException("Invalid URL", e);
@@ -150,7 +150,7 @@ public class SauceSession {
         String sauceReporter = String.format("SauceOnDemandSessionID=%s job-name=%s",
                 this.driver.getSessionId(),
                 this.sauceOptions.sauce().getName());
-        String sauceTestLink = String.format("Test Job Link: https://app.saucelabs.com/tests/%s",
+        String sauceTestLink = String.format("Test Job Link:" + getDataCenter().getTestLink() + "%s",
                 this.driver.getSessionId());
         System.out.print(sauceReporter + "\n" + sauceTestLink + "\n");
     }

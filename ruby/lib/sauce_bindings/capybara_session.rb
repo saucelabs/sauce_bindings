@@ -15,9 +15,6 @@ module SauceBindings
     end
 
     def start
-      raise ArgumentError, "needs username; use `ENV['SAUCE_USERNAME']` or `Session#username=`" unless @username
-      raise ArgumentError, "needs access_key; use `ENV['SAUCE_ACCESS_KEY']` or `Session#access_key=`" unless @access_key
-
       @capybara_driver = Capybara.current_session.driver
       @driver = @capybara_driver.browser
     end

@@ -14,7 +14,9 @@ module SauceBindings
       {browserName: 'chrome',
        browserVersion: 'latest',
        platformName: 'Windows 10',
-       'sauce:options': {build: 'TEMP BUILD: 11'}}
+       'sauce:options': {username: 'foo',
+                         accessKey: '123',
+                         build: 'TEMP BUILD: 11'}}
     end
 
     def expect_request

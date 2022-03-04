@@ -13,7 +13,9 @@ module SauceBindings
       {browserName: 'chrome',
        browserVersion: 'latest',
        platformName: 'Windows 10',
-       'sauce:options': {build: 'TEMP BUILD: 11'}}
+       'sauce:options': {username: 'foo',
+                         accessKey: '123',
+                         build: 'TEMP BUILD: 11'}}
     end
 
     def expect_request
@@ -40,11 +42,13 @@ module SauceBindings
       it 'creates default Options instance if none is provided' do
         session = Session.new
 
-        expected_results = {url: 'https://foo:123@ondemand.us-west-1.saucelabs.com:443/wd/hub',
+        expected_results = {url: 'https://ondemand.us-west-1.saucelabs.com/wd/hub',
                             desired_capabilities: {'browserName' => 'chrome',
                                                    'browserVersion' => 'latest',
                                                    'platformName' => 'Windows 10',
-                                                   'sauce:options' => {'build' => 'TEMP BUILD: 11'}}}
+                                                   'sauce:options' => {'build' => 'TEMP BUILD: 11',
+                                                                       'username' => 'foo',
+                                                                       'accessKey' => '123'}}}
         expect(session.to_selenium).to eq expected_results
       end
 
@@ -54,12 +58,14 @@ module SauceBindings
                                     idle_timeout: 4)
         session = Session.new(sauce_opts)
 
-        expected_results = {url: 'https://foo:123@ondemand.us-west-1.saucelabs.com:443/wd/hub',
+        expected_results = {url: 'https://ondemand.us-west-1.saucelabs.com/wd/hub',
                             desired_capabilities: {'browserName' => 'chrome',
                                                    'browserVersion' => '123',
                                                    'platformName' => 'Mac',
                                                    'sauce:options' => {'idleTimeout' => 4,
-                                                                       'build' => 'TEMP BUILD: 11'}}}
+                                                                       'build' => 'TEMP BUILD: 11',
+                                                                       'username' => 'foo',
+                                                                       'accessKey' => '123'}}}
         expect(session.to_selenium).to eq expected_results
       end
 
@@ -71,11 +77,13 @@ module SauceBindings
       it 'uses provided Data Center' do
         session = Session.new(data_center: :EU_CENTRAL)
 
-        expected_results = {url: 'https://foo:123@ondemand.eu-central-1.saucelabs.com:443/wd/hub',
+        expected_results = {url: 'https://ondemand.eu-central-1.saucelabs.com/wd/hub',
                             desired_capabilities: {'browserName' => 'chrome',
                                                    'browserVersion' => 'latest',
                                                    'platformName' => 'Windows 10',
-                                                   'sauce:options' => {'build' => 'TEMP BUILD: 11'}}}
+                                                   'sauce:options' => {'build' => 'TEMP BUILD: 11',
+                                                                       'username' => 'foo',
+                                                                       'accessKey' => '123'}}}
         expect(session.to_selenium).to eq expected_results
       end
 
@@ -104,12 +112,6 @@ module SauceBindings
 
         driver = Session.new.start
         expect(driver).to be_a Selenium::WebDriver::Driver
-      end
-
-      it 'uses username and access key from ENV' do
-        session = Session.new
-
-        expect(session.url).to include('foo:123')
       end
 
       it 'raises exception if no username set' do
@@ -146,7 +148,7 @@ module SauceBindings
         session = Session.new
         session.data_center = :US_EAST
 
-        expect(session.url).to eq('https://foo:123@ondemand.us-east-1.saucelabs.com:443/wd/hub')
+        expect(session.url).to eq('https://ondemand.us-east-1.saucelabs.com/wd/hub')
       end
 
       it 'raises exception if data center is invalid' do
@@ -185,7 +187,9 @@ module SauceBindings
                             desired_capabilities: {'browserName' => 'chrome',
                                                    'browserVersion' => 'latest',
                                                    'platformName' => 'Windows 10',
-                                                   'sauce:options' => {'build' => 'TEMP BUILD: 11'}}}
+                                                   'sauce:options' => {'build' => 'TEMP BUILD: 11',
+                                                                       'username' => ENV['SAUCE_USERNAME'],
+                                                                       'accessKey' => ENV['SAUCE_ACCESS_KEY']}}}
         expect(session.to_selenium).to eq expected_results
       end
     end

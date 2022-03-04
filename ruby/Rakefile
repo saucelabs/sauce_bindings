@@ -5,16 +5,18 @@ require 'rspec/core/rake_task'
 
 RSpec::Core::RakeTask.new(:spec)
 
-RSpec::Core::RakeTask.new(:examples) do |spec|
-  spec.pattern = 'spec/examples/*_spec.rb'
-end
+task default: %i[examples unit integration]
 
 RSpec::Core::RakeTask.new(:unit) do |spec|
   spec.pattern = 'spec/unit/*_spec.rb'
 end
 
-RSpec::Core::RakeTask.new(:integration) do |spec|
-  spec.pattern = 'spec/integration/*_spec.rb'
+desc 'Run examples in parallel'
+task :examples do
+  system 'parallel_split_test spec/examples/*_spec.rb'
 end
 
-task default: %i[examples unit integration]
+desc 'Run integration tests in parallel'
+task :integration do
+  system 'parallel_split_test spec/integration/*_spec.rb'
+end

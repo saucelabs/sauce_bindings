@@ -86,7 +86,13 @@ module SauceBindings
         value = parse_w3c_key(key)
         caps[self.class.camel_case(key)] = value unless value.nil?
       end
+
       caps['sauce:options'] = {}
+      caps['sauce:options']['username'] = ENV['SAUCE_USERNAME'] ||
+                                          raise(ArgumentError, "needs username; use `ENV['SAUCE_USERNAME']`")
+      caps['sauce:options']['accessKey'] = ENV['SAUCE_ACCESS_KEY'] ||
+                                           raise(ArgumentError, "needs access key; use `ENV['SAUCE_ACCESS_KEY']`")
+
       SAUCE.each do |key|
         value = parse_sauce_key(key)
         caps['sauce:options'][self.class.camel_case(key)] = value unless value.nil?

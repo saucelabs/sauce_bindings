@@ -20,15 +20,10 @@ module SauceBindings
       @http_client = http_client
       @listener = listener
 
-      @username = ENV['SAUCE_USERNAME']
-      @access_key = ENV['SAUCE_ACCESS_KEY']
       self.data_center = data_center || :US_WEST
     end
 
     def start
-      raise ArgumentError, "needs username; use `ENV['SAUCE_USERNAME']`" unless @username
-      raise ArgumentError, "needs access_key; use `ENV['SAUCE_ACCESS_KEY']`" unless @access_key
-
       @driver = Selenium::WebDriver.for :remote, to_selenium
     end
 
@@ -63,7 +58,7 @@ module SauceBindings
     end
 
     def url
-      @url ||= "https://#{@username}:#{@access_key}@ondemand.#{DATA_CENTERS[data_center]}.saucelabs.com/wd/hub"
+      @url ||= "https://ondemand.#{DATA_CENTERS[data_center]}.saucelabs.com/wd/hub"
     end
 
     def to_selenium

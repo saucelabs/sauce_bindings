@@ -8,6 +8,8 @@ module SauceBindings
       allow(ENV).to receive(:[]).with('BUILD_TAG').and_return('')
       allow(ENV).to receive(:[]).with('BUILD_NAME').and_return('TEMP BUILD')
       allow(ENV).to receive(:[]).with('BUILD_NUMBER').and_return('11')
+      allow(ENV).to receive(:[]).with('SAUCE_USERNAME').and_return('foo')
+      allow(ENV).to receive(:[]).with('SAUCE_ACCESS_KEY').and_return('123')
     end
 
     describe '::chrome' do
@@ -526,7 +528,9 @@ module SauceBindings
                                            'timeouts' => {'implicit' => 1000,
                                                           'pageLoad' => 59_000,
                                                           'script' => 29_000},
-                                           'sauce:options' => {'build' => 'TEMP BUILD: 11'})
+                                           'sauce:options' => {'build' => 'TEMP BUILD: 11',
+                                                               'username' => 'foo',
+                                                               'accessKey' => '123'})
       end
 
       it 'correctly generates capabilities for sauce values' do
@@ -590,7 +594,9 @@ module SauceBindings
                                                                'tags' => %w[foo bar foobar],
                                                                'timeZone' => 'San Francisco',
                                                                'tunnelIdentifier' => 'tunnelname',
-                                                               'videoUploadOnPass' => false})
+                                                               'videoUploadOnPass' => false,
+                                                               'username' => 'foo',
+                                                               'accessKey' => '123'})
       end
 
       it 'correctly generates capabilities for selenium object values Selenium 3' do
@@ -637,7 +643,9 @@ module SauceBindings
                          'platformName' => 'Windows 10',
                          'acceptInsecureCerts' => true,
                          'pageLoadStrategy' => 'eager',
-                         'sauce:options' => {'build' => 'TEMP BUILD: 11'},
+                         'sauce:options' => {'build' => 'TEMP BUILD: 11',
+                                             'username' => 'foo',
+                                             'accessKey' => '123'},
                          'goog:chromeOptions' => {'args' => ['--foo']}}
 
         expect(options.capabilities).to eq expected_caps

@@ -37,6 +37,13 @@ class SauceSession():
         self._data_center = data_center
 
     @property
+    def data_center_test_url(self):
+        if self.data_center != "us-west":
+            return "https://{}/tests/".format(data_centers[self._data_center]).replace("ondemand", "app")
+        else:
+            return "https://app.saucelabs.com/tests/"
+
+    @property
     def remote_url(self):
         if self._remote_url is None:
             data_center = data_centers[self._data_center]
@@ -84,7 +91,7 @@ class SauceSession():
         # The second print statement will output the job link to logging/console
         if self.driver is not None:
             print("SauceOnDemandSessioID={} job-name={}".format(self.driver.session_id, self.options.name))
-            print("Test Job Link: https://app.saucelabs.com/tests/{}".format(self.driver.session_id))
+            print("Test Job Link: {}{}".format(self.data_center_test_url, self.driver.session_id))
 
     def create_driver(self, url, capabilities):
         return webdriver.Remote(

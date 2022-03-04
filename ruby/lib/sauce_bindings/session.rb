@@ -6,10 +6,10 @@ require 'selenium-webdriver'
 
 module SauceBindings
   class Session
-    DATA_CENTERS = {US_WEST: 'ondemand.us-west-1.saucelabs.com',
-                    US_EAST: 'ondemand.us-east-1.saucelabs.com',
-                    EU_CENTRAL: 'ondemand.eu-central-1.saucelabs.com',
-                    APAC_SOUTHEAST: 'ondemand.apac-southeast-1.saucelabs.com'}.freeze
+    DATA_CENTERS = {US_WEST: 'us-west-1',
+                    US_EAST: 'us-east-1',
+                    EU_CENTRAL: 'eu-central-1',
+                    APAC_SOUTHEAST: 'apac-southeast-1'}.freeze
 
     attr_writer :url
     attr_reader :driver, :options, :data_center
@@ -40,7 +40,10 @@ module SauceBindings
       # The first print statement will automatically populate links on Jenkins to Sauce
       # The second print statement will output the job link to logging/console
       puts "SauceOnDemandSessionID=#{@driver.session_id} job-name=#{@options.name}"
-      puts "Test Job Link: https://app.saucelabs.com/tests/#{@driver.session_id}"
+
+      test_link = data_center == :US_WEST ? '' : "#{DATA_CENTERS[data_center]}."
+
+      puts "Test Job Link: https://app.#{test_link}saucelabs.com/tests/#{@driver.session_id}"
       @driver.quit
     end
 
@@ -60,7 +63,7 @@ module SauceBindings
     end
 
     def url
-      @url ||= "https://#{@username}:#{@access_key}@#{DATA_CENTERS[data_center]}:443/wd/hub"
+      @url ||= "https://#{@username}:#{@access_key}@ondemand.#{DATA_CENTERS[data_center]}.saucelabs.com/wd/hub"
     end
 
     def to_selenium

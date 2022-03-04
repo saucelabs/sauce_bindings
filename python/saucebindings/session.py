@@ -18,8 +18,6 @@ class SauceSession():
 
     def __init__(self, options=None, data_center='us-west', resolve_ip=False):
         self.options = options if options else SauceOptions.chrome()
-        self._username = os.getenv('SAUCE_USERNAME', None)
-        self._access_key = os.getenv('SAUCE_ACCESS_KEY', None)
         self.data_center = data_center if data_center else 'us-west'
         self._remote_url = None
         self._resolve_ip = resolve_ip if resolve_ip else False
@@ -47,7 +45,7 @@ class SauceSession():
     def remote_url(self):
         if self._remote_url is None:
             data_center = data_centers[self._data_center]
-            return 'https://{}:{}@{}:443/wd/hub'.format(self._username, self._access_key, data_center)
+            return 'https://{}/wd/hub'.format(data_center)
         else:
             return self._remote_url
 
@@ -56,11 +54,6 @@ class SauceSession():
         self._remote_url = remote_url
 
     def start(self):
-        if not self._username:
-            raise KeyError("Cannot start session, Sauce Username is not set.")
-        elif not self._access_key:
-            raise KeyError("Cannot start session, Sauce Access Key is not set.")
-
         self.driver = self.create_driver(self.remote_url, self.options.to_capabilities())
         return self.driver
 

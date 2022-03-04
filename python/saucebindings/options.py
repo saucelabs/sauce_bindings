@@ -124,6 +124,14 @@ class SauceOptions(object):
         for key, value in kwargs.items():
             self.set_capability(key, value)
 
+        if not os.getenv("SAUCE_USERNAME"):
+            raise KeyError("Cannot start session, Sauce Username is not set.")
+        elif not os.getenv("SAUCE_ACCESS_KEY"):
+            raise KeyError("Cannot start session, Sauce Access Key is not set.")
+        else:
+            self.options['sauce:options']['username'] = os.getenv("SAUCE_USERNAME")
+            self.options['sauce:options']['accessKey'] = os.getenv("SAUCE_ACCESS_KEY")
+
         if self.browser_version is None:
             self.set_capability('browserVersion', 'latest')
 

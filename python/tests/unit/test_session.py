@@ -1,3 +1,5 @@
+import os
+
 import pytest
 
 from saucebindings.options import SauceOptions
@@ -63,11 +65,13 @@ class TestStart(object):
         monkeypatch.setenv("SAUCE_ACCESS_KEY", "1234")
 
     def test_creates_a_session_on_sauce_labs(self, mocker):
-        default_url = 'https://test-user:1234@ondemand.us-west-1.saucelabs.com:443/wd/hub'
+        default_url = 'https://ondemand.us-west-1.saucelabs.com/wd/hub'
         expected_caps = {'browserName': 'chrome',
                          'browserVersion': 'latest',
                          'platformName': 'Windows 10',
-                         'sauce:options': {'build': 'TEST BUILD: 11'}}
+                         'sauce:options': {'build': 'TEST BUILD: 11',
+                                                   'username': os.getenv('SAUCE_USERNAME'),
+                                                   'accessKey': os.getenv('SAUCE_ACCESS_KEY')}}
 
         sauce_session = SauceSession()
         mocker.patch.object(sauce_session, 'create_driver')
@@ -75,23 +79,6 @@ class TestStart(object):
         sauce_session.start()
 
         sauce_session.create_driver.assert_called_once_with(default_url, expected_caps)
-
-    def test_raises_exception_if_no_username_set(self, monkeypatch):
-        monkeypatch.delenv("SAUCE_USERNAME")
-
-        session = SauceSession()
-
-        with pytest.raises(KeyError):
-            session.start()
-
-    def test_raises_exception_if_no_access_key_set(self, monkeypatch):
-        monkeypatch.delenv("SAUCE_ACCESS_KEY")
-
-        session = SauceSession()
-
-        with pytest.raises(KeyError):
-            session.start()
-
 
 class TestURL(object):
 

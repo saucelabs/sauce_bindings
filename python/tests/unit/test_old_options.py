@@ -419,7 +419,9 @@ class TestCapabilitiesCreation(object):
                                  'timeouts': {'implicit': 1,
                                               'pageLoad': 59,
                                               'script': 29},
-                                 'sauce:options': {'build': 'Build Name'}}
+                                 'sauce:options': {'build': 'Build Name',
+                                                   'username': os.getenv('SAUCE_USERNAME'),
+                                                   'accessKey': os.getenv('SAUCE_ACCESS_KEY')}}
 
         assert options.to_capabilities() == expected_capabilities
 
@@ -486,7 +488,9 @@ class TestCapabilitiesCreation(object):
                                                    'tags': ['foo', 'bar'],
                                                    'timeZone': 'San Francisco',
                                                    'tunnelIdentifier': 'tunnelname',
-                                                   'videoUploadOnPass': False}}
+                                                   'videoUploadOnPass': False,
+                                                   'username': os.getenv('SAUCE_USERNAME'),
+                                                   'accessKey': os.getenv('SAUCE_ACCESS_KEY')}}
 
         assert options.to_capabilities() == expected_capabilities
 
@@ -503,7 +507,9 @@ class TestCapabilitiesCreation(object):
                                  'browserVersion': 'latest',
                                  'platformName': 'Windows 10',
                                  'moz:firefoxOptions': {'args': ['--foo'], 'prefs': {'foo': 'bar'}},
-                                 'sauce:options': {'build': 'Sample Build Name'}}
+                                 'sauce:options': {'build': 'Sample Build Name',
+                                                   'username': os.getenv('SAUCE_USERNAME'),
+                                                   'accessKey': os.getenv('SAUCE_ACCESS_KEY')}}
 
         if seleniumVersion[0] == '4':
             expected_capabilities['pageLoadStrategy'] = 'normal'

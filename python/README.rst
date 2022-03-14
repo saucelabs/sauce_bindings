@@ -16,7 +16,7 @@ The goal of the Sauce bindings is to provide a straightforward approach to conne
     driver = session.driver
     driver.get("www.saucedemo.com")
     
-    session.stop("passed")
+    session.stop(True)
 
 Requirements
 -------------

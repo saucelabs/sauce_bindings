@@ -4,6 +4,7 @@ from sa11y.analyze import Analyze
 from selenium import webdriver
 from selenium.webdriver.remote.remote_connection import RemoteConnection
 from .options import SauceOptions
+import warnings
 
 
 data_centers = {
@@ -73,9 +74,22 @@ class SauceSession():
         elif result_in is False:
             result = 'failed'
         elif result_in and 'pass' in result_in.lower():
+            warnings.warn(
+                "string arguments are deprecated, please pass in True or False to indicate if the test has passed",
+                DeprecationWarning
+            )
             result = 'passed'
         elif result_in and 'fail' in result_in.lower():
+            warnings.warn(
+                "string arguments are deprecated, please pass in True or False to indicate if the test has passed",
+                DeprecationWarning
+            )
             result = 'failed'
+        else:
+            warnings.warn(
+                "string arguments are deprecated, please pass in True or False to indicate if the test has passed",
+                DeprecationWarning
+            )
 
         self.driver.execute_script('sauce:job-result={}'.format(result))
 

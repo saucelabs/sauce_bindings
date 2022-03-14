@@ -132,14 +132,25 @@ module SauceBindings
         driver = instance_double(Selenium::WebDriver::Remote::Driver, session_id: '1234')
         allow(Selenium::WebDriver::Driver).to receive(:for).and_return(driver)
         allow(driver).to receive :quit
-        allow(SauceWhisk::Jobs).to receive(:change_status).with('1234', true)
+        allow(SauceWhisk::Jobs).to receive(:change_status).with('1234', false)
 
         session = Session.new
         session.start
-        session.stop(true)
+        session.stop(false)
 
         expect(driver).to have_received(:quit)
-        expect(SauceWhisk::Jobs).to have_received(:change_status).with('1234', true)
+        expect(SauceWhisk::Jobs).to have_received(:change_status).with('1234', false)
+      end
+
+      it 'raises error when argument value is not boolean' do
+        driver = instance_double(Selenium::WebDriver::Remote::Driver, session_id: '1234')
+        allow(Selenium::WebDriver::Driver).to receive(:for).and_return(driver)
+        allow(driver).to receive :quit
+
+        session = Session.new
+        session.start
+
+        expect { session.stop("String") }.to raise_error(ArgumentError)
       end
     end
 

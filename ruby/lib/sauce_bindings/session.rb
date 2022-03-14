@@ -30,6 +30,10 @@ module SauceBindings
     def stop(result)
       return if @driver.nil?
 
+      unless result.is_a?(TrueClass) || result.is_a?(FalseClass)
+        raise ArgumentError, "Result must be a boolean value representing whether a test has passed"
+      end
+
       SauceWhisk::Jobs.change_status(@driver.session_id, result)
       # Add output for the Sauce OnDemand Jenkins plugin
       # The first print statement will automatically populate links on Jenkins to Sauce

@@ -22,7 +22,7 @@ jobs:
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-        run: cd java/main && mvn clean test -Dmaven.javadoc.skip=true;
+        run: make java_tests
   junit4:
     runs-on: ubuntu-latest
     steps:
@@ -35,7 +35,7 @@ jobs:
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-        run: cd java/junit4 && mvn clean test -Dmaven.javadoc.skip=true;
+        run: make junit4_tests
   junit5:
     runs-on: ubuntu-latest
     steps:
@@ -48,4 +48,4 @@ jobs:
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-        run: cd java/junit5 && mvn clean test -Dmaven.javadoc.skip=true;
+        run: make junit5_tests

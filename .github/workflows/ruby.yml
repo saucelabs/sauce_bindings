@@ -23,10 +23,8 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
-    - name: Install dependencies
-      run: cd ruby && bundle install
     - name: Test with Ruby
-      run: cd ruby && bundle exec rake
+      run: make ruby_tests
       env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}

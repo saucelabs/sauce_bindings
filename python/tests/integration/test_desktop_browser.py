@@ -36,3 +36,21 @@ class TestDataCenter(object):
         assert "eu-central-1" in session.remote_url
 
         session.stop(True)
+
+
+class TestAnnotations(object):
+
+    def test_stops_starts_network(self):
+        sauce_session = SauceSession(SauceOptions.safari())
+        driver = sauce_session.start()
+
+        sauce_session.stop_network()
+
+        driver.get("https://www.saucedemo.com")
+        assert driver.title == "Failed to open page"
+
+        sauce_session.start_network()
+        driver.get("https://www.saucedemo.com")
+        assert driver.title == "Swag Labs"
+
+        sauce_session.stop(True)

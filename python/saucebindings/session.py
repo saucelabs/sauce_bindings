@@ -4,8 +4,8 @@ from sa11y.analyze import Analyze
 from selenium import webdriver
 from selenium.webdriver.remote.remote_connection import RemoteConnection
 from .options import SauceOptions
+from .exceptions import SessionNotStartedException, InvalidPlatformException
 import warnings
-
 
 data_centers = {
     'us-west': 'ondemand.us-west-1.saucelabs.com',
@@ -59,12 +59,67 @@ class SauceSession():
         return self.driver
 
     def stop(self, result):
-        self.update_test_result(result)
-        self.driver.quit()
+        if self.driver is not None:
+            self.update_test_result(result)
+            self.driver.quit()
+            self.driver = None
 
+    def validate_session_started(self, method):
+        if self.driver is None:
+            raise SessionNotStartedException("Session must be started before executing: {}".format(method))
 
     def accessibility_results(self, js_lib=None, frames=True, cross_origin=False):
+        self.validate_session_started("accessibility_results")
         return Analyze(self.driver, js_lib=js_lib, frames=frames, cross_origin=cross_origin).results()
+
+    def annotate(self, comment):
+        self.validate_session_started("annotate")
+        self.driver.execute_script("sauce:context={}".format(comment))
+
+    def pause(self):
+        self.validate_session_started("pause")
+        self.driver.execute_script("sauce: break")
+        print("\nThis test has been stopped; no more driver commands will be accepted")
+        print("\nYou can take manual control of the test from the Sauce Labs UI here: {}{}".format(
+            self.data_center_test_url, self.driver.session_id))
+        self.driver = None
+
+    def disable_logging(self):
+        self.validate_session_started('disable_logging')
+        self.driver.execute_script("sauce: disable log")
+
+    def enable_logging(self):
+        self.validate_session_started('enable_logging')
+        self.driver.execute_script("sauce: enable log")
+
+    def stop_network(self):
+        self.validate_session_started('stop_network')
+        if not self.options.is_mac():
+            error = "Can only start or stop the network on a Mac; current platform is: {}".format(
+                self.options.platform_name)
+            raise InvalidPlatformException(error)
+
+        self.driver.execute_script("sauce: stop network")
+
+    def start_network(self):
+        self.validate_session_started('start_network')
+        if not self.options.is_mac():
+            error = "Can only start or stop the network on a Mac; current platform is: {}".format(
+                self.options.platform_name)
+            raise InvalidPlatformException(error)
+
+        self.driver.execute_script("sauce: start network")
+
+    def change_name(self, name):
+        self.validate_session_started('change_name')
+
+        self.driver.execute_script("sauce:job-name={}".format(name))
+
+    def add_tags(self, tags):
+        self.validate_session_started('tags=')
+        tags = [tags] if isinstance(tags, str) else tags
+
+        self.driver.execute_script("sauce:job-tags={}".format(",".join(tags)))
 
     def update_test_result(self, result_in):
         result = ''

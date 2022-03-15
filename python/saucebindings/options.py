@@ -5,7 +5,6 @@ from .configs import *
 from selenium.webdriver import __version__ as seleniumVersion
 import os
 
-
 w3c_configs = {
     'browser_name': 'browserName',
     'browser_version': 'browserVersion',
@@ -47,6 +46,7 @@ sauce_configs = {
     'video_upload_on_pass': 'videoUploadOnPass',
     'capture_performance': 'capturePerformance'
 }
+
 
 class SauceOptions(object):
 
@@ -197,6 +197,12 @@ class SauceOptions(object):
             self.options[w3c_configs[key]] = value
         else:
             raise AttributeError
+
+    def is_mac(self):
+        return "mac" in self.platform_name or "OS X" in self.platform_name
+
+    def is_windows(self):
+        return "Windows" in self.platform_name
 
     def to_capabilities(self):
         if self.selenium_options:

@@ -4,9 +4,9 @@ require 'spec_helper'
 
 module SauceBindings
   describe Session do
-    describe 'starts with data center' do
-      before { WebMock.allow_net_connect! }
+    before { WebMock.allow_net_connect! }
 
+    describe '#data_center=' do
       it 'defaults to US West' do
         @session = Session.new
         driver = @session.start
@@ -17,7 +17,8 @@ module SauceBindings
 
       it 'executes on US East' do
         options = Options.chrome(platform_name: 'Linux')
-        @session = Session.new(options, data_center: :US_EAST)
+        @session = Session.new(options)
+        @session.data_center = :US_EAST
         driver = @session.start
 
         expect(driver).not_to be_nil
@@ -25,7 +26,8 @@ module SauceBindings
       end
 
       it 'executes on EU Central' do
-        @session = Session.new(data_center: :EU_CENTRAL)
+        @session = Session.new
+        @session.data_center = :EU_CENTRAL
         driver = @session.start
 
         expect(driver).not_to be_nil
@@ -34,11 +36,29 @@ module SauceBindings
 
       it 'executes on APAC' do
         pending 'Adding Data Center to Sauce Whisk'
-        @session = Session.new(data_center: :APAC_SOUTHEAST)
+        @session = Session.new
+        @session.data_center = :APAC_SOUTHEAST
         driver = @session.start
 
         expect(driver).not_to be_nil
         expect(@session.url).to include('apac-southeast-1')
+      end
+    end
+
+    describe '#stop_network' do
+      it 'stops and starts the network' do
+        @session = Session.new(Options.safari)
+        driver = @session.start
+
+        @session.stop_network
+        driver.get('https://www.saucedemo.com')
+
+        expect(driver.title).to eq 'Failed to open page'
+
+        @session.start_network
+        driver.get('https://www.saucedemo.com')
+
+        expect(driver.title).to eq 'Swag Labs'
       end
     end
   end

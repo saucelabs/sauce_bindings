@@ -2,6 +2,7 @@
 
 require 'sauce_bindings/version'
 require 'sauce_bindings/options'
+require 'sauce_bindings/errors'
 require 'sauce_bindings/session'
 require 'sauce_bindings/base_configurations'
 require 'sauce_bindings/vdc_configurations'

@@ -22,8 +22,7 @@ Metrics/PerceivedComplexity:
   Max: 11
 
 Metrics/ClassLength:
-  Exclude:
-    - 'lib/sauce_bindings/options.rb'
+  Enabled: false
 
 Metrics/LineLength:
   Max: 120

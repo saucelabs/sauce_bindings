@@ -111,6 +111,14 @@ module SauceBindings
       end
     end
 
+    def mac?
+      @platform_name.include?('mac') || @platform_name.include?('OS X')
+    end
+
+    def windows?
+      @platform_name.include?('Windows')
+    end
+
     private
 
     def key_value(key)

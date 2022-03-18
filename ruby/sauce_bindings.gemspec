@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.version       = SauceBindings::VERSION
   spec.authors       = ['Titus Fortner']
   spec.email         = ['titusfortner@gmail.com']
-  spec.required_ruby_version = '>= 2.5.0'
+  spec.required_ruby_version = '>= 2.7.0'
 
   spec.summary       = 'Simple interface for interacting with Sauce Labs.'
   spec.description   = 'Reduces complexity in user code for running Selenium tests on Sauce Labs'
@@ -32,5 +32,5 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'sa11y', '~> 0.2.0'
   spec.add_runtime_dependency 'sauce_whisk'
-  spec.add_runtime_dependency 'selenium-webdriver', '>= 3.142.7'
+  spec.add_runtime_dependency 'selenium-webdriver', '~> 4.0'
 end

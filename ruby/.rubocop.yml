@@ -28,7 +28,7 @@ Metrics/LineLength:
   Max: 120
 
 Metrics/MethodLength:
-  Max: 17
+  Max: 20
 
 Metrics/ModuleLength:
   CountComments: false
@@ -55,3 +55,10 @@ RSpec/MultipleExpectations:
 
 RSpec/DescribedClass:
   EnforcedStyle: explicit
+
+Lint/ConstantDefinitionInBlock:
+  Exclude:
+    - 'spec/spec_helper.rb'
+
+Style/BlockDelimiters:
+  EnforcedStyle: braces_for_chaining

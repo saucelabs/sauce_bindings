@@ -20,32 +20,17 @@ module SauceBindings
     end
 
     def expect_request
-      se3 = {desiredCapabilities: default_capabilities,
-             capabilities: {firstMatch: [default_capabilities]}}.to_json
-      se4 = {capabilities: {alwaysMatch: default_capabilities}}.to_json
-
-      body = Selenium::WebDriver::VERSION[0] == '3' ? se3 : se4
+      body = {capabilities: {alwaysMatch: default_capabilities}}.to_json
 
       endpoint = 'https://ondemand.us-west-1.saucelabs.com/wd/hub/session'
       stub_request(:post, endpoint).with(body: body).to_return(valid_response)
-    end
-
-    before do
-      allow_any_instance_of(Net::HTTP).to receive(:proxy_uri)
-      allow_any_instance_of(Selenium::WebDriver::Remote::Http::Default).to receive(:use_proxy?).and_return(false)
-      allow(ENV).to receive(:[]).with('DISABLE_CAPYBARA_SELENIUM_OPTIMIZATIONS')
-      allow(ENV).to receive(:[]).with('BUILD_TAG').and_return('')
-      allow(ENV).to receive(:[]).with('BUILD_NAME').and_return('TEMP BUILD')
-      allow(ENV).to receive(:[]).with('BUILD_NUMBER').and_return('11')
-      allow(ENV).to receive(:[]).with('SAUCE_USERNAME').and_return('foo')
-      allow(ENV).to receive(:[]).with('SAUCE_ACCESS_KEY').and_return('123')
     end
 
     describe '#new' do
       it 'registers a Capybara Driver' do
         CapybaraSession.new
 
-        expect(Capybara.drivers).to include(:sauce)
+        expect(Capybara.drivers.names).to include(:sauce)
         expect(Capybara.current_driver).to eq :sauce
       end
     end
@@ -54,8 +39,11 @@ module SauceBindings
       it 'starts the session with Capybara driver' do
         expect_request
 
-        driver = CapybaraSession.new.start
-        expect(driver).to eq Capybara.current_session.driver.browser
+        ClimateControl.modify(**SAUCE_ACCESS, **BUILD_ENV) do
+          @driver = CapybaraSession.new.start
+        end
+
+        expect(@driver).to eq Capybara.current_session.driver.browser
 
         Capybara.current_session.driver.instance_variable_set('@browser', nil)
       end

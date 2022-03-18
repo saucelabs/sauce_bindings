@@ -12,7 +12,7 @@ module SauceBindings
                     APAC_SOUTHEAST: 'apac-southeast-1'}.freeze
 
     attr_writer :url
-    attr_reader :driver, :options, :data_center
+    attr_reader :driver, :options, :data_center, :session_id
     attr_accessor :http_client, :listener
 
     def initialize(options = nil, data_center: nil, http_client: nil, listener: nil)
@@ -25,6 +25,8 @@ module SauceBindings
 
     def start
       @driver = Selenium::WebDriver.for :remote, to_selenium
+      @session_id = @driver.session_id
+      @driver
     end
 
     def stop(result)
@@ -34,7 +36,7 @@ module SauceBindings
         raise ArgumentError, 'Result must be a boolean value representing whether a test has passed'
       end
 
-      SauceWhisk::Jobs.change_status(@driver.session_id, result)
+      SauceWhisk::Jobs.change_status(@session_id, result)
       print_results
 
       @driver.quit
@@ -108,7 +110,7 @@ module SauceBindings
     def add_tags(tags)
       tags = Array(tags)
       validate_session_started('tags=')
-      driver.execute_script("sauce:job-tags=#{tags.join(',')}")
+      @driver.execute_script("sauce:job-tags=#{tags.join(',')}")
     end
 
     def url
@@ -116,7 +118,7 @@ module SauceBindings
     end
 
     def to_selenium
-      caps = {url: url, desired_capabilities: options.capabilities}
+      caps = {url: url, capabilities: Selenium::WebDriver::Remote::Capabilities.new(options.capabilities)}
       caps[:listener] = listener if listener
       caps[:http_client] = http_client if http_client
       caps
@@ -126,18 +128,18 @@ module SauceBindings
 
     def test_link
       dc = data_center == :US_WEST ? '' : "#{DATA_CENTERS[data_center]}."
-      "https://app.#{dc}saucelabs.com/tests/#{@driver.session_id}"
+      "https://app.#{dc}saucelabs.com/tests/#{@session_id}"
     end
 
     def validate_session_started(method)
-      raise SessionNotStartedError, "session must be started before executing ##{method}" unless driver
+      raise SessionNotStartedError, "session must be started before executing ##{method}" unless @driver
     end
 
     def print_results
       # Add output for the Sauce OnDemand Jenkins plugin
       # The first print statement will automatically populate links on Jenkins to Sauce
       # The second print statement will output the job link to logging/console
-      puts "SauceOnDemandSessionID=#{@driver.session_id} job-name=#{@options.name}"
+      puts "SauceOnDemandSessionID=#{@session_id} job-name=#{@options.name}"
 
       puts "Test Job Link: #{test_link}"
     end

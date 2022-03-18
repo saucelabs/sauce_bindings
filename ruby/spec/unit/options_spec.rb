@@ -4,14 +4,6 @@ require 'spec_helper'
 
 module SauceBindings
   describe Options do
-    before do
-      allow(ENV).to receive(:[]).with('BUILD_TAG').and_return('')
-      allow(ENV).to receive(:[]).with('BUILD_NAME').and_return('TEMP BUILD')
-      allow(ENV).to receive(:[]).with('BUILD_NUMBER').and_return('11')
-      allow(ENV).to receive(:[]).with('SAUCE_USERNAME').and_return('foo')
-      allow(ENV).to receive(:[]).with('SAUCE_ACCESS_KEY').and_return('123')
-    end
-
     describe '::chrome' do
       it 'uses latest Chrome version on Windows 10 by default' do
         options = Options.chrome
@@ -77,83 +69,66 @@ module SauceBindings
     end
 
     describe '::edge' do
-      context 'with Selenium 3' do
-        before do
-          skip('test only applies with Selenium 3') unless Selenium::WebDriver::VERSION[0] == '3'
-        end
+      it 'uses latest Edge version on Windows 10 by default' do
+        options = Options.edge
 
-        it 'raises exception' do
-          msg = /Selenium 3 is not compatible with the Chromium based Microsoft Edge/
-          expect { Options.edge }.to raise_error(ArgumentError, msg)
-        end
+        expect(options.browser_name).to eq 'MicrosoftEdge'
+        expect(options.browser_version).to eq 'latest'
+        expect(options.platform_name).to eq 'Windows 10'
       end
 
-      context 'with Selenium 4' do
-        before do
-          skip('test only applies with Selenium 4') unless Selenium::WebDriver::VERSION[0] == '4'
-        end
+      it 'accepts correct Selenium Options class' do
+        browser_opts = Selenium::WebDriver::Edge::Options.new(args: ['-foo'])
+        options = Options.edge(selenium_options: browser_opts)
 
-        it 'uses latest Edge version on Windows 10 by default' do
-          options = Options.edge
+        expect(options.selenium_options.dig('ms:edgeOptions', 'args')).to eq ['-foo']
+      end
 
-          expect(options.browser_name).to eq 'MicrosoftEdge'
-          expect(options.browser_version).to eq 'latest'
-          expect(options.platform_name).to eq 'Windows 10'
-        end
+      it 'does not accept incorrect Selenium Options class' do
+        browser_opts = Selenium::WebDriver::Chrome::Options.new
 
-        it 'accepts correct Selenium Options class' do
-          browser_opts = Selenium::WebDriver::Edge::Options.new(args: ['-foo'])
-          options = Options.edge(selenium_options: browser_opts)
+        expect { Options.edge(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+      end
 
-          expect(options.selenium_options.dig('ms:edgeOptions', 'args')).to eq ['-foo']
-        end
+      it 'accepts correct Selenium Capabilities class' do
+        browser_opts = Selenium::WebDriver::Remote::Capabilities.edge(browser_version: '99')
+        options = Options.edge(selenium_options: browser_opts)
 
-        it 'does not accept incorrect Selenium Options class' do
-          browser_opts = Selenium::WebDriver::Chrome::Options.new
+        expect(options.browser_version).to eq '99'
+      end
 
-          expect { Options.edge(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
-        end
+      it 'does not accept incorrect Selenium Capabilities class' do
+        browser_opts = Selenium::WebDriver::Remote::Capabilities.chrome(browser_version: '99')
 
-        it 'accepts correct Selenium Capabilities class' do
-          browser_opts = Selenium::WebDriver::Remote::Capabilities.edge(browser_version: '99')
-          options = Options.edge(selenium_options: browser_opts)
+        expect { Options.edge(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+      end
 
-          expect(options.browser_version).to eq '99'
-        end
+      it 'accepts base configurations' do
+        options = Options.edge(custom_data: {foo: 'bar'})
+        options.tags = %w[foo bar]
 
-        it 'does not accept incorrect Selenium Capabilities class' do
-          browser_opts = Selenium::WebDriver::Remote::Capabilities.chrome(browser_version: '99')
+        expect(options.custom_data).to eq(foo: 'bar')
+        expect(options.tags).to eq %w[foo bar]
+      end
 
-          expect { Options.edge(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
-        end
+      it 'accepts vdc configurations' do
+        options = Options.edge(browser_version: '42.0')
+        options.page_load_strategy = 'eager'
 
-        it 'accepts base configurations' do
-          options = Options.edge(custom_data: {foo: 'bar'})
-          options.tags = %w[foo bar]
+        expect(options.browser_version).to eq '42.0'
+        expect(options.page_load_strategy).to eq 'eager'
+      end
 
-          expect(options.custom_data).to eq(foo: 'bar')
-          expect(options.tags).to eq %w[foo bar]
-        end
+      it 'accepts valid configurations' do
+        options = Options.edge(edgedriver_version: '99')
+        options.selenium_version = '3.14'
 
-        it 'accepts vdc configurations' do
-          options = Options.edge(browser_version: '42.0')
-          options.page_load_strategy = 'eager'
+        expect(options.selenium_version).to eq '3.14'
+        expect(options.edgedriver_version).to eq '99'
+      end
 
-          expect(options.browser_version).to eq '42.0'
-          expect(options.page_load_strategy).to eq 'eager'
-        end
-
-        it 'accepts valid configurations' do
-          options = Options.edge(edgedriver_version: '99')
-          options.selenium_version = '3.14'
-
-          expect(options.selenium_version).to eq '3.14'
-          expect(options.edgedriver_version).to eq '99'
-        end
-
-        it 'does not accept invalid configurations' do
-          expect { Options.edge(chromedriver_version: 'anything') }.to raise_exception(ArgumentError)
-        end
+      it 'does not accept invalid configurations' do
+        expect { Options.edge(chromedriver_version: 'anything') }.to raise_exception(ArgumentError)
       end
     end
 
@@ -504,33 +479,38 @@ module SauceBindings
       it 'correctly generates capabilities for w3c values' do
         proxy = Selenium::WebDriver::Proxy.new(ssl: 'foo')
 
-        options = Options.firefox(platform_name: 'Mac',
-                                  accept_insecure_certs: true,
-                                  page_load_strategy: 'eager',
-                                  proxy: proxy,
-                                  set_window_rect: true,
-                                  unhandled_prompt_behavior: 'accept',
-                                  strict_file_interactability: true,
-                                  implicit_wait_timeout: 1,
-                                  page_load_timeout: 59,
-                                  script_timeout: 29)
-        proxy_type = Selenium::WebDriver::VERSION[0] == '3' ? 'MANUAL' : 'manual'
+        ClimateControl.modify BUILD_TAG: '', BUILD_NAME: 'TEMP BUILD', BUILD_NUMBER: '11' do
+          @options = Options.firefox(platform_name: 'Mac',
+                                     accept_insecure_certs: true,
+                                     page_load_strategy: 'eager',
+                                     proxy: proxy,
+                                     set_window_rect: true,
+                                     unhandled_prompt_behavior: 'accept',
+                                     strict_file_interactability: true,
+                                     implicit_wait_timeout: 1,
+                                     page_load_timeout: 59,
+                                     script_timeout: 29)
+        end
 
-        expect(options.capabilities).to eq('browserName' => 'firefox',
-                                           'browserVersion' => 'latest',
-                                           'platformName' => 'Mac',
-                                           'acceptInsecureCerts' => true,
-                                           'pageLoadStrategy' => 'eager',
-                                           'proxy' => {'proxyType' => proxy_type, 'sslProxy' => 'foo'},
-                                           'setWindowRect' => true,
-                                           'unhandledPromptBehavior' => 'accept',
-                                           'strictFileInteractability' => true,
-                                           'timeouts' => {'implicit' => 1000,
-                                                          'pageLoad' => 59_000,
-                                                          'script' => 29_000},
-                                           'sauce:options' => {'build' => 'TEMP BUILD: 11',
-                                                               'username' => 'foo',
-                                                               'accessKey' => '123'})
+        ClimateControl.modify(**SAUCE_ACCESS) do
+          @capabilities = @options.capabilities
+        end
+
+        expect(@capabilities).to eq('browserName' => 'firefox',
+                                    'browserVersion' => 'latest',
+                                    'platformName' => 'Mac',
+                                    'acceptInsecureCerts' => true,
+                                    'pageLoadStrategy' => 'eager',
+                                    'proxy' => {'proxyType' => 'manual', 'sslProxy' => 'foo'},
+                                    'setWindowRect' => true,
+                                    'unhandledPromptBehavior' => 'accept',
+                                    'strictFileInteractability' => true,
+                                    'timeouts' => {'implicit' => 1000,
+                                                   'pageLoad' => 59_000,
+                                                   'script' => 29_000},
+                                    'sauce:options' => {'build' => 'TEMP BUILD: 11',
+                                                        'username' => 'foo',
+                                                        'accessKey' => '123'})
       end
 
       it 'correctly generates capabilities for sauce values' do
@@ -570,73 +550,50 @@ module SauceBindings
                        'background' => false,
                        'timeout' => 120}
 
-        expect(options.capabilities).to eq('browserName' => 'chrome',
-                                           'browserVersion' => 'latest',
-                                           'platformName' => 'Windows 10',
-                                           'sauce:options' => {'build' => 'Sample Build Name',
-                                                               'capturePerformance' => true,
-                                                               'chromedriverVersion' => '71',
-                                                               'commandTimeout' => 2,
-                                                               'customData' => {'foo' => 'foo',
-                                                                                'bar' => 'bar'},
-                                                               'extendedDebugging' => true,
-                                                               'idleTimeout' => 3,
-                                                               'maxDuration' => 300,
-                                                               'name' => 'Sample Test Name',
-                                                               'parentTunnel' => 'Mommy',
-                                                               'prerun' => prerun_caps,
-                                                               'priority' => 0,
-                                                               'public' => 'team',
-                                                               'recordLogs' => false,
-                                                               'recordScreenshots' => false,
-                                                               'recordVideo' => false,
-                                                               'screenResolution' => '10x10',
-                                                               'tags' => %w[foo bar foobar],
-                                                               'timeZone' => 'San Francisco',
-                                                               'tunnelIdentifier' => 'tunnelname',
-                                                               'videoUploadOnPass' => false,
-                                                               'username' => 'foo',
-                                                               'accessKey' => '123'})
+        ClimateControl.modify(**SAUCE_ACCESS) do
+          @capabilities = options.capabilities
+        end
+
+        expect(@capabilities).to eq('browserName' => 'chrome',
+                                    'browserVersion' => 'latest',
+                                    'platformName' => 'Windows 10',
+                                    'sauce:options' => {'build' => 'Sample Build Name',
+                                                        'capturePerformance' => true,
+                                                        'chromedriverVersion' => '71',
+                                                        'commandTimeout' => 2,
+                                                        'customData' => {'foo' => 'foo',
+                                                                         'bar' => 'bar'},
+                                                        'extendedDebugging' => true,
+                                                        'idleTimeout' => 3,
+                                                        'maxDuration' => 300,
+                                                        'name' => 'Sample Test Name',
+                                                        'parentTunnel' => 'Mommy',
+                                                        'prerun' => prerun_caps,
+                                                        'priority' => 0,
+                                                        'public' => 'team',
+                                                        'recordLogs' => false,
+                                                        'recordScreenshots' => false,
+                                                        'recordVideo' => false,
+                                                        'screenResolution' => '10x10',
+                                                        'tags' => %w[foo bar foobar],
+                                                        'timeZone' => 'San Francisco',
+                                                        'tunnelIdentifier' => 'tunnelname',
+                                                        'videoUploadOnPass' => false,
+                                                        'username' => 'foo',
+                                                        'accessKey' => '123'})
       end
 
-      it 'correctly generates capabilities for selenium object values Selenium 3' do
-        skip unless Selenium::WebDriver::VERSION[0] == '3'
-
-        caps = Selenium::WebDriver::Remote::Capabilities.chrome(accept_insecure_certs: true,
-                                                                page_load_strategy: 'eager')
-        browser_opts = Selenium::WebDriver::Chrome::Options.new(args: ['--foo'])
-        options = Options.chrome(selenium_options: [caps, browser_opts])
-
-        jwp_defaults = {'cssSelectorsEnabled' => true,
-                        'javascriptEnabled' => true,
-                        'nativeEvents' => false,
-                        'platform' => 'ANY',
-                        'rotatable' => false,
-                        'takesScreenshot' => false,
-                        'version' => ''}
-
-        expected_caps = {'browserName' => 'chrome',
-                         'browserVersion' => 'latest',
-                         'platformName' => 'Windows 10',
-                         'acceptInsecureCerts' => true,
-                         'pageLoadStrategy' => 'eager',
-                         'sauce:options' => {'build' => 'TEMP BUILD: 11'},
-                         'goog:chromeOptions' => {'args' => ['--foo']}}
-
-        expect(options.capabilities).to eq(jwp_defaults.merge(expected_caps))
-      end
-
-      it 'correctly generates capabilities for selenium object values Selenium 4' do
-        skip if Selenium::WebDriver::VERSION[0] == '3'
-
+      it 'correctly generates capabilities for selenium object values' do
         caps = Selenium::WebDriver::Remote::Capabilities.chrome(accept_insecure_certs: true)
         browser_opts = Selenium::WebDriver::Chrome::Options.new(args: ['--foo'],
                                                                 page_load_strategy: 'eager')
-        options = Options.chrome(selenium_options: [caps, browser_opts])
 
-        expect(options.accept_insecure_certs).to eq true
-        expect(options.page_load_strategy).to eq 'eager'
-        expect(options.selenium_options.dig('goog:chromeOptions', 'args')).to eq ['--foo']
+        ClimateControl.modify BUILD_TAG: '', BUILD_NAME: 'TEMP BUILD', BUILD_NUMBER: '11' do
+          @options = Options.chrome(selenium_options: [caps, browser_opts])
+        end
+        expect(@options.accept_insecure_certs).to eq true
+        expect(@options.page_load_strategy).to eq 'eager'
+        expect(@options.selenium_options.dig('goog:chromeOptions', 'args')).to eq ['--foo']
 
         expected_caps = {'browserName' => 'chrome',
                          'browserVersion' => 'latest',
@@ -648,7 +605,9 @@ module SauceBindings
                                              'accessKey' => '123'},
                          'goog:chromeOptions' => {'args' => ['--foo']}}
 
-        expect(options.capabilities).to eq expected_caps
+        ClimateControl.modify(**SAUCE_ACCESS) do
+          expect(@options.capabilities).to eq expected_caps
+        end
       end
     end
   end

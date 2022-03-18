@@ -420,15 +420,10 @@ class TestCapabilitiesCreation(object):
         expected_capabilities = {'browserName': 'internet explorer',
                                  'browserVersion': 'latest',
                                  'platformName': 'Windows 10',
+                                 'pageLoadStrategy': 'normal',
                                  'se:ieOptions': {'ie.browserCommandLineSwitches': '--foo'},
                                  'sauce:options': {'build': 'Sample Build Name',
                                                    'username': os.getenv('SAUCE_USERNAME'),
-                                                   'accessKey': os.getenv('SAUCE_ACCESS_KEY')},
-                                 'platform': 'WINDOWS',
-                                 'version': ''
-                                 }
-
-        if seleniumVersion[0] == '4':
-            expected_capabilities['pageLoadStrategy'] = 'normal'
+                                                   'accessKey': os.getenv('SAUCE_ACCESS_KEY')}                                 }
 
         assert options.to_capabilities() == expected_capabilities

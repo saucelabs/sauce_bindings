@@ -426,14 +426,10 @@ class TestCapabilitiesCreation(object):
         expected_capabilities = {'browserName': 'chrome',
                                  'browserVersion': 'latest',
                                  'platformName': 'Windows 10',
+                                 'pageLoadStrategy': 'normal',
                                  'goog:chromeOptions': {'args': ['--foo'], 'extensions': []},
                                  'sauce:options': {'build': 'Sample Build Name',
                                                    'username': os.getenv('SAUCE_USERNAME'),
-                                                   'accessKey': os.getenv('SAUCE_ACCESS_KEY')},
-                                 'platform': 'ANY',
-                                 'version': ''}
-
-        if seleniumVersion[0] == '4':
-            expected_capabilities['pageLoadStrategy'] = 'normal'
+                                                   'accessKey': os.getenv('SAUCE_ACCESS_KEY')}}
 
         assert options.to_capabilities() == expected_capabilities

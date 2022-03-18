@@ -3,19 +3,10 @@ import os
 import pytest
 
 from saucebindings.options import SauceOptions
-from selenium.webdriver import __version__ as seleniumVersion
 from selenium.webdriver.edge.options import Options as EdgeOptions
-
-class TestEdge(object):
-
-    @pytest.mark.skipif(seleniumVersion[0] == '4', reason="Chromium Edge requires Selenium 4")
-    def test_selenium3_error(self):
-        with pytest.raises(NotImplementedError):
-            SauceOptions.edge()
 
 class TestInit(object):
 
-    @pytest.mark.skipif(seleniumVersion[0] == '3', reason="requires Selenium 4")
     def test_defaults(self):
         sauce = SauceOptions.edge()
 
@@ -23,7 +14,6 @@ class TestInit(object):
         assert sauce.browser_version == 'latest'
         assert sauce.platform_name == 'Windows 10'
 
-    @pytest.mark.skipif(seleniumVersion[0] == '3', reason="requires Selenium 4")
     def test_accepts_browser_version_platform_name(self):
         sauce = SauceOptions.edge(browserVersion='75.0', platformName='macOS 10.13')
 
@@ -31,7 +21,6 @@ class TestInit(object):
         assert sauce.browser_version == '75.0'
         assert sauce.platform_name == 'macOS 10.13'
 
-    @pytest.mark.skipif(seleniumVersion[0] == '3', reason="requires Selenium 4")
     def test_accepts_w3c_values_with_dict(self):
         timeouts = {'implicit': 1,
                     'pageLoad': 59,
@@ -52,7 +41,6 @@ class TestInit(object):
         assert sauce.strict_file_interactability is True
         assert sauce.timeouts == timeouts
 
-    @pytest.mark.skipif(seleniumVersion[0] == '3', reason="requires Selenium 4")
     def test_accepts_w3c_values_as_params(self):
         timeouts = {'implicit': 1,
                     'pageLoad': 59,
@@ -72,7 +60,6 @@ class TestInit(object):
         assert sauce.strict_file_interactability is True
         assert sauce.timeouts == timeouts
 
-    @pytest.mark.skipif(seleniumVersion[0] == '3', reason="requires Selenium 4")
     def test_accepts_sauce_values_with_dict(self):
         options = {'build': 'bar',
                    'edgedriverVersion': "71",
@@ -125,7 +112,6 @@ class TestInit(object):
         assert sauce.tunnel_identifier == 'foobar'
         assert sauce.video_upload_on_pass is False
 
-    @pytest.mark.skipif(seleniumVersion[0] == '3', reason="requires Selenium 4")
     def test_accepts_sauce_values_as_params(self):
         custom_data = {'foo': 'foo',
                        'bar': 'bar'}
@@ -177,7 +163,6 @@ class TestInit(object):
         assert sauce.tunnel_identifier == 'foobar'
         assert sauce.video_upload_on_pass is False
 
-    @pytest.mark.skipif(seleniumVersion[0] == '3', reason="requires Selenium 4")
     def test_accepts_selenium_browser_options_instance(self):
         options = EdgeOptions()
         options.add_argument('--foo')
@@ -187,7 +172,6 @@ class TestInit(object):
         assert sauce.browser_name == 'MicrosoftEdge'
         assert sauce.selenium_options['ms:edgeOptions'] == {'args': ['--foo'], 'extensions': []}
 
-    @pytest.mark.skipif(seleniumVersion[0] == '3', reason="requires Selenium 4")
     def test_accepts_w3c_sauce_options_capabilities(self):
         browser_options = EdgeOptions()
         browser_options.add_argument('--foo')
@@ -208,7 +192,6 @@ class TestInit(object):
         assert sauce.command_timeout == 2
         assert sauce.selenium_options['ms:edgeOptions'] == {'args': ['--foo'], 'extensions': []}
 
-    @pytest.mark.skipif(seleniumVersion[0] == '3', reason="requires Selenium 4")
     def test_default_build_name(self):
         os.environ['BUILD_TAG'] = ' '
         os.environ['BUILD_NAME'] = 'BUILD NAME'
@@ -222,12 +205,10 @@ class TestInit(object):
         os.environ.pop("BUILD_NAME")
         os.environ.pop("BUILD_NUMBER")
 
-    @pytest.mark.skipif(seleniumVersion[0] == '3', reason="requires Selenium 4")
     def test_argument_error_as_param(self):
         with pytest.raises(AttributeError):
             SauceOptions.edge(foo='Bar')
 
-    @pytest.mark.skipif(seleniumVersion[0] == '3', reason="requires Selenium 4")
     def test_argument_error_from_dict(self):
         options = {'foo': 'Bar'}
         with pytest.raises(AttributeError):
@@ -236,7 +217,6 @@ class TestInit(object):
 
 class TestSettingSpecificOptions(object):
 
-    @pytest.mark.skipif(seleniumVersion[0] == '3', reason="requires Selenium 4")
     def test_w3c_options(self):
         timeouts = {'implicit': 1,
                     'pageLoad': 59,
@@ -262,7 +242,6 @@ class TestSettingSpecificOptions(object):
         assert options.strict_file_interactability is True
         assert options.timeouts == timeouts
 
-    @pytest.mark.skipif(seleniumVersion[0] == '3', reason="requires Selenium 4")
     def test_sauce_options(self):
         prerun = {'executable': 'http://url.to/your/executable.exe',
                   'args': ['--silent', '-a', '-q'],
@@ -314,14 +293,12 @@ class TestSettingSpecificOptions(object):
         assert options.tunnel_identifier == 'tunnelname'
         assert options.video_upload_on_pass is False
 
-    @pytest.mark.skipif(seleniumVersion[0] == '3', reason="requires Selenium 4")
     def test_setting_browser_name(self):
         options = SauceOptions.edge()
 
         with pytest.raises(AttributeError):
             options.browser_name = 'MicrosoftEdge'
 
-    @pytest.mark.skipif(seleniumVersion[0] == '3', reason="requires Selenium 4")
     def test_setting_invalid_option(self):
         options = SauceOptions.edge()
 
@@ -331,7 +308,6 @@ class TestSettingSpecificOptions(object):
 
 class TestCapabilitiesCreation(object):
 
-    @pytest.mark.skipif(seleniumVersion[0] == '3', reason="requires Selenium 4")
     def test_capabilities_for_w3c(self):
         options = SauceOptions.edge()
 
@@ -358,11 +334,12 @@ class TestCapabilitiesCreation(object):
                                  'timeouts': {'implicit': 1,
                                               'pageLoad': 59,
                                               'script': 29},
-                                 'sauce:options': {'build': 'Build Name'}}
+                                 'sauce:options': {'build': 'Build Name',
+                                                   'username': os.getenv('SAUCE_USERNAME'),
+                                                   'accessKey': os.getenv('SAUCE_ACCESS_KEY')}}
 
         assert options.to_capabilities() == expected_capabilities
 
-    @pytest.mark.skipif(seleniumVersion[0] == '3', reason="requires Selenium 4")
     def test_capabilities_for_sauce(self):
         prerun = {'executable': 'http://url.to/your/executable.exe',
                   'args': ['--silent', '-a', '-q'],
@@ -416,11 +393,12 @@ class TestCapabilitiesCreation(object):
                                                    'tags': ['foo', 'bar'],
                                                    'timeZone': 'San Francisco',
                                                    'tunnelIdentifier': 'tunnelname',
-                                                   'videoUploadOnPass': False}}
+                                                   'videoUploadOnPass': False,
+                                                   'username': os.getenv('SAUCE_USERNAME'),
+                                                   'accessKey': os.getenv('SAUCE_ACCESS_KEY')}}
 
         assert options.to_capabilities() == expected_capabilities
 
-    @pytest.mark.skipif(seleniumVersion[0] == '3', reason="requires Selenium 4")
     def test_capabilities_for_selenium(self):
         browser_options = EdgeOptions()
         browser_options.add_argument('--foo')
@@ -431,13 +409,10 @@ class TestCapabilitiesCreation(object):
         expected_capabilities = {'browserName': 'MicrosoftEdge',
                                  'browserVersion': 'latest',
                                  'platformName': 'Windows 10',
+                                 'pageLoadStrategy': 'normal',
                                  'ms:edgeOptions': {'args': ['--foo'], 'extensions': []},
-                                 'sauce:options': {'build': 'Sample Build Name'},
-                                 'platform': 'ANY',
-                                 'version': ''}
-
-        if seleniumVersion[0] == '4':
-            expected_capabilities['pageLoadStrategy'] = 'normal'
-            expected_capabilities['ms:edgeChromium'] = True
+                                 'sauce:options': {'build': 'Sample Build Name',
+                                                   'username': os.getenv('SAUCE_USERNAME'),
+                                                   'accessKey': os.getenv('SAUCE_ACCESS_KEY')}}
 
         assert options.to_capabilities() == expected_capabilities

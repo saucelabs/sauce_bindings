@@ -477,17 +477,13 @@ class TestCapabilitiesCreation(object):
         expected_capabilities = {'browserName': 'firefox',
                                  'browserVersion': 'latest',
                                  'platformName': 'Windows 10',
+                                 'pageLoadStrategy': 'normal',
+                                 'moz:debuggerAddress': True,
                                  'moz:firefoxOptions': {'args': ['--foo']},
                                  'sauce:options': {'build': 'Sample Build Name',
                                                    'username': os.getenv('SAUCE_USERNAME'),
                                                    'accessKey': os.getenv('SAUCE_ACCESS_KEY')},
                                  'acceptInsecureCerts': True
                                  }
-
-        if seleniumVersion[0] == '4':
-            expected_capabilities['pageLoadStrategy'] = 'normal'
-            expected_capabilities['moz:debuggerAddress'] = True
-        else:
-            expected_capabilities['marionette'] = True
 
         assert options.to_capabilities() == expected_capabilities

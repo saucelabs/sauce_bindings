@@ -67,6 +67,10 @@ class SauceOptions(object):
 
     @classmethod
     def ie(cls, **kwargs):
+        if 'platformName' not in kwargs:
+            kwargs['platformName'] = 'Windows 10'
+        if 'seleniumOptions' in kwargs:
+            kwargs['seleniumOptions'].platform_name = 'Windows 10'
         return cls('internet explorer', validOptions=Configs().ieConfigs(), **kwargs)
 
     @classmethod

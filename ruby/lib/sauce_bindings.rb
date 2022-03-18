@@ -11,3 +11,10 @@ require 'sauce_bindings/edge_configurations'
 require 'sauce_bindings/firefox_configurations'
 require 'sauce_bindings/ie_configurations'
 require 'sauce_bindings/safari_configurations'
+require 'sauce_bindings/logger'
+
+module SauceBindings
+  def self.logger
+    @logger ||= Logger.new
+  end
+end

@@ -66,8 +66,9 @@ module SauceBindings
       valid_options = opts.delete(:valid_options)
       if valid_options.nil?
         valid_options = SAUCE + W3C
-        warn 'Using `Options.new(opts)` directly is deprecated, use static methods for desired browser instead; ' \
-        'e.g., `Options.chrome(opts)` or `Options.safari(opts)'
+        SauceBindings.logger.deprecate('Using `Options.new(opts)` directly',
+                                       'static methods for desired browser',
+                                       id: :options_init) { '(e.g., `Options.chrome(opts)`)' }
       end
 
       create_variables(valid_options, opts)
@@ -134,8 +135,11 @@ module SauceBindings
         value.as_json
       elsif key == :timeouts
         if value
-          warn ':timeouts is deprecated, use :implicit_wait_timeout, :page_load_timeout or :script_timeout directly; ' \
-          '(ensure the values are set as seconds not milliseconds)'
+          SauceBindings.logger.deprecate(':timeouts',
+                                         ':implicit_wait_timeout, :page_load_timeout or :script_timeout;',
+                                         id: :timeouts) do
+            '(ensure the values are set as seconds not milliseconds)'
+          end
           value.transform_keys do |old_key|
             self.class.camel_case(old_key)
           end

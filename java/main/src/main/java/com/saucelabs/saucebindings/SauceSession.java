@@ -2,10 +2,15 @@ package com.saucelabs.saucebindings;
 
 import com.deque.html.axecore.results.Results;
 import com.deque.html.axecore.selenium.AxeBuilder;
+import com.google.common.collect.ImmutableMap;
 import com.saucelabs.saucebindings.options.BaseConfigurations;
 import com.saucelabs.saucebindings.options.SauceOptions;
+import com.saucelabs.saucerest.SauceREST;
 import lombok.Getter;
 import lombok.Setter;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -13,13 +18,17 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 public class SauceSession {
     @Getter protected RemoteWebDriver driver;
     @Getter @Setter private DataCenter dataCenter = DataCenter.US_WEST;
     @Getter private final SauceOptions sauceOptions;
     @Setter private URL sauceUrl;
-    @Getter private String result;
+    private String result;
+    @Getter private Boolean passed;
+    @Getter private String sessionID;
+    private SauceREST sauceREST;
 
     public SauceSession() {
         this(new SauceOptions());
@@ -46,6 +55,8 @@ public class SauceSession {
      */
     public RemoteWebDriver start() {
         this.driver = createRemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities());
+        sessionID = driver.getSessionId().toString();
+        sauceREST = new SauceREST(System.getenv("SAUCE_USERNAME"), System.getenv("SAUCE_ACCESS_KEY"), "US");
         return driver;
 	}
 
@@ -114,8 +125,7 @@ public class SauceSession {
      */
     public void stop(Boolean passed) {
         if (this.driver != null) {
-            String update = passed ? "passed" : "failed";
-            updateResult(update);
+            updateResult(passed);
             quit();
         }
     }
@@ -208,13 +218,14 @@ public class SauceSession {
      * This allows dynamially updating if necessary (e.g. name based on discovered state).
      *
      * @param name the test name
-     * @see <a href="https://docs.saucelabs.com/basics/test-config-annotation/test-annotation/#methods">
-     *     Test Annotation Methods</a>
+     * @see <a href="https://docs.saucelabs.com/dev/api/jobs/#update-a-job">
+     *     Update A Job</a>
      * @see BaseConfigurations#setName(String)
      */
     public void changeTestName(String name) {
         validateSessionStarted("changeName()");
-        driver.executeScript("sauce:job-name=" + name);
+        Map<String, Object> nameChange = ImmutableMap.of("name", name);
+        sauceREST.updateJobInfo(sessionID, nameChange);
     }
 
     /**
@@ -222,14 +233,79 @@ public class SauceSession {
      * This allows updating dynamically based on information available after starting session.
      *
      * @param tags the tags to associate with the test
-     * @see <a href="https://docs.saucelabs.com/basics/test-config-annotation/test-annotation/#methods">
-     *     Test Annotation Methods</a>
+     * @see <a href="https://docs.saucelabs.com/dev/api/jobs/#update-a-job">
+     *     Update A Job</a>
      * @see BaseConfigurations#setTags(List)
      */
     public void addTags(List<String> tags) {
         validateSessionStarted("setTags()");
-        String tagString = String.join(",", tags);
-        driver.executeScript("sauce:job-tags=" + tagString);
+        Map<String, Object> newTags = ImmutableMap.of("tags", tags);
+        sauceREST.updateJobInfo(sessionID, newTags);
+    }
+
+    /**
+     * This is typically set in SauceOptions before starting the Session.
+     * This allows updating dynamically based on information available after starting session.
+     *
+     * @param data the key value pairs for custom data to store about test
+     * @see <a href="https://docs.saucelabs.com/dev/api/jobs/#update-a-job">
+     *     Update A Job</a>
+     * @see BaseConfigurations#setTags(List)
+     */
+    public void addCustomData(Map<String, Object> data) {
+        validateSessionStarted("addCustomData()");
+        Map<String, Object> newData = ImmutableMap.of("custom-data", data);
+        sauceREST.updateJobInfo(sessionID, newData);
+    }
+
+    /**
+     * This is typically set in SauceOptions before starting the Session.
+     * This allows updating dynamically based on information available after starting session.
+     *
+     * @param visibility who can see the test in the Sauce Labs UI
+     * @see <a href="https://docs.saucelabs.com/dev/api/jobs/#update-a-job">
+     *     Update A Job</a>
+     * @see BaseConfigurations#setJobVisibility(JobVisibility)
+     */
+    public void changeTestVisibility(JobVisibility visibility) {
+        validateSessionStarted("changeTestVisibility()");
+        Map<String, Object> visibilityChange = ImmutableMap.of("public", visibility.toString());
+        sauceREST.updateJobInfo(sessionID, visibilityChange);
+    }
+
+    /**
+     * This completely removes all traces of the test from Sauce Labs.
+     *
+     * @see <a href="https://docs.saucelabs.com/dev/api/jobs/#delete-a-job">
+     *     Delete A Job</a>
+     * @return
+     */
+    // This is not working in SauceREST, so do not want to release it in Bindings
+    public void deleteTest() {
+        validateSessionStarted("deleteTest()");
+        sauceREST.stopJob(sessionID);
+        try {
+            Thread.sleep(6000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        sauceREST.deleteJob(sessionID);
+        driver = null;
+    }
+
+    public JSONObject getTestDetails() {
+        validateSessionStarted("getTestDetails()");
+        try {
+            return (JSONObject) (new JSONParser()).parse(sauceREST.getJobInfo(sessionID));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Assets assets() {
+        validateSessionEnded("assets()");
+
+        return new Assets(sessionID, sauceREST);
     }
 
     /**
@@ -252,9 +328,21 @@ public class SauceSession {
         return new RemoteWebDriver(url, capabilities);
     }
 
-    private void updateResult(String result) {
-        this.result = result;
-        getDriver().executeScript("sauce:job-result=" + result);
+    /**
+     * @deprecated use getPassed() instead
+     * @return "passed" or "failed" depending on results of test
+     */
+    @Deprecated
+    public String getResult() {
+        return this.result;
+    }
+
+    private void updateResult(Boolean passed) {
+        this.passed = passed;
+        this.result = passed ? "passed" : "failed";
+
+        Map<String, Object> results = ImmutableMap.of("passed", passed);
+        sauceREST.updateJobInfo(sessionID, results);
 
         // Add output for the Sauce OnDemand Jenkins plugin
         // The first print statement will automatically populate links on Jenkins to Sauce
@@ -268,8 +356,15 @@ public class SauceSession {
     }
 
     private void validateSessionStarted(String method) {
-        if (driver == null) {
+        if (sessionID == null) {
             throw new SauceSessionNotStartedException(method);
+        }
+    }
+
+    private void validateSessionEnded(String method) {
+        validateSessionStarted(method);
+        if (driver != null) {
+            throw new SauceSessionNotEndedException(method);
         }
     }
 

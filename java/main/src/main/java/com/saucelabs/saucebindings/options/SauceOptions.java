@@ -1,6 +1,12 @@
 package com.saucelabs.saucebindings.options;
 
-import com.saucelabs.saucebindings.*;
+import com.saucelabs.saucebindings.Browser;
+import com.saucelabs.saucebindings.PageLoadStrategy;
+import com.saucelabs.saucebindings.SaucePlatform;
+import com.saucelabs.saucebindings.SauceSession;
+import com.saucelabs.saucebindings.TimeoutStore;
+import com.saucelabs.saucebindings.Timeouts;
+import com.saucelabs.saucebindings.UnhandledPromptBehavior;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -192,9 +198,27 @@ public class SauceOptions extends BaseOptions {
         capabilities = new MutableCapabilities(options.asMap());
         capabilityManager = new CapabilityManager(this);
         sauceLabsOptions = new SauceLabsOptions();
+
+        processSauceOptions(options.getCapability("sauce:options"));
+
         if (options.getCapability("browserName") != null) {
             setCapability("browserName", options.getCapability("browserName"));
         }
+    }
+
+    private void processSauceOptions(Object sauceOptionsCap) {
+        Map<String, Object> sauceOptions = new HashMap<>();
+        if (sauceOptionsCap instanceof MutableCapabilities) {
+            MutableCapabilities sauceMutableCaps = (MutableCapabilities) sauceOptionsCap;
+            sauceOptions = sauceMutableCaps.asMap();
+        } else if (sauceOptionsCap instanceof Map) {
+            // In case Immutable Map
+            sauceOptions = new HashMap<>((Map<? extends String, ?>) sauceOptionsCap);
+        }
+
+        sauceOptions.remove("username");
+        sauceOptions.remove("accessKey");
+        sauce().mergeCapabilities(sauceOptions);
     }
 
     /**

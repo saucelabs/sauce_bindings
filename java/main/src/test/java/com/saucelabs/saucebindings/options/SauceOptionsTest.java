@@ -1,5 +1,6 @@
 package com.saucelabs.saucebindings.options;
 
+import com.google.common.collect.ImmutableMap;
 import com.saucelabs.saucebindings.*;
 import lombok.SneakyThrows;
 import org.junit.Assert;
@@ -8,6 +9,7 @@ import org.junit.Test;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.openqa.selenium.MutableCapabilities;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.yaml.snakeyaml.Yaml;
 
@@ -152,6 +154,36 @@ public class SauceOptionsTest {
         assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
         assertEquals("tunnelname", sauceOptions.sauce().getTunnelIdentifier());
         assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());
+    }
+
+    @Test
+    public void acceptsSauceOptionsInSeOptions() {
+        FirefoxOptions seOpts = new FirefoxOptions();
+        seOpts.setCapability("sauce:options",
+                ImmutableMap.of("username", System.getenv("SAUCE_USERNAME"),
+                        "accessKey", System.getenv("SAUCE_ACCESS_KEY"),
+                        "build", "Build Name",
+                        "maxDuration", 300));
+
+        SauceOptions sauceOptions = new SauceOptions(seOpts);
+        MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
+
+        MutableCapabilities expectedCapabilities = new MutableCapabilities();
+        expectedCapabilities.setCapability("browserName", "firefox");
+        expectedCapabilities.setCapability("browserVersion", "latest");
+        expectedCapabilities.setCapability("platformName", "Windows 10");
+        expectedCapabilities.setCapability("acceptInsecureCerts", true);
+
+        MutableCapabilities sauceCapabilities = new MutableCapabilities();
+        sauceCapabilities.setCapability("build", "Build Name");
+        sauceCapabilities.setCapability("maxDuration", 300);
+        sauceCapabilities.setCapability("username", SystemManager.get("SAUCE_USERNAME"));
+        sauceCapabilities.setCapability("accessKey", SystemManager.get("SAUCE_ACCESS_KEY"));
+        expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
+        expectedCapabilities.setCapability("moz:firefoxOptions", new HashMap<>());
+        expectedCapabilities.setCapability("moz:debuggerAddress", true);
+
+        assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
     }
 
     @Test

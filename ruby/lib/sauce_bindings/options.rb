@@ -74,7 +74,7 @@ module SauceBindings
       create_variables(valid_options, opts)
       @selenium_options = se_options.map(&:as_json).inject(:merge) || {}
       parse_selenium_options(se_options)
-      @build ||= build_name
+      @build ||= @selenium_options.dig('sauce:options', 'build') || build_name
 
       @browser_name ||= selenium_options['browserName'] || 'chrome'
       @platform_name ||= 'Windows 10'
@@ -88,7 +88,7 @@ module SauceBindings
         caps[self.class.camel_case(key)] = value unless value.nil?
       end
 
-      caps['sauce:options'] = {}
+      caps['sauce:options'] ||= {}
       caps['sauce:options']['username'] = ENV['SAUCE_USERNAME'] ||
                                           raise(ArgumentError, "needs username; use `ENV['SAUCE_USERNAME']`")
       caps['sauce:options']['accessKey'] = ENV['SAUCE_ACCESS_KEY'] ||

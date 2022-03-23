@@ -609,6 +609,37 @@ module SauceBindings
           expect(@options.capabilities).to eq expected_caps
         end
       end
+
+      it 'correctly generates capabilities for selenium object with Sauce values' do
+        caps = Selenium::WebDriver::Remote::Capabilities.chrome(accept_insecure_certs: true)
+        browser_opts = Selenium::WebDriver::Chrome::Options.new(args: ['--foo'],
+                                                                page_load_strategy: 'eager',
+                                                                'sauce:options': {username: ENV['SAUCE_USERNAME'],
+                                                                                  access_key: ENV['SAUCE_ACCESS_KEY'],
+                                                                                  build: 'Build Name',
+                                                                                  max_duration: 300})
+
+        @options = Options.chrome(selenium_options: [caps, browser_opts])
+        expect(@options.accept_insecure_certs).to eq true
+        expect(@options.page_load_strategy).to eq 'eager'
+        expect(@options.selenium_options.dig('goog:chromeOptions', 'args')).to eq ['--foo']
+
+        expected_caps = {'browserName' => 'chrome',
+                         'browserVersion' => 'latest',
+                         'platformName' => 'Windows 10',
+                         'acceptInsecureCerts' => true,
+                         'pageLoadStrategy' => 'eager',
+                         'sauce:options' => {'build' => 'Build Name',
+                                             'username' => 'foo',
+                                             'accessKey' => '123',
+                                             'maxDuration' => 300},
+                         'goog:chromeOptions' => {'args' => ['--foo']}}
+
+        ClimateControl.modify(**SAUCE_ACCESS) do
+          expect(@options.capabilities).to eq expected_caps
+        end
+      end
+
     end
   end
 end

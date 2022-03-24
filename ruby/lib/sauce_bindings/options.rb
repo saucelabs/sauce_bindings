@@ -52,6 +52,12 @@ module SauceBindings
                      Selenium::WebDriver::IE::Options => 'internet explorer',
                      Selenium::WebDriver::Safari::Options => 'safari'}.freeze
 
+    METHOD_NAMES = {Selenium::WebDriver::Chrome::Options => 'chrome',
+                    Selenium::WebDriver::Edge::Options => 'edge',
+                    Selenium::WebDriver::Firefox::Options => 'firefox',
+                    Selenium::WebDriver::IE::Options => 'ie',
+                    Selenium::WebDriver::Safari::Options => 'safari'}.freeze
+
     W3C = %i[browser_name browser_version platform_name accept_insecure_certs page_load_strategy proxy
              set_window_rect timeouts unhandled_prompt_behavior strict_file_interactability].freeze
 

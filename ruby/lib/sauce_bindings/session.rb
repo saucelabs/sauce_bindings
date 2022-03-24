@@ -16,7 +16,12 @@ module SauceBindings
     attr_accessor :http_client, :listener
 
     def initialize(options = nil, data_center: nil, http_client: nil, listener: nil)
-      @options = options || Options.chrome
+      @options = if options.is_a? Selenium::WebDriver::Options
+                   method_name = SauceBindings::Options::METHOD_NAMES[options.class]
+                   SauceBindings::Options.send(method_name, options)
+                 else
+                   options || Options.chrome
+                 end
       @http_client = http_client
       @listener = listener
 

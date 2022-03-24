@@ -48,7 +48,7 @@ module SauceBindings
         expect(@results[:capabilities].as_json).to eq expected_caps
       end
 
-      it 'uses provided Options class' do
+      it 'uses provided Sauce Options class' do
         ClimateControl.modify(**BUILD_ENV) do
           @sauce_opts = Options.chrome(browser_version: '123',
                                        platform_name: 'Mac',
@@ -62,6 +62,34 @@ module SauceBindings
                          'platformName' => 'Mac',
                          'sauce:options' => {'idleTimeout' => 4,
                                              'build' => 'TEMP BUILD: 11',
+                                             'username' => 'foo',
+                                             'accessKey' => '123'}}
+
+        ClimateControl.modify(**SAUCE_ACCESS) do
+          @results = session.to_selenium
+        end
+
+        expect(@results[:url]).to eq 'https://ondemand.us-west-1.saucelabs.com/wd/hub'
+        expect(@results[:capabilities].as_json).to eq expected_caps
+      end
+
+      it 'uses provided Selenium Options class' do
+        browser_opts = Selenium::WebDriver::Chrome::Options.new(args: ['--foo'],
+                                                                page_load_strategy: 'eager',
+                                                                'sauce:options': {username: ENV['SAUCE_USERNAME'],
+                                                                                  access_key: ENV['SAUCE_ACCESS_KEY'],
+                                                                                  build: 'Build Name',
+                                                                                  max_duration: 300})
+
+        session = Session.new(browser_opts)
+
+        expected_caps = {'browserName' => 'chrome',
+                         'browserVersion' => 'latest',
+                         'platformName' => 'Windows 10',
+                         'pageLoadStrategy' => 'eager',
+                         'goog:chromeOptions' => {'args' => ['--foo']},
+                         'sauce:options' => {'maxDuration' => 300,
+                                             'build' => 'Build Name',
                                              'username' => 'foo',
                                              'accessKey' => '123'}}
 

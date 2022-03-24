@@ -15,7 +15,7 @@ module SauceBindings
 
       it 'accepts correct Selenium Options class' do
         browser_opts = Selenium::WebDriver::Chrome::Options.new(args: ['-foo'])
-        options = Options.chrome(selenium_options: browser_opts)
+        options = Options.chrome(browser_opts)
 
         expect(options.selenium_options.dig('goog:chromeOptions', 'args')).to eq ['-foo']
       end
@@ -23,12 +23,12 @@ module SauceBindings
       it 'does not accept incorrect Selenium Options class' do
         browser_opts = Selenium::WebDriver::Firefox::Options.new
 
-        expect { Options.chrome(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+        expect { Options.chrome(browser_opts) }.to raise_exception(ArgumentError)
       end
 
       it 'accepts correct Selenium Capabilities class' do
         browser_opts = Selenium::WebDriver::Remote::Capabilities.chrome(browser_version: '99')
-        options = Options.chrome(selenium_options: browser_opts)
+        options = Options.chrome(browser_opts)
 
         expect(options.browser_version).to eq '99'
       end
@@ -36,7 +36,7 @@ module SauceBindings
       it 'does not accept incorrect Selenium Capabilities class' do
         browser_opts = Selenium::WebDriver::Remote::Capabilities.firefox(browser_version: '99')
 
-        expect { Options.chrome(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+        expect { Options.chrome(browser_opts) }.to raise_exception(ArgumentError)
       end
 
       it 'accepts base configurations' do
@@ -79,7 +79,7 @@ module SauceBindings
 
       it 'accepts correct Selenium Options class' do
         browser_opts = Selenium::WebDriver::Edge::Options.new(args: ['-foo'])
-        options = Options.edge(selenium_options: browser_opts)
+        options = Options.edge(browser_opts)
 
         expect(options.selenium_options.dig('ms:edgeOptions', 'args')).to eq ['-foo']
       end
@@ -87,12 +87,12 @@ module SauceBindings
       it 'does not accept incorrect Selenium Options class' do
         browser_opts = Selenium::WebDriver::Chrome::Options.new
 
-        expect { Options.edge(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+        expect { Options.edge(browser_opts) }.to raise_exception(ArgumentError)
       end
 
       it 'accepts correct Selenium Capabilities class' do
         browser_opts = Selenium::WebDriver::Remote::Capabilities.edge(browser_version: '99')
-        options = Options.edge(selenium_options: browser_opts)
+        options = Options.edge(browser_opts)
 
         expect(options.browser_version).to eq '99'
       end
@@ -100,7 +100,7 @@ module SauceBindings
       it 'does not accept incorrect Selenium Capabilities class' do
         browser_opts = Selenium::WebDriver::Remote::Capabilities.chrome(browser_version: '99')
 
-        expect { Options.edge(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+        expect { Options.edge(browser_opts) }.to raise_exception(ArgumentError)
       end
 
       it 'accepts base configurations' do
@@ -143,7 +143,7 @@ module SauceBindings
 
       it 'accepts correct Selenium Options class' do
         browser_opts = Selenium::WebDriver::Firefox::Options.new(args: ['-foo'])
-        options = Options.firefox(selenium_options: browser_opts)
+        options = Options.firefox(browser_opts)
 
         expect(options.selenium_options.dig('moz:firefoxOptions', 'args')).to eq ['-foo']
       end
@@ -151,12 +151,12 @@ module SauceBindings
       it 'does not accept incorrect Selenium Options class' do
         browser_opts = Selenium::WebDriver::Chrome::Options.new
 
-        expect { Options.firefox(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+        expect { Options.firefox(browser_opts) }.to raise_exception(ArgumentError)
       end
 
       it 'accepts correct Selenium Capabilities class' do
         browser_opts = Selenium::WebDriver::Remote::Capabilities.firefox(browser_version: '99')
-        options = Options.firefox(selenium_options: browser_opts)
+        options = Options.firefox(browser_opts)
 
         expect(options.browser_version).to eq '99'
       end
@@ -164,7 +164,7 @@ module SauceBindings
       it 'does not accept incorrect Selenium Capabilities class' do
         browser_opts = Selenium::WebDriver::Remote::Capabilities.chrome(browser_version: '99')
 
-        expect { Options.firefox(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+        expect { Options.firefox(browser_opts) }.to raise_exception(ArgumentError)
       end
 
       it 'accepts base configurations' do
@@ -207,7 +207,7 @@ module SauceBindings
 
       it 'accepts correct Selenium Options class' do
         browser_opts = Selenium::WebDriver::IE::Options.new(args: ['-foo'])
-        options = Options.ie(selenium_options: browser_opts)
+        options = Options.ie(browser_opts)
 
         expect(options.selenium_options.dig('se:ieOptions', 'ie.browserCommandLineSwitches')).to eq '-foo'
       end
@@ -215,12 +215,12 @@ module SauceBindings
       it 'does not accept incorrect Selenium Options class' do
         browser_opts = Selenium::WebDriver::Chrome::Options.new
 
-        expect { Options.ie(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+        expect { Options.ie(browser_opts) }.to raise_exception(ArgumentError)
       end
 
       it 'accepts correct Selenium Capabilities class' do
         browser_opts = Selenium::WebDriver::Remote::Capabilities.ie(browser_version: '99')
-        options = Options.ie(selenium_options: browser_opts)
+        options = Options.ie(browser_opts)
 
         expect(options.browser_version).to eq '99'
       end
@@ -228,7 +228,7 @@ module SauceBindings
       it 'does not accept incorrect Selenium Capabilities class' do
         browser_opts = Selenium::WebDriver::Remote::Capabilities.chrome(browser_version: '99')
 
-        expect { Options.ie(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+        expect { Options.ie(browser_opts) }.to raise_exception(ArgumentError)
       end
 
       it 'accepts base configurations' do
@@ -271,7 +271,7 @@ module SauceBindings
 
       it 'accepts correct Selenium Options class' do
         browser_opts = Selenium::WebDriver::Safari::Options.new(automatic_inspection: true)
-        options = Options.safari(selenium_options: browser_opts)
+        options = Options.safari(browser_opts)
 
         expect(options.selenium_options['safari:automaticInspection']).to eq true
       end
@@ -279,12 +279,12 @@ module SauceBindings
       it 'does not accept incorrect Selenium Options class' do
         browser_opts = Selenium::WebDriver::Chrome::Options.new
 
-        expect { Options.safari(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+        expect { Options.safari(browser_opts) }.to raise_exception(ArgumentError)
       end
 
       it 'accepts correct Selenium Capabilities class' do
         browser_opts = Selenium::WebDriver::Remote::Capabilities.safari(browser_version: '99')
-        options = Options.safari(selenium_options: browser_opts)
+        options = Options.safari(browser_opts)
 
         expect(options.browser_version).to eq '99'
       end
@@ -292,7 +292,7 @@ module SauceBindings
       it 'does not accept incorrect Selenium Capabilities class' do
         browser_opts = Selenium::WebDriver::Remote::Capabilities.chrome(browser_version: '99')
 
-        expect { Options.safari(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+        expect { Options.safari(browser_opts) }.to raise_exception(ArgumentError)
       end
 
       it 'accepts base configurations' do
@@ -589,7 +589,7 @@ module SauceBindings
                                                                 page_load_strategy: 'eager')
 
         ClimateControl.modify BUILD_TAG: '', BUILD_NAME: 'TEMP BUILD', BUILD_NUMBER: '11' do
-          @options = Options.chrome(selenium_options: [caps, browser_opts])
+          @options = Options.chrome([caps, browser_opts])
         end
         expect(@options.accept_insecure_certs).to eq true
         expect(@options.page_load_strategy).to eq 'eager'
@@ -619,7 +619,7 @@ module SauceBindings
                                                                                   build: 'Build Name',
                                                                                   max_duration: 300})
 
-        @options = Options.chrome(selenium_options: [caps, browser_opts])
+        @options = Options.chrome([caps, browser_opts])
         expect(@options.accept_insecure_certs).to eq true
         expect(@options.page_load_strategy).to eq 'eager'
         expect(@options.selenium_options.dig('goog:chromeOptions', 'args')).to eq ['--foo']

@@ -9,35 +9,36 @@ module SauceBindings
         str.to_s.gsub(/_([a-z])/) { Regexp.last_match(1).upcase }
       end
 
-      def chrome(**opts)
+      def chrome(selenium_options = nil, **opts)
+        opts[:selenium_options] ||= selenium_options
         opts[:browser_name] = 'chrome'
         opts[:valid_options] = ChromeConfigurations.valid_options
         Options.new(**opts)
       end
 
-      def edge(**opts)
-        if Selenium::WebDriver::VERSION[0] == '3'
-          raise ArgumentError, 'Selenium 3 is not compatible with the Chromium based Microsoft Edge.'
-        end
-
+      def edge(selenium_options = nil, **opts)
+        opts[:selenium_options] ||= selenium_options
         opts[:browser_name] = 'MicrosoftEdge'
         opts[:valid_options] = EdgeConfigurations.valid_options
         Options.new(**opts)
       end
 
-      def firefox(**opts)
+      def firefox(selenium_options = nil, **opts)
+        opts[:selenium_options] ||= selenium_options
         opts[:browser_name] = 'firefox'
         opts[:valid_options] = FirefoxConfigurations.valid_options
         Options.new(**opts)
       end
 
-      def ie(**opts)
+      def ie(selenium_options = nil, **opts)
+        opts[:selenium_options] ||= selenium_options
         opts[:browser_name] = 'internet explorer'
         opts[:valid_options] = IEConfigurations.valid_options
         Options.new(**opts)
       end
 
-      def safari(**opts)
+      def safari(selenium_options = nil, **opts)
+        opts[:selenium_options] ||= selenium_options
         opts[:browser_name] = 'safari'
         opts[:platform_name] ||= 'macOS 11'
         opts[:valid_options] = SafariConfigurations.valid_options

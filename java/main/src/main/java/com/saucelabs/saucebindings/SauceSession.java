@@ -3,12 +3,19 @@ package com.saucelabs.saucebindings;
 import com.deque.html.axecore.results.Results;
 import com.deque.html.axecore.selenium.AxeBuilder;
 import com.saucelabs.saucebindings.options.BaseConfigurations;
+import com.saucelabs.saucebindings.options.InvalidSauceOptionsArgumentException;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.InvalidArgumentException;
+import org.openqa.selenium.MutableCapabilities;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariOptions;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -21,8 +28,23 @@ public class SauceSession {
     @Setter private URL sauceUrl;
     @Getter private String result;
 
+    private static SauceOptions castMutableCapabilities(MutableCapabilities capabilities) {
+        if (ChromeOptions.class.equals(capabilities.getClass())) {
+            return SauceOptions.chrome((ChromeOptions) capabilities).build();
+        } else if (EdgeOptions.class.equals(capabilities.getClass())) {
+            return SauceOptions.edge((EdgeOptions) capabilities).build();
+        } else if (FirefoxOptions.class.equals(capabilities.getClass())) {
+            return SauceOptions.firefox((FirefoxOptions) capabilities).build();
+        } else if (SafariOptions.class.equals(capabilities.getClass())) {
+            return SauceOptions.safari((SafariOptions) capabilities).build();
+        } else if (InternetExplorerOptions.class.equals(capabilities.getClass())) {
+            return SauceOptions.ie((InternetExplorerOptions) capabilities).build();
+        }
+        throw new InvalidSauceOptionsArgumentException("invalid browser option class: " + capabilities.getClass());
+    }
+
     public SauceSession() {
-        this(new SauceOptions());
+        this(SauceOptions.chrome().build());
     }
 
     /**
@@ -37,6 +59,16 @@ public class SauceSession {
 
     public SauceSession(SauceOptions options) {
         sauceOptions = options;
+    }
+
+    /**
+     * Ideally the end user creates an options class.
+     * This constructor makes it easier to convert from existing Selenium code if they do not.
+     *
+     * @param capabilities the instance of Configuration used to create the Options
+     */
+    public SauceSession(MutableCapabilities capabilities) {
+        this(castMutableCapabilities(capabilities));
     }
 
     /**

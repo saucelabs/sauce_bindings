@@ -182,6 +182,12 @@ public class SauceOptions extends BaseOptions {
         return sauceLabsOptions;
     }
 
+    /**
+     * This was created to be used by SauceSession, but SauceSession does something different now.
+     *
+     * @deprecated Use static browser method instead e.g., SauceOptions.chrome().build()
+     */
+    @Deprecated
     public SauceOptions() {
         this(new MutableCapabilities());
     }

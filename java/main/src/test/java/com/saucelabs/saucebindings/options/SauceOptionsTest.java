@@ -27,7 +27,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.openqa.selenium.UnexpectedAlertBehaviour.DISMISS;
 
 public class SauceOptionsTest {
-    private SauceOptions sauceOptions = new SauceOptions();
+    private SauceOptions sauceOptions = SauceOptions.chrome().build();
 
     @Rule
     public MockitoRule initRule = MockitoJUnit.rule();
@@ -165,7 +165,7 @@ public class SauceOptionsTest {
                         "build", "Build Name",
                         "maxDuration", 300));
 
-        SauceOptions sauceOptions = new SauceOptions(seOpts);
+        SauceOptions sauceOptions = SauceOptions.firefox(seOpts).build();
         MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
 
         MutableCapabilities expectedCapabilities = new MutableCapabilities();

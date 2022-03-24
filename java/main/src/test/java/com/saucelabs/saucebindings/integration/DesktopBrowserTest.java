@@ -29,8 +29,9 @@ public class DesktopBrowserTest {
 
     @Test
     public void runsUSEast() {
-        SauceOptions options = new SauceOptions();
-        options.setPlatformName(SaucePlatform.LINUX);
+        SauceOptions options = SauceOptions.chrome()
+                .setPlatformName(SaucePlatform.LINUX)
+                .build();
         session = new SauceSession(options);
         session.setDataCenter(DataCenter.US_EAST);
         driver = session.start();

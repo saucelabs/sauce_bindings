@@ -10,7 +10,7 @@ public class VisualTest {
     public void visualSession() {
 
         // 1. Create Visual Session object with minimum required
-        VisualSession session = new VisualSession("Example test name");
+        VisualSession session = new VisualSession("visualSessionTest");
 
         // 2. Start Session to get the driver
         RemoteWebDriver driver = session.start();
@@ -19,7 +19,7 @@ public class VisualTest {
         driver.get("https://www.saucedemo.com/");
 
         // 4. Take snapshot
-        session.takeSnapshot("Name of Snapshot");
+        session.takeSnapshot("snapshotName " + System.getProperty("java.version"));
 
         // 5. Stop the Session
         session.stop();

@@ -33,7 +33,7 @@ public class VisualOptionsTest {
         driver.get("https://www.saucedemo.com/");
 
         // 7. Take snapshot
-        session.takeSnapshot("Name of Snapshot");
+        session.takeSnapshot("mySnapshot");
 
         // 8. Stop the Session
         session.stop();

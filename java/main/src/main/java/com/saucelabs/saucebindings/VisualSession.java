@@ -47,8 +47,7 @@ public class VisualSession extends SauceSession {
 
     @Override
     public void stop(Boolean passed) {
-        String result = passed ? "passed" : "failed";
-        stop(result);
+        super.stop(passed);
     }
 
     @Override

@@ -58,7 +58,7 @@ public class VisualTest {
         driver = session.start();
 
         session.stop();
-        assertEquals("passed", session.getResult());
+        assertEquals("true", session.getResult());
     }
 
     @Test
@@ -67,6 +67,6 @@ public class VisualTest {
         driver = session.start();
 
         session.stop(false);
-        assertEquals("failed", session.getResult());
+        assertEquals("false", session.getResult());
     }
 }

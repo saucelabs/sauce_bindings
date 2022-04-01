@@ -19,7 +19,7 @@ public class VisualTest {
         driver.get("https://www.saucedemo.com/");
 
         // 4. Take snapshot
-        session.takeSnapshot("snapshotName " + System.getProperty("java.version"));
+        session.takeSnapshot("snapshotName");
 
         // 5. Stop the Session
         session.stop();

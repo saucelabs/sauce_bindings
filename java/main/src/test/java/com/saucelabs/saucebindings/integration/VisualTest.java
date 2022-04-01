@@ -5,6 +5,7 @@ import com.saucelabs.saucebindings.SauceVisualException;
 import com.saucelabs.saucebindings.VisualResults;
 import com.saucelabs.saucebindings.VisualSession;
 import com.saucelabs.saucebindings.VisualSnapshot;
+import com.saucelabs.saucebindings.options.VisualOptions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +46,9 @@ public class VisualTest {
 
     @Test
     public void getVisualResults() {
-        session = new VisualSession("VisualTest getVisualResults");
+        VisualOptions visualOptions = new VisualOptions("VisualTest getVisualResults");
+        visualOptions.setFailOnNewStates(false);
+        session = new VisualSession(visualOptions);
         driver = session.start();
 
         session.takeSnapshot("Blank");

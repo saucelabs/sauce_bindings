@@ -7,9 +7,9 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Map;
 
 public class VisualSession extends SauceSession {
-    private VisualResults visualResults;
     private final VisualOptions visualOptions;
 
     public VisualSession(String testName) {
@@ -38,20 +38,11 @@ public class VisualSession extends SauceSession {
     }
 
     public void newVisualTest(String testName) {
-        validateVisualStatus();
         driver.executeScript("/*@visual.init*/", testName);
     }
 
     public void takeSnapshot(String name) {
-        validateVisualStatus();
         driver.executeScript("/*@visual.snapshot*/", name);
-    }
-
-    public VisualResults getVisualResults() {
-        if (visualResults == null) {
-            this.visualResults = VisualResults.generate(driver);
-        }
-        return visualResults;
     }
 
     @Override
@@ -63,23 +54,16 @@ public class VisualSession extends SauceSession {
     @Override
     public void stop(String result) {
         if (driver != null) {
-            System.out.println(getVisualResults().getSummary());
             super.stop(result);
         }
     }
 
     public void stop() {
         if (driver != null) {
-            VisualResults results = getVisualResults();
-            System.out.println(results.getSummary());
-            String result = results.getPassed() ? "passed" : "failed";
+            Map<String, Object> results =
+                    (Map<String, Object>) driver.executeScript("/*@visual.end*/");
+            Boolean result = (Boolean) results.get("passed") ? true : false;
             super.stop(result);
-        }
-    }
-
-    private void validateVisualStatus() {
-        if (this.visualResults != null) {
-            throw new SauceVisualException("Can not execute Visual Commands after calling getVisualResults()");
         }
     }
 }

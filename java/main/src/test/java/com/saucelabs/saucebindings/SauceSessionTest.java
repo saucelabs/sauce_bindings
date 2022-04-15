@@ -2,6 +2,7 @@ package com.saucelabs.saucebindings;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.saucelabs.saucebindings.options.ChromeConfigurations;
 import com.saucelabs.saucebindings.options.InvalidSauceOptionsArgumentException;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import org.junit.Assert;
@@ -14,6 +15,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.MutableCapabilities;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -21,8 +23,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-
-import static org.junit.Assert.assertEquals;
 
 public class SauceSessionTest {
     private SauceOptions sauceOptions = Mockito.spy(SauceOptions.chrome().build());
@@ -89,7 +89,7 @@ public class SauceSessionTest {
         expectedCapabilities.setCapability("moz:firefoxOptions", new HashMap<>());
         expectedCapabilities.setCapability("moz:debuggerAddress", true);
 
-        assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
+        Assert.assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
     }
 
     @Test(expected = InvalidSauceOptionsArgumentException.class)

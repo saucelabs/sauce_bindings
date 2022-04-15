@@ -1,7 +1,14 @@
 package com.saucelabs.saucebindings.options;
 
 import com.google.common.collect.ImmutableMap;
-import com.saucelabs.saucebindings.*;
+import com.saucelabs.saucebindings.Browser;
+import com.saucelabs.saucebindings.JobVisibility;
+import com.saucelabs.saucebindings.PageLoadStrategy;
+import com.saucelabs.saucebindings.Prerun;
+import com.saucelabs.saucebindings.SaucePlatform;
+import com.saucelabs.saucebindings.SystemManager;
+import com.saucelabs.saucebindings.Timeouts;
+import com.saucelabs.saucebindings.UnhandledPromptBehavior;
 import lombok.SneakyThrows;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -9,7 +16,7 @@ import org.junit.Test;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.yaml.snakeyaml.Yaml;
 
@@ -22,10 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.openqa.selenium.UnexpectedAlertBehaviour.DISMISS;
-
 public class SauceOptionsTest {
     private SauceOptions sauceOptions = SauceOptions.chrome().build();
 
@@ -36,7 +39,7 @@ public class SauceOptionsTest {
     public void usesLatestChromeWindowsVersionsByDefault() {
         Assert.assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
         Assert.assertEquals(SaucePlatform.WINDOWS_10, sauceOptions.getPlatformName());
-        assertEquals("latest", sauceOptions.getBrowserVersion());
+        Assert.assertEquals("latest", sauceOptions.getBrowserVersion());
     }
 
     @Test
@@ -45,9 +48,9 @@ public class SauceOptionsTest {
         sauceOptions.setPlatformName(SaucePlatform.MAC_HIGH_SIERRA);
         sauceOptions.setBrowserVersion("68");
 
-        assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
-        assertEquals("68", sauceOptions.getBrowserVersion());
-        assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
+        Assert.assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
+        Assert.assertEquals("68", sauceOptions.getBrowserVersion());
+        Assert.assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
     }
 
     @Test
@@ -56,9 +59,9 @@ public class SauceOptionsTest {
                 .setBrowserVersion("68")
                 .setPlatformName(SaucePlatform.MAC_HIGH_SIERRA);
 
-        assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
-        assertEquals("68", sauceOptions.getBrowserVersion());
-        assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
+        Assert.assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
+        Assert.assertEquals("68", sauceOptions.getBrowserVersion());
+        Assert.assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
     }
 
     @Test
@@ -73,14 +76,14 @@ public class SauceOptionsTest {
         sauceOptions.timeout.setPageLoad(100000);
         sauceOptions.timeout.setScript(10000);
 
-        assertEquals(true, sauceOptions.getAcceptInsecureCerts());
-        assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
-        assertEquals(true, sauceOptions.getSetWindowRect());
-        assertEquals(UnhandledPromptBehavior.IGNORE, sauceOptions.getUnhandledPromptBehavior());
-        assertEquals(true, sauceOptions.getStrictFileInteractability());
-        assertEquals(Duration.ofSeconds(1), sauceOptions.getImplicitWaitTimeout());
-        assertEquals(Duration.ofSeconds(100), sauceOptions.getPageLoadTimeout());
-        assertEquals(Duration.ofSeconds(10), sauceOptions.getScriptTimeout());
+        Assert.assertEquals(true, sauceOptions.getAcceptInsecureCerts());
+        Assert.assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
+        Assert.assertEquals(true, sauceOptions.getSetWindowRect());
+        Assert.assertEquals(UnhandledPromptBehavior.IGNORE, sauceOptions.getUnhandledPromptBehavior());
+        Assert.assertEquals(true, sauceOptions.getStrictFileInteractability());
+        Assert.assertEquals(Duration.ofSeconds(1), sauceOptions.getImplicitWaitTimeout());
+        Assert.assertEquals(Duration.ofSeconds(100), sauceOptions.getPageLoadTimeout());
+        Assert.assertEquals(Duration.ofSeconds(10), sauceOptions.getScriptTimeout());
     }
 
     @Test
@@ -130,30 +133,30 @@ public class SauceOptionsTest {
         sauceOptions.sauce().setTunnelIdentifier("tunnelname");
         sauceOptions.sauce().setVideoUploadOnPass(false);
 
-        assertEquals(true, sauceOptions.sauce().getAvoidProxy());
-        assertEquals("Sample Build Name", sauceOptions.sauce().getBuild());
-        assertEquals(true, sauceOptions.sauce().getCapturePerformance());
-        assertEquals("71", sauceOptions.sauce().getChromedriverVersion());
-        assertEquals(Integer.valueOf(2), sauceOptions.sauce().getCommandTimeout());
-        assertEquals(customData, sauceOptions.sauce().getCustomData());
-        assertEquals(true, sauceOptions.sauce().getExtendedDebugging());
-        assertEquals(Integer.valueOf(3), sauceOptions.sauce().getIdleTimeout());
-        assertEquals("3.141.0", sauceOptions.sauce().getIedriverVersion());
-        assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
-        assertEquals("Test name", sauceOptions.sauce().getName());
-        assertEquals("Mommy", sauceOptions.sauce().getParentTunnel());
-        assertEquals(prerun, sauceOptions.sauce().getPrerun());
-        assertEquals(Integer.valueOf(0), sauceOptions.sauce().getPriority());
-        assertEquals(JobVisibility.TEAM, sauceOptions.sauce().getJobVisibility());
-        assertEquals(false, sauceOptions.sauce().getRecordLogs());
-        assertEquals(false, sauceOptions.sauce().getRecordScreenshots());
-        assertEquals(false, sauceOptions.sauce().getRecordVideo());
-        assertEquals("10x10", sauceOptions.sauce().getScreenResolution());
-        assertEquals("3.141.59", sauceOptions.sauce().getSeleniumVersion());
-        assertEquals(tags, sauceOptions.sauce().getTags());
-        assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
-        assertEquals("tunnelname", sauceOptions.sauce().getTunnelIdentifier());
-        assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());
+        Assert.assertEquals(true, sauceOptions.sauce().getAvoidProxy());
+        Assert.assertEquals("Sample Build Name", sauceOptions.sauce().getBuild());
+        Assert.assertEquals(true, sauceOptions.sauce().getCapturePerformance());
+        Assert.assertEquals("71", sauceOptions.sauce().getChromedriverVersion());
+        Assert.assertEquals(Integer.valueOf(2), sauceOptions.sauce().getCommandTimeout());
+        Assert.assertEquals(customData, sauceOptions.sauce().getCustomData());
+        Assert.assertEquals(true, sauceOptions.sauce().getExtendedDebugging());
+        Assert.assertEquals(Integer.valueOf(3), sauceOptions.sauce().getIdleTimeout());
+        Assert.assertEquals("3.141.0", sauceOptions.sauce().getIedriverVersion());
+        Assert.assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
+        Assert.assertEquals("Test name", sauceOptions.sauce().getName());
+        Assert.assertEquals("Mommy", sauceOptions.sauce().getParentTunnel());
+        Assert.assertEquals(prerun, sauceOptions.sauce().getPrerun());
+        Assert.assertEquals(Integer.valueOf(0), sauceOptions.sauce().getPriority());
+        Assert.assertEquals(JobVisibility.TEAM, sauceOptions.sauce().getJobVisibility());
+        Assert.assertEquals(false, sauceOptions.sauce().getRecordLogs());
+        Assert.assertEquals(false, sauceOptions.sauce().getRecordScreenshots());
+        Assert.assertEquals(false, sauceOptions.sauce().getRecordVideo());
+        Assert.assertEquals("10x10", sauceOptions.sauce().getScreenResolution());
+        Assert.assertEquals("3.141.59", sauceOptions.sauce().getSeleniumVersion());
+        Assert.assertEquals(tags, sauceOptions.sauce().getTags());
+        Assert.assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
+        Assert.assertEquals("tunnelname", sauceOptions.sauce().getTunnelIdentifier());
+        Assert.assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());
     }
 
     @Test
@@ -183,12 +186,12 @@ public class SauceOptionsTest {
         expectedCapabilities.setCapability("moz:firefoxOptions", new HashMap<>());
         expectedCapabilities.setCapability("moz:debuggerAddress", true);
 
-        assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
+        Assert.assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
     }
 
     @Test
     public void createsDefaultBuildName() {
-        assertNotNull(sauceOptions.sauce().getBuild());
+        Assert.assertNotNull(sauceOptions.sauce().getBuild());
     }
 
     @SneakyThrows
@@ -225,41 +228,41 @@ public class SauceOptionsTest {
         tags.add("bar");
         tags.add("foobar");
 
-        assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
-        assertEquals("68", sauceOptions.getBrowserVersion());
-        assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
-        assertEquals(true, sauceOptions.getAcceptInsecureCerts());
-        assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
-        assertEquals(true, sauceOptions.getSetWindowRect());
-        assertEquals(UnhandledPromptBehavior.ACCEPT, sauceOptions.getUnhandledPromptBehavior());
-        assertEquals(true, sauceOptions.getStrictFileInteractability());
-        assertEquals(Duration.ofSeconds(1), sauceOptions.getImplicitWaitTimeout());
-        assertEquals(Duration.ofSeconds(59), sauceOptions.getPageLoadTimeout());
-        assertEquals(Duration.ofSeconds(29), sauceOptions.getScriptTimeout());
-        assertEquals(true, sauceOptions.sauce().getAvoidProxy());
-        assertEquals("Sample Build Name", sauceOptions.sauce().getBuild());
-        assertEquals(true, sauceOptions.sauce().getCapturePerformance());
-        assertEquals("71", sauceOptions.sauce().getChromedriverVersion());
-        assertEquals(Integer.valueOf(2), sauceOptions.sauce().getCommandTimeout());
-        assertEquals(customData, sauceOptions.sauce().getCustomData());
-        assertEquals(true, sauceOptions.sauce().getExtendedDebugging());
-        assertEquals(Integer.valueOf(3), sauceOptions.sauce().getIdleTimeout());
-        assertEquals("3.141.0", sauceOptions.sauce().getIedriverVersion());
-        assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
-        assertEquals("Sample Test Name", sauceOptions.sauce().getName());
-        assertEquals("Mommy", sauceOptions.sauce().getParentTunnel());
-        assertEquals(prerun, sauceOptions.sauce().getPrerun());
-        assertEquals(Integer.valueOf(0), sauceOptions.sauce().getPriority());
-        assertEquals(JobVisibility.TEAM, sauceOptions.sauce().getJobVisibility());
-        assertEquals(false, sauceOptions.sauce().getRecordLogs());
-        assertEquals(false, sauceOptions.sauce().getRecordScreenshots());
-        assertEquals(false, sauceOptions.sauce().getRecordVideo());
-        assertEquals("10x10", sauceOptions.sauce().getScreenResolution());
-        assertEquals("3.141.59", sauceOptions.sauce().getSeleniumVersion());
-        assertEquals(tags, sauceOptions.sauce().getTags());
-        assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
-        assertEquals("tunnelname", sauceOptions.sauce().getTunnelIdentifier());
-        assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());
+        Assert.assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
+        Assert.assertEquals("68", sauceOptions.getBrowserVersion());
+        Assert.assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
+        Assert.assertEquals(true, sauceOptions.getAcceptInsecureCerts());
+        Assert.assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
+        Assert.assertEquals(true, sauceOptions.getSetWindowRect());
+        Assert.assertEquals(UnhandledPromptBehavior.ACCEPT, sauceOptions.getUnhandledPromptBehavior());
+        Assert.assertEquals(true, sauceOptions.getStrictFileInteractability());
+        Assert.assertEquals(Duration.ofSeconds(1), sauceOptions.getImplicitWaitTimeout());
+        Assert.assertEquals(Duration.ofSeconds(59), sauceOptions.getPageLoadTimeout());
+        Assert.assertEquals(Duration.ofSeconds(29), sauceOptions.getScriptTimeout());
+        Assert.assertEquals(true, sauceOptions.sauce().getAvoidProxy());
+        Assert.assertEquals("Sample Build Name", sauceOptions.sauce().getBuild());
+        Assert.assertEquals(true, sauceOptions.sauce().getCapturePerformance());
+        Assert.assertEquals("71", sauceOptions.sauce().getChromedriverVersion());
+        Assert.assertEquals(Integer.valueOf(2), sauceOptions.sauce().getCommandTimeout());
+        Assert.assertEquals(customData, sauceOptions.sauce().getCustomData());
+        Assert.assertEquals(true, sauceOptions.sauce().getExtendedDebugging());
+        Assert.assertEquals(Integer.valueOf(3), sauceOptions.sauce().getIdleTimeout());
+        Assert.assertEquals("3.141.0", sauceOptions.sauce().getIedriverVersion());
+        Assert.assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
+        Assert.assertEquals("Sample Test Name", sauceOptions.sauce().getName());
+        Assert.assertEquals("Mommy", sauceOptions.sauce().getParentTunnel());
+        Assert.assertEquals(prerun, sauceOptions.sauce().getPrerun());
+        Assert.assertEquals(Integer.valueOf(0), sauceOptions.sauce().getPriority());
+        Assert.assertEquals(JobVisibility.TEAM, sauceOptions.sauce().getJobVisibility());
+        Assert.assertEquals(false, sauceOptions.sauce().getRecordLogs());
+        Assert.assertEquals(false, sauceOptions.sauce().getRecordScreenshots());
+        Assert.assertEquals(false, sauceOptions.sauce().getRecordVideo());
+        Assert.assertEquals("10x10", sauceOptions.sauce().getScreenResolution());
+        Assert.assertEquals("3.141.59", sauceOptions.sauce().getSeleniumVersion());
+        Assert.assertEquals(tags, sauceOptions.sauce().getTags());
+        Assert.assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
+        Assert.assertEquals("tunnelname", sauceOptions.sauce().getTunnelIdentifier());
+        Assert.assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());
     }
 
     @Test(expected = InvalidSauceOptionsArgumentException.class)
@@ -340,9 +343,12 @@ public class SauceOptionsTest {
         sauceCapabilities.setCapability("username", SystemManager.get("SAUCE_USERNAME"));
         sauceCapabilities.setCapability("accessKey", SystemManager.get("SAUCE_ACCESS_KEY"));
         expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
+        expectedCapabilities.setCapability("goog:chromeOptions",
+                ImmutableMap.of("args", new ArrayList<>(),
+                        "extensions", new ArrayList<>()));
         MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
 
-        assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
+        Assert.assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
     }
 
     @Test
@@ -429,7 +435,7 @@ public class SauceOptionsTest {
         MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
 
         // toString() serializes the enums
-        assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
+        Assert.assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
     }
 
     @Test
@@ -437,7 +443,7 @@ public class SauceOptionsTest {
         FirefoxOptions firefoxOptions = new FirefoxOptions();
         firefoxOptions.addArguments("--foo");
         firefoxOptions.addPreference("foo", "bar");
-        firefoxOptions.setUnhandledPromptBehaviour(DISMISS);
+        firefoxOptions.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.DISMISS);
 
         sauceOptions = SauceOptions.firefox(firefoxOptions).build();
         sauceOptions.sauce().setBuild("Build Name");
@@ -455,7 +461,7 @@ public class SauceOptionsTest {
         expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
         MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
 
-        assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
+        Assert.assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
     }
 
     @Test
@@ -465,7 +471,7 @@ public class SauceOptionsTest {
 
         FirefoxOptions firefoxOptions = new FirefoxOptions();
         firefoxOptions.addArguments("--foo");
-        firefoxOptions.setUnhandledPromptBehaviour(DISMISS);
+        firefoxOptions.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.DISMISS);
 
         sauceOptions = SauceOptions.firefox(firefoxOptions).build();
 
@@ -507,6 +513,6 @@ public class SauceOptionsTest {
         expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
         MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
 
-        assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
+        Assert.assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
     }
 }

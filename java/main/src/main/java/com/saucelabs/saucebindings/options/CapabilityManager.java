@@ -3,7 +3,6 @@ package com.saucelabs.saucebindings.options;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Map;
 import java.util.Set;
 
 public class CapabilityManager {
@@ -32,11 +31,9 @@ public class CapabilityManager {
 
     /**
      * Dynamically sets the provided value onto the associated options instance
-     * Alternate way of setting values, primarily used as part of merge() class
      *
      * @param key   Name of the capability to set on the options instance
      * @param value Value of the capability to set on the options instance
-     * @see SauceOptions#mergeCapabilities(Map)
      */
     public void setCapability(String key, Object value) {
         try {
@@ -68,14 +65,13 @@ public class CapabilityManager {
     }
 
     /**
-     * This ensures that a parameter passed in by the mergeCapabilities method matches a valid enum
+     * This ensures that a parameter with an enum Type properly matches
      *
      * @param name      Which enum we are working with for better error message
      * @param values    Valid options for the provided capability
      * @param value     Value of the option we want to merge into the capabilities
-     * @see SauceOptions#mergeCapabilities(Map)
      */
-    public void validateCapability(String name, Set values, String value) {
+    public void validateCapability(String name, Set<String> values, String value) {
         if (!values.contains(value)) {
             String message = "\"" + value + "\" is not a valid " + name + ", please choose from: " + values;
             throw new InvalidSauceOptionsArgumentException(message);

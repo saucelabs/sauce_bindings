@@ -11,14 +11,12 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.util.List;
 
 public class AccessibilityTest {
-    private SauceSession session = new SauceSession();
+    private final SauceSession session = new SauceSession();
     private RemoteWebDriver webDriver;
 
     @After
     public void cleanUp() {
-        if (session != null) {
-            session.stop(true);
-        }
+        session.stop(true);
     }
 
     @Test

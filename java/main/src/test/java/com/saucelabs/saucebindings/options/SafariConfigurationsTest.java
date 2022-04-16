@@ -1,5 +1,6 @@
 package com.saucelabs.saucebindings.options;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.saucelabs.saucebindings.Browser;
 import com.saucelabs.saucebindings.JobVisibility;
@@ -13,9 +14,7 @@ import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.safari.SafariOptions;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class SafariConfigurationsTest {
@@ -50,35 +49,35 @@ public class SafariConfigurationsTest {
     public void errorsBadSafariOptionsCapability() {
         safariOptions.setCapability("invalid", "capability");
 
-        SauceOptions.safari(safariOptions).build();
+        SauceOptions.safari(safariOptions);
     }
 
     @Test(expected = InvalidSauceOptionsArgumentException.class)
     public void errorsSafariOptionsBrowserMismatch() {
         safariOptions.setCapability("browserName", "firefox");
 
-        SauceOptions.safari(safariOptions).build();
+        SauceOptions.safari(safariOptions);
     }
 
     @Test(expected = InvalidSauceOptionsArgumentException.class)
     public void errorsBadSafariOptionsSauceCapability() {
         safariOptions.setCapability("sauce:options", ImmutableMap.of("invalid", "value"));
 
-        SauceOptions.safari(safariOptions).build();
+        SauceOptions.safari(safariOptions);
     }
 
     @Test(expected = InvalidSauceOptionsArgumentException.class)
     public void errorsBadSafariOptionsValue() {
         safariOptions.setCapability("unhandledPromptBehavior", "invalid");
 
-        SauceOptions.safari(safariOptions).build();
+        SauceOptions.safari(safariOptions);
     }
 
     @Test(expected = InvalidSauceOptionsArgumentException.class)
     public void errorsBadSafariOptionsSauceValue() {
         safariOptions.setCapability("sauce:options", ImmutableMap.of("jobVisibility", "invalid"));
 
-        SauceOptions.safari(safariOptions).build();
+        SauceOptions.safari(safariOptions);
     }
 
     @Test
@@ -126,32 +125,18 @@ public class SafariConfigurationsTest {
 
     @Test
     public void acceptsSauceLabsSettings() {
-        Map<String, Object> customData = new HashMap<>();
-        customData.put("foo", "foo");
-        customData.put("bar", "bar");
-
-        List<String> args = new ArrayList<>();
-        args.add("--silent");
-        args.add("-a");
-        args.add("-q");
-
         Map<Prerun, Object> prerun = new HashMap<>();
         prerun.put(Prerun.EXECUTABLE, "https://url.to/your/executable.exe");
-        prerun.put(Prerun.ARGS, args);
+        prerun.put(Prerun.ARGS, ImmutableList.of("--silent", "-a", "-q"));
         prerun.put(Prerun.BACKGROUND, false);
         prerun.put(Prerun.TIMEOUT, 120);
-
-        List<String> tags = new ArrayList<>();
-        tags.add("Foo");
-        tags.add("Bar");
-        tags.add("Foobar");
 
         SauceOptions sauceOptions = SauceOptions.safari()
                 .setAvoidProxy()
                 .setBuild("Sample Build Name")
                 .setName("Test name")
                 .setCommandTimeout(Duration.ofSeconds(2))
-                .setCustomData(customData)
+                .setCustomData(ImmutableMap.of("foo", "foo", "bar", "bar"))
                 .setIdleTimeout(Duration.ofSeconds(20))
                 .setMaxDuration(Duration.ofSeconds(300))
                 .setParentTunnel("Mommy")
@@ -163,7 +148,7 @@ public class SafariConfigurationsTest {
                 .disableRecordScreenshots()
                 .disableRecordVideo()
                 .setScreenResolution("1024x768")
-                .setTags(tags)
+                .setTags(ImmutableList.of("Foo", "Bar", "Foobar"))
                 .setTimeZone("San Francisco")
                 .setTunnelIdentifier("tunnelName")
                 .disableVideoUploadOnPass()
@@ -171,7 +156,7 @@ public class SafariConfigurationsTest {
 
         Assert.assertEquals("Sample Build Name", sauceOptions.sauce().getBuild());
         Assert.assertEquals(Integer.valueOf(2), sauceOptions.sauce().getCommandTimeout());
-        Assert.assertEquals(customData, sauceOptions.sauce().getCustomData());
+        Assert.assertEquals(ImmutableMap.of("foo", "foo", "bar", "bar"), sauceOptions.sauce().getCustomData());
         Assert.assertEquals(Integer.valueOf(20), sauceOptions.sauce().getIdleTimeout());
         Assert.assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
         Assert.assertEquals("Test name", sauceOptions.sauce().getName());
@@ -184,7 +169,7 @@ public class SafariConfigurationsTest {
         Assert.assertEquals(false, sauceOptions.sauce().getRecordVideo());
         Assert.assertEquals("3.141.0", sauceOptions.sauce().getSeleniumVersion());
         Assert.assertEquals("1024x768", sauceOptions.sauce().getScreenResolution());
-        Assert.assertEquals(tags, sauceOptions.sauce().getTags());
+        Assert.assertEquals(ImmutableList.of("Foo", "Bar", "Foobar"), sauceOptions.sauce().getTags());
         Assert.assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
         Assert.assertEquals("tunnelName", sauceOptions.sauce().getTunnelIdentifier());
         Assert.assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());

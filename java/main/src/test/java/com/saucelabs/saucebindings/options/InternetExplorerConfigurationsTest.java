@@ -1,5 +1,6 @@
 package com.saucelabs.saucebindings.options;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.saucelabs.saucebindings.Browser;
 import com.saucelabs.saucebindings.JobVisibility;
@@ -13,9 +14,7 @@ import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class InternetExplorerConfigurationsTest {
@@ -50,35 +49,35 @@ public class InternetExplorerConfigurationsTest {
     public void errorsBadInternetExplorerOptionsCapability() {
         internetExplorerOptions.setCapability("invalid", "capability");
 
-        SauceOptions.ie(internetExplorerOptions).build();
+        SauceOptions.ie(internetExplorerOptions);
     }
 
     @Test(expected = InvalidSauceOptionsArgumentException.class)
     public void errorsInternetExplorerOptionsBrowserMismatch() {
         internetExplorerOptions.setCapability("browserName", "firefox");
 
-        SauceOptions.ie(internetExplorerOptions).build();
+        SauceOptions.ie(internetExplorerOptions);
     }
 
     @Test(expected = InvalidSauceOptionsArgumentException.class)
     public void errorsBadInternetExplorerOptionsSauceCapability() {
         internetExplorerOptions.setCapability("sauce:options", ImmutableMap.of("invalid", "value"));
 
-        SauceOptions.ie(internetExplorerOptions).build();
+        SauceOptions.ie(internetExplorerOptions);
     }
 
     @Test(expected = InvalidSauceOptionsArgumentException.class)
     public void errorsBadInternetExplorerOptionsValue() {
         internetExplorerOptions.setCapability("unhandledPromptBehavior", "invalid");
 
-        SauceOptions.ie(internetExplorerOptions).build();
+        SauceOptions.ie(internetExplorerOptions);
     }
 
     @Test(expected = InvalidSauceOptionsArgumentException.class)
     public void errorsBadInternetExplorerOptionsSauceValue() {
         internetExplorerOptions.setCapability("sauce:options", ImmutableMap.of("jobVisibility", "invalid"));
 
-        SauceOptions.ie(internetExplorerOptions).build();
+        SauceOptions.ie(internetExplorerOptions);
     }
 
     @Test
@@ -126,33 +125,20 @@ public class InternetExplorerConfigurationsTest {
 
     @Test
     public void acceptsSauceLabsSettings() {
-        Map<String, Object> customData = new HashMap<>();
-        customData.put("foo", "foo");
-        customData.put("bar", "bar");
-
-        List<String> args = new ArrayList<>();
-        args.add("--silent");
-        args.add("-a");
-        args.add("-q");
-
         Map<Prerun, Object> prerun = new HashMap<>();
         prerun.put(Prerun.EXECUTABLE, "https://url.to/your/executable.exe");
-        prerun.put(Prerun.ARGS, args);
+        prerun.put(Prerun.ARGS, ImmutableList.of("--silent", "-a", "-q"));
         prerun.put(Prerun.BACKGROUND, false);
         prerun.put(Prerun.TIMEOUT, 120);
-
-        List<String> tags = new ArrayList<>();
-        tags.add("Foo");
-        tags.add("Bar");
-        tags.add("Foobar");
 
         SauceOptions sauceOptions = SauceOptions.ie()
                 .setAvoidProxy()
                 .setBuild("Sample Build Name")
                 .setName("Test name")
                 .setCommandTimeout(Duration.ofSeconds(2))
-                .setCustomData(customData)
+                .setCustomData(ImmutableMap.of("foo", "foo", "bar", "bar"))
                 .setIdleTimeout(Duration.ofSeconds(20))
+                .setIedriverVersion("4.1")
                 .setMaxDuration(Duration.ofSeconds(300))
                 .setParentTunnel("Mommy")
                 .setPrerun(prerun)
@@ -163,7 +149,7 @@ public class InternetExplorerConfigurationsTest {
                 .disableRecordScreenshots()
                 .disableRecordVideo()
                 .setScreenResolution("1024x768")
-                .setTags(tags)
+                .setTags(ImmutableList.of("Foo", "Bar", "Foobar"))
                 .setTimeZone("San Francisco")
                 .setTunnelIdentifier("tunnelName")
                 .disableVideoUploadOnPass()
@@ -171,10 +157,11 @@ public class InternetExplorerConfigurationsTest {
 
         Assert.assertEquals("Sample Build Name", sauceOptions.sauce().getBuild());
         Assert.assertEquals(Integer.valueOf(2), sauceOptions.sauce().getCommandTimeout());
-        Assert.assertEquals(customData, sauceOptions.sauce().getCustomData());
+        Assert.assertEquals(ImmutableMap.of("foo", "foo", "bar", "bar"), sauceOptions.sauce().getCustomData());
         Assert.assertEquals(Integer.valueOf(20), sauceOptions.sauce().getIdleTimeout());
         Assert.assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
         Assert.assertEquals("Test name", sauceOptions.sauce().getName());
+        Assert.assertEquals("4.1", sauceOptions.sauce().getIedriverVersion());
         Assert.assertEquals("Mommy", sauceOptions.sauce().getParentTunnel());
         Assert.assertEquals(prerun, sauceOptions.sauce().getPrerun());
         Assert.assertEquals(Integer.valueOf(0), sauceOptions.sauce().getPriority());
@@ -184,7 +171,7 @@ public class InternetExplorerConfigurationsTest {
         Assert.assertEquals(false, sauceOptions.sauce().getRecordVideo());
         Assert.assertEquals("3.141.0", sauceOptions.sauce().getSeleniumVersion());
         Assert.assertEquals("1024x768", sauceOptions.sauce().getScreenResolution());
-        Assert.assertEquals(tags, sauceOptions.sauce().getTags());
+        Assert.assertEquals(ImmutableList.of("Foo", "Bar", "Foobar"), sauceOptions.sauce().getTags());
         Assert.assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
         Assert.assertEquals("tunnelName", sauceOptions.sauce().getTunnelIdentifier());
         Assert.assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());

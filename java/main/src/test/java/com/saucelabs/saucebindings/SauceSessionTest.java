@@ -2,7 +2,6 @@ package com.saucelabs.saucebindings;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.saucelabs.saucebindings.options.ChromeConfigurations;
 import com.saucelabs.saucebindings.options.InvalidSauceOptionsArgumentException;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import org.junit.Assert;
@@ -15,7 +14,6 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -112,21 +110,21 @@ public class SauceSessionTest {
 
     @Test
     public void defaultsToUSWestDataCenter() {
-        String expectedDataCenterEndpoint = DataCenter.US_WEST.getValue();
-        Assert.assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().getValue());
+        String expectedDataCenterEndpoint = DataCenter.US_WEST.toString();
+        Assert.assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().toString());
     }
 
     @Test
     public void setsDataCenter() {
-        String expectedDataCenterEndpoint = DataCenter.US_EAST.getValue();
+        String expectedDataCenterEndpoint = DataCenter.US_EAST.toString();
         sauceSession.setDataCenter(DataCenter.US_EAST);
-        Assert.assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().getValue());
+        Assert.assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().toString());
     }
 
     @Test
     public void setsSauceURLDirectly() throws MalformedURLException {
-        sauceSession.setSauceUrl(new URL("http://example.com"));
-        String expectedSauceUrl = "http://example.com";
+        sauceSession.setSauceUrl(new URL("https://example.com"));
+        String expectedSauceUrl = "https://example.com";
         Assert.assertEquals(expectedSauceUrl, sauceSession.getSauceUrl().toString());
     }
 

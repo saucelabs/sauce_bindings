@@ -36,7 +36,7 @@ public class SauceLabsOptions extends BaseOptions {
     private Map<Prerun, Object> prerun;
     private URL prerunUrl;
     private Integer priority = null;
-    private JobVisibility jobVisibility; // the actual key for this is a Java reserved keyword "public"; uses enum
+    private JobVisibility jobVisibility; // the actual key for this is a reserved keyword "public"
     private Boolean recordLogs = null;
     private Boolean recordScreenshots = null;
     private Boolean recordVideo = null;
@@ -137,9 +137,9 @@ public class SauceLabsOptions extends BaseOptions {
             setJobVisibility(JobVisibility.valueOf(JobVisibility.fromString((String) value)));
         } else if ("prerun".equals(key)) {
             Map<Prerun, Object> prerunMap = new HashMap<>();
-            ((Map) value).forEach((oldKey, val) -> {
-                capabilityManager.validateCapability("Prerun", Prerun.keys(), (String) oldKey);
-                String keyString = Prerun.fromString((String) oldKey);
+            ((Map<String, Object>) value).forEach((oldKey, val) -> {
+                capabilityManager.validateCapability("Prerun", Prerun.keys(), oldKey);
+                String keyString = Prerun.fromString(oldKey);
                 prerunMap.put(Prerun.valueOf(keyString), val);
             });
             setPrerun(prerunMap);
@@ -191,6 +191,6 @@ public class SauceLabsOptions extends BaseOptions {
         // Ignore credentials passed in, Environment Variables are required
         sauceOptions.remove("username");
         sauceOptions.remove("accessKey");
-        mergeCapabilities(sauceOptions);
+        sauceOptions.forEach(this::setCapability);
     }
 }

@@ -50,7 +50,7 @@ public abstract class BaseConfigurations<T extends BaseConfigurations<T>> {
     }
 
     /**
-     * @param data used to provide any custom data associated with a test, limited to 64KB in size
+     * @param data used to provide any custom data associated with a test, limited to 64 KB in size
      * @return instance of configuration
      */
     public T setCustomData(Map<String, Object> data) {

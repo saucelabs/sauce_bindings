@@ -25,10 +25,10 @@ public enum SaucePlatform {
     private final String value;
 
     private static final class PlatformLookup {
-        private static final Map<String, String> lookup = new HashMap<String, String>();
+        private static final Map<String, String> lookup = new HashMap<>();
     }
 
-    public static Set keys() {
+    public static Set<String> keys() {
         return PlatformLookup.lookup.keySet();
     }
 

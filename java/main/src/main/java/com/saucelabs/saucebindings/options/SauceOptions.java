@@ -39,7 +39,7 @@ import java.util.Map;
 @Accessors(chain = true)
 @Setter @Getter
 public class SauceOptions extends BaseOptions {
-    @Setter(AccessLevel.NONE) @Getter(AccessLevel.NONE) private SauceLabsOptions sauceLabsOptions = null;
+    @Setter(AccessLevel.NONE) @Getter(AccessLevel.NONE) private SauceLabsOptions sauceLabsOptions;
     public TimeoutStore timeout = new TimeoutStore();
 
     // w3c Settings
@@ -97,7 +97,7 @@ public class SauceOptions extends BaseOptions {
             throw new InvalidSauceOptionsArgumentException("Invalid file Location", e);
         }
 
-        throw new InvalidSauceOptionsArgumentException("Unable to parse this fyle type");
+        throw new InvalidSauceOptionsArgumentException("Unable to parse this file type");
     }
 
     private static Map<String, Object> loadYaml(Path path) throws FileNotFoundException {
@@ -290,7 +290,7 @@ public class SauceOptions extends BaseOptions {
             if (!capability.contains(":")
                     && !"browserName".equals(capability)
                     && !(Browser.INTERNET_EXPLORER.equals(browserName)
-                    && ((Map) capabilities.getCapability("se:ieOptions")).containsKey(capability))) {
+                    && ((Map<String, Object>) capabilities.getCapability("se:ieOptions")).containsKey(capability))) {
                 setCapability(capability, capabilities.getCapability(capability));
             }
         });
@@ -344,10 +344,10 @@ public class SauceOptions extends BaseOptions {
             break;
         case "timeouts":
             Map<Timeouts, Integer> timeoutsMap = new HashMap<>();
-            ((Map) value).forEach((oldKey, val) -> {
-                capabilityManager.validateCapability("Timeouts", Timeouts.keys(), (String) oldKey);
-                String keyString = Timeouts.fromString((String) oldKey);
-                timeoutsMap.put(Timeouts.valueOf(keyString), (Integer) val);
+            ((Map<String, Integer>) value).forEach((oldKey, val) -> {
+                capabilityManager.validateCapability("Timeouts", Timeouts.keys(), oldKey);
+                String keyString = Timeouts.fromString(oldKey);
+                timeoutsMap.put(Timeouts.valueOf(keyString), val);
             });
             setTimeouts(timeoutsMap);
             break;

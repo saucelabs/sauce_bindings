@@ -24,7 +24,6 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class SauceOptionsTest {
@@ -34,14 +33,7 @@ public class SauceOptionsTest {
     public MockitoRule initRule = MockitoJUnit.rule();
 
     @Test
-    public void usesLatestChromeWindowsVersionsByDefault() {
-        Assert.assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
-        Assert.assertEquals(SaucePlatform.WINDOWS_10, sauceOptions.getPlatformName());
-        Assert.assertEquals("latest", sauceOptions.getBrowserVersion());
-    }
-
-    @Test
-    public void updatesBrowserBrowserVersionPlatformVersionValues() {
+    public void updatesBrowserVersionPlatformVersionValues() {
         sauceOptions.setPlatformName(SaucePlatform.MAC_HIGH_SIERRA);
         sauceOptions.setBrowserVersion("99");
 
@@ -84,32 +76,18 @@ public class SauceOptionsTest {
 
     @Test
     public void setsSauceLabsSettings() {
-        Map<String, Object> customData = new HashMap<>();
-        customData.put("foo", "foo");
-        customData.put("bar", "bar");
-
-        List<String> args = new ArrayList<>();
-        args.add("--silent");
-        args.add("-a");
-        args.add("-q");
-
         Map<Prerun, Object> prerun = new HashMap<>();
         prerun.put(Prerun.EXECUTABLE, "https://url.to/your/executable.exe");
-        prerun.put(Prerun.ARGS, args);
+        prerun.put(Prerun.ARGS, ImmutableList.of("--silent", "-a", "-q"));
         prerun.put(Prerun.BACKGROUND, false);
         prerun.put(Prerun.TIMEOUT, 120);
-
-        List<String> tags = new ArrayList<>();
-        tags.add("Foo");
-        tags.add("Bar");
-        tags.add("Foobar");
 
         sauceOptions.sauce().setAvoidProxy(true);
         sauceOptions.sauce().setBuild("Sample Build Name");
         sauceOptions.sauce().setCapturePerformance(true);
         sauceOptions.sauce().setChromedriverVersion("71");
         sauceOptions.sauce().setCommandTimeout(2);
-        sauceOptions.sauce().setCustomData(customData);
+        sauceOptions.sauce().setCustomData(ImmutableMap.of("foo", "foo", "bar", "bar"));
         sauceOptions.sauce().setExtendedDebugging(true);
         sauceOptions.sauce().setIdleTimeout(3);
         sauceOptions.sauce().setIedriverVersion("3.141.0");
@@ -124,7 +102,7 @@ public class SauceOptionsTest {
         sauceOptions.sauce().setRecordVideo(false);
         sauceOptions.sauce().setScreenResolution("10x10");
         sauceOptions.sauce().setSeleniumVersion("3.141.59");
-        sauceOptions.sauce().setTags(tags);
+        sauceOptions.sauce().setTags(ImmutableList.of("Foo", "Bar", "Foobar"));
         sauceOptions.sauce().setTimeZone("San Francisco");
         sauceOptions.sauce().setTunnelIdentifier("tunnelName");
         sauceOptions.sauce().setVideoUploadOnPass(false);
@@ -134,7 +112,7 @@ public class SauceOptionsTest {
         Assert.assertEquals(true, sauceOptions.sauce().getCapturePerformance());
         Assert.assertEquals("71", sauceOptions.sauce().getChromedriverVersion());
         Assert.assertEquals(Integer.valueOf(2), sauceOptions.sauce().getCommandTimeout());
-        Assert.assertEquals(customData, sauceOptions.sauce().getCustomData());
+        Assert.assertEquals(ImmutableMap.of("foo", "foo", "bar", "bar"), sauceOptions.sauce().getCustomData());
         Assert.assertEquals(true, sauceOptions.sauce().getExtendedDebugging());
         Assert.assertEquals(Integer.valueOf(3), sauceOptions.sauce().getIdleTimeout());
         Assert.assertEquals("3.141.0", sauceOptions.sauce().getIedriverVersion());
@@ -149,7 +127,7 @@ public class SauceOptionsTest {
         Assert.assertEquals(false, sauceOptions.sauce().getRecordVideo());
         Assert.assertEquals("10x10", sauceOptions.sauce().getScreenResolution());
         Assert.assertEquals("3.141.59", sauceOptions.sauce().getSeleniumVersion());
-        Assert.assertEquals(tags, sauceOptions.sauce().getTags());
+        Assert.assertEquals(ImmutableList.of("Foo", "Bar", "Foobar"), sauceOptions.sauce().getTags());
         Assert.assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
         Assert.assertEquals("tunnelName", sauceOptions.sauce().getTunnelIdentifier());
         Assert.assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());
@@ -301,32 +279,18 @@ public class SauceOptionsTest {
 
     @Test
     public void parsesCapabilitiesFromSauceValues() {
-        Map<String, Object> customData = new HashMap<>();
-        customData.put("foo", "foo");
-        customData.put("bar", "bar");
-
-        List<String> args = new ArrayList<>();
-        args.add("--silent");
-        args.add("-a");
-        args.add("-q");
-
         Map<Prerun, Object> prerun = new HashMap<>();
         prerun.put(Prerun.EXECUTABLE, "https://url.to/your/executable.exe");
-        prerun.put(Prerun.ARGS, args);
+        prerun.put(Prerun.ARGS, ImmutableList.of("--silent", "-a", "-q"));
         prerun.put(Prerun.BACKGROUND, false);
         prerun.put(Prerun.TIMEOUT, 120);
-
-        List<String> tags = new ArrayList<>();
-        tags.add("Foo");
-        tags.add("Bar");
-        tags.add("Foobar");
 
         sauceOptions.sauce().setAvoidProxy(true);
         sauceOptions.sauce().setBuild("Sample Build Name");
         sauceOptions.sauce().setCapturePerformance(true);
         sauceOptions.sauce().setChromedriverVersion("71");
         sauceOptions.sauce().setCommandTimeout(2);
-        sauceOptions.sauce().setCustomData(customData);
+        sauceOptions.sauce().setCustomData(ImmutableMap.of("foo", "foo", "bar", "bar"));
         sauceOptions.sauce().setExtendedDebugging(true);
         sauceOptions.sauce().setIdleTimeout(3);
         sauceOptions.sauce().setIedriverVersion("3.141.0");
@@ -341,7 +305,7 @@ public class SauceOptionsTest {
         sauceOptions.sauce().setRecordVideo(false);
         sauceOptions.sauce().setScreenResolution("10x10");
         sauceOptions.sauce().setSeleniumVersion("3.141.59");
-        sauceOptions.sauce().setTags(tags);
+        sauceOptions.sauce().setTags(ImmutableList.of("Foo", "Bar", "Foobar"));
         sauceOptions.sauce().setTimeZone("San Francisco");
         sauceOptions.sauce().setTunnelIdentifier("tunnelName");
         sauceOptions.sauce().setVideoUploadOnPass(false);
@@ -352,7 +316,7 @@ public class SauceOptionsTest {
         sauceCapabilities.setCapability("capturePerformance", true);
         sauceCapabilities.setCapability("chromedriverVersion", "71");
         sauceCapabilities.setCapability("commandTimeout", 2);
-        sauceCapabilities.setCapability("custom-data", customData);
+        sauceCapabilities.setCapability("custom-data", ImmutableMap.of("foo", "foo", "bar", "bar"));
         sauceCapabilities.setCapability("extendedDebugging", true);
         sauceCapabilities.setCapability("idleTimeout", 3);
         sauceCapabilities.setCapability("iedriverVersion", "3.141.0");
@@ -367,7 +331,7 @@ public class SauceOptionsTest {
         sauceCapabilities.setCapability("recordVideo", false);
         sauceCapabilities.setCapability("screenResolution", "10x10");
         sauceCapabilities.setCapability("seleniumVersion", "3.141.59");
-        sauceCapabilities.setCapability("tags", tags);
+        sauceCapabilities.setCapability("tags", ImmutableList.of("Foo", "Bar", "Foobar"));
         sauceCapabilities.setCapability("timeZone", "San Francisco");
         sauceCapabilities.setCapability("tunnelIdentifier", "tunnelName");
         sauceCapabilities.setCapability("videoUploadOnPass", false);

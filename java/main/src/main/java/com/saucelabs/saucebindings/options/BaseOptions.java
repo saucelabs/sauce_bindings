@@ -14,8 +14,11 @@ public abstract class BaseOptions {
     /**
      * Use Case is pulling serialized information from JSON/YAML, converting it to a HashMap and passing it in
      * This is a preferred pattern as it avoids conditionals in code
+     *
+     * @deprecated pass in the location of the config file and the corresponding key directly to the constructor
      * @param capabilitiesToMerge a Map object representing key value pairs to convert to capabilities
      */
+    @Deprecated
     public void mergeCapabilities(Map<String, Object> capabilitiesToMerge) {
         capabilitiesToMerge.forEach(this::setCapability);
     }

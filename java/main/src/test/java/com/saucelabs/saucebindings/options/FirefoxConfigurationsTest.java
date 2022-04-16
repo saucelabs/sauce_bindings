@@ -48,7 +48,7 @@ public class FirefoxConfigurationsTest {
 
     @Test(expected = InvalidSauceOptionsArgumentException.class)
     public void errorsBadFirefoxOptionsCapability() {
-        firefoxOptions.setCapability("invalid", "value");
+        firefoxOptions.setCapability("invalid", "capability");
 
         SauceOptions.firefox(firefoxOptions).build();
     }
@@ -136,7 +136,7 @@ public class FirefoxConfigurationsTest {
         args.add("-q");
 
         Map<Prerun, Object> prerun = new HashMap<>();
-        prerun.put(Prerun.EXECUTABLE, "http://url.to/your/executable.exe");
+        prerun.put(Prerun.EXECUTABLE, "https://url.to/your/executable.exe");
         prerun.put(Prerun.ARGS, args);
         prerun.put(Prerun.BACKGROUND, false);
         prerun.put(Prerun.TIMEOUT, 120);
@@ -166,7 +166,7 @@ public class FirefoxConfigurationsTest {
                 .setScreenResolution("1024x768")
                 .setTags(tags)
                 .setTimeZone("San Francisco")
-                .setTunnelIdentifier("tunnelname")
+                .setTunnelIdentifier("tunnelName")
                 .disableVideoUploadOnPass()
                 .build();
 
@@ -189,7 +189,7 @@ public class FirefoxConfigurationsTest {
         Assert.assertEquals("1024x768", sauceOptions.sauce().getScreenResolution());
         Assert.assertEquals(tags, sauceOptions.sauce().getTags());
         Assert.assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
-        Assert.assertEquals("tunnelname", sauceOptions.sauce().getTunnelIdentifier());
+        Assert.assertEquals("tunnelName", sauceOptions.sauce().getTunnelIdentifier());
         Assert.assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());
     }
 }

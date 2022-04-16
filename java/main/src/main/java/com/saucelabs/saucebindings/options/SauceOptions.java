@@ -11,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.json.JSONObject;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
@@ -19,7 +20,16 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.safari.SafariOptions;
+import org.yaml.snakeyaml.Yaml;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -59,6 +69,60 @@ public class SauceOptions extends BaseOptions {
             "timeouts",
             "strictFileInteractability",
             "unhandledPromptBehavior");
+
+    /**
+     * Supports creating a SauceOptions instance from a config file instead of with conditionals in code
+     * JSON & YAML are both supported.
+     * Example Usage:
+     * <pre>{@code new SauceOptions(pathToConfigFile, System.getEnv("firefox_mac"));}</pre>
+     *
+     * @param path location of the yaml or json configuration file
+     * @param key which configuration in that file to use
+     */
+    public SauceOptions(Path path, String key) {
+        this((Map<String, Object>) deserialize(path).get(key));
+    }
+
+    private static Map<String, Object> deserialize(Path path) {
+        PathMatcher yamlMatcher = FileSystems.getDefault().getPathMatcher("glob:**.{yaml,yml}");
+        PathMatcher jsonMatcher = FileSystems.getDefault().getPathMatcher("glob:**.json");
+
+        try {
+            if (yamlMatcher.matches(path)) {
+                return loadYaml(path);
+            } else if (jsonMatcher.matches(path)) {
+                return loadJSON(path);
+            }
+        } catch (IOException e) {
+            throw new InvalidSauceOptionsArgumentException("Invalid file Location", e);
+        }
+
+        throw new InvalidSauceOptionsArgumentException("Unable to parse this fyle type");
+    }
+
+    private static Map<String, Object> loadYaml(Path path) throws FileNotFoundException {
+        InputStream input = new FileInputStream(path.toString());
+        Yaml yaml = new Yaml();
+        return yaml.load(input);
+    }
+
+    private static Map<String, Object> loadJSON(Path path) throws IOException {
+        String content = new String(Files.readAllBytes(path));
+        JSONObject jsonObject = new JSONObject(content);
+        return jsonObject.toMap();
+    }
+
+    /**
+     * This is intended to facilitate using a JSON file or a YAML to create a SauceOptions instance
+     * It is currently private, but might be made public in the future
+     * Raise an issue on GitHub if you have a use case for it
+     *
+     * @see SauceOptions(Path)
+     * @param map Capabilities to use to create a SauceSession
+     */
+    private SauceOptions(Map<String, Object> map) {
+        this(new MutableCapabilities(map));
+    }
 
     /**
      * This method allows building a default Sauce Options instance for Chrome
@@ -288,7 +352,9 @@ public class SauceOptions extends BaseOptions {
             setTimeouts(timeoutsMap);
             break;
         case "sauce":
-            sauce().mergeCapabilities((HashMap<String, Object>) value);
+        case "sauce:options":
+            Map<String, Object> map = new HashMap<>((Map<? extends String, ?>) value);
+            map.keySet().forEach(k -> sauce().setCapability(k, map.get(k)));
             break;
         default:
             if (sauce().getValidOptions().contains(key)) {

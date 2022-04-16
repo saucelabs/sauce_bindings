@@ -95,7 +95,7 @@ public class SauceOptionsDeprecatedTest {
         args.add("-q");
 
         Map<Prerun, Object> prerun = new HashMap<>();
-        prerun.put(Prerun.EXECUTABLE, "http://url.to/your/executable.exe");
+        prerun.put(Prerun.EXECUTABLE, "https://url.to/your/executable.exe");
         prerun.put(Prerun.ARGS, args);
         prerun.put(Prerun.BACKGROUND, false);
         prerun.put(Prerun.TIMEOUT, 120);
@@ -127,7 +127,7 @@ public class SauceOptionsDeprecatedTest {
         sauceOptions.setSeleniumVersion("3.141.59");
         sauceOptions.setTags(tags);
         sauceOptions.setTimeZone("San Francisco");
-        sauceOptions.setTunnelIdentifier("tunnelname");
+        sauceOptions.setTunnelIdentifier("tunnelName");
         sauceOptions.setVideoUploadOnPass(false);
 
         Assert.assertEquals(true, sauceOptions.getAvoidProxy());
@@ -152,7 +152,7 @@ public class SauceOptionsDeprecatedTest {
         Assert.assertEquals("3.141.59", sauceOptions.getSeleniumVersion());
         Assert.assertEquals(tags, sauceOptions.getTags());
         Assert.assertEquals("San Francisco", sauceOptions.getTimeZone());
-        Assert.assertEquals("tunnelname", sauceOptions.getTunnelIdentifier());
+        Assert.assertEquals("tunnelName", sauceOptions.getTunnelIdentifier());
         Assert.assertEquals(false, sauceOptions.getVideoUploadOnPass());
     }
 
@@ -231,7 +231,7 @@ public class SauceOptionsDeprecatedTest {
 
     @Test
     public void setsCapabilitiesFromMap() {
-        Map<String, Object> map = serialize("exampleValues");
+        Map<String, Object> map = serialize("firefoxMac");
 
         sauceOptions.mergeCapabilities(map);
 
@@ -245,7 +245,7 @@ public class SauceOptionsDeprecatedTest {
         args.add("-q");
 
         Map<Prerun, Object> prerun = new HashMap<>();
-        prerun.put(Prerun.EXECUTABLE, "http://url.to/your/executable.exe");
+        prerun.put(Prerun.EXECUTABLE, "https://url.to/your/executable.exe");
         prerun.put(Prerun.ARGS, args);
         prerun.put(Prerun.BACKGROUND, false);
         prerun.put(Prerun.TIMEOUT, 120);
@@ -261,7 +261,7 @@ public class SauceOptionsDeprecatedTest {
         timeouts.put(Timeouts.SCRIPT, 29000);
 
         Assert.assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
-        Assert.assertEquals("68", sauceOptions.getBrowserVersion());
+        Assert.assertEquals("90", sauceOptions.getBrowserVersion());
         Assert.assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
         Assert.assertEquals(true, sauceOptions.getAcceptInsecureCerts());
         Assert.assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
@@ -291,7 +291,7 @@ public class SauceOptionsDeprecatedTest {
         Assert.assertEquals("3.141.59", sauceOptions.getSeleniumVersion());
         Assert.assertEquals(tags, sauceOptions.getTags());
         Assert.assertEquals("San Francisco", sauceOptions.getTimeZone());
-        Assert.assertEquals("tunnelname", sauceOptions.getTunnelIdentifier());
+        Assert.assertEquals("tunnelName", sauceOptions.getTunnelIdentifier());
         Assert.assertEquals(false, sauceOptions.getVideoUploadOnPass());
     }
 
@@ -390,7 +390,7 @@ public class SauceOptionsDeprecatedTest {
         args.add("-q");
 
         Map<Prerun, Object> prerun = new HashMap<>();
-        prerun.put(Prerun.EXECUTABLE, "http://url.to/your/executable.exe");
+        prerun.put(Prerun.EXECUTABLE, "https://url.to/your/executable.exe");
         prerun.put(Prerun.ARGS, args);
         prerun.put(Prerun.BACKGROUND, false);
         prerun.put(Prerun.TIMEOUT, 120);
@@ -422,7 +422,7 @@ public class SauceOptionsDeprecatedTest {
         sauceOptions.setSeleniumVersion("3.141.59");
         sauceOptions.setTags(tags);
         sauceOptions.setTimeZone("San Francisco");
-        sauceOptions.setTunnelIdentifier("tunnelname");
+        sauceOptions.setTunnelIdentifier("tunnelName");
         sauceOptions.setVideoUploadOnPass(false);
 
         MutableCapabilities sauceCapabilities = new MutableCapabilities();
@@ -448,7 +448,7 @@ public class SauceOptionsDeprecatedTest {
         sauceCapabilities.setCapability("seleniumVersion", "3.141.59");
         sauceCapabilities.setCapability("tags", tags);
         sauceCapabilities.setCapability("timeZone", "San Francisco");
-        sauceCapabilities.setCapability("tunnelIdentifier", "tunnelname");
+        sauceCapabilities.setCapability("tunnelIdentifier", "tunnelName");
         sauceCapabilities.setCapability("videoUploadOnPass", false);
         sauceCapabilities.setCapability("username", SystemManager.get("SAUCE_USERNAME"));
         sauceCapabilities.setCapability("accessKey", SystemManager.get("SAUCE_ACCESS_KEY"));

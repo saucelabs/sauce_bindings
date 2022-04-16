@@ -48,7 +48,7 @@ public class SafariConfigurationsTest {
 
     @Test(expected = InvalidSauceOptionsArgumentException.class)
     public void errorsBadSafariOptionsCapability() {
-        safariOptions.setCapability("invalid", "value");
+        safariOptions.setCapability("invalid", "capability");
 
         SauceOptions.safari(safariOptions).build();
     }
@@ -136,7 +136,7 @@ public class SafariConfigurationsTest {
         args.add("-q");
 
         Map<Prerun, Object> prerun = new HashMap<>();
-        prerun.put(Prerun.EXECUTABLE, "http://url.to/your/executable.exe");
+        prerun.put(Prerun.EXECUTABLE, "https://url.to/your/executable.exe");
         prerun.put(Prerun.ARGS, args);
         prerun.put(Prerun.BACKGROUND, false);
         prerun.put(Prerun.TIMEOUT, 120);
@@ -165,7 +165,7 @@ public class SafariConfigurationsTest {
                 .setScreenResolution("1024x768")
                 .setTags(tags)
                 .setTimeZone("San Francisco")
-                .setTunnelIdentifier("tunnelname")
+                .setTunnelIdentifier("tunnelName")
                 .disableVideoUploadOnPass()
                 .build();
 
@@ -186,7 +186,7 @@ public class SafariConfigurationsTest {
         Assert.assertEquals("1024x768", sauceOptions.sauce().getScreenResolution());
         Assert.assertEquals(tags, sauceOptions.sauce().getTags());
         Assert.assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
-        Assert.assertEquals("tunnelname", sauceOptions.sauce().getTunnelIdentifier());
+        Assert.assertEquals("tunnelName", sauceOptions.sauce().getTunnelIdentifier());
         Assert.assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());
     }
 }

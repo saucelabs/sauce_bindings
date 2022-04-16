@@ -77,8 +77,21 @@ public class SauceLabsOptions extends BaseOptions {
             "tunnelIdentifier",
             "videoUploadOnPass");
 
+    /**
+     * @deprecated Do not need to use this class directly
+     */
+    @Deprecated
     public SauceLabsOptions() {
+        this(new MutableCapabilities());
+    }
+
+    /**
+     * Used by SauceOptions to store Sauce Labs specific configurations
+     * @param sauceCapabilities Map or Capabilities instance with capabilities
+     */
+    SauceLabsOptions(Object sauceCapabilities) {
         capabilityManager = new CapabilityManager(this);
+        processOptions(sauceCapabilities);
     }
 
     /**
@@ -163,5 +176,21 @@ public class SauceLabsOptions extends BaseOptions {
 
     protected String getSauceAccessKey() {
         return SystemManager.get("SAUCE_ACCESS_KEY", "Sauce Access Key was not provided");
+    }
+
+    private void processOptions(Object options) {
+        Map<String, Object> sauceOptions = new HashMap<>();
+        if (options instanceof MutableCapabilities) {
+            MutableCapabilities sauceMutableCaps = (MutableCapabilities) options;
+            sauceOptions = sauceMutableCaps.asMap();
+        } else if (options instanceof Map) {
+            // In case Immutable Map
+            sauceOptions = new HashMap<>((Map<? extends String, ?>) options);
+        }
+
+        // Ignore credentials passed in, Environment Variables are required
+        sauceOptions.remove("username");
+        sauceOptions.remove("accessKey");
+        mergeCapabilities(sauceOptions);
     }
 }

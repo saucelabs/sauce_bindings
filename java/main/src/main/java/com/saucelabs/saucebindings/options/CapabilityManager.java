@@ -45,7 +45,7 @@ public class CapabilityManager {
             Method method = options.getClass().getMethod(setter, type);
             method.invoke(options, value);
         } catch (NoSuchFieldException e) {
-            throw new InvalidSauceOptionsArgumentException(key + " is not a valid configuration value");
+            throw new InvalidSauceOptionsArgumentException(key + " is not a valid capability for " + options.getClass());
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             throw new RuntimeException("Unable to set capability for " + key, e);
         }
@@ -77,7 +77,7 @@ public class CapabilityManager {
      */
     public void validateCapability(String name, Set values, String value) {
         if (!values.contains(value)) {
-            String message = value + " is not a valid " + name + ", please choose from: " + values;
+            String message = "\"" + value + "\" is not a valid " + name + ", please choose from: " + values;
             throw new InvalidSauceOptionsArgumentException(message);
         }
     }

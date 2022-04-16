@@ -1,5 +1,6 @@
 package com.saucelabs.saucebindings.options;
 
+import com.google.common.collect.ImmutableMap;
 import com.saucelabs.saucebindings.Browser;
 import com.saucelabs.saucebindings.JobVisibility;
 import com.saucelabs.saucebindings.PageLoadStrategy;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SafariConfigurationsTest {
+    SafariOptions safariOptions = new SafariOptions();
 
     @Test
     public void buildsDefaultSauceOptions() {
@@ -30,14 +32,61 @@ public class SafariConfigurationsTest {
 
     @Test
     public void acceptsSafariOptionsClass() {
-        SafariOptions safariOptions = new SafariOptions();
         safariOptions.setAutomaticProfiling(true);
         safariOptions.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.IGNORE);
+        safariOptions.setCapability("sauce:options",
+                ImmutableMap.of("build", "Build Name",
+                        "maxDuration", 300));
 
         SauceOptions sauceOptions = SauceOptions.safari(safariOptions).build();
 
         Assert.assertEquals(Browser.SAFARI, sauceOptions.getBrowserName());
+        Assert.assertEquals("Build Name", sauceOptions.sauce().getBuild());
+        Assert.assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
         Assert.assertEquals(safariOptions, sauceOptions.getCapabilities());
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadSafariOptionsCapability() {
+        safariOptions.setCapability("invalid", "value");
+
+        SauceOptions.safari(safariOptions).build();
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsSafariOptionsBrowserMismatch() {
+        safariOptions.setCapability("browserName", "firefox");
+
+        SauceOptions.safari(safariOptions).build();
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadSafariOptionsSauceCapability() {
+        safariOptions.setCapability("sauce:options", ImmutableMap.of("invalid", "value"));
+
+        SauceOptions.safari(safariOptions).build();
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadSafariOptionsValue() {
+        safariOptions.setCapability("unhandledPromptBehavior", "invalid");
+
+        SauceOptions.safari(safariOptions).build();
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadSafariOptionsSauceValue() {
+        safariOptions.setCapability("sauce:options", ImmutableMap.of("jobVisibility", "invalid"));
+
+        SauceOptions.safari(safariOptions).build();
+    }
+
+    @Test
+    public void ignoresNameSpacedValues() {
+        safariOptions.setCapability("foo:bar", ImmutableMap.of("matters", "not"));
+
+        SauceOptions sauceOptions = SauceOptions.safari(safariOptions).build();
+        Assert.assertNotNull(sauceOptions.getCapabilities().getCapability("foo:bar"));
     }
 
     @Test

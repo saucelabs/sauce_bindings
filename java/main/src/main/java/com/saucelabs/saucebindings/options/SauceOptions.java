@@ -13,6 +13,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Proxy;
+import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -32,7 +33,7 @@ public class SauceOptions extends BaseOptions {
     public TimeoutStore timeout = new TimeoutStore();
 
     // w3c Settings
-    protected Browser browserName = Browser.CHROME;
+    @Setter(AccessLevel.NONE) protected Browser browserName = Browser.CHROME;
     protected String browserVersion = "latest";
     protected SaucePlatform platformName = SaucePlatform.WINDOWS_10;
     protected PageLoadStrategy pageLoadStrategy;
@@ -200,31 +201,35 @@ public class SauceOptions extends BaseOptions {
         return timeout.getTimeouts();
     }
 
+    /**
+     * For Configuration classes to build a SauceOptions instance
+     *
+     * @param options Selenium capability values
+     */
     SauceOptions(MutableCapabilities options) {
-        capabilities = new MutableCapabilities(options.asMap());
+        capabilities = new MutableCapabilities(options.asMap()); // reset Browser Options subclasses to MutableCapabilities superclass
+        // NOTE: This is what Java actually does to capabilities before sending to Sauce
+        // new MutableCapabilities(CapabilitiesUtils.makeW3CSafe(options).findFirst().get().asMap());
         capabilityManager = new CapabilityManager(this);
-        sauceLabsOptions = new SauceLabsOptions();
-
-        processSauceOptions(options.getCapability("sauce:options"));
+        sauceLabsOptions = new SauceLabsOptions(capabilities.getCapability("sauce:options"));
 
         if (options.getCapability("browserName") != null) {
             setCapability("browserName", options.getCapability("browserName"));
         }
+
+        processOptions();
     }
 
-    private void processSauceOptions(Object sauceOptionsCap) {
-        Map<String, Object> sauceOptions = new HashMap<>();
-        if (sauceOptionsCap instanceof MutableCapabilities) {
-            MutableCapabilities sauceMutableCaps = (MutableCapabilities) sauceOptionsCap;
-            sauceOptions = sauceMutableCaps.asMap();
-        } else if (sauceOptionsCap instanceof Map) {
-            // In case Immutable Map
-            sauceOptions = new HashMap<>((Map<? extends String, ?>) sauceOptionsCap);
-        }
-
-        sauceOptions.remove("username");
-        sauceOptions.remove("accessKey");
-        sauce().mergeCapabilities(sauceOptions);
+    // This insanity is required because Java treats InternetExplorerOptions differently for some reason
+    private void processOptions() {
+        capabilities.asMap().keySet().forEach((capability) -> {
+            if (!capability.contains(":")
+                    && !"browserName".equals(capability)
+                    && !(Browser.INTERNET_EXPLORER.equals(browserName)
+                    && ((Map) capabilities.getCapability("se:ieOptions")).containsKey(capability))) {
+                setCapability(capability, capabilities.getCapability(capability));
+            }
+        });
     }
 
     /**
@@ -246,40 +251,51 @@ public class SauceOptions extends BaseOptions {
     @Override
     public void setCapability(String key, Object value) {
         switch (key) {
-            case "browserName":
-                capabilityManager.validateCapability("Browser", Browser.keys(), (String) value);
-                setBrowserName(Browser.valueOf(Browser.fromString((String) value)));
-                break;
-            case "platformName":
-                capabilityManager.validateCapability("SaucePlatform", SaucePlatform.keys(), (String) value);
-                setPlatformName(SaucePlatform.valueOf(SaucePlatform.fromString((String) value)));
-                break;
-            case "pageLoadStrategy":
+        case "browserName":
+            capabilityManager.validateCapability("Browser", Browser.keys(), (String) value);
+            setBrowserName(Browser.valueOf(Browser.fromString((String) value)));
+            break;
+        case "platformName":
+            String stringValue = (String) value;
+            capabilityManager.validateCapability("SaucePlatform", SaucePlatform.keys(), stringValue);
+            setPlatformName(SaucePlatform.valueOf(SaucePlatform.fromString(stringValue)));
+            break;
+        case "pageLoadStrategy":
+            if (value instanceof PageLoadStrategy) {
+                setPageLoadStrategy((PageLoadStrategy) value);
+            } else {
                 capabilityManager.validateCapability("PageLoadStrategy", PageLoadStrategy.keys(), (String) value);
                 setPageLoadStrategy(PageLoadStrategy.valueOf(PageLoadStrategy.fromString((String) value)));
-                break;
-            case "unhandledPromptBehavior":
+            }
+            break;
+        case "unhandledPromptBehavior":
+            if (value instanceof UnhandledPromptBehavior) {
+                setUnhandledPromptBehavior((UnhandledPromptBehavior) value);
+            } else if (value instanceof UnexpectedAlertBehaviour) {
+                setCapability("unhandledPromptBehavior", value.toString());
+            } else {
                 capabilityManager.validateCapability("UnhandledPromptBehavior", UnhandledPromptBehavior.keys(), (String) value);
                 setUnhandledPromptBehavior(UnhandledPromptBehavior.valueOf(UnhandledPromptBehavior.fromString((String) value)));
-                break;
-            case "timeouts":
-                Map<Timeouts, Integer> timeoutsMap = new HashMap<>();
-                ((Map) value).forEach((oldKey, val) -> {
-                    capabilityManager.validateCapability("Timeouts", Timeouts.keys(), (String) oldKey);
-                    String keyString = Timeouts.fromString((String) oldKey);
-                    timeoutsMap.put(Timeouts.valueOf(keyString), (Integer) val);
-                });
-                setTimeouts(timeoutsMap);
-                break;
-            case "sauce":
-                sauce().mergeCapabilities((HashMap<String, Object>) value);
-                break;
-            default:
-                if (sauce().getValidOptions().contains(key)) {
-                    deprecatedSetCapability(key, value);
-                } else {
-                    super.setCapability(key, value);
-                }
+            }
+            break;
+        case "timeouts":
+            Map<Timeouts, Integer> timeoutsMap = new HashMap<>();
+            ((Map) value).forEach((oldKey, val) -> {
+                capabilityManager.validateCapability("Timeouts", Timeouts.keys(), (String) oldKey);
+                String keyString = Timeouts.fromString((String) oldKey);
+                timeoutsMap.put(Timeouts.valueOf(keyString), (Integer) val);
+            });
+            setTimeouts(timeoutsMap);
+            break;
+        case "sauce":
+            sauce().mergeCapabilities((HashMap<String, Object>) value);
+            break;
+        default:
+            if (sauce().getValidOptions().contains(key)) {
+                deprecatedSetCapability(key, value);
+            } else {
+                super.setCapability(key, value);
+            }
         }
     }
 
@@ -308,5 +324,18 @@ public class SauceOptions extends BaseOptions {
         System.out.println("WARNING: using merge() of Map with value of (" + key + ") is DEPRECATED");
         System.out.println("place this value inside a nested Map with the keyword 'sauce'");
         sauce().setCapability(key, value);
+    }
+
+    /**
+     * This sets the browser for the Session
+     *
+     * @deprecated use static browser methods with SauceOptions class to set browser name
+     * @param browserName which browser to use
+     * @return this SauceOptions instance
+     */
+    @Deprecated
+    public SauceOptions setBrowserName(Browser browserName) {
+        this.browserName = browserName;
+        return this;
     }
 }

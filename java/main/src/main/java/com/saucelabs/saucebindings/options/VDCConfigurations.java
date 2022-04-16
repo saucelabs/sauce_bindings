@@ -244,4 +244,11 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
         sauceOptions.sauce().setTimeZone(timeZone);
         return (T) this;
     }
+
+    protected void validateBrowserName(String expected, String actual) {
+        String message = "Selenium class contains incorrect browser name; \"" + actual + "\" can not be set for: " + this.getClass();
+        if (!expected.equals(actual)) {
+            throw new InvalidSauceOptionsArgumentException(message);
+        }
+    }
 }

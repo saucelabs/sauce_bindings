@@ -431,6 +431,9 @@ public class SauceOptionsTest {
         expectedCapabilities.setCapability("browserVersion", "latest");
         expectedCapabilities.setCapability("platformName", "Windows 10");
 
+        expectedCapabilities.setCapability("goog:chromeOptions",
+                ImmutableMap.of("args", new ArrayList(),"extensions", new ArrayList() {
+        }));
         expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
         MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
 

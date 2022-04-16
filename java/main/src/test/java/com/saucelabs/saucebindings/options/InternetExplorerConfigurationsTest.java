@@ -1,5 +1,6 @@
 package com.saucelabs.saucebindings.options;
 
+import com.google.common.collect.ImmutableMap;
 import com.saucelabs.saucebindings.Browser;
 import com.saucelabs.saucebindings.JobVisibility;
 import com.saucelabs.saucebindings.PageLoadStrategy;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 public class InternetExplorerConfigurationsTest {
+    InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
 
     @Test
     public void buildsDefaultSauceOptions() {
@@ -30,14 +32,61 @@ public class InternetExplorerConfigurationsTest {
 
     @Test
     public void acceptsIEOptionsClass() {
-        InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
         internetExplorerOptions.requireWindowFocus();
         internetExplorerOptions.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.IGNORE);
+        internetExplorerOptions.setCapability("sauce:options",
+                ImmutableMap.of("build", "Build Name",
+                        "maxDuration", 300));
 
         SauceOptions sauceOptions = SauceOptions.ie(internetExplorerOptions).build();
 
         Assert.assertEquals(Browser.INTERNET_EXPLORER, sauceOptions.getBrowserName());
+        Assert.assertEquals("Build Name", sauceOptions.sauce().getBuild());
+        Assert.assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
         Assert.assertEquals(internetExplorerOptions, sauceOptions.getCapabilities());
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadInternetExplorerOptionsCapability() {
+        internetExplorerOptions.setCapability("invalid", "value");
+
+        SauceOptions.ie(internetExplorerOptions).build();
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsInternetExplorerOptionsBrowserMismatch() {
+        internetExplorerOptions.setCapability("browserName", "firefox");
+
+        SauceOptions.ie(internetExplorerOptions).build();
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadInternetExplorerOptionsSauceCapability() {
+        internetExplorerOptions.setCapability("sauce:options", ImmutableMap.of("invalid", "value"));
+
+        SauceOptions.ie(internetExplorerOptions).build();
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadInternetExplorerOptionsValue() {
+        internetExplorerOptions.setCapability("unhandledPromptBehavior", "invalid");
+
+        SauceOptions.ie(internetExplorerOptions).build();
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadInternetExplorerOptionsSauceValue() {
+        internetExplorerOptions.setCapability("sauce:options", ImmutableMap.of("jobVisibility", "invalid"));
+
+        SauceOptions.ie(internetExplorerOptions).build();
+    }
+
+    @Test
+    public void ignoresNameSpacedValues() {
+        internetExplorerOptions.setCapability("foo:bar", ImmutableMap.of("matters", "not"));
+
+        SauceOptions sauceOptions = SauceOptions.ie(internetExplorerOptions).build();
+        Assert.assertNotNull(sauceOptions.getCapabilities().getCapability("foo:bar"));
     }
 
     @Test

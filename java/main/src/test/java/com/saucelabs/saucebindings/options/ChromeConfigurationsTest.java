@@ -1,5 +1,6 @@
 package com.saucelabs.saucebindings.options;
 
+import com.google.common.collect.ImmutableMap;
 import com.saucelabs.saucebindings.Browser;
 import com.saucelabs.saucebindings.JobVisibility;
 import com.saucelabs.saucebindings.PageLoadStrategy;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ChromeConfigurationsTest {
+    ChromeOptions chromeOptions = new ChromeOptions();
 
     @Test
     public void buildsDefaultSauceOptions() {
@@ -30,14 +32,63 @@ public class ChromeConfigurationsTest {
 
     @Test
     public void acceptsChromeOptionsClass() {
-        ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--foo");
         chromeOptions.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.IGNORE);
+        chromeOptions.setCapability("pageLoadStrategy", PageLoadStrategy.EAGER);
+        chromeOptions.setCapability("sauce:options",
+                ImmutableMap.of("build", "Build Name",
+                        "maxDuration", 300));
 
         SauceOptions sauceOptions = SauceOptions.chrome(chromeOptions).build();
 
         Assert.assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
+        Assert.assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
+        Assert.assertEquals("Build Name", sauceOptions.sauce().getBuild());
+        Assert.assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
         Assert.assertEquals(chromeOptions, sauceOptions.getCapabilities());
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadChromeOptionsCapability() {
+        chromeOptions.setCapability("invalid", "value");
+
+        SauceOptions.chrome(chromeOptions).build();
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsChromeOptionsBrowserMismatch() {
+        chromeOptions.setCapability("browserName", "firefox");
+
+        SauceOptions.chrome(chromeOptions).build();
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadChromeOptionsSauceCapability() {
+        chromeOptions.setCapability("sauce:options", ImmutableMap.of("invalid", "value"));
+
+        SauceOptions.chrome(chromeOptions).build();
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadChromeOptionsValue() {
+        chromeOptions.setCapability("unhandledPromptBehavior", "invalid");
+
+        SauceOptions.chrome(chromeOptions).build();
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadChromeOptionsSauceValue() {
+        chromeOptions.setCapability("sauce:options", ImmutableMap.of("jobVisibility", "invalid"));
+
+        SauceOptions.chrome(chromeOptions).build();
+    }
+
+    @Test
+    public void ignoresNameSpacedValues() {
+        chromeOptions.setCapability("foo:bar", ImmutableMap.of("matters", "not"));
+
+        SauceOptions sauceOptions = SauceOptions.chrome(chromeOptions).build();
+        Assert.assertNotNull(sauceOptions.getCapabilities().getCapability("foo:bar"));
     }
 
     @Test

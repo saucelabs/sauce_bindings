@@ -5,6 +5,7 @@ import org.openqa.selenium.safari.SafariOptions;
 
 public class SafariConfigurations extends VDCConfigurations<SafariConfigurations> {
     SafariConfigurations(SafariOptions safariOptions) {
+        validateBrowserName("safari", safariOptions.getBrowserName());
         sauceOptions = new SauceOptions(safariOptions);
         sauceOptions.setPlatformName(SaucePlatform.MAC_CATALINA);
     }

@@ -1,5 +1,6 @@
 package com.saucelabs.saucebindings.options;
 
+import com.google.common.collect.ImmutableMap;
 import com.saucelabs.saucebindings.Browser;
 import com.saucelabs.saucebindings.JobVisibility;
 import com.saucelabs.saucebindings.PageLoadStrategy;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 public class FirefoxConfigurationsTest {
+    FirefoxOptions firefoxOptions = new FirefoxOptions();
 
     @Test
     public void buildsDefaultSauceOptions() {
@@ -30,14 +32,61 @@ public class FirefoxConfigurationsTest {
 
     @Test
     public void acceptsFirefoxOptionsClass() {
-        FirefoxOptions firefoxOptions = new FirefoxOptions();
         firefoxOptions.addArguments("--foo");
         firefoxOptions.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.IGNORE);
+        firefoxOptions.setCapability("sauce:options",
+                ImmutableMap.of("build", "Build Name",
+                        "maxDuration", 300));
 
         SauceOptions sauceOptions = SauceOptions.firefox(firefoxOptions).build();
 
         Assert.assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
+        Assert.assertEquals("Build Name", sauceOptions.sauce().getBuild());
+        Assert.assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
         Assert.assertEquals(firefoxOptions, sauceOptions.getCapabilities());
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadFirefoxOptionsCapability() {
+        firefoxOptions.setCapability("invalid", "value");
+
+        SauceOptions.firefox(firefoxOptions).build();
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsFirefoxOptionsBrowserMismatch() {
+        firefoxOptions.setCapability("browserName", "chrome");
+
+        SauceOptions.firefox(firefoxOptions).build();
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadFirefoxOptionsSauceCapability() {
+        firefoxOptions.setCapability("sauce:options", ImmutableMap.of("invalid", "value"));
+
+        SauceOptions.firefox(firefoxOptions).build();
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadFirefoxOptionsValue() {
+        firefoxOptions.setCapability("unhandledPromptBehavior", "invalid");
+
+        SauceOptions.firefox(firefoxOptions).build();
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadFirefoxOptionsSauceValue() {
+        firefoxOptions.setCapability("sauce:options", ImmutableMap.of("jobVisibility", "invalid"));
+
+        SauceOptions.firefox(firefoxOptions).build();
+    }
+
+    @Test
+    public void ignoresNameSpacedValues() {
+        firefoxOptions.setCapability("foo:bar", ImmutableMap.of("matters", "not"));
+
+        SauceOptions sauceOptions = SauceOptions.firefox(firefoxOptions).build();
+        Assert.assertNotNull(sauceOptions.getCapabilities().getCapability("foo:bar"));
     }
 
     @Test

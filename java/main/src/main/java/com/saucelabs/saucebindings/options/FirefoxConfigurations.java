@@ -4,6 +4,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class FirefoxConfigurations extends VDCConfigurations<FirefoxConfigurations> {
     FirefoxConfigurations(FirefoxOptions firefoxOptions) {
+        validateBrowserName("firefox", firefoxOptions.getBrowserName());
         sauceOptions = new SauceOptions(firefoxOptions);
     }
 

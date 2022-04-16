@@ -1,5 +1,6 @@
 package com.saucelabs.saucebindings.options;
 
+import com.google.common.collect.ImmutableMap;
 import com.saucelabs.saucebindings.Browser;
 import com.saucelabs.saucebindings.JobVisibility;
 import com.saucelabs.saucebindings.PageLoadStrategy;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 public class EdgeConfigurationsTest {
+    EdgeOptions edgeOptions = new EdgeOptions();
 
     @Test
     public void buildsDefaultSauceOptions() {
@@ -30,14 +32,61 @@ public class EdgeConfigurationsTest {
 
     @Test
     public void acceptsEdgeOptionsClass() {
-        EdgeOptions edgeOptions = new EdgeOptions();
         edgeOptions.addArguments("--foo");
         edgeOptions.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.IGNORE);
+        edgeOptions.setCapability("sauce:options",
+                ImmutableMap.of("build", "Build Name",
+                        "maxDuration", 300));
 
         SauceOptions sauceOptions = SauceOptions.edge(edgeOptions).build();
 
         Assert.assertEquals(Browser.EDGE, sauceOptions.getBrowserName());
+        Assert.assertEquals("Build Name", sauceOptions.sauce().getBuild());
+        Assert.assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
         Assert.assertEquals(edgeOptions, sauceOptions.getCapabilities());
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadEdgeOptionsCapability() {
+        edgeOptions.setCapability("invalid", "value");
+
+        SauceOptions.edge(edgeOptions).build();
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsEdgeOptionsBrowserMismatch() {
+        edgeOptions.setCapability("browserName", "firefox");
+
+        SauceOptions.edge(edgeOptions).build();
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadEdgeOptionsSauceCapability() {
+        edgeOptions.setCapability("sauce:options", ImmutableMap.of("invalid", "value"));
+
+        SauceOptions.edge(edgeOptions).build();
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadEdgeOptionsValue() {
+        edgeOptions.setCapability("unhandledPromptBehavior", "invalid");
+
+        SauceOptions.edge(edgeOptions).build();
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadEdgeOptionsSauceValue() {
+        edgeOptions.setCapability("sauce:options", ImmutableMap.of("jobVisibility", "invalid"));
+
+        SauceOptions.edge(edgeOptions).build();
+    }
+
+    @Test
+    public void ignoresNameSpacedValues() {
+        edgeOptions.setCapability("foo:bar", ImmutableMap.of("matters", "not"));
+
+        SauceOptions sauceOptions = SauceOptions.edge(edgeOptions).build();
+        Assert.assertNotNull(sauceOptions.getCapabilities().getCapability("foo:bar"));
     }
 
     @Test

@@ -16,7 +16,7 @@ public abstract class BaseConfigurations<T extends BaseConfigurations<T>> {
      * @param platform the enum representing the operating system the browser or mobile device should be running on
      * @return instance of configuration
      */
-    // Override this in subclasses to ensure valid enum
+    // Override this in subclasses as needed to ensure valid enum
     public T setPlatformName(SaucePlatform platform) {
         sauceOptions.setPlatformName(platform);
         return (T) this;

@@ -80,12 +80,11 @@ public class EdgeConfigurationsTest {
         SauceOptions.edge(edgeOptions);
     }
 
-    @Test
-    public void ignoresNameSpacedValues() {
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadNameSpacedValues() {
         edgeOptions.setCapability("foo:bar", ImmutableMap.of("matters", "not"));
 
-        SauceOptions sauceOptions = SauceOptions.edge(edgeOptions).build();
-        Assert.assertNotNull(sauceOptions.getCapabilities().getCapability("foo:bar"));
+        SauceOptions.edge(edgeOptions);
     }
 
     @Test

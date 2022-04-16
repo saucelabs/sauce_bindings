@@ -4,6 +4,7 @@ import org.openqa.selenium.edge.EdgeOptions;
 
 public class EdgeConfigurations extends VDCConfigurations<EdgeConfigurations> {
     EdgeConfigurations(EdgeOptions edgeOptions) {
+        validatePrefix("ms", edgeOptions.asMap());
         validateBrowserName("MicrosoftEdge", edgeOptions.getBrowserName());
         sauceOptions = new SauceOptions(edgeOptions);
     }

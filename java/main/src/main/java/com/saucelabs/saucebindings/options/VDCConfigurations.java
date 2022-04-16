@@ -8,6 +8,7 @@ import org.openqa.selenium.Proxy;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Map;
+import java.util.Optional;
 
 public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends BaseConfigurations<T> {
 
@@ -248,6 +249,18 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
     protected void validateBrowserName(String expected, String actual) {
         String message = "Selenium class contains incorrect browser name; \"" + actual + "\" can not be set for: " + this.getClass();
         if (!expected.equals(actual)) {
+            throw new InvalidSauceOptionsArgumentException(message);
+        }
+    }
+
+    protected void validatePrefix(String prefix, Map<String, Object> map) {
+        Optional<String> first = map.keySet().stream()
+                .filter(k -> k.contains(":"))
+                .map(k -> k.substring(0, k.indexOf(":")))
+                .filter(substring -> !prefix.equals(substring) && !"sauce".equals(substring))
+                .findFirst();
+        if (first.isPresent()) {
+            String message = "\"" + first.get() + ":\" is not a valid prefix for a " + map.get("browserName") + " option.";
             throw new InvalidSauceOptionsArgumentException(message);
         }
     }

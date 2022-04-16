@@ -4,6 +4,7 @@ import org.openqa.selenium.ie.InternetExplorerOptions;
 
 public class InternetExplorerConfigurations extends VDCConfigurations<InternetExplorerConfigurations> {
     InternetExplorerConfigurations(InternetExplorerOptions internetExplorerOptions) {
+        validatePrefix("se", internetExplorerOptions.asMap());
         validateBrowserName("internet explorer", internetExplorerOptions.getBrowserName());
         sauceOptions = new SauceOptions(internetExplorerOptions);
     }

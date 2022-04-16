@@ -80,12 +80,11 @@ public class FirefoxConfigurationsTest {
         SauceOptions.firefox(firefoxOptions);
     }
 
-    @Test
-    public void ignoresNameSpacedValues() {
-        firefoxOptions.setCapability("foo:bar", ImmutableMap.of("matters", "not"));
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadNameSpacedValues() {
+        firefoxOptions.setCapability("foo:bar", ImmutableMap.of("invalid", "prefix"));
 
-        SauceOptions sauceOptions = SauceOptions.firefox(firefoxOptions).build();
-        Assert.assertNotNull(sauceOptions.getCapabilities().getCapability("foo:bar"));
+        SauceOptions.firefox(firefoxOptions);
     }
 
     @Test

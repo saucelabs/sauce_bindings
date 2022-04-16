@@ -80,12 +80,11 @@ public class SafariConfigurationsTest {
         SauceOptions.safari(safariOptions);
     }
 
-    @Test
-    public void ignoresNameSpacedValues() {
-        safariOptions.setCapability("foo:bar", ImmutableMap.of("matters", "not"));
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadNameSpacedValues() {
+        safariOptions.setCapability("foo:bar", ImmutableMap.of("invalid", "prefix"));
 
-        SauceOptions sauceOptions = SauceOptions.safari(safariOptions).build();
-        Assert.assertNotNull(sauceOptions.getCapabilities().getCapability("foo:bar"));
+        SauceOptions.safari(safariOptions);
     }
 
     @Test

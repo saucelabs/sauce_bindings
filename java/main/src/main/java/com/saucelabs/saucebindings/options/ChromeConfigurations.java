@@ -4,6 +4,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 public class ChromeConfigurations extends VDCConfigurations<ChromeConfigurations> {
     ChromeConfigurations(ChromeOptions chromeOptions) {
+        validatePrefix("goog", chromeOptions.asMap());
         validateBrowserName("chrome", chromeOptions.getBrowserName());
         sauceOptions = new SauceOptions(chromeOptions);
     }

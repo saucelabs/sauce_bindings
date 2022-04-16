@@ -80,12 +80,11 @@ public class InternetExplorerConfigurationsTest {
         SauceOptions.ie(internetExplorerOptions);
     }
 
-    @Test
-    public void ignoresNameSpacedValues() {
-        internetExplorerOptions.setCapability("foo:bar", ImmutableMap.of("matters", "not"));
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadNameSpacedValues() {
+        internetExplorerOptions.setCapability("foo:bar", ImmutableMap.of("invalid", "prefix"));
 
-        SauceOptions sauceOptions = SauceOptions.ie(internetExplorerOptions).build();
-        Assert.assertNotNull(sauceOptions.getCapabilities().getCapability("foo:bar"));
+        SauceOptions.ie(internetExplorerOptions);
     }
 
     @Test

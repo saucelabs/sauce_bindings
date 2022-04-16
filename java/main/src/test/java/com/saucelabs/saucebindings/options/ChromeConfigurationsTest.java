@@ -83,12 +83,11 @@ public class ChromeConfigurationsTest {
         SauceOptions.chrome(chromeOptions);
     }
 
-    @Test
-    public void ignoresNameSpacedValues() {
-        chromeOptions.setCapability("foo:bar", ImmutableMap.of("matters", "not"));
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadNameSpacedValues() {
+        chromeOptions.setCapability("foo:bar", ImmutableMap.of("invalid", "prefix"));
 
-        SauceOptions sauceOptions = SauceOptions.chrome(chromeOptions).build();
-        Assert.assertNotNull(sauceOptions.getCapabilities().getCapability("foo:bar"));
+        SauceOptions.chrome(chromeOptions);
     }
 
     @Test

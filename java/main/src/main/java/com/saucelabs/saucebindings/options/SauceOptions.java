@@ -364,7 +364,7 @@ public class SauceOptions extends BaseOptions {
         default:
             if (sauce().getValidOptions().contains(key)) {
                 deprecatedSetCapability(key, value);
-            } else {
+            } else if (!key.contains(":")) { // mergeCapabilities() ignores this, the new constructor does not
                 super.setCapability(key, value);
             }
         }

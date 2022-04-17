@@ -11,6 +11,7 @@ import com.saucelabs.saucebindings.SystemManager;
 import com.saucelabs.saucebindings.Timeouts;
 import com.saucelabs.saucebindings.UnhandledPromptBehavior;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.junit.MockitoJUnit;
@@ -184,6 +185,8 @@ public class SauceOptionsTest {
         Assert.assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
         Assert.assertEquals("tunnelName", sauceOptions.sauce().getTunnelIdentifier());
         Assert.assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());
+        Assert.assertEquals(ImmutableMap.of("args", ImmutableList.of("-a")),
+                sauceOptions.getCapabilities().getCapability("moz:firefoxOptions"));
     }
 
     @Test
@@ -232,6 +235,42 @@ public class SauceOptionsTest {
         Assert.assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
         Assert.assertEquals("tunnelName", sauceOptions.sauce().getTunnelIdentifier());
         Assert.assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadChromeOptionsCapability() {
+        Path path = Paths.get("src/test/java/com/saucelabs/saucebindings/badOptions.yml");
+
+        sauceOptions = new SauceOptions(path, "invalidCap");
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadChromeOptionsSauceCapability() {
+        Path path = Paths.get("src/test/java/com/saucelabs/saucebindings/badOptions.yml");
+
+        sauceOptions = new SauceOptions(path, "invalidSauceCap");
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadChromeOptionsValue() {
+        Path path = Paths.get("src/test/java/com/saucelabs/saucebindings/badOptions.yml");
+
+        sauceOptions = new SauceOptions(path, "badValue");
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadChromeOptionsSauceValue() {
+        Path path = Paths.get("src/test/java/com/saucelabs/saucebindings/badOptions.yml");
+
+        sauceOptions = new SauceOptions(path, "badSauceValue");
+    }
+
+    @Ignore("Current code does not parse by browser making this a more difficult implementation at this time")
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadNameSpacedValues() {
+        Path path = Paths.get("src/test/java/com/saucelabs/saucebindings/badOptions.yml");
+
+        sauceOptions = new SauceOptions(path, "invalidPrefix");
     }
 
     @Test

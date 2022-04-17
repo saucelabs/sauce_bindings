@@ -48,6 +48,9 @@ firefoxMac:
     timeZone: 'San Francisco'
     tunnelIdentifier: 'tunnelName'
     videoUploadOnPass: false
+  moz:firefoxOptions:
+    args:
+      - -a
 
 badBrowser:
   browserName: "netscape"

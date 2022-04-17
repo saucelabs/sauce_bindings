@@ -81,7 +81,7 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
      * @return instance of configuration
      */
     public T setImplicitWaitTimeout(Duration timeout) {
-        sauceOptions.timeout.setImplicitWait((int) timeout.toMillis());
+        sauceOptions.setImplicitWaitTimeout(timeout);
         return (T) this;
     }
 
@@ -90,7 +90,7 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
      * @return instance of configuration
      */
     public T setPageLoadTimeout(Duration timeout) {
-        sauceOptions.timeout.setPageLoad((int) timeout.toMillis());
+        sauceOptions.setPageLoadTimeout(timeout);
         return (T) this;
     }
 
@@ -101,7 +101,7 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
      * @return instance of configuration
      */
     public T setScriptTimeout(Duration timeout) {
-        sauceOptions.timeout.setScript((int) timeout.toMillis());
+        sauceOptions.setScriptTimeout(timeout);
         return (T) this;
     }
 

@@ -11,7 +11,6 @@ import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.safari.SafariOptions;
 
 import java.net.URL;
-import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
@@ -85,21 +84,6 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     @Deprecated
     public MutableCapabilities getSeleniumCapabilities() {
         return capabilities;
-    }
-
-    /**
-     * @return Map of timeout values from the TimeoutStore
-     * @see com.saucelabs.saucebindings.options.VDCConfigurations#setImplicitWaitTimeout(Duration)
-     * @see com.saucelabs.saucebindings.options.VDCConfigurations#setScriptTimeout(Duration)
-     * @see com.saucelabs.saucebindings.options.VDCConfigurations#setPageLoadTimeout(Duration)
-     * @deprecated Set the timeout you are interested in directly instead of using a Map
-     */
-    @Deprecated
-    public Map<Timeouts, Integer> getTimeouts() {
-        if (timeout.getTimeouts().isEmpty()) {
-            return timeouts;
-        }
-        return timeout.getTimeouts();
     }
 
     /**
@@ -338,7 +322,7 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
     @Deprecated
-    public BaseOptions setTunnelIdentifier (String tunnelIdentifier) {
+    public BaseOptions setTunnelIdentifier(String tunnelIdentifier) {
         return sauce().setTunnelIdentifier(tunnelIdentifier);
     }
 
@@ -564,7 +548,7 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
     @Deprecated
-    public String getTunnelIdentifier () {
+    public String getTunnelIdentifier() {
         return sauce().getTunnelIdentifier();
     }
 

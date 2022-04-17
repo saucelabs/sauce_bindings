@@ -34,11 +34,17 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Accessors(chain = true)
 @Setter @Getter
 public class SauceOptions extends BaseOptions {
     @Setter(AccessLevel.NONE) @Getter(AccessLevel.NONE) private SauceLabsOptions sauceLabsOptions;
+
+    /**
+     * @deprecated set timeouts directly with setter methods
+     */
+    @Deprecated
     public TimeoutStore timeout = new TimeoutStore();
 
     // w3c Settings
@@ -49,7 +55,7 @@ public class SauceOptions extends BaseOptions {
     protected Boolean acceptInsecureCerts = null;
     protected Proxy proxy;
     protected Boolean setWindowRect = null;
-    @Getter(AccessLevel.NONE) protected Map<Timeouts, Integer> timeouts = new HashMap<>();
+    @Setter(AccessLevel.NONE) @Getter(AccessLevel.NONE) protected Map<Timeouts, Long> timeouts = new HashMap<>();
     protected Boolean strictFileInteractability = null;
     protected UnhandledPromptBehavior unhandledPromptBehavior;
 
@@ -238,7 +244,7 @@ public class SauceOptions extends BaseOptions {
     }
 
     /**
-     * This method does not need to be used if working with the static methods and the build() method
+     * This method allows getting values of Sauce specific values associated with SauceOptions
      *
      * @return an instance of SauceLabsOptions built by configurations
      */
@@ -256,10 +262,24 @@ public class SauceOptions extends BaseOptions {
         this(new MutableCapabilities());
     }
 
-    // TODO: Make this private
+    /**
+     * This is not needed by the user, but is needed by the CapabilityManager
+     * TODO: move this package private with lombok
+     *
+     * @deprecated use the getter for the specific timeout you are interested in
+     * @see SauceOptions#getImplicitWaitTimeout()
+     * @see SauceOptions#getPageLoadTimeout()
+     * @see SauceOptions#getScriptTimeout()
+     * @return any timeouts set
+     */
+    @Deprecated
     public Map<Timeouts, Integer> getTimeouts() {
         if (timeout.getTimeouts().isEmpty()) {
-            return timeouts;
+            return timeouts.entrySet().stream()
+                    .collect(Collectors.toMap(
+                            Map.Entry::getKey,
+                            e -> e.getValue().intValue()
+                    ));
         }
         return timeout.getTimeouts();
     }
@@ -333,7 +353,7 @@ public class SauceOptions extends BaseOptions {
         case "timeouts":
             ((Map<String, Integer>) value).forEach((oldKey, val) -> {
                 capabilityManager.validateCapability("Timeouts", Timeouts.keys(), oldKey);
-                timeouts.put(Timeouts.valueOf(Timeouts.fromString(oldKey)), val);
+                timeouts.put(Timeouts.valueOf(Timeouts.fromString(oldKey)), val.longValue());
             });
             break;
         case "sauce":
@@ -354,21 +374,60 @@ public class SauceOptions extends BaseOptions {
      * @return duration to wait for finding an element
      */
     public Duration getImplicitWaitTimeout() {
-        return Duration.ofMillis(getTimeouts().get(Timeouts.IMPLICIT));
+        if (getTimeouts().get(Timeouts.IMPLICIT) != null) {
+            return Duration.ofMillis((getTimeouts().get(Timeouts.IMPLICIT).longValue()));
+        } else {
+            return null;
+        }
     }
 
     /**
      * @return duration to wait for page to load
      */
     public Duration getPageLoadTimeout() {
-        return Duration.ofMillis(getTimeouts().get(Timeouts.PAGE_LOAD));
+        if (getTimeouts().get(Timeouts.PAGE_LOAD) != null) {
+            return Duration.ofMillis(getTimeouts().get(Timeouts.PAGE_LOAD).longValue());
+        } else {
+            return null;
+        }
     }
 
     /**
      * @return duration to wait for script to execute
      */
     public Duration getScriptTimeout() {
-        return Duration.ofMillis(getTimeouts().get(Timeouts.SCRIPT));
+        if (getTimeouts().get(Timeouts.SCRIPT) != null) {
+            return Duration.ofMillis(getTimeouts().get(Timeouts.SCRIPT).longValue());
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     *
+     * @deprecated Use setters for specific timeouts instead
+     * @param timeouts valid timeouts and their associated values in milliseconds
+     * @return instance of this class
+     */
+    @Deprecated
+    public SauceOptions setTimeouts(Map<Timeouts, Long> timeouts) {
+        this.timeouts = timeouts;
+        return this;
+    }
+
+    public SauceOptions setImplicitWaitTimeout(Duration timeout) {
+        timeouts.put(Timeouts.IMPLICIT, timeout.toMillis());
+        return this;
+    }
+
+    public SauceOptions setPageLoadTimeout(Duration timeout) {
+        timeouts.put(Timeouts.PAGE_LOAD, timeout.toMillis());
+        return this;
+    }
+
+    public SauceOptions setScriptTimeout(Duration timeout) {
+        timeouts.put(Timeouts.SCRIPT, timeout.toMillis());
+        return this;
     }
 
     private void deprecatedSetCapability(String key, Object value) {

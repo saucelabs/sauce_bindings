@@ -60,9 +60,9 @@ public class SauceOptionsTest {
         sauceOptions.setUnhandledPromptBehavior(UnhandledPromptBehavior.IGNORE);
         sauceOptions.setStrictFileInteractability(true);
 
-        sauceOptions.timeout.setImplicitWait(1000);
-        sauceOptions.timeout.setPageLoad(100000);
-        sauceOptions.timeout.setScript(10000);
+        sauceOptions.setImplicitWaitTimeout(Duration.ofSeconds(1));
+        sauceOptions.setPageLoadTimeout(Duration.ofSeconds(100));
+        sauceOptions.setScriptTimeout(Duration.ofSeconds(10));
 
         Assert.assertEquals(true, sauceOptions.getAcceptInsecureCerts());
         Assert.assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
@@ -243,9 +243,9 @@ public class SauceOptionsTest {
         sauceOptions.setSetWindowRect(true);
         sauceOptions.setUnhandledPromptBehavior(UnhandledPromptBehavior.IGNORE);
         sauceOptions.setStrictFileInteractability(true);
-        sauceOptions.timeout.setImplicitWait(1000);
-        sauceOptions.timeout.setPageLoad(100000);
-        sauceOptions.timeout.setScript(10000);
+        sauceOptions.setImplicitWaitTimeout(Duration.ofSeconds(1));
+        sauceOptions.setPageLoadTimeout(Duration.ofSeconds(100));
+        sauceOptions.setScriptTimeout(Duration.ofSeconds(10));
         sauceOptions.sauce().setBuild("Build Name");
 
         Map<Timeouts, Integer> timeouts = new HashMap<>();
@@ -405,9 +405,9 @@ public class SauceOptionsTest {
         expectedCapabilities.setCapability("pageLoadStrategy", PageLoadStrategy.EAGER);
         sauceOptions.setAcceptInsecureCerts(true);
         expectedCapabilities.setCapability("acceptInsecureCerts", true);
-        sauceOptions.timeout.setImplicitWait(1000)
-                .setPageLoad(100000)
-                .setScript(10000);
+        sauceOptions.setImplicitWaitTimeout(Duration.ofSeconds(1))
+                .setPageLoadTimeout(Duration.ofSeconds(100))
+                .setScriptTimeout(Duration.ofSeconds(10));
         Map<Timeouts, Integer> timeouts = new HashMap<>();
         timeouts.put(Timeouts.IMPLICIT, 1000);
         timeouts.put(Timeouts.SCRIPT, 10000);

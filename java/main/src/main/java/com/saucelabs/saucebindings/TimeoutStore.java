@@ -7,8 +7,12 @@ import lombok.experimental.Accessors;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @deprecated each timeout has its own setter in options.SauceOptions
+ */
 @Accessors(chain = true)
 @Setter @Getter
+@Deprecated
 public class TimeoutStore {
     private Integer implicitWait;
     private Integer script;

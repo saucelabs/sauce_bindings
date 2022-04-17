@@ -33,7 +33,7 @@ public class SauceLabsOptions extends BaseOptions {
     private Integer maxDuration = null;
     private String name;
     private String parentTunnel;
-    private Map<Prerun, Object> prerun;
+    private Map<Prerun, Object> prerun = new HashMap<>();
     private URL prerunUrl;
     private Integer priority = null;
     private JobVisibility jobVisibility; // the actual key for this is a reserved keyword "public"
@@ -133,16 +133,13 @@ public class SauceLabsOptions extends BaseOptions {
     @Override
     protected void setCapability(String key, Object value) {
         if ("jobVisibility".equals(key)) {
-            capabilityManager.validateCapability("JobVisibility", JobVisibility.keys(), (String) value);
-            setJobVisibility(JobVisibility.valueOf(JobVisibility.fromString((String) value)));
+            capabilityManager.validateCapability("JobVisibility", JobVisibility.keys(), value.toString());
+            this.jobVisibility = JobVisibility.valueOf(JobVisibility.fromString(value.toString()));
         } else if ("prerun".equals(key)) {
-            Map<Prerun, Object> prerunMap = new HashMap<>();
             ((Map<String, Object>) value).forEach((oldKey, val) -> {
                 capabilityManager.validateCapability("Prerun", Prerun.keys(), oldKey);
-                String keyString = Prerun.fromString(oldKey);
-                prerunMap.put(Prerun.valueOf(keyString), val);
+                prerun.put(Prerun.valueOf(Prerun.fromString(oldKey)), val);
             });
-            setPrerun(prerunMap);
         } else {
             super.setCapability(key, value);
         }

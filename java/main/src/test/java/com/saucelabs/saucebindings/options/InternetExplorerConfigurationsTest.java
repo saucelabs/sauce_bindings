@@ -10,6 +10,7 @@ import com.saucelabs.saucebindings.SaucePlatform;
 import com.saucelabs.saucebindings.UnhandledPromptBehavior;
 import org.junit.Assert;
 import org.junit.Test;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 
@@ -33,6 +34,8 @@ public class InternetExplorerConfigurationsTest {
     public void acceptsIEOptionsClass() {
         internetExplorerOptions.requireWindowFocus();
         internetExplorerOptions.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.IGNORE);
+        internetExplorerOptions.setCapability("platformName", Platform.WIN8_1);
+        internetExplorerOptions.setCapability("pageLoadStrategy", org.openqa.selenium.PageLoadStrategy.EAGER);
         internetExplorerOptions.setCapability("sauce:options",
                 ImmutableMap.of("build", "Build Name",
                         "maxDuration", 300));
@@ -41,6 +44,8 @@ public class InternetExplorerConfigurationsTest {
 
         Assert.assertEquals(Browser.INTERNET_EXPLORER, sauceOptions.getBrowserName());
         Assert.assertEquals("Build Name", sauceOptions.sauce().getBuild());
+        Assert.assertEquals(SaucePlatform.WINDOWS_8_1, sauceOptions.getPlatformName());
+        Assert.assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
         Assert.assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
         Assert.assertEquals(internetExplorerOptions, sauceOptions.getCapabilities());
     }

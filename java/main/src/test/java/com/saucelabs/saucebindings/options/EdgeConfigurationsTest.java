@@ -10,6 +10,7 @@ import com.saucelabs.saucebindings.SaucePlatform;
 import com.saucelabs.saucebindings.UnhandledPromptBehavior;
 import org.junit.Assert;
 import org.junit.Test;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.edge.EdgeOptions;
 
@@ -33,6 +34,8 @@ public class EdgeConfigurationsTest {
     public void acceptsEdgeOptionsClass() {
         edgeOptions.addArguments("--foo");
         edgeOptions.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.IGNORE);
+        edgeOptions.setCapability("platformName", Platform.SIERRA);
+        edgeOptions.setCapability("pageLoadStrategy", org.openqa.selenium.PageLoadStrategy.NONE);
         edgeOptions.setCapability("sauce:options",
                 ImmutableMap.of("build", "Build Name",
                         "maxDuration", 300));
@@ -40,6 +43,8 @@ public class EdgeConfigurationsTest {
         SauceOptions sauceOptions = SauceOptions.edge(edgeOptions).build();
 
         Assert.assertEquals(Browser.EDGE, sauceOptions.getBrowserName());
+        Assert.assertEquals(SaucePlatform.MAC_SIERRA, sauceOptions.getPlatformName());
+        Assert.assertEquals(PageLoadStrategy.NONE, sauceOptions.getPageLoadStrategy());
         Assert.assertEquals("Build Name", sauceOptions.sauce().getBuild());
         Assert.assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
         Assert.assertEquals(edgeOptions, sauceOptions.getCapabilities());

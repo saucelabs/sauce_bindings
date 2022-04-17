@@ -10,6 +10,7 @@ import com.saucelabs.saucebindings.SaucePlatform;
 import com.saucelabs.saucebindings.UnhandledPromptBehavior;
 import org.junit.Assert;
 import org.junit.Test;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -34,7 +35,8 @@ public class ChromeConfigurationsTest {
     public void acceptsChromeOptionsClass() {
         chromeOptions.addArguments("--foo");
         chromeOptions.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.IGNORE);
-        chromeOptions.setCapability("pageLoadStrategy", PageLoadStrategy.EAGER);
+        chromeOptions.setCapability("platformName", Platform.BIG_SUR);
+        chromeOptions.setCapability("pageLoadStrategy", org.openqa.selenium.PageLoadStrategy.EAGER);
         chromeOptions.setCapability("sauce:options",
                 ImmutableMap.of("build", "Build Name",
                         "maxDuration", 300));
@@ -42,6 +44,7 @@ public class ChromeConfigurationsTest {
         SauceOptions sauceOptions = SauceOptions.chrome(chromeOptions).build();
 
         Assert.assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
+        Assert.assertEquals(SaucePlatform.MAC_BIG_SUR, sauceOptions.getPlatformName());
         Assert.assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
         Assert.assertEquals("Build Name", sauceOptions.sauce().getBuild());
         Assert.assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());

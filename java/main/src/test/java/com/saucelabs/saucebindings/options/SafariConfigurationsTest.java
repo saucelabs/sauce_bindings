@@ -10,6 +10,7 @@ import com.saucelabs.saucebindings.SaucePlatform;
 import com.saucelabs.saucebindings.UnhandledPromptBehavior;
 import org.junit.Assert;
 import org.junit.Test;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.safari.SafariOptions;
 
@@ -33,6 +34,8 @@ public class SafariConfigurationsTest {
     public void acceptsSafariOptionsClass() {
         safariOptions.setAutomaticProfiling(true);
         safariOptions.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.IGNORE);
+        safariOptions.setCapability("platformName", Platform.MONTEREY);
+        safariOptions.setCapability("pageLoadStrategy", org.openqa.selenium.PageLoadStrategy.EAGER);
         safariOptions.setCapability("sauce:options",
                 ImmutableMap.of("build", "Build Name",
                         "maxDuration", 300));
@@ -41,6 +44,8 @@ public class SafariConfigurationsTest {
 
         Assert.assertEquals(Browser.SAFARI, sauceOptions.getBrowserName());
         Assert.assertEquals("Build Name", sauceOptions.sauce().getBuild());
+        Assert.assertEquals(SaucePlatform.MAC_MONTEREY, sauceOptions.getPlatformName());
+        Assert.assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
         Assert.assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
         Assert.assertEquals(safariOptions, sauceOptions.getCapabilities());
     }

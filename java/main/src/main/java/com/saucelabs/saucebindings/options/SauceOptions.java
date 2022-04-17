@@ -14,7 +14,6 @@ import lombok.experimental.Accessors;
 import org.json.JSONObject;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Proxy;
-import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -50,7 +49,7 @@ public class SauceOptions extends BaseOptions {
     protected Boolean acceptInsecureCerts = null;
     protected Proxy proxy;
     protected Boolean setWindowRect = null;
-    @Getter(AccessLevel.NONE) protected Map<Timeouts, Integer> timeouts;
+    @Getter(AccessLevel.NONE) protected Map<Timeouts, Integer> timeouts = new HashMap<>();
     protected Boolean strictFileInteractability = null;
     protected UnhandledPromptBehavior unhandledPromptBehavior;
 
@@ -316,40 +315,26 @@ public class SauceOptions extends BaseOptions {
     public void setCapability(String key, Object value) {
         switch (key) {
         case "browserName":
-            capabilityManager.validateCapability("Browser", Browser.keys(), (String) value);
-            setBrowserName(Browser.valueOf(Browser.fromString((String) value)));
+            capabilityManager.validateCapability("Browser", Browser.keys(), value.toString());
+            this.browserName = Browser.valueOf(Browser.fromString(value.toString()));
             break;
         case "platformName":
-            String stringValue = (String) value;
-            capabilityManager.validateCapability("SaucePlatform", SaucePlatform.keys(), stringValue);
-            setPlatformName(SaucePlatform.valueOf(SaucePlatform.fromString(stringValue)));
+            capabilityManager.validateCapability("SaucePlatform", SaucePlatform.keys(), value.toString());
+            this.platformName = SaucePlatform.valueOf(SaucePlatform.fromString(value.toString()));
             break;
         case "pageLoadStrategy":
-            if (value instanceof PageLoadStrategy) {
-                setPageLoadStrategy((PageLoadStrategy) value);
-            } else {
-                capabilityManager.validateCapability("PageLoadStrategy", PageLoadStrategy.keys(), (String) value);
-                setPageLoadStrategy(PageLoadStrategy.valueOf(PageLoadStrategy.fromString((String) value)));
-            }
+            capabilityManager.validateCapability("PageLoadStrategy", PageLoadStrategy.keys(), value.toString());
+            this.pageLoadStrategy = PageLoadStrategy.valueOf(PageLoadStrategy.fromString(value.toString()));
             break;
         case "unhandledPromptBehavior":
-            if (value instanceof UnhandledPromptBehavior) {
-                setUnhandledPromptBehavior((UnhandledPromptBehavior) value);
-            } else if (value instanceof UnexpectedAlertBehaviour) {
-                setCapability("unhandledPromptBehavior", value.toString());
-            } else {
-                capabilityManager.validateCapability("UnhandledPromptBehavior", UnhandledPromptBehavior.keys(), (String) value);
-                setUnhandledPromptBehavior(UnhandledPromptBehavior.valueOf(UnhandledPromptBehavior.fromString((String) value)));
-            }
+            capabilityManager.validateCapability("UnhandledPromptBehavior", UnhandledPromptBehavior.keys(), value.toString());
+            this.unhandledPromptBehavior = UnhandledPromptBehavior.valueOf(UnhandledPromptBehavior.fromString(value.toString()));
             break;
         case "timeouts":
-            Map<Timeouts, Integer> timeoutsMap = new HashMap<>();
             ((Map<String, Integer>) value).forEach((oldKey, val) -> {
                 capabilityManager.validateCapability("Timeouts", Timeouts.keys(), oldKey);
-                String keyString = Timeouts.fromString(oldKey);
-                timeoutsMap.put(Timeouts.valueOf(keyString), val);
+                timeouts.put(Timeouts.valueOf(Timeouts.fromString(oldKey)), val);
             });
-            setTimeouts(timeoutsMap);
             break;
         case "sauce":
         case "sauce:options":

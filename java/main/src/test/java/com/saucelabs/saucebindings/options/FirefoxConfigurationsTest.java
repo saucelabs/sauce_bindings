@@ -10,6 +10,7 @@ import com.saucelabs.saucebindings.SaucePlatform;
 import com.saucelabs.saucebindings.UnhandledPromptBehavior;
 import org.junit.Assert;
 import org.junit.Test;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
@@ -33,6 +34,8 @@ public class FirefoxConfigurationsTest {
     public void acceptsFirefoxOptionsClass() {
         firefoxOptions.addArguments("--foo");
         firefoxOptions.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.IGNORE);
+        firefoxOptions.setCapability("platformName", Platform.EL_CAPITAN);
+        firefoxOptions.setCapability("pageLoadStrategy", org.openqa.selenium.PageLoadStrategy.NORMAL);
         firefoxOptions.setCapability("sauce:options",
                 ImmutableMap.of("build", "Build Name",
                         "maxDuration", 300));
@@ -40,6 +43,8 @@ public class FirefoxConfigurationsTest {
         SauceOptions sauceOptions = SauceOptions.firefox(firefoxOptions).build();
 
         Assert.assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
+        Assert.assertEquals(SaucePlatform.MAC_EL_CAPITAN, sauceOptions.getPlatformName());
+        Assert.assertEquals(PageLoadStrategy.NORMAL, sauceOptions.getPageLoadStrategy());
         Assert.assertEquals("Build Name", sauceOptions.sauce().getBuild());
         Assert.assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
         Assert.assertEquals(firefoxOptions, sauceOptions.getCapabilities());

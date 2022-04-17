@@ -3,6 +3,8 @@ package com.saucelabs.saucebindings.options;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class CapabilityManager {
@@ -23,7 +25,9 @@ public class CapabilityManager {
     public void addCapabilities() {
         options.getValidOptions().forEach((capability) -> {
             Object value = getCapability(capability);
-            if (value != null) {
+            if (value != null
+                    && !(value instanceof Map && ((Map<String, Object>) value).isEmpty())
+                    && !(value instanceof List && ((List<Object>) value).isEmpty())) {
                 options.capabilities.setCapability(capability, value);
             }
         });
@@ -69,7 +73,7 @@ public class CapabilityManager {
      *
      * @param name      Which enum we are working with for better error message
      * @param values    Valid options for the provided capability
-     * @param value     Value of the option we want to merge into the capabilities
+     * @param value     Value of the option we want to add to SauceOptions
      */
     public void validateCapability(String name, Set<String> values, String value) {
         if (!values.contains(value)) {

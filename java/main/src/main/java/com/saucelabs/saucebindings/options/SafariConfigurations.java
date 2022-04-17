@@ -8,7 +8,9 @@ public class SafariConfigurations extends VDCConfigurations<SafariConfigurations
         validatePrefix("safari", safariOptions.asMap());
         validateBrowserName("safari", safariOptions.getBrowserName());
         sauceOptions = new SauceOptions(safariOptions);
-        sauceOptions.setPlatformName(SaucePlatform.MAC_CATALINA);
+        if (safariOptions.getPlatformName() == null) {
+            sauceOptions.setPlatformName(SaucePlatform.MAC_CATALINA);
+        }
     }
 
     /**

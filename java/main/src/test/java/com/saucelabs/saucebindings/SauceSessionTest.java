@@ -6,6 +6,7 @@ import com.saucelabs.saucebindings.options.InvalidSauceOptionsArgumentException;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Matchers;
@@ -25,6 +26,7 @@ import java.util.HashMap;
 public class SauceSessionTest {
     private SauceOptions sauceOptions = Mockito.spy(SauceOptions.chrome().build());
     private SauceSession sauceSession = Mockito.spy(new SauceSession());
+    private MutableCapabilities mutableCapabilities = new MutableCapabilities();
     private final SauceSession sauceOptsSession = Mockito.spy(new SauceSession(sauceOptions));
     private final RemoteWebDriver dummyRemoteDriver = Mockito.mock(RemoteWebDriver.class);
     private final MutableCapabilities dummyMutableCapabilities = Mockito.mock(MutableCapabilities.class);
@@ -60,6 +62,22 @@ public class SauceSessionTest {
         Mockito.verify(sauceOptions).toCapabilities();
     }
 
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsOnDesiredCaps() {
+        DesiredCapabilities caps = new DesiredCapabilities();
+        caps.setBrowserName("chrome");
+        sauceSession = new SauceSession(caps);
+    }
+
+    @Test
+    public void usesProvidedValidMutableCaps() {
+        MutableCapabilities caps = new MutableCapabilities();
+        caps.setCapability("browserName", "chrome");
+
+        sauceSession = new SauceSession(caps);
+        Assert.assertEquals(Browser.CHROME, sauceSession.getSauceOptions().getBrowserName());
+    }
+
     @Test
     public void usesProvidedSeleniumOptions() {
         FirefoxOptions seOpts = new FirefoxOptions();
@@ -92,9 +110,57 @@ public class SauceSessionTest {
 
     @Test(expected = InvalidSauceOptionsArgumentException.class)
     public void doesNotUseDesiredCapabilities() {
-        DesiredCapabilities caps = new DesiredCapabilities();
+        sauceSession = new SauceSession(new DesiredCapabilities());
+    }
 
-        sauceSession = new SauceSession(caps);
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadMutableCapability() {
+        mutableCapabilities.setCapability("invalid", "capability");
+
+        sauceSession = new SauceSession(mutableCapabilities);
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadSauceMutableCapability() {
+        mutableCapabilities.setCapability("sauce:options", ImmutableMap.of("invalid", "value"));
+
+        sauceSession = new SauceSession(mutableCapabilities);
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadMutableCapabilityValue() {
+        mutableCapabilities.setCapability("unhandledPromptBehavior", "invalid");
+
+        sauceSession = new SauceSession(mutableCapabilities);
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadSauceMutableCapabilityValue() {
+        mutableCapabilities.setCapability("sauce:options", ImmutableMap.of("jobVisibility", "invalid"));
+
+        sauceSession = new SauceSession(mutableCapabilities);
+    }
+
+    @Ignore("Current code does not parse by browser making this a more difficult implementation at this time")
+    @Test//(expected = InvalidSauceOptionsArgumentException.class)
+    public void errorsBadNameSpacedValues() {
+        mutableCapabilities.setCapability("foo:bar", ImmutableMap.of("invalid", "prefix"));
+
+        sauceSession = new SauceSession(mutableCapabilities);
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void invalidOptionsMutableCap() {
+        MutableCapabilities caps = new MutableCapabilities();
+        caps.setCapability("invalid", "capability");
+        new SauceSession(caps);
+    }
+
+    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    public void invalidValueMutableCap() {
+        MutableCapabilities caps = new MutableCapabilities();
+        caps.setCapability("invalidPromptBehavior", "value");
+        new SauceSession(caps);
     }
 
     @Test

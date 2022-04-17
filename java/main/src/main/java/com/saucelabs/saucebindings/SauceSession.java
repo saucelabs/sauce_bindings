@@ -14,6 +14,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
@@ -29,7 +30,10 @@ public class SauceSession {
     @Getter private String result;
 
     private static SauceOptions castMutableCapabilities(MutableCapabilities capabilities) {
-        if (ChromeOptions.class.equals(capabilities.getClass())) {
+        if (DesiredCapabilities.class.equals(capabilities.getClass())) {
+            String msg = "DesiredCapabilities class does not create valid w3c compliant capabilities and are deprecated; Please update";
+            throw new InvalidSauceOptionsArgumentException(msg);
+        } else if (ChromeOptions.class.equals(capabilities.getClass())) {
             return SauceOptions.chrome((ChromeOptions) capabilities).build();
         } else if (EdgeOptions.class.equals(capabilities.getClass())) {
             return SauceOptions.edge((EdgeOptions) capabilities).build();
@@ -39,8 +43,11 @@ public class SauceSession {
             return SauceOptions.safari((SafariOptions) capabilities).build();
         } else if (InternetExplorerOptions.class.equals(capabilities.getClass())) {
             return SauceOptions.ie((InternetExplorerOptions) capabilities).build();
+        } else if (MutableCapabilities.class.equals(capabilities.getClass())) {
+            return new SauceOptions(capabilities.asMap());
+        } else {
+            throw new InvalidSauceOptionsArgumentException("Browser Options class not recognized: " + capabilities.getClass());
         }
-        throw new InvalidSauceOptionsArgumentException("invalid browser option class: " + capabilities.getClass());
     }
 
     public SauceSession() {
@@ -134,7 +141,7 @@ public class SauceSession {
      * @return an object with the accessibility analysis
      */
     public Results getAccessibilityResults(AxeBuilder builder) {
-        validateSessionStarted("getAccessibilityResults()");
+        validateSessionStarted("getAccessibilityResults");
         return builder.analyze(driver);
     }
 
@@ -160,7 +167,7 @@ public class SauceSession {
      *     Providing Context for Selenium Commands</a>
      */
     public void annotate(String comment) {
-        validateSessionStarted("annotate()");
+        validateSessionStarted("annotate");
         driver.executeScript("sauce:context=" + comment);
     }
 
@@ -172,7 +179,7 @@ public class SauceSession {
      *     Test Annotation Methods</a>
      */
     public void pause() {
-        validateSessionStarted("pause()");
+        validateSessionStarted("pause");
         String sauceTestLink = String.format("https://app.saucelabs.com/tests/%s",
                 this.driver.getSessionId());
         driver.executeScript("sauce: break");
@@ -191,7 +198,7 @@ public class SauceSession {
      *     Test Annotation Methods</a>
      */
     public void disableLogging() {
-        validateSessionStarted("disableLogging()");
+        validateSessionStarted("disableLogging");
         driver.executeScript("sauce: disable log");
     }
 
@@ -203,7 +210,7 @@ public class SauceSession {
      *     Test Annotation Methods</a>
      */
     public void enableLogging() {
-        validateSessionStarted("enableLogging()");
+        validateSessionStarted("enableLogging");
         driver.executeScript("sauce: enable log");
     }
 
@@ -215,7 +222,7 @@ public class SauceSession {
      *     Test Annotation Methods</a>
      */
     public void stopNetwork() {
-        validateSessionStarted("stopNetwork()");
+        validateSessionStarted("stopNetwork");
         validateMac("Can only stop network for a Mac Platform;");
 
         driver.executeScript("sauce: stop network");
@@ -229,7 +236,7 @@ public class SauceSession {
      *     Test Annotation Methods</a>
      */
     public void startNetwork() {
-        validateSessionStarted("startNetwork()");
+        validateSessionStarted("startNetwork");
         validateMac("Can only start network for a Mac Platform;");
 
         driver.executeScript("sauce: start network");
@@ -245,7 +252,7 @@ public class SauceSession {
      * @see BaseConfigurations#setName(String)
      */
     public void changeTestName(String name) {
-        validateSessionStarted("changeName()");
+        validateSessionStarted("changeName");
         driver.executeScript("sauce:job-name=" + name);
     }
 
@@ -259,7 +266,7 @@ public class SauceSession {
      * @see BaseConfigurations#setTags(List)
      */
     public void addTags(List<String> tags) {
-        validateSessionStarted("setTags()");
+        validateSessionStarted("setTags");
         String tagString = String.join(",", tags);
         driver.executeScript("sauce:job-tags=" + tagString);
     }
@@ -301,7 +308,7 @@ public class SauceSession {
 
     private void validateSessionStarted(String method) {
         if (driver == null) {
-            throw new SauceSessionNotStartedException(method);
+            throw new SauceSessionNotStartedException(method + "()");
         }
     }
 

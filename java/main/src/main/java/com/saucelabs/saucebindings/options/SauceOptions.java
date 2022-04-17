@@ -118,14 +118,15 @@ public class SauceOptions extends BaseOptions {
     }
 
     /**
-     * This is intended to facilitate using a JSON file or a YAML to create a SauceOptions instance
-     * It is currently private, but might be made public in the future
-     * Raise an issue on GitHub if you have a use case for it
+     * Public so SauceSession can support MutableCapabilities without making MutableCapabilities constructor public
+     * This is primarily intended to facilitate using a JSON file or a YAML to create a SauceOptions instance
      *
+     * @deprecated This is intended for private access, do not use directly
      * @see SauceOptions(Path)
-     * @param map Capabilities to use to create a SauceSession
+     * @param map key value pairs to set on a SauceOptions instance
      */
-    private SauceOptions(Map<String, Object> map) {
+    @Deprecated
+    public SauceOptions(Map<String, Object> map) {
         this(new MutableCapabilities(map));
     }
 

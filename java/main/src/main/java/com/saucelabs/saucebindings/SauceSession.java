@@ -3,17 +3,28 @@ package com.saucelabs.saucebindings;
 import com.deque.html.axecore.results.Results;
 import com.deque.html.axecore.selenium.AxeBuilder;
 import com.saucelabs.saucebindings.options.BaseConfigurations;
+import com.saucelabs.saucebindings.options.InvalidSauceOptionsArgumentException;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.InvalidArgumentException;
+import org.openqa.selenium.MutableCapabilities;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariOptions;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+/**
+ * Primary means of interacting with Sauce Labs functionality.
+ */
 public class SauceSession {
     @Getter protected RemoteWebDriver driver;
     @Getter @Setter private DataCenter dataCenter = DataCenter.US_WEST;
@@ -21,8 +32,31 @@ public class SauceSession {
     @Setter private URL sauceUrl;
     @Getter private String result;
 
+    private static SauceOptions castMutableCapabilities(MutableCapabilities capabilities) {
+        if (DesiredCapabilities.class.equals(capabilities.getClass())) {
+            String line1 = "DesiredCapabilities class does not create valid w3c compliant capabilities ";
+            String line2 = "and is deprecated; Please update to using browser Options classes or SauceOptions";
+            throw new InvalidSauceOptionsArgumentException(line1 + line2);
+        } else if (ChromeOptions.class.equals(capabilities.getClass())) {
+            return SauceOptions.chrome((ChromeOptions) capabilities).build();
+        } else if (EdgeOptions.class.equals(capabilities.getClass())) {
+            return SauceOptions.edge((EdgeOptions) capabilities).build();
+        } else if (FirefoxOptions.class.equals(capabilities.getClass())) {
+            return SauceOptions.firefox((FirefoxOptions) capabilities).build();
+        } else if (SafariOptions.class.equals(capabilities.getClass())) {
+            return SauceOptions.safari((SafariOptions) capabilities).build();
+        } else if (InternetExplorerOptions.class.equals(capabilities.getClass())) {
+            return SauceOptions.ie((InternetExplorerOptions) capabilities).build();
+        } else if (MutableCapabilities.class.equals(capabilities.getClass())) {
+            return new SauceOptions(capabilities.asMap());
+        } else {
+            throw new InvalidSauceOptionsArgumentException("Browser Options class not recognized: "
+                    + capabilities.getClass());
+        }
+    }
+
     public SauceSession() {
-        this(new SauceOptions());
+        this(SauceOptions.chrome().build());
     }
 
     /**
@@ -40,6 +74,16 @@ public class SauceSession {
     }
 
     /**
+     * Ideally the end user creates an options class.
+     * This constructor makes it easier to convert from existing Selenium code if they do not.
+     *
+     * @param capabilities the instance of Configuration used to create the Options
+     */
+    public SauceSession(MutableCapabilities capabilities) {
+        this(castMutableCapabilities(capabilities));
+    }
+
+    /**
      * Starts the session on Sauce Labs.
      *
      * @return the driver instance for using as normal in your tests.
@@ -47,9 +91,11 @@ public class SauceSession {
     public RemoteWebDriver start() {
         this.driver = createRemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities());
         return driver;
-	}
+    }
 
     /**
+     * URL to desired Sauce Data Center.
+     *
      * @return the full URL for sending to Sauce Labs based on the desired data center.
      */
     public URL getSauceUrl() {
@@ -102,7 +148,7 @@ public class SauceSession {
      * @return an object with the accessibility analysis
      */
     public Results getAccessibilityResults(AxeBuilder builder) {
-        validateSessionStarted("getAccessibilityResults()");
+        validateSessionStarted("getAccessibilityResults");
         return builder.analyze(driver);
     }
 
@@ -121,6 +167,16 @@ public class SauceSession {
     }
 
     /**
+     * Stop the session with String for passed or failed.
+     *
+     * @deprecated Do not use magic strings, pass in boolean for whether test has passed.
+     */
+    @Deprecated
+    public void stop(String result) {
+        stop(result.equals("passed"));
+    }
+
+    /**
      * Add a comment to the command list displayed in the Sauce Labs UI.
      *
      * @param comment the value to be displayed in the Sauce Labs UI.
@@ -128,7 +184,7 @@ public class SauceSession {
      *     Providing Context for Selenium Commands</a>
      */
     public void annotate(String comment) {
-        validateSessionStarted("annotate()");
+        validateSessionStarted("annotate");
         driver.executeScript("sauce:context=" + comment);
     }
 
@@ -140,7 +196,7 @@ public class SauceSession {
      *     Test Annotation Methods</a>
      */
     public void pause() {
-        validateSessionStarted("pause()");
+        validateSessionStarted("pause");
         String sauceTestLink = String.format("https://app.saucelabs.com/tests/%s",
                 this.driver.getSessionId());
         driver.executeScript("sauce: break");
@@ -159,7 +215,7 @@ public class SauceSession {
      *     Test Annotation Methods</a>
      */
     public void disableLogging() {
-        validateSessionStarted("disableLogging()");
+        validateSessionStarted("disableLogging");
         driver.executeScript("sauce: disable log");
     }
 
@@ -171,7 +227,7 @@ public class SauceSession {
      *     Test Annotation Methods</a>
      */
     public void enableLogging() {
-        validateSessionStarted("enableLogging()");
+        validateSessionStarted("enableLogging");
         driver.executeScript("sauce: enable log");
     }
 
@@ -183,7 +239,7 @@ public class SauceSession {
      *     Test Annotation Methods</a>
      */
     public void stopNetwork() {
-        validateSessionStarted("stopNetwork()");
+        validateSessionStarted("stopNetwork");
         validateMac("Can only stop network for a Mac Platform;");
 
         driver.executeScript("sauce: stop network");
@@ -197,7 +253,7 @@ public class SauceSession {
      *     Test Annotation Methods</a>
      */
     public void startNetwork() {
-        validateSessionStarted("startNetwork()");
+        validateSessionStarted("startNetwork");
         validateMac("Can only start network for a Mac Platform;");
 
         driver.executeScript("sauce: start network");
@@ -213,7 +269,7 @@ public class SauceSession {
      * @see BaseConfigurations#setName(String)
      */
     public void changeTestName(String name) {
-        validateSessionStarted("changeName()");
+        validateSessionStarted("changeName");
         driver.executeScript("sauce:job-name=" + name);
     }
 
@@ -227,17 +283,9 @@ public class SauceSession {
      * @see BaseConfigurations#setTags(List)
      */
     public void addTags(List<String> tags) {
-        validateSessionStarted("setTags()");
+        validateSessionStarted("setTags");
         String tagString = String.join(",", tags);
         driver.executeScript("sauce:job-tags=" + tagString);
-    }
-
-    /**
-     * @deprecated Do not use magic strings, pass in boolean for whether test has passed.
-     */
-    @Deprecated
-    public void stop(String result) {
-        stop(result.equals("passed"));
     }
 
     /**
@@ -269,7 +317,7 @@ public class SauceSession {
 
     private void validateSessionStarted(String method) {
         if (driver == null) {
-            throw new SauceSessionNotStartedException(method);
+            throw new SauceSessionNotStartedException(method + "()");
         }
     }
 

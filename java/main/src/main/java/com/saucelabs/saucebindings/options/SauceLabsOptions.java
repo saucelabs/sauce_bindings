@@ -16,9 +16,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Accessors(chain = true) @Setter @Getter
+/**
+ * Sauce Labs Specific Options.
+ *
+ * @see <a href="https://docs.saucelabs.com/dev/test-configuration-options/#desktop-and-mobile-capabilities-sauce-specific--optional">
+ *     Sauce Labs Specific Configuration Options</a>
+ */
+@Accessors(chain = true)
+@Setter
+@Getter
 public class SauceLabsOptions extends BaseOptions {
-    // https://wiki.saucelabs.com/display/DOCS/Test+Configuration+Options
     private Boolean avoidProxy = null;
     private String build;
     private Boolean capturePerformance = null;
@@ -33,10 +40,10 @@ public class SauceLabsOptions extends BaseOptions {
     private Integer maxDuration = null;
     private String name;
     private String parentTunnel;
-    private Map<Prerun, Object> prerun;
+    private Map<Prerun, Object> prerun = new HashMap<>();
     private URL prerunUrl;
     private Integer priority = null;
-    private JobVisibility jobVisibility; // the actual key for this is a Java reserved keyword "public"; uses enum
+    private JobVisibility jobVisibility; // the actual key for this is a reserved keyword "public"
     private Boolean recordLogs = null;
     private Boolean recordScreenshots = null;
     private Boolean recordVideo = null;
@@ -77,11 +84,29 @@ public class SauceLabsOptions extends BaseOptions {
             "tunnelIdentifier",
             "videoUploadOnPass");
 
+    /**
+     * Default SauceLabsOptions constructor; only used by SauceOptions for storing Sauce specifics options.
+     *
+     * @deprecated Do not need to use this class directly
+     */
+    @Deprecated
     public SauceLabsOptions() {
-        capabilityManager = new CapabilityManager(this);
+        this(new MutableCapabilities());
     }
 
     /**
+     * Used by SauceOptions to store Sauce Labs specific configurations.
+     *
+     * @param sauceCapabilities Map or Capabilities instance with capabilities
+     */
+    SauceLabsOptions(Object sauceCapabilities) {
+        capabilityManager = new CapabilityManager(this);
+        processOptions(sauceCapabilities);
+    }
+
+    /**
+     * This converts SauceLabsOptions settings to the Capabilities that will get sent to "sauce:options".
+     *
      * @return instance of MutableCapabilities representing all key value pairs set in SauceOptions
      * @see SauceSession#start()
      */
@@ -112,7 +137,7 @@ public class SauceLabsOptions extends BaseOptions {
     }
 
     /**
-     * This method is to handle special cases and enums as necessary
+     * This method is to handle special cases and enums as necessary.
      *
      * @param key   Which capability to set on this instance's Selenium MutableCapabilities instance
      * @param value The value of the capability getting set
@@ -120,22 +145,21 @@ public class SauceLabsOptions extends BaseOptions {
     @Override
     protected void setCapability(String key, Object value) {
         if ("jobVisibility".equals(key)) {
-            capabilityManager.validateCapability("JobVisibility", JobVisibility.keys(), (String) value);
-            setJobVisibility(JobVisibility.valueOf(JobVisibility.fromString((String) value)));
+            capabilityManager.validateCapability("JobVisibility", JobVisibility.keys(), value.toString());
+            this.jobVisibility = JobVisibility.valueOf(JobVisibility.fromString(value.toString()));
         } else if ("prerun".equals(key)) {
-            Map<Prerun, Object> prerunMap = new HashMap<>();
-            ((Map) value).forEach((oldKey, val) -> {
-                capabilityManager.validateCapability("Prerun", Prerun.keys(), (String) oldKey);
-                String keyString = Prerun.fromString((String) oldKey);
-                prerunMap.put(Prerun.valueOf(keyString), val);
+            ((Map<String, Object>) value).forEach((oldKey, val) -> {
+                capabilityManager.validateCapability("Prerun", Prerun.keys(), oldKey);
+                prerun.put(Prerun.valueOf(Prerun.fromString(oldKey)), val);
             });
-            setPrerun(prerunMap);
         } else {
             super.setCapability(key, value);
         }
     }
 
     /**
+     * Generates a default build name if one is not set.
+     *
      * @return a String representing the best default build name and number for your test based on CI Tool ENV Variables
      */
     public String getBuild() {
@@ -143,8 +167,10 @@ public class SauceLabsOptions extends BaseOptions {
     }
 
     /**
-     * @deprecated This method is no longer supported
+     * Sauce Bindings generates default build names for known CI tools.
+     *
      * @return whether CI is accounted for in code
+     * @deprecated This method is no longer supported
      */
     @Deprecated
     public boolean isKnownCI() {
@@ -152,6 +178,8 @@ public class SauceLabsOptions extends BaseOptions {
     }
 
     /**
+     * Known CI Tools.
+     *
      * @deprecated use CITools.knownTools instead
      */
     @Deprecated
@@ -163,5 +191,21 @@ public class SauceLabsOptions extends BaseOptions {
 
     protected String getSauceAccessKey() {
         return SystemManager.get("SAUCE_ACCESS_KEY", "Sauce Access Key was not provided");
+    }
+
+    private void processOptions(Object options) {
+        Map<String, Object> sauceOptions = new HashMap<>();
+        if (options instanceof MutableCapabilities) {
+            MutableCapabilities sauceMutableCaps = (MutableCapabilities) options;
+            sauceOptions = sauceMutableCaps.asMap();
+        } else if (options instanceof Map) {
+            // In case Immutable Map
+            sauceOptions = new HashMap<>((Map<? extends String, ?>) options);
+        }
+
+        // Ignore credentials passed in, Environment Variables are required
+        sauceOptions.remove("username");
+        sauceOptions.remove("accessKey");
+        sauceOptions.forEach(this::setCapability);
     }
 }

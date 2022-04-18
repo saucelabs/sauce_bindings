@@ -20,7 +20,7 @@ RSpec.configure do |config|
   end
 end
 
-DEPRECATION_WARNINGS = %i[options_init timeouts].freeze
+DEPRECATION_WARNINGS = %i[options_init timeouts merge].freeze
 
 DEPRECATION_WARNINGS.each do |deprecation|
   RSpec::Matchers.define "have_deprecated_#{deprecation}" do

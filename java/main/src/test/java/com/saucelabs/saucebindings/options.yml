@@ -1,6 +1,6 @@
-exampleValues:
+firefoxMac:
   browserName: 'firefox'
-  browserVersion: '68'
+  browserVersion: '90'
   platformName: 'macOS 10.13'
   acceptInsecureCerts: true
   pageLoadStrategy: 'eager'
@@ -27,7 +27,7 @@ exampleValues:
     name: 'Sample Test Name'
     parentTunnel: 'Mommy'
     prerun:
-      executable: "http://url.to/your/executable.exe"
+      executable: "https://url.to/your/executable.exe"
       args:
         - --silent
         - -a
@@ -46,8 +46,11 @@ exampleValues:
       - bar
       - foobar
     timeZone: 'San Francisco'
-    tunnelIdentifier: 'tunnelname'
+    tunnelIdentifier: 'tunnelName'
     videoUploadOnPass: false
+  moz:firefoxOptions:
+    args:
+      - -a
 
 badBrowser:
   browserName: "netscape"

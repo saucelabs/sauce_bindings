@@ -1,4 +1,4 @@
-example_values:
+firefox_mac:
   browser_name: 'firefox'
   browser_version: '123'
   platform_name: 'Mac'

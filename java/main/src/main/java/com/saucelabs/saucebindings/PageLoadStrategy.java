@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Valid Page Load Strategies.
+ *
+ * @see <a href="https://docs.saucelabs.com/dev/test-configuration-options/#pageloadstrategy">pageLoadStrategy</a>
+ */
 public enum PageLoadStrategy {
     NONE("none"),
     EAGER("eager"),
@@ -15,10 +20,10 @@ public enum PageLoadStrategy {
     private final String value;
 
     private static final class PageLoadStrategyLookup {
-        private static final Map<String, String> lookup = new HashMap<String, String>();
+        private static final Map<String, String> lookup = new HashMap<>();
     }
 
-    public static Set keys() {
+    public static Set<String> keys() {
         return PageLoadStrategyLookup.lookup.keySet();
     }
 

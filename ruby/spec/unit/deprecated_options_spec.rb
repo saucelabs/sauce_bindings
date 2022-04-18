@@ -283,64 +283,132 @@ module SauceBindings
       end
 
       describe '#merge_capabilities' do
-        it 'loads options from configuration' do
-          timeouts = {implicit: 1,
-                      page_load: 59,
-                      script: 29}
-          custom_data = {foo: 'foo',
-                         bar: 'bar'}
-          prerun = {executable: 'http://url.to/your/executable.exe',
-                    args: ['--silent', '-a', '-q'],
-                    background: false,
-                    timeout: 120}
-          tags = %w[foo bar foobar]
+        context 'when unstructured' do
+          it 'loads options from configuration' do
+            timeouts = {implicit: 1,
+                        page_load: 59,
+                        script: 29}
+            custom_data = {foo: 'foo',
+                           bar: 'bar'}
+            prerun = {executable: 'http://url.to/your/executable.exe',
+                      args: ['--silent', '-a', '-q'],
+                      background: false,
+                      timeout: 120}
+            tags = %w[foo bar foobar]
 
-          expect { @options = Options.new }.to have_deprecated_options_init
-          yaml = YAML.load_file('spec/deprecated_options.yml')
-          @options.merge_capabilities(yaml['example_values'])
+            expect { @options = Options.new }.to have_deprecated_options_init
+            yaml = YAML.load_file('spec/deprecated_options.yml')
 
-          expect(@options.browser_name).to eq 'firefox'
-          expect(@options.browser_version).to eq '123'
-          expect(@options.platform_name).to eq 'Mac'
-          expect(@options.accept_insecure_certs).to eq true
-          expect(@options.page_load_strategy).to eq 'eager'
-          expect(@options.set_window_rect).to eq true
-          expect(@options.unhandled_prompt_behavior).to eq 'accept'
-          expect(@options.strict_file_interactability).to eq true
-          expect(@options.timeouts).to eq timeouts
-          expect(@options.avoid_proxy).to eq true
-          expect(@options.build).to eq 'Sample Build Name'
-          expect(@options.capture_performance).to eq true
-          expect(@options.chromedriver_version).to eq '71'
-          expect(@options.command_timeout).to eq 2
-          expect(@options.custom_data).to eq custom_data
-          expect(@options.extended_debugging).to eq true
-          expect(@options.idle_timeout).to eq 3
-          expect(@options.iedriver_version).to eq '3.141.0'
-          expect(@options.max_duration).to eq 300
-          expect(@options.name).to eq 'Sample Test Name'
-          expect(@options.parent_tunnel).to eq 'Mommy'
-          expect(@options.prerun).to eq prerun
-          expect(@options.priority).to eq 0
-          expect(@options.public).to eq 'team'
-          expect(@options.record_logs).to eq false
-          expect(@options.record_screenshots).to eq false
-          expect(@options.record_video).to eq false
-          expect(@options.screen_resolution).to eq '10x10'
-          expect(@options.selenium_version).to eq '3.141.59'
-          expect(@options.tags).to eq tags
-          expect(@options.time_zone).to eq 'San Francisco'
-          expect(@options.tunnel_identifier).to eq 'tunnelname'
-          expect(@options.video_upload_on_pass).to eq false
+            expect { @options.merge_capabilities(yaml['example_values']) }.to have_deprecated_merge
+
+            expect(@options.browser_name).to eq 'firefox'
+            expect(@options.browser_version).to eq '123'
+            expect(@options.platform_name).to eq 'Mac'
+            expect(@options.accept_insecure_certs).to eq true
+            expect(@options.page_load_strategy).to eq 'eager'
+            expect(@options.set_window_rect).to eq true
+            expect(@options.unhandled_prompt_behavior).to eq 'accept'
+            expect(@options.strict_file_interactability).to eq true
+            expect(@options.timeouts).to eq timeouts
+            expect(@options.avoid_proxy).to eq true
+            expect(@options.build).to eq 'Sample Build Name'
+            expect(@options.capture_performance).to eq true
+            expect(@options.chromedriver_version).to eq '71'
+            expect(@options.command_timeout).to eq 2
+            expect(@options.custom_data).to eq custom_data
+            expect(@options.extended_debugging).to eq true
+            expect(@options.idle_timeout).to eq 3
+            expect(@options.iedriver_version).to eq '3.141.0'
+            expect(@options.max_duration).to eq 300
+            expect(@options.name).to eq 'Sample Test Name'
+            expect(@options.parent_tunnel).to eq 'Mommy'
+            expect(@options.prerun).to eq prerun
+            expect(@options.priority).to eq 0
+            expect(@options.public).to eq 'team'
+            expect(@options.record_logs).to eq false
+            expect(@options.record_screenshots).to eq false
+            expect(@options.record_video).to eq false
+            expect(@options.screen_resolution).to eq '10x10'
+            expect(@options.selenium_version).to eq '3.141.59'
+            expect(@options.tags).to eq tags
+            expect(@options.time_zone).to eq 'San Francisco'
+            expect(@options.tunnel_identifier).to eq 'tunnelname'
+            expect(@options.video_upload_on_pass).to eq false
+          end
+
+          it 'raises exception if value not recognized' do
+            expect { @options = Options.new }.to have_deprecated_options_init
+
+            yaml = YAML.load_file('spec/deprecated_options.yml')
+
+            msg = 'foo is not a valid parameter for Options class'
+            expect {
+              expect { @options.merge_capabilities(yaml['invalid_option']) }.to have_deprecated_merge
+            }.to raise_exception(ArgumentError, msg)
+          end
         end
 
-        it 'raises exception if value not recognized' do
-          expect { @options = Options.new }.to have_deprecated_options_init
+        context 'when structured' do
+          it 'loads options from configuration' do
+            custom_data = {foo: 'foo',
+                           bar: 'bar'}
+            prerun = {executable: 'http://url.to/your/executable.exe',
+                      args: ['--silent', '-a', '-q'],
+                      background: false,
+                      timeout: 120}
+            tags = %w[foo bar foobar]
 
-          yaml = YAML.load_file('spec/deprecated_options.yml')
+            yaml = YAML.load_file('spec/options.yml')
+            example_values = yaml['firefox_mac']
+            options = Options.send(example_values.delete('browser_name'))
 
-          msg = 'foo is not a valid parameter for Options class'
-          expect { @options.merge_capabilities(yaml['invalid_option']) }.to raise_exception(ArgumentError, msg)
+            expect { options.merge_capabilities(example_values) }.to have_deprecated_merge
+
+            expect(options.browser_name).to eq 'firefox'
+            expect(options.browser_version).to eq '123'
+            expect(options.platform_name).to eq 'Mac'
+            expect(options.accept_insecure_certs).to eq true
+            expect(options.page_load_strategy).to eq 'eager'
+            expect(options.set_window_rect).to eq true
+            expect(options.unhandled_prompt_behavior).to eq 'accept'
+            expect(options.strict_file_interactability).to eq true
+            expect(options.implicit_wait_timeout).to eq 1
+            expect(options.page_load_timeout).to eq 59
+            expect(options.script_timeout).to eq 29
+            expect(options.build).to eq 'Sample Build Name'
+            expect(options.command_timeout).to eq 2
+            expect(options.custom_data).to eq custom_data
+            expect(options.extended_debugging).to eq true
+            expect(options.idle_timeout).to eq 3
+            expect(options.geckodriver_version).to eq '0.23'
+            expect(options.max_duration).to eq 300
+            expect(options.name).to eq 'Sample Test Name'
+            expect(options.parent_tunnel).to eq 'Mommy'
+            expect(options.prerun).to eq prerun
+            expect(options.priority).to eq 0
+            expect(options.public).to eq 'team'
+            expect(options.record_logs).to eq false
+            expect(options.record_screenshots).to eq false
+            expect(options.record_video).to eq false
+            expect(options.screen_resolution).to eq '10x10'
+            expect(options.selenium_version).to eq '3.141.59'
+            expect(options.tags).to eq tags
+            expect(options.time_zone).to eq 'San Francisco'
+            expect(options.tunnel_identifier).to eq 'tunnelname'
+            expect(options.video_upload_on_pass).to eq false
+          end
+
+          it 'raises exception if value not recognized' do
+            options = Options.chrome
+            yaml = YAML.load_file('spec/options.yml')
+
+            msg = 'foo is not a valid parameter for Options class'
+            expect {
+              expect {
+                options.merge_capabilities(yaml['invalid_option'])
+              }.to have_deprecated_merge
+            }.to raise_exception(ArgumentError, msg)
+          end
         end
       end
 
@@ -352,17 +420,17 @@ module SauceBindings
                       script: 29}
 
           ClimateControl.modify(**BUILD_ENV) do
-            # expect {
-            @options = Options.new(browser_name: 'firefox',
-                                   platform_name: 'Mac',
-                                   accept_insecure_certs: true,
-                                   page_load_strategy: 'eager',
-                                   proxy: proxy,
-                                   set_window_rect: true,
-                                   unhandled_prompt_behavior: 'accept',
-                                   strict_file_interactability: true,
-                                   timeouts: timeouts)
-            # }.to have_deprecated_options_init
+            expect {
+              @options = Options.new(browser_name: 'firefox',
+                                     platform_name: 'Mac',
+                                     accept_insecure_certs: true,
+                                     page_load_strategy: 'eager',
+                                     proxy: proxy,
+                                     set_window_rect: true,
+                                     unhandled_prompt_behavior: 'accept',
+                                     strict_file_interactability: true,
+                                     timeouts: timeouts)
+            }.to have_deprecated_options_init
           end
 
           ClimateControl.modify(**SAUCE_ACCESS) do

@@ -34,4 +34,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'sa11y', '~> 0.2.0'
   spec.add_runtime_dependency 'sauce_whisk'
   spec.add_runtime_dependency 'selenium-webdriver', '~> 4.0'
+  spec.metadata['rubygems_mfa_required'] = 'true'
 end

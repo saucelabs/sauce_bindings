@@ -9,35 +9,48 @@ module SauceBindings
         str.to_s.gsub(/_([a-z])/) { Regexp.last_match(1).upcase }
       end
 
-      def chrome(**opts)
+      def from_file(path, key)
+        deserialized = if path[/\.ya?ml$/]
+                         JSON.parse(YAML.load_file(File.new(path))[key].to_json, symbolize_names: true)
+                       elsif path[/\.json$/]
+                         JSON.parse(File.read(path), symbolize_names: true)[key.to_sym]
+                       else
+                         raise ArgumentError, 'Can only parse .json .yml .yaml files'
+                       end
+
+        Options.send(deserialized.delete(:browser_name), **deserialized)
+      end
+
+      def chrome(selenium_options = nil, **opts)
+        opts[:selenium_options] ||= selenium_options
         opts[:browser_name] = 'chrome'
         opts[:valid_options] = ChromeConfigurations.valid_options
         Options.new(**opts)
       end
 
-      def edge(**opts)
-        if Selenium::WebDriver::VERSION[0] == '3'
-          raise ArgumentError, 'Selenium 3 is not compatible with the Chromium based Microsoft Edge.'
-        end
-
+      def edge(selenium_options = nil, **opts)
+        opts[:selenium_options] ||= selenium_options
         opts[:browser_name] = 'MicrosoftEdge'
         opts[:valid_options] = EdgeConfigurations.valid_options
         Options.new(**opts)
       end
 
-      def firefox(**opts)
+      def firefox(selenium_options = nil, **opts)
+        opts[:selenium_options] ||= selenium_options
         opts[:browser_name] = 'firefox'
         opts[:valid_options] = FirefoxConfigurations.valid_options
         Options.new(**opts)
       end
 
-      def ie(**opts)
+      def ie(selenium_options = nil, **opts)
+        opts[:selenium_options] ||= selenium_options
         opts[:browser_name] = 'internet explorer'
         opts[:valid_options] = IEConfigurations.valid_options
         Options.new(**opts)
       end
 
-      def safari(**opts)
+      def safari(selenium_options = nil, **opts)
+        opts[:selenium_options] ||= selenium_options
         opts[:browser_name] = 'safari'
         opts[:platform_name] ||= 'macOS 11'
         opts[:valid_options] = SafariConfigurations.valid_options
@@ -51,6 +64,12 @@ module SauceBindings
                      Selenium::WebDriver::IE::Options => 'internet explorer',
                      Selenium::WebDriver::Safari::Options => 'safari'}.freeze
 
+    METHOD_NAMES = {Selenium::WebDriver::Chrome::Options => 'chrome',
+                    Selenium::WebDriver::Edge::Options => 'edge',
+                    Selenium::WebDriver::Firefox::Options => 'firefox',
+                    Selenium::WebDriver::IE::Options => 'ie',
+                    Selenium::WebDriver::Safari::Options => 'safari'}.freeze
+
     W3C = %i[browser_name browser_version platform_name accept_insecure_certs page_load_strategy proxy
              set_window_rect timeouts unhandled_prompt_behavior strict_file_interactability].freeze
 
@@ -63,18 +82,12 @@ module SauceBindings
 
     def initialize(**opts)
       se_options = Array(opts.delete(:selenium_options))
-      valid_options = opts.delete(:valid_options)
-      if valid_options.nil?
-        valid_options = SAUCE + W3C
-        SauceBindings.logger.deprecate('Using `Options.new(opts)` directly',
-                                       'static methods for desired browser',
-                                       id: :options_init) { '(e.g., `Options.chrome(opts)`)' }
-      end
+      @valid_options = opts.delete(:valid_options) || (deprecate_options_init && (SAUCE + W3C))
 
-      create_variables(valid_options, opts)
+      create_variables(opts)
       @selenium_options = se_options.map(&:as_json).inject(:merge) || {}
       parse_selenium_options(se_options)
-      @build ||= build_name
+      @build ||= @selenium_options.dig('sauce:options', 'build') || build_name
 
       @browser_name ||= selenium_options['browserName'] || 'chrome'
       @platform_name ||= 'Windows 10'
@@ -88,7 +101,7 @@ module SauceBindings
         caps[self.class.camel_case(key)] = value unless value.nil?
       end
 
-      caps['sauce:options'] = {}
+      caps['sauce:options'] ||= {}
       caps['sauce:options']['username'] = ENV['SAUCE_USERNAME'] ||
                                           raise(ArgumentError, "needs username; use `ENV['SAUCE_USERNAME']`")
       caps['sauce:options']['accessKey'] = ENV['SAUCE_ACCESS_KEY'] ||
@@ -103,6 +116,9 @@ module SauceBindings
     alias as_json capabilities
 
     def merge_capabilities(opts)
+      SauceBindings.logger.deprecate('#merge_capabilities with Hash',
+                                     '::from_file with path and key',
+                                     id: :merge)
       opts.each do |key, value|
         raise ArgumentError, "#{key} is not a valid parameter for Options class" unless respond_to?("#{key}=")
 
@@ -169,9 +185,7 @@ module SauceBindings
       value = key_value(key)
 
       case key
-      when :prerun
-        camelize_keys(value)
-      when :custom_data
+      when :prerun, :custom_data
         camelize_keys(value)
       when :disable_record_video
         !send(:record_video)
@@ -224,11 +238,11 @@ module SauceBindings
       return if @browser_name.nil? || browser == @browser_name
 
       raise ArgumentError, "Selenium class identifies capabilities for #{browser}, which does not match the " \
-"provided browser name: #{@browser_name}"
+                           "provided browser name: #{@browser_name}"
     end
 
-    def create_variables(key, opts)
-      key.each do |option|
+    def create_variables(opts)
+      @valid_options.each do |option|
         singleton_class.class_eval { attr_accessor option }
         next unless opts.key?(option)
 
@@ -271,6 +285,12 @@ module SauceBindings
       else
         "Build Time - #{Time.now.to_i}"
       end
+    end
+
+    def deprecate_options_init
+      SauceBindings.logger.deprecate('Using `Options.new(opts)` directly',
+                                     'static methods for desired browser',
+                                     id: :options_init) { '(e.g., `Options.chrome(opts)`)' }
     end
   end
 end

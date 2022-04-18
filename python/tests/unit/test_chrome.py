@@ -433,3 +433,25 @@ class TestCapabilitiesCreation(object):
                                                    'accessKey': os.getenv('SAUCE_ACCESS_KEY')}}
 
         assert options.to_capabilities() == expected_capabilities
+
+    def test_capabilities_for_sauce_and_selenium(self):
+        browser_options = ChromeOptions()
+        browser_options.add_argument('--foo')
+        browser_options.set_capability('sauce:options', {'build': 'Sample Build Name',
+                                                         'maxDuration': 300,
+                                                         'username': os.getenv('SAUCE_USERNAME'),
+                                                         'accessKey': os.getenv('SAUCE_ACCESS_KEY')})
+
+        options = SauceOptions.chrome(seleniumOptions=browser_options)
+
+        expected_capabilities = {'browserName': 'chrome',
+                                 'browserVersion': 'latest',
+                                 'platformName': 'Windows 10',
+                                 'pageLoadStrategy': 'normal',
+                                 'goog:chromeOptions': {'args': ['--foo'], 'extensions': []},
+                                 'sauce:options': {'build': 'Sample Build Name',
+                                                   'maxDuration': 300,
+                                                   'username': os.getenv('SAUCE_USERNAME'),
+                                                   'accessKey': os.getenv('SAUCE_ACCESS_KEY')}}
+
+        assert options.to_capabilities() == expected_capabilities

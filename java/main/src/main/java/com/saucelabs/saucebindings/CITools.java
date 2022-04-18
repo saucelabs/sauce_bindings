@@ -55,6 +55,7 @@ public abstract class CITools {
 
     /**
      * The default build name based on CI Tool.
+     *
      * @return the constant name of the build
      */
     public static String getBuildName() {
@@ -64,6 +65,7 @@ public abstract class CITools {
 
     /**
      * The default build number based on CI Tool.
+     *
      * @return the variable number of the current build
      */
     public static String getBuildNumber() {

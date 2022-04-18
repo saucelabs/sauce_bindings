@@ -1,0 +1,17 @@
+invalidCap:
+  invalid: "capability"
+
+invalidSauceCap:
+  sauce:
+    invalid: "capability"
+
+badValue:
+    unhandledPromptBehavior: "invalid"
+
+badSauceValue:
+  sauce:
+    jobVisibility: "invalid"
+
+invalidPrefix:
+  invalid:prefix:
+    invalid: "value"

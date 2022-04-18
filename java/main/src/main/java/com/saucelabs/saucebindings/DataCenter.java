@@ -2,6 +2,11 @@ package com.saucelabs.saucebindings;
 
 import lombok.Getter;
 
+/**
+ * Valid Data Center Server Names.
+ *
+ * @see <a href="https://docs.saucelabs.com/basics/data-center-endpoints/">Data Center Endpoints</a>
+ */
 @Getter
 public enum DataCenter {
     US_WEST("us-west-1"),

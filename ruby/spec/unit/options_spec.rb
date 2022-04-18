@@ -4,6 +4,95 @@ require 'spec_helper'
 
 module SauceBindings
   describe Options do
+    describe '::from_file' do
+      it 'loads yaml options from configuration' do
+        options = Options.from_file('spec/options.yml', 'firefox_mac')
+
+        expect(options.browser_name).to eq 'firefox'
+        expect(options.browser_version).to eq '123'
+        expect(options.platform_name).to eq 'Mac'
+        expect(options.accept_insecure_certs).to eq true
+        expect(options.page_load_strategy).to eq 'eager'
+        expect(options.set_window_rect).to eq true
+        expect(options.unhandled_prompt_behavior).to eq 'accept'
+        expect(options.strict_file_interactability).to eq true
+        expect(options.implicit_wait_timeout).to eq 1
+        expect(options.page_load_timeout).to eq 59
+        expect(options.script_timeout).to eq 29
+        expect(options.build).to eq 'Sample Build Name'
+        expect(options.command_timeout).to eq 2
+        expect(options.custom_data).to eq(foo: 'foo', bar: 'bar')
+        expect(options.extended_debugging).to eq true
+        expect(options.idle_timeout).to eq 3
+        expect(options.geckodriver_version).to eq '0.23'
+        expect(options.max_duration).to eq 300
+        expect(options.name).to eq 'Sample Test Name'
+        expect(options.parent_tunnel).to eq 'Mommy'
+        expect(options.prerun).to eq(executable: 'http://url.to/your/executable.exe',
+                                     args: %w[--silent -a -q],
+                                     background: false,
+                                     timeout: 120)
+        expect(options.priority).to eq 0
+        expect(options.public).to eq 'team'
+        expect(options.record_logs).to eq false
+        expect(options.record_screenshots).to eq false
+        expect(options.record_video).to eq false
+        expect(options.screen_resolution).to eq '10x10'
+        expect(options.selenium_version).to eq '3.141.59'
+        expect(options.tags).to eq %w[foo bar foobar]
+        expect(options.time_zone).to eq 'San Francisco'
+        expect(options.tunnel_identifier).to eq 'tunnelname'
+        expect(options.video_upload_on_pass).to eq false
+      end
+
+      it 'loads json options from configuration' do
+        options = Options.from_file('spec/options.json', 'firefox_mac')
+
+        expect(options.browser_name).to eq 'firefox'
+        expect(options.browser_version).to eq '123'
+        expect(options.platform_name).to eq 'Mac'
+        expect(options.accept_insecure_certs).to eq true
+        expect(options.page_load_strategy).to eq 'eager'
+        expect(options.set_window_rect).to eq true
+        expect(options.unhandled_prompt_behavior).to eq 'accept'
+        expect(options.strict_file_interactability).to eq true
+        expect(options.implicit_wait_timeout).to eq 1
+        expect(options.page_load_timeout).to eq 59
+        expect(options.script_timeout).to eq 29
+        expect(options.build).to eq 'Sample Build Name'
+        expect(options.command_timeout).to eq 2
+        expect(options.custom_data).to eq(foo: 'foo', bar: 'bar')
+        expect(options.extended_debugging).to eq true
+        expect(options.idle_timeout).to eq 3
+        expect(options.geckodriver_version).to eq '0.23'
+        expect(options.max_duration).to eq 300
+        expect(options.name).to eq 'Sample Test Name'
+        expect(options.parent_tunnel).to eq 'Mommy'
+        expect(options.prerun).to eq(executable: 'http://url.to/your/executable.exe',
+                                     args: %w[--silent -a -q],
+                                     background: false,
+                                     timeout: 120)
+        expect(options.priority).to eq 0
+        expect(options.public).to eq 'team'
+        expect(options.record_logs).to eq false
+        expect(options.record_screenshots).to eq false
+        expect(options.record_video).to eq false
+        expect(options.screen_resolution).to eq '10x10'
+        expect(options.selenium_version).to eq '3.141.59'
+        expect(options.tags).to eq %w[foo bar foobar]
+        expect(options.time_zone).to eq 'San Francisco'
+        expect(options.tunnel_identifier).to eq 'tunnelname'
+        expect(options.video_upload_on_pass).to eq false
+      end
+
+      it 'raises exception if value not recognized' do
+        msg = '{:foo=>"bar"} are not valid parameters for Options class with firefox'
+        expect {
+          Options.from_file('spec/options.yml', 'invalid_option')
+        }.to raise_exception(ArgumentError, msg)
+      end
+    end
+
     describe '::chrome' do
       it 'uses latest Chrome version on Windows 10 by default' do
         options = Options.chrome
@@ -15,7 +104,7 @@ module SauceBindings
 
       it 'accepts correct Selenium Options class' do
         browser_opts = Selenium::WebDriver::Chrome::Options.new(args: ['-foo'])
-        options = Options.chrome(selenium_options: browser_opts)
+        options = Options.chrome(browser_opts)
 
         expect(options.selenium_options.dig('goog:chromeOptions', 'args')).to eq ['-foo']
       end
@@ -23,12 +112,12 @@ module SauceBindings
       it 'does not accept incorrect Selenium Options class' do
         browser_opts = Selenium::WebDriver::Firefox::Options.new
 
-        expect { Options.chrome(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+        expect { Options.chrome(browser_opts) }.to raise_exception(ArgumentError)
       end
 
       it 'accepts correct Selenium Capabilities class' do
         browser_opts = Selenium::WebDriver::Remote::Capabilities.chrome(browser_version: '99')
-        options = Options.chrome(selenium_options: browser_opts)
+        options = Options.chrome(browser_opts)
 
         expect(options.browser_version).to eq '99'
       end
@@ -36,7 +125,7 @@ module SauceBindings
       it 'does not accept incorrect Selenium Capabilities class' do
         browser_opts = Selenium::WebDriver::Remote::Capabilities.firefox(browser_version: '99')
 
-        expect { Options.chrome(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+        expect { Options.chrome(browser_opts) }.to raise_exception(ArgumentError)
       end
 
       it 'accepts base configurations' do
@@ -79,7 +168,7 @@ module SauceBindings
 
       it 'accepts correct Selenium Options class' do
         browser_opts = Selenium::WebDriver::Edge::Options.new(args: ['-foo'])
-        options = Options.edge(selenium_options: browser_opts)
+        options = Options.edge(browser_opts)
 
         expect(options.selenium_options.dig('ms:edgeOptions', 'args')).to eq ['-foo']
       end
@@ -87,12 +176,12 @@ module SauceBindings
       it 'does not accept incorrect Selenium Options class' do
         browser_opts = Selenium::WebDriver::Chrome::Options.new
 
-        expect { Options.edge(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+        expect { Options.edge(browser_opts) }.to raise_exception(ArgumentError)
       end
 
       it 'accepts correct Selenium Capabilities class' do
         browser_opts = Selenium::WebDriver::Remote::Capabilities.edge(browser_version: '99')
-        options = Options.edge(selenium_options: browser_opts)
+        options = Options.edge(browser_opts)
 
         expect(options.browser_version).to eq '99'
       end
@@ -100,7 +189,7 @@ module SauceBindings
       it 'does not accept incorrect Selenium Capabilities class' do
         browser_opts = Selenium::WebDriver::Remote::Capabilities.chrome(browser_version: '99')
 
-        expect { Options.edge(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+        expect { Options.edge(browser_opts) }.to raise_exception(ArgumentError)
       end
 
       it 'accepts base configurations' do
@@ -143,7 +232,7 @@ module SauceBindings
 
       it 'accepts correct Selenium Options class' do
         browser_opts = Selenium::WebDriver::Firefox::Options.new(args: ['-foo'])
-        options = Options.firefox(selenium_options: browser_opts)
+        options = Options.firefox(browser_opts)
 
         expect(options.selenium_options.dig('moz:firefoxOptions', 'args')).to eq ['-foo']
       end
@@ -151,12 +240,12 @@ module SauceBindings
       it 'does not accept incorrect Selenium Options class' do
         browser_opts = Selenium::WebDriver::Chrome::Options.new
 
-        expect { Options.firefox(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+        expect { Options.firefox(browser_opts) }.to raise_exception(ArgumentError)
       end
 
       it 'accepts correct Selenium Capabilities class' do
         browser_opts = Selenium::WebDriver::Remote::Capabilities.firefox(browser_version: '99')
-        options = Options.firefox(selenium_options: browser_opts)
+        options = Options.firefox(browser_opts)
 
         expect(options.browser_version).to eq '99'
       end
@@ -164,7 +253,7 @@ module SauceBindings
       it 'does not accept incorrect Selenium Capabilities class' do
         browser_opts = Selenium::WebDriver::Remote::Capabilities.chrome(browser_version: '99')
 
-        expect { Options.firefox(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+        expect { Options.firefox(browser_opts) }.to raise_exception(ArgumentError)
       end
 
       it 'accepts base configurations' do
@@ -207,7 +296,7 @@ module SauceBindings
 
       it 'accepts correct Selenium Options class' do
         browser_opts = Selenium::WebDriver::IE::Options.new(args: ['-foo'])
-        options = Options.ie(selenium_options: browser_opts)
+        options = Options.ie(browser_opts)
 
         expect(options.selenium_options.dig('se:ieOptions', 'ie.browserCommandLineSwitches')).to eq '-foo'
       end
@@ -215,12 +304,12 @@ module SauceBindings
       it 'does not accept incorrect Selenium Options class' do
         browser_opts = Selenium::WebDriver::Chrome::Options.new
 
-        expect { Options.ie(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+        expect { Options.ie(browser_opts) }.to raise_exception(ArgumentError)
       end
 
       it 'accepts correct Selenium Capabilities class' do
         browser_opts = Selenium::WebDriver::Remote::Capabilities.ie(browser_version: '99')
-        options = Options.ie(selenium_options: browser_opts)
+        options = Options.ie(browser_opts)
 
         expect(options.browser_version).to eq '99'
       end
@@ -228,7 +317,7 @@ module SauceBindings
       it 'does not accept incorrect Selenium Capabilities class' do
         browser_opts = Selenium::WebDriver::Remote::Capabilities.chrome(browser_version: '99')
 
-        expect { Options.ie(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+        expect { Options.ie(browser_opts) }.to raise_exception(ArgumentError)
       end
 
       it 'accepts base configurations' do
@@ -271,7 +360,7 @@ module SauceBindings
 
       it 'accepts correct Selenium Options class' do
         browser_opts = Selenium::WebDriver::Safari::Options.new(automatic_inspection: true)
-        options = Options.safari(selenium_options: browser_opts)
+        options = Options.safari(browser_opts)
 
         expect(options.selenium_options['safari:automaticInspection']).to eq true
       end
@@ -279,12 +368,12 @@ module SauceBindings
       it 'does not accept incorrect Selenium Options class' do
         browser_opts = Selenium::WebDriver::Chrome::Options.new
 
-        expect { Options.safari(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+        expect { Options.safari(browser_opts) }.to raise_exception(ArgumentError)
       end
 
       it 'accepts correct Selenium Capabilities class' do
         browser_opts = Selenium::WebDriver::Remote::Capabilities.safari(browser_version: '99')
-        options = Options.safari(selenium_options: browser_opts)
+        options = Options.safari(browser_opts)
 
         expect(options.browser_version).to eq '99'
       end
@@ -292,7 +381,7 @@ module SauceBindings
       it 'does not accept incorrect Selenium Capabilities class' do
         browser_opts = Selenium::WebDriver::Remote::Capabilities.chrome(browser_version: '99')
 
-        expect { Options.safari(selenium_options: browser_opts) }.to raise_exception(ArgumentError)
+        expect { Options.safari(browser_opts) }.to raise_exception(ArgumentError)
       end
 
       it 'accepts base configurations' do
@@ -408,64 +497,6 @@ module SauceBindings
         expect(options.time_zone).to eq 'San Francisco'
         expect(options.tunnel_identifier).to eq 'tunnelname'
         expect(options.video_upload_on_pass).to eq false
-      end
-    end
-
-    describe '#merge_capabilities' do
-      it 'loads options from configuration' do
-        custom_data = {foo: 'foo',
-                       bar: 'bar'}
-        prerun = {executable: 'http://url.to/your/executable.exe',
-                  args: ['--silent', '-a', '-q'],
-                  background: false,
-                  timeout: 120}
-        tags = %w[foo bar foobar]
-
-        yaml = YAML.load_file('spec/options.yml')
-        example_values = yaml['example_values']
-        options = Options.send(example_values.delete('browser_name'))
-        options.merge_capabilities(example_values)
-
-        expect(options.browser_name).to eq 'firefox'
-        expect(options.browser_version).to eq '123'
-        expect(options.platform_name).to eq 'Mac'
-        expect(options.accept_insecure_certs).to eq true
-        expect(options.page_load_strategy).to eq 'eager'
-        expect(options.set_window_rect).to eq true
-        expect(options.unhandled_prompt_behavior).to eq 'accept'
-        expect(options.strict_file_interactability).to eq true
-        expect(options.implicit_wait_timeout).to eq 1
-        expect(options.page_load_timeout).to eq 59
-        expect(options.script_timeout).to eq 29
-        expect(options.build).to eq 'Sample Build Name'
-        expect(options.command_timeout).to eq 2
-        expect(options.custom_data).to eq custom_data
-        expect(options.extended_debugging).to eq true
-        expect(options.idle_timeout).to eq 3
-        expect(options.geckodriver_version).to eq '0.23'
-        expect(options.max_duration).to eq 300
-        expect(options.name).to eq 'Sample Test Name'
-        expect(options.parent_tunnel).to eq 'Mommy'
-        expect(options.prerun).to eq prerun
-        expect(options.priority).to eq 0
-        expect(options.public).to eq 'team'
-        expect(options.record_logs).to eq false
-        expect(options.record_screenshots).to eq false
-        expect(options.record_video).to eq false
-        expect(options.screen_resolution).to eq '10x10'
-        expect(options.selenium_version).to eq '3.141.59'
-        expect(options.tags).to eq tags
-        expect(options.time_zone).to eq 'San Francisco'
-        expect(options.tunnel_identifier).to eq 'tunnelname'
-        expect(options.video_upload_on_pass).to eq false
-      end
-
-      it 'raises exception if value not recognized' do
-        options = Options.chrome
-        yaml = YAML.load_file('spec/options.yml')
-
-        msg = 'foo is not a valid parameter for Options class'
-        expect { options.merge_capabilities(yaml['invalid_option']) }.to raise_exception(ArgumentError, msg)
       end
     end
 
@@ -589,7 +620,7 @@ module SauceBindings
                                                                 page_load_strategy: 'eager')
 
         ClimateControl.modify BUILD_TAG: '', BUILD_NAME: 'TEMP BUILD', BUILD_NUMBER: '11' do
-          @options = Options.chrome(selenium_options: [caps, browser_opts])
+          @options = Options.chrome([caps, browser_opts])
         end
         expect(@options.accept_insecure_certs).to eq true
         expect(@options.page_load_strategy).to eq 'eager'
@@ -603,6 +634,36 @@ module SauceBindings
                          'sauce:options' => {'build' => 'TEMP BUILD: 11',
                                              'username' => 'foo',
                                              'accessKey' => '123'},
+                         'goog:chromeOptions' => {'args' => ['--foo']}}
+
+        ClimateControl.modify(**SAUCE_ACCESS) do
+          expect(@options.capabilities).to eq expected_caps
+        end
+      end
+
+      it 'correctly generates capabilities for selenium object with Sauce values' do
+        caps = Selenium::WebDriver::Remote::Capabilities.chrome(accept_insecure_certs: true)
+        browser_opts = Selenium::WebDriver::Chrome::Options.new(args: ['--foo'],
+                                                                page_load_strategy: 'eager',
+                                                                'sauce:options': {username: ENV['SAUCE_USERNAME'],
+                                                                                  access_key: ENV['SAUCE_ACCESS_KEY'],
+                                                                                  build: 'Build Name',
+                                                                                  max_duration: 300})
+
+        @options = Options.chrome([caps, browser_opts])
+        expect(@options.accept_insecure_certs).to eq true
+        expect(@options.page_load_strategy).to eq 'eager'
+        expect(@options.selenium_options.dig('goog:chromeOptions', 'args')).to eq ['--foo']
+
+        expected_caps = {'browserName' => 'chrome',
+                         'browserVersion' => 'latest',
+                         'platformName' => 'Windows 10',
+                         'acceptInsecureCerts' => true,
+                         'pageLoadStrategy' => 'eager',
+                         'sauce:options' => {'build' => 'Build Name',
+                                             'username' => 'foo',
+                                             'accessKey' => '123',
+                                             'maxDuration' => 300},
                          'goog:chromeOptions' => {'args' => ['--foo']}}
 
         ClimateControl.modify(**SAUCE_ACCESS) do

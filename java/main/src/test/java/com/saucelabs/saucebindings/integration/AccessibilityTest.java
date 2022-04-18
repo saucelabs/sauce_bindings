@@ -4,22 +4,19 @@ import com.deque.html.axecore.results.Results;
 import com.deque.html.axecore.results.Rule;
 import com.saucelabs.saucebindings.SauceSession;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-
 public class AccessibilityTest {
-    private SauceSession session = new SauceSession();
+    private final SauceSession session = new SauceSession();
     private RemoteWebDriver webDriver;
 
     @After
     public void cleanUp() {
-        if (session != null) {
-            session.stop(true);
-        }
+        session.stop(true);
     }
 
     @Test
@@ -30,7 +27,7 @@ public class AccessibilityTest {
         Results results = session.getAccessibilityResults();
         List<Rule> violations = results.getViolations();
         int problems = violations.stream().map(e -> e.getNodes().size()).reduce(0, Integer::sum);
-        assertEquals(16, problems);
+        Assert.assertEquals(16, problems);
     }
 
     @Test
@@ -41,7 +38,7 @@ public class AccessibilityTest {
         Results results = session.getAccessibilityResults();
         List<Rule> violations = results.getViolations();
         int problems = violations.stream().map(e -> e.getNodes().size()).reduce(0, Integer::sum);
-        assertEquals(14, problems);
+        Assert.assertEquals(14, problems);
     }
 
     @Test
@@ -52,7 +49,7 @@ public class AccessibilityTest {
         Results results = session.getAccessibilityResults(false);
         List<Rule> violations = results.getViolations();
         int problems = violations.stream().map(e -> e.getNodes().size()).reduce(0, Integer::sum);
-        assertEquals(7, problems);
+        Assert.assertEquals(7, problems);
     }
 
     @Test
@@ -63,6 +60,6 @@ public class AccessibilityTest {
         Results results = session.getAccessibilityResults(false);
         List<Rule> violations = results.getViolations();
         int problems = violations.stream().map(e -> e.getNodes().size()).reduce(0, Integer::sum);
-        assertEquals(6, problems);
+        Assert.assertEquals(6, problems);
     }
 }

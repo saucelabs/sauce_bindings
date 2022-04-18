@@ -7,7 +7,7 @@ module SauceBindings
     let(:valid_response) do
       {status: 200,
        body: {value: {sessionId: '0', capabilities: Selenium::WebDriver::Remote::Capabilities.chrome}}.to_json,
-       headers: {"content_type": 'application/json'}}
+       headers: {content_type: 'application/json'}}
     end
     let(:default_capabilities) do
       {browserName: 'chrome',
@@ -329,7 +329,7 @@ module SauceBindings
         allow(@driver).to receive(:execute_script)
 
         message = "\nThis test has been stopped; no more driver commands will be accepted\n\n" \
-        "You can take manual control of the test from the Sauce Labs UI here: https://app.saucelabs.com/tests/0\n"
+                  "You can take manual control of the test from the Sauce Labs UI here: https://app.saucelabs.com/tests/0\n"
         expect { @session.pause }.to output(message).to_stdout
 
         expect(@driver).to have_received(:execute_script).with('sauce: break')

@@ -639,7 +639,6 @@ module SauceBindings
           expect(@options.capabilities).to eq expected_caps
         end
       end
-
     end
   end
 end

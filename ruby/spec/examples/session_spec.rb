@@ -38,7 +38,7 @@ describe 'Create Session' do
     driver = session.start
 
     driver.get('https://www.saucedemo.com/')
-    session.annotate("Add this comment")
+    session.annotate('Add this comment')
 
     session.stop(true)
   end
@@ -84,7 +84,7 @@ describe 'Create Session' do
 
     driver.get('https://www.saucedemo.com/')
 
-    session.change_name("New Name!")
+    session.change_name('New Name!')
 
     session.stop(true)
   end

@@ -15,7 +15,7 @@ module SauceBindings
 
         results = @session.accessibility_results
 
-        problems = results['violations'].map { |v| v['nodes'].size }.inject(0, :+)
+        problems = results['violations'].sum { |v| v['nodes'].size }
         expect(problems).to eq 16
       end
 
@@ -27,7 +27,7 @@ module SauceBindings
 
         results = @session.accessibility_results
 
-        problems = results['violations'].map { |v| v['nodes'].size }.inject(0, :+)
+        problems = results['violations'].sum { |v| v['nodes'].size }
         expect(problems).to eq 14
       end
 
@@ -39,7 +39,7 @@ module SauceBindings
 
         results = @session.accessibility_results(frames: false)
 
-        problems = results['violations'].map { |v| v['nodes'].size }.inject(0, :+)
+        problems = results['violations'].sum { |v| v['nodes'].size }
         expect(problems).to eq 7
       end
 
@@ -51,7 +51,7 @@ module SauceBindings
 
         results = @session.accessibility_results(frames: false)
 
-        problems = results['violations'].map { |v| v['nodes'].size }.inject(0, :+)
+        problems = results['violations'].sum { |v| v['nodes'].size }
         expect(problems).to eq 6
       end
     end

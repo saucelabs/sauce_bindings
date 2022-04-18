@@ -1,5 +1,7 @@
 AllCops:
   TargetRubyVersion: 2.7.5
+  NewCops: enable
+  SuggestExtensions: false
 
 require:
   - rubocop-rspec
@@ -14,6 +16,7 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   Exclude:
     - "**/*_spec.rb"
+    - "*.gemspec"
 
 Metrics/CyclomaticComplexity:
   Max: 10
@@ -24,7 +27,7 @@ Metrics/PerceivedComplexity:
 Metrics/ClassLength:
   Enabled: false
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 120
 
 Metrics/MethodLength:
@@ -62,3 +65,6 @@ Lint/ConstantDefinitionInBlock:
 
 Style/BlockDelimiters:
   EnforcedStyle: braces_for_chaining
+
+RSpec/BeEq:
+  Enabled: false

@@ -20,8 +20,7 @@ describe 'Options' do
                                                    platform_name: 'Windows 8',
                                                    unhandled_prompt_behavior: 'ignore',
                                                    idle_timeout: 45,
-                                                   time_zone: 'Alaska',
-    )
+                                                   time_zone: 'Alaska')
 
     session = SauceBindings::Session.new(sauce_options)
     driver = session.start
@@ -35,10 +34,10 @@ describe 'Options' do
     browser_options = Selenium::WebDriver::Chrome::Options.new(args: ['--start-fullscreen'])
 
     sauce_options = SauceBindings::Options.chrome(browser_options, browser_version: '88.0',
-                                                   platform_name: 'Windows 8',
-                                                   unhandled_prompt_behavior: 'ignore',
-                                                   idle_timeout: 45,
-                                                   time_zone: 'Alaska')
+                                                                   platform_name: 'Windows 8',
+                                                                   unhandled_prompt_behavior: 'ignore',
+                                                                   idle_timeout: 45,
+                                                                   time_zone: 'Alaska')
 
     session = SauceBindings::Session.new(sauce_options)
     driver = session.start

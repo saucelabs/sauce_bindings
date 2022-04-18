@@ -8,7 +8,7 @@ module SauceBindings
     let(:valid_response) do
       {status: 200,
        body: {value: {sessionId: '0', capabilities: Selenium::WebDriver::Remote::Capabilities.chrome}}.to_json,
-       headers: {"content_type": 'application/json'}}
+       headers: {content_type: 'application/json'}}
     end
     let(:default_capabilities) do
       {browserName: 'chrome',
@@ -45,7 +45,7 @@ module SauceBindings
 
         expect(@driver).to eq Capybara.current_session.driver.browser
 
-        Capybara.current_session.driver.instance_variable_set('@browser', nil)
+        Capybara.current_session.driver.instance_variable_set(:@browser, nil)
       end
     end
 
@@ -68,7 +68,7 @@ module SauceBindings
         expect(SauceWhisk::Jobs).to have_received(:change_status).with('1234', true)
         expect(Capybara.current_session).to have_received(:quit)
 
-        Capybara.current_session.driver.instance_variable_set('@browser', nil)
+        Capybara.current_session.driver.instance_variable_set(:@browser, nil)
       end
     end
   end

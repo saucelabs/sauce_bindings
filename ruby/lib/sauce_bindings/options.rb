@@ -176,9 +176,7 @@ module SauceBindings
       value = key_value(key)
 
       case key
-      when :prerun
-        camelize_keys(value)
-      when :custom_data
+      when :prerun, :custom_data
         camelize_keys(value)
       when :disable_record_video
         !send(:record_video)
@@ -231,7 +229,7 @@ module SauceBindings
       return if @browser_name.nil? || browser == @browser_name
 
       raise ArgumentError, "Selenium class identifies capabilities for #{browser}, which does not match the " \
-"provided browser name: #{@browser_name}"
+                           "provided browser name: #{@browser_name}"
     end
 
     def create_variables(key, opts)

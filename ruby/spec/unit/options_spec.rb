@@ -4,6 +4,95 @@ require 'spec_helper'
 
 module SauceBindings
   describe Options do
+    describe '::from_file' do
+      it 'loads yaml options from configuration' do
+        options = Options.from_file('spec/options.yml', 'firefox_mac')
+
+        expect(options.browser_name).to eq 'firefox'
+        expect(options.browser_version).to eq '123'
+        expect(options.platform_name).to eq 'Mac'
+        expect(options.accept_insecure_certs).to eq true
+        expect(options.page_load_strategy).to eq 'eager'
+        expect(options.set_window_rect).to eq true
+        expect(options.unhandled_prompt_behavior).to eq 'accept'
+        expect(options.strict_file_interactability).to eq true
+        expect(options.implicit_wait_timeout).to eq 1
+        expect(options.page_load_timeout).to eq 59
+        expect(options.script_timeout).to eq 29
+        expect(options.build).to eq 'Sample Build Name'
+        expect(options.command_timeout).to eq 2
+        expect(options.custom_data).to eq(foo: 'foo', bar: 'bar')
+        expect(options.extended_debugging).to eq true
+        expect(options.idle_timeout).to eq 3
+        expect(options.geckodriver_version).to eq '0.23'
+        expect(options.max_duration).to eq 300
+        expect(options.name).to eq 'Sample Test Name'
+        expect(options.parent_tunnel).to eq 'Mommy'
+        expect(options.prerun).to eq(executable: 'http://url.to/your/executable.exe',
+                                     args: %w[--silent -a -q],
+                                     background: false,
+                                     timeout: 120)
+        expect(options.priority).to eq 0
+        expect(options.public).to eq 'team'
+        expect(options.record_logs).to eq false
+        expect(options.record_screenshots).to eq false
+        expect(options.record_video).to eq false
+        expect(options.screen_resolution).to eq '10x10'
+        expect(options.selenium_version).to eq '3.141.59'
+        expect(options.tags).to eq %w[foo bar foobar]
+        expect(options.time_zone).to eq 'San Francisco'
+        expect(options.tunnel_identifier).to eq 'tunnelname'
+        expect(options.video_upload_on_pass).to eq false
+      end
+
+      it 'loads json options from configuration' do
+        options = Options.from_file('spec/options.json', 'firefox_mac')
+
+        expect(options.browser_name).to eq 'firefox'
+        expect(options.browser_version).to eq '123'
+        expect(options.platform_name).to eq 'Mac'
+        expect(options.accept_insecure_certs).to eq true
+        expect(options.page_load_strategy).to eq 'eager'
+        expect(options.set_window_rect).to eq true
+        expect(options.unhandled_prompt_behavior).to eq 'accept'
+        expect(options.strict_file_interactability).to eq true
+        expect(options.implicit_wait_timeout).to eq 1
+        expect(options.page_load_timeout).to eq 59
+        expect(options.script_timeout).to eq 29
+        expect(options.build).to eq 'Sample Build Name'
+        expect(options.command_timeout).to eq 2
+        expect(options.custom_data).to eq(foo: 'foo', bar: 'bar')
+        expect(options.extended_debugging).to eq true
+        expect(options.idle_timeout).to eq 3
+        expect(options.geckodriver_version).to eq '0.23'
+        expect(options.max_duration).to eq 300
+        expect(options.name).to eq 'Sample Test Name'
+        expect(options.parent_tunnel).to eq 'Mommy'
+        expect(options.prerun).to eq(executable: 'http://url.to/your/executable.exe',
+                                     args: %w[--silent -a -q],
+                                     background: false,
+                                     timeout: 120)
+        expect(options.priority).to eq 0
+        expect(options.public).to eq 'team'
+        expect(options.record_logs).to eq false
+        expect(options.record_screenshots).to eq false
+        expect(options.record_video).to eq false
+        expect(options.screen_resolution).to eq '10x10'
+        expect(options.selenium_version).to eq '3.141.59'
+        expect(options.tags).to eq %w[foo bar foobar]
+        expect(options.time_zone).to eq 'San Francisco'
+        expect(options.tunnel_identifier).to eq 'tunnelname'
+        expect(options.video_upload_on_pass).to eq false
+      end
+
+      it 'raises exception if value not recognized' do
+        msg = '{:foo=>"bar"} are not valid parameters for Options class with firefox'
+        expect {
+          Options.from_file('spec/options.yml', 'invalid_option')
+        }.to raise_exception(ArgumentError, msg)
+      end
+    end
+
     describe '::chrome' do
       it 'uses latest Chrome version on Windows 10 by default' do
         options = Options.chrome
@@ -408,64 +497,6 @@ module SauceBindings
         expect(options.time_zone).to eq 'San Francisco'
         expect(options.tunnel_identifier).to eq 'tunnelname'
         expect(options.video_upload_on_pass).to eq false
-      end
-    end
-
-    describe '#merge_capabilities' do
-      it 'loads options from configuration' do
-        custom_data = {foo: 'foo',
-                       bar: 'bar'}
-        prerun = {executable: 'http://url.to/your/executable.exe',
-                  args: ['--silent', '-a', '-q'],
-                  background: false,
-                  timeout: 120}
-        tags = %w[foo bar foobar]
-
-        yaml = YAML.load_file('spec/options.yml')
-        example_values = yaml['example_values']
-        options = Options.send(example_values.delete('browser_name'))
-        options.merge_capabilities(example_values)
-
-        expect(options.browser_name).to eq 'firefox'
-        expect(options.browser_version).to eq '123'
-        expect(options.platform_name).to eq 'Mac'
-        expect(options.accept_insecure_certs).to eq true
-        expect(options.page_load_strategy).to eq 'eager'
-        expect(options.set_window_rect).to eq true
-        expect(options.unhandled_prompt_behavior).to eq 'accept'
-        expect(options.strict_file_interactability).to eq true
-        expect(options.implicit_wait_timeout).to eq 1
-        expect(options.page_load_timeout).to eq 59
-        expect(options.script_timeout).to eq 29
-        expect(options.build).to eq 'Sample Build Name'
-        expect(options.command_timeout).to eq 2
-        expect(options.custom_data).to eq custom_data
-        expect(options.extended_debugging).to eq true
-        expect(options.idle_timeout).to eq 3
-        expect(options.geckodriver_version).to eq '0.23'
-        expect(options.max_duration).to eq 300
-        expect(options.name).to eq 'Sample Test Name'
-        expect(options.parent_tunnel).to eq 'Mommy'
-        expect(options.prerun).to eq prerun
-        expect(options.priority).to eq 0
-        expect(options.public).to eq 'team'
-        expect(options.record_logs).to eq false
-        expect(options.record_screenshots).to eq false
-        expect(options.record_video).to eq false
-        expect(options.screen_resolution).to eq '10x10'
-        expect(options.selenium_version).to eq '3.141.59'
-        expect(options.tags).to eq tags
-        expect(options.time_zone).to eq 'San Francisco'
-        expect(options.tunnel_identifier).to eq 'tunnelname'
-        expect(options.video_upload_on_pass).to eq false
-      end
-
-      it 'raises exception if value not recognized' do
-        options = Options.chrome
-        yaml = YAML.load_file('spec/options.yml')
-
-        msg = 'foo is not a valid parameter for Options class'
-        expect { options.merge_capabilities(yaml['invalid_option']) }.to raise_exception(ArgumentError, msg)
       end
     end
 

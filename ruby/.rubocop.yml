@@ -19,7 +19,7 @@ Metrics/BlockLength:
     - "*.gemspec"
 
 Metrics/CyclomaticComplexity:
-  Max: 10
+  Max: 11
 
 Metrics/PerceivedComplexity:
   Max: 11

@@ -9,6 +9,18 @@ module SauceBindings
         str.to_s.gsub(/_([a-z])/) { Regexp.last_match(1).upcase }
       end
 
+      def from_file(path, key)
+        deserialized = if path[/\.ya?ml$/]
+                         JSON.parse(YAML.load_file(File.new(path))[key].to_json, symbolize_names: true)
+                       elsif path[/\.json$/]
+                         JSON.parse(File.read(path), symbolize_names: true)[key.to_sym]
+                       else
+                         raise ArgumentError, 'Can only parse .json .yml .yaml files'
+                       end
+
+        Options.send(deserialized.delete(:browser_name), **deserialized)
+      end
+
       def chrome(selenium_options = nil, **opts)
         opts[:selenium_options] ||= selenium_options
         opts[:browser_name] = 'chrome'
@@ -70,15 +82,9 @@ module SauceBindings
 
     def initialize(**opts)
       se_options = Array(opts.delete(:selenium_options))
-      valid_options = opts.delete(:valid_options)
-      if valid_options.nil?
-        valid_options = SAUCE + W3C
-        SauceBindings.logger.deprecate('Using `Options.new(opts)` directly',
-                                       'static methods for desired browser',
-                                       id: :options_init) { '(e.g., `Options.chrome(opts)`)' }
-      end
+      @valid_options = opts.delete(:valid_options) || (deprecate_options_init && (SAUCE + W3C))
 
-      create_variables(valid_options, opts)
+      create_variables(opts)
       @selenium_options = se_options.map(&:as_json).inject(:merge) || {}
       parse_selenium_options(se_options)
       @build ||= @selenium_options.dig('sauce:options', 'build') || build_name
@@ -110,6 +116,9 @@ module SauceBindings
     alias as_json capabilities
 
     def merge_capabilities(opts)
+      SauceBindings.logger.deprecate('#merge_capabilities with Hash',
+                                     '::from_file with path and key',
+                                     id: :merge)
       opts.each do |key, value|
         raise ArgumentError, "#{key} is not a valid parameter for Options class" unless respond_to?("#{key}=")
 
@@ -232,8 +241,8 @@ module SauceBindings
                            "provided browser name: #{@browser_name}"
     end
 
-    def create_variables(key, opts)
-      key.each do |option|
+    def create_variables(opts)
+      @valid_options.each do |option|
         singleton_class.class_eval { attr_accessor option }
         next unless opts.key?(option)
 
@@ -276,6 +285,12 @@ module SauceBindings
       else
         "Build Time - #{Time.now.to_i}"
       end
+    end
+
+    def deprecate_options_init
+      SauceBindings.logger.deprecate('Using `Options.new(opts)` directly',
+                                     'static methods for desired browser',
+                                     id: :options_init) { '(e.g., `Options.chrome(opts)`)' }
     end
   end
 end

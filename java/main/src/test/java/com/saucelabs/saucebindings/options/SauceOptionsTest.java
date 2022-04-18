@@ -142,7 +142,7 @@ public class SauceOptionsTest {
     @Test
     public void setsCapabilitiesFromYaml() {
         Path path = Paths.get("src/test/java/com/saucelabs/saucebindings/options.yml");
-        sauceOptions = new SauceOptions(path, "firefoxMac");
+        sauceOptions = SauceOptions.fromFile(path, "firefoxMac");
 
         Map<Prerun, Object> prerun = new HashMap<>();
         prerun.put(Prerun.EXECUTABLE, "https://url.to/your/executable.exe");
@@ -192,7 +192,7 @@ public class SauceOptionsTest {
     @Test
     public void setsCapabilitiesFromJSON() {
         Path path = Paths.get("src/test/java/com/saucelabs/saucebindings/options.json");
-        sauceOptions = new SauceOptions(path, "firefoxMac");
+        sauceOptions = SauceOptions.fromFile(path, "firefoxMac");
 
         Map<Prerun, Object> prerun = new HashMap<>();
         prerun.put(Prerun.EXECUTABLE, "https://url.to/your/executable.exe");
@@ -241,28 +241,28 @@ public class SauceOptionsTest {
     public void errorsBadChromeOptionsCapability() {
         Path path = Paths.get("src/test/java/com/saucelabs/saucebindings/badOptions.yml");
 
-        sauceOptions = new SauceOptions(path, "invalidCap");
+        sauceOptions = SauceOptions.fromFile(path, "invalidCap");
     }
 
     @Test(expected = InvalidSauceOptionsArgumentException.class)
     public void errorsBadChromeOptionsSauceCapability() {
         Path path = Paths.get("src/test/java/com/saucelabs/saucebindings/badOptions.yml");
 
-        sauceOptions = new SauceOptions(path, "invalidSauceCap");
+        sauceOptions = SauceOptions.fromFile(path, "invalidSauceCap");
     }
 
     @Test(expected = InvalidSauceOptionsArgumentException.class)
     public void errorsBadChromeOptionsValue() {
         Path path = Paths.get("src/test/java/com/saucelabs/saucebindings/badOptions.yml");
 
-        sauceOptions = new SauceOptions(path, "badValue");
+        sauceOptions = SauceOptions.fromFile(path, "badValue");
     }
 
     @Test(expected = InvalidSauceOptionsArgumentException.class)
     public void errorsBadChromeOptionsSauceValue() {
         Path path = Paths.get("src/test/java/com/saucelabs/saucebindings/badOptions.yml");
 
-        sauceOptions = new SauceOptions(path, "badSauceValue");
+        sauceOptions = SauceOptions.fromFile(path, "badSauceValue");
     }
 
     @Ignore("Current code does not parse by browser making this a more difficult implementation at this time")
@@ -270,7 +270,7 @@ public class SauceOptionsTest {
     public void errorsBadNameSpacedValues() {
         Path path = Paths.get("src/test/java/com/saucelabs/saucebindings/badOptions.yml");
 
-        sauceOptions = new SauceOptions(path, "invalidPrefix");
+        sauceOptions = SauceOptions.fromFile(path, "invalidPrefix");
     }
 
     @Test

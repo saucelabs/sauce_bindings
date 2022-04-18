@@ -3,6 +3,7 @@ package com.saucelabs.saucebindings.options;
 import lombok.Getter;
 import org.openqa.selenium.MutableCapabilities;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
@@ -18,8 +19,9 @@ public abstract class BaseOptions {
      * Use Case is pulling serialized information from JSON/YAML, converting it to a HashMap.
      * This is a preferred pattern as it avoids conditionals in code.
      *
+     * @see SauceOptions#fromFile(Path path, String key)
      * @param capabilitiesToMerge a Map object representing key value pairs to convert to capabilities
-     * @deprecated pass in the location of the config file and the corresponding key directly to the constructor
+     * @deprecated use the SauceOptions#fromFile method instead
      */
     @Deprecated
     public void mergeCapabilities(Map<String, Object> capabilitiesToMerge) {

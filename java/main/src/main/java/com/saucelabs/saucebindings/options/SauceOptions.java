@@ -92,50 +92,9 @@ public class SauceOptions extends BaseOptions {
      * @param path location of the yaml or json configuration file
      * @param key which configuration in that file to use
      */
-    public SauceOptions(Path path, String key) {
-        this((Map<String, Object>) deserialize(path).get(key));
-    }
-
-    private static Map<String, Object> deserialize(Path path) {
-        PathMatcher yamlMatcher = FileSystems.getDefault().getPathMatcher("glob:**.{yaml,yml}");
-        PathMatcher jsonMatcher = FileSystems.getDefault().getPathMatcher("glob:**.json");
-
-        try {
-            if (yamlMatcher.matches(path)) {
-                return loadYaml(path);
-            } else if (jsonMatcher.matches(path)) {
-                return loadJSON(path);
-            }
-        } catch (IOException e) {
-            throw new InvalidSauceOptionsArgumentException("Invalid file Location", e);
-        }
-
-        throw new InvalidSauceOptionsArgumentException("Unable to parse this file type");
-    }
-
-    private static Map<String, Object> loadYaml(Path path) throws FileNotFoundException {
-        InputStream input = new FileInputStream(path.toString());
-        Yaml yaml = new Yaml();
-        return yaml.load(input);
-    }
-
-    private static Map<String, Object> loadJSON(Path path) throws IOException {
-        String content = new String(Files.readAllBytes(path));
-        JSONObject jsonObject = new JSONObject(content);
-        return jsonObject.toMap();
-    }
-
-    /**
-     * Public so SauceSession can support MutableCapabilities without making MutableCapabilities constructor public.
-     * This is primarily intended to facilitate using a JSON file or a YAML to create a SauceOptions instance
-     *
-     * @see  #SauceOptions(Path path, String key)
-     * @param map key value pairs to set on a SauceOptions instance
-     * @deprecated This is intended for private access, do not use directly
-     */
-    @Deprecated
-    public SauceOptions(Map<String, Object> map) {
-        this(new MutableCapabilities(map));
+    public static SauceOptions fromFile(Path path, String key) {
+        Map<String, Object> options = (Map<String, Object>) deserialize(path).get(key);
+        return new SauceOptions(options);
     }
 
     /**
@@ -254,6 +213,35 @@ public class SauceOptions extends BaseOptions {
         return new SafariConfigurations(safariOptions);
     }
 
+    private static Map<String, Object> deserialize(Path path) {
+        PathMatcher yamlMatcher = FileSystems.getDefault().getPathMatcher("glob:**.{yaml,yml}");
+        PathMatcher jsonMatcher = FileSystems.getDefault().getPathMatcher("glob:**.json");
+
+        try {
+            if (yamlMatcher.matches(path)) {
+                return loadYaml(path);
+            } else if (jsonMatcher.matches(path)) {
+                return loadJSON(path);
+            }
+        } catch (IOException e) {
+            throw new InvalidSauceOptionsArgumentException("Invalid file Location", e);
+        }
+
+        throw new InvalidSauceOptionsArgumentException("Unable to parse this file type");
+    }
+
+    private static Map<String, Object> loadYaml(Path path) throws FileNotFoundException {
+        InputStream input = new FileInputStream(path.toString());
+        Yaml yaml = new Yaml();
+        return yaml.load(input);
+    }
+
+    private static Map<String, Object> loadJSON(Path path) throws IOException {
+        String content = new String(Files.readAllBytes(path));
+        JSONObject jsonObject = new JSONObject(content);
+        return jsonObject.toMap();
+    }
+
     /**
      * This method allows getting values of Sauce specific values associated with SauceOptions.
      *
@@ -271,6 +259,39 @@ public class SauceOptions extends BaseOptions {
     @Deprecated
     public SauceOptions() {
         this(new MutableCapabilities());
+    }
+
+    /**
+     * This is primarily intended to facilitate using a JSON file or a YAML to create a SauceOptions instance.
+     * Needs to be public for SauceSession to support a MutableCapabilities constructor.
+     *
+     * @see  SauceOptions#fromFile(Path path, String key)
+     * @param map key value pairs to set on a SauceOptions instance
+     * @deprecated This is intended for private access, do not use directly
+     */
+    @Deprecated
+    public SauceOptions(Map<String, Object> map) {
+        this(new MutableCapabilities(map));
+    }
+
+    /**
+     * For Configuration classes to build a SauceOptions instance.
+     * This resets Browser Options subclasses to MutableCapabilities superclass.
+     * Selenium deletes capabilities by default when making w3c safe, so need to do separate validations.
+     * Equivalent code: `new MutableCapabilities(CapabilitiesUtils.makeW3CSafe(options).findFirst().get().asMap())`
+     *
+     * @param options Selenium capability values
+     */
+    SauceOptions(MutableCapabilities options) {
+        capabilities = new MutableCapabilities(options.asMap());
+        capabilityManager = new CapabilityManager(this);
+        sauceLabsOptions = new SauceLabsOptions(capabilities.getCapability("sauce:options"));
+
+        if (options.getCapability("browserName") != null) {
+            setCapability("browserName", options.getCapability("browserName"));
+        }
+
+        processOptions();
     }
 
     /**
@@ -293,26 +314,6 @@ public class SauceOptions extends BaseOptions {
                     ));
         }
         return timeout.getTimeouts();
-    }
-
-    /**
-     * For Configuration classes to build a SauceOptions instance.
-     * This resets Browser Options subclasses to MutableCapabilities superclass.
-     * Selenium deletes capabilities by default when making w3c safe, so need to do separate validations.
-     * Equivalent code: `new MutableCapabilities(CapabilitiesUtils.makeW3CSafe(options).findFirst().get().asMap())`
-     *
-     * @param options Selenium capability values
-     */
-    SauceOptions(MutableCapabilities options) {
-        capabilities = new MutableCapabilities(options.asMap());
-        capabilityManager = new CapabilityManager(this);
-        sauceLabsOptions = new SauceLabsOptions(capabilities.getCapability("sauce:options"));
-
-        if (options.getCapability("browserName") != null) {
-            setCapability("browserName", options.getCapability("browserName"));
-        }
-
-        processOptions();
     }
 
     // This insanity is required because Java treats InternetExplorerOptions differently for some reason
@@ -382,7 +383,7 @@ public class SauceOptions extends BaseOptions {
         default:
             if (sauce().getValidOptions().contains(key)) {
                 deprecatedSetCapability(key, value);
-            } else if (!key.contains(":")) { // mergeCapabilities() ignores this, the new constructor does not
+            } else if (!key.contains(":")) { // fapabilities() ignores this, the new constructor does not
                 super.setCapability(key, value);
             }
         }

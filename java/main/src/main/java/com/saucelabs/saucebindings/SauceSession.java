@@ -22,6 +22,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+/**
+ * Primary means of interacting with Sauce Labs functionality.
+ */
 public class SauceSession {
     @Getter protected RemoteWebDriver driver;
     @Getter @Setter private DataCenter dataCenter = DataCenter.US_WEST;
@@ -31,8 +34,9 @@ public class SauceSession {
 
     private static SauceOptions castMutableCapabilities(MutableCapabilities capabilities) {
         if (DesiredCapabilities.class.equals(capabilities.getClass())) {
-            String msg = "DesiredCapabilities class does not create valid w3c compliant capabilities and are deprecated; Please update";
-            throw new InvalidSauceOptionsArgumentException(msg);
+            String line1 = "DesiredCapabilities class does not create valid w3c compliant capabilities ";
+            String line2 = "and is deprecated; Please update to using browser Options classes or SauceOptions";
+            throw new InvalidSauceOptionsArgumentException(line1 + line2);
         } else if (ChromeOptions.class.equals(capabilities.getClass())) {
             return SauceOptions.chrome((ChromeOptions) capabilities).build();
         } else if (EdgeOptions.class.equals(capabilities.getClass())) {
@@ -46,7 +50,8 @@ public class SauceSession {
         } else if (MutableCapabilities.class.equals(capabilities.getClass())) {
             return new SauceOptions(capabilities.asMap());
         } else {
-            throw new InvalidSauceOptionsArgumentException("Browser Options class not recognized: " + capabilities.getClass());
+            throw new InvalidSauceOptionsArgumentException("Browser Options class not recognized: "
+                    + capabilities.getClass());
         }
     }
 
@@ -86,9 +91,11 @@ public class SauceSession {
     public RemoteWebDriver start() {
         this.driver = createRemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities());
         return driver;
-	}
+    }
 
     /**
+     * URL to desired Sauce Data Center.
+     *
      * @return the full URL for sending to Sauce Labs based on the desired data center.
      */
     public URL getSauceUrl() {
@@ -157,6 +164,16 @@ public class SauceSession {
             updateResult(update);
             quit();
         }
+    }
+
+    /**
+     * Stop the session with String for passed or failed.
+     *
+     * @deprecated Do not use magic strings, pass in boolean for whether test has passed.
+     */
+    @Deprecated
+    public void stop(String result) {
+        stop(result.equals("passed"));
     }
 
     /**
@@ -269,14 +286,6 @@ public class SauceSession {
         validateSessionStarted("setTags");
         String tagString = String.join(",", tags);
         driver.executeScript("sauce:job-tags=" + tagString);
-    }
-
-    /**
-     * @deprecated Do not use magic strings, pass in boolean for whether test has passed.
-     */
-    @Deprecated
-    public void stop(String result) {
-        stop(result.equals("passed"));
     }
 
     /**

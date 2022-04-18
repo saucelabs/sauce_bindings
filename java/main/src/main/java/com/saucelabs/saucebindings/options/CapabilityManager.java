@@ -7,11 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/** Manages processing capabilities on behalf of the options class. */
 public class CapabilityManager {
     private final BaseOptions options;
 
     /**
-     * Class constructor created for a specific SauceOptions instance
+     * Class constructor created for a specific SauceOptions instance.
      *
      * @param options the SauceOptions instance using this capabilities manager
      */
@@ -20,7 +21,7 @@ public class CapabilityManager {
     }
 
     /**
-     * Add values of option class's valid capabilities to the option class's capabilities object
+     * Add values of option class's valid capabilities to the option class's capabilities object.
      */
     public void addCapabilities() {
         options.getValidOptions().forEach((capability) -> {
@@ -34,7 +35,7 @@ public class CapabilityManager {
     }
 
     /**
-     * Dynamically sets the provided value onto the associated options instance
+     * Dynamically sets the provided value onto the associated options instance.
      *
      * @param key   Name of the capability to set on the options instance
      * @param value Value of the capability to set on the options instance
@@ -46,14 +47,14 @@ public class CapabilityManager {
             Method method = options.getClass().getMethod(setter, type);
             method.invoke(options, value);
         } catch (NoSuchFieldException e) {
-            throw new InvalidSauceOptionsArgumentException(key + " is not a valid capability for " + options.getClass());
+            throw new InvalidSauceOptionsArgumentException(key + " isn't a valid capability for " + options.getClass());
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             throw new RuntimeException("Unable to set capability for " + key, e);
         }
     }
 
     /**
-     * Dynamically obtain the value of the Field set on the options instance
+     * Dynamically obtain the value of the Field set on the options instance.
      *
      * @param capability    the name of the field to get the value from
      * @return              the value of the provided field name
@@ -69,7 +70,7 @@ public class CapabilityManager {
     }
 
     /**
-     * This ensures that a parameter with an enum Type properly matches
+     * This ensures that a parameter with an enum Type properly matches.
      *
      * @param name      Which enum we are working with for better error message
      * @param values    Valid options for the provided capability
@@ -83,7 +84,7 @@ public class CapabilityManager {
     }
 
     /**
-     * Recursively searches superclasses to find desired Field even when private
+     * Recursively searches superclasses to find desired Field even when private.
      */
     private Field getField(Class<?> optionsClass, String fieldName) throws NoSuchFieldException {
         try {

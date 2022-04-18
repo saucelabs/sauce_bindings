@@ -14,9 +14,12 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+/** This is a deprecated class for storing Sauce Options. Please use options.SauceOptions. */
 public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptions {
 
     /**
+     * Create instance from capabilities.
+     *
      * @deprecated Use com.saucelabs.saucebindings.options.SauceOptions() instead
      */
     @Deprecated
@@ -25,6 +28,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Create instance from ChromeOptions.
+     *
      * @param options instance of Selenium browser options
      * @deprecated Use com.saucelabs.saucebindings.options.SauceOptions.chrome(options) instead
      */
@@ -34,6 +39,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Create instance from EdgeOptions.
+     *
      * @param options instance of Selenium browser options
      * @deprecated Use com.saucelabs.saucebindings.options.SauceOptions.edge(options) instead
      */
@@ -43,6 +50,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Create instance from FirefoxOptions.
+     *
      * @param options instance of Selenium browser options
      * @deprecated Use com.saucelabs.saucebindings.options.SauceOptions.firefox(options) instead
      */
@@ -52,6 +61,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Create instance from InternetExplorerOptions.
+     *
      * @param options instance of Selenium browser options
      * @deprecated Use com.saucelabs.saucebindings.options.SauceOptions.ie(options) instead
      */
@@ -61,6 +72,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Create instance from SafariOptions.
+     *
      * @param options instance of Selenium browser options
      * @deprecated Use com.saucelabs.saucebindings.options.SauceOptions.safari(options) instead
      */
@@ -78,6 +91,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Gets the capabilities to be sent to Selenium.
+     *
      * @return instance capabilities that will get sent to the RemoteWebDriver
      * @deprecated Use getCapabilities() instead
      */
@@ -87,6 +102,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Avoid Proxy.
+     *
      * @param avoidProxy whether to avoid proxy
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -97,6 +114,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Build name.
+     *
      * @param build name of build
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -107,6 +126,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Toggle on capturing performance.
+     *
      * @param capturePerformance whether to capture performance during test
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -117,6 +138,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Specify chromedriver version.
+     *
      * @param chromedriverVersion version of chromedriver
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -127,6 +150,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * command timeout.
+     *
      * @param commandTimeout command timeout value
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -137,6 +162,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * custom data.
+     *
      * @param customData custom data
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -147,6 +174,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * extended debugging.
+     *
      * @param extendedDebugging whether extended debugging is turned on
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -157,6 +186,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * idle timeout.
+     *
      * @param idleTimeout idle timeout
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -167,6 +198,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * IE Driver version.
+     *
      * @param iedriverVersion version of IE Driver
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -177,6 +210,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Max Duration.
+     *
      * @param maxDuration maximum duration of test
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -187,6 +222,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Test name.
+     *
      * @param name name of test
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -197,6 +234,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Parent Tunnel.
+     *
      * @param parentTunnel parent tunnel
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -207,6 +246,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Prerun executable.
+     *
      * @param prerun settings for prerun executable
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -217,6 +258,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Prerun executable URL.
+     *
      * @param prerunUrl location of prerun executable
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -227,6 +270,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Job priority.
+     *
      * @param priority priority of job
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -237,6 +282,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Job visibility.
+     *
      * @param jobVisibility visibility of job
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -247,6 +294,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Record Logs.
+     *
      * @param recordLogs whether to record logs of test
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -257,6 +306,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Record Screenshots.
+     *
      * @param recordScreenshots whether to record screenshots
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -267,6 +318,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Record Video.
+     *
      * @param recordVideo whether to record video of test
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -277,6 +330,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Screen Resolution.
+     *
      * @param screenResolution screen resolution for test
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -287,6 +342,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Selenium Version.
+     *
      * @param seleniumVersion version of selenium server for Sauce to use
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -297,6 +354,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Tags.
+     *
      * @param tags user set tags for job
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -307,6 +366,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Time Zone.
+     *
      * @param timeZone time zone for test
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -317,6 +378,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Sauce Connect Tunnel ID.
+     *
      * @param tunnelIdentifier name of tunnel
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -327,6 +390,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Upload Video On Passing.
+     *
      * @param videoUploadOnPass whether to upload video when test passes
      * @return instance of Options
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
@@ -337,6 +402,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Avoid Proxy.
+     *
      * @return whether to avoid proxy
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -346,6 +413,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Build Name.
+     *
      * @return Build name
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -355,6 +424,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Capture Performance.
+     *
      * @return whether to capture performance
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -364,6 +435,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Chromedriver version.
+     *
      * @return Chromedriver version
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -373,6 +446,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Command Timeout.
+     *
      * @return command timeout
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -382,6 +457,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Custom Data.
+     *
      * @return custom data
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -391,6 +468,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Extended Debugging.
+     *
      * @return whether extended debugging is used
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -400,6 +479,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Idle Timeout.
+     *
      * @return Idle timeout
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -409,6 +490,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * IE Driver Version.
+     *
      * @return IE Driver version
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -418,6 +501,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Max Duration.
+     *
      * @return maximum test duration
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -427,6 +512,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Test Name.
+     *
      * @return name of test
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -436,6 +523,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Name of parent account running desired Sauce Connect Tunnel.
+     *
      * @return parent tunnel
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -445,6 +534,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Prerun.
+     *
      * @return prerun executable settings
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -454,6 +545,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Prerun URL.
+     *
      * @return location of prerun executable
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -463,6 +556,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Priority.
+     *
      * @return job priority
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -472,6 +567,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Visibiity.
+     *
      * @return job visibility
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -481,6 +578,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Record Logs.
+     *
      * @return whether to record logs
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -490,6 +589,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Record Screenshots.
+     *
      * @return whether to record screenshots
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -499,6 +600,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Record Video.
+     *
      * @return whether to record video
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -508,6 +611,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Screen Resolution.
+     *
      * @return screen resolution
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -517,6 +622,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Selenium Version.
+     *
      * @return selenium version
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -526,6 +633,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Tags.
+     *
      * @return tags
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -535,6 +644,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Time Zone.
+     *
      * @return time zone
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -544,6 +655,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Sauce Connect Tunnel ID.
+     *
      * @return tunnel identifier
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -553,6 +666,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Upload Video When Test Passes.
+     *
      * @return whether video should be uploaded when test passes
      * @deprecated Use with sauce() or even better, use the new Builder Pattern
      */
@@ -562,18 +677,24 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * Valid W3C Options.
+     *
      * @deprecated Use validOptions instead
      */
     @Deprecated
     public final List<String> w3cDefinedOptions = this.validOptions;
 
     /**
+     * Valid Sauce Labs Options.
+     *
      * @deprecated Use sauce().validOptions instead
      */
     @Deprecated
     public final List<String> sauceDefinedOptions = sauce().validOptions;
 
     /**
+     * Whether Sauce Bindings can provide default build name for the current CI tool.
+     *
      * @return whether CI is accounted for in code
      * @deprecated This method is no longer supported
      */
@@ -583,6 +704,8 @@ public class SauceOptions extends com.saucelabs.saucebindings.options.SauceOptio
     }
 
     /**
+     * List of known CI Tools.
+     *
      * @deprecated This method is no longer supported
      */
     @Deprecated

@@ -1,9 +1,10 @@
 package com.saucelabs.saucebindings;
 
+/** Allows user to search for values stored either as Environment Variable or System Property. */
 public class SystemManager {
 
     /**
-     * Shortcut for getting the System Property or the Environment Variable
+     * Shortcut for getting the System Property or the Environment Variable.
      * If the no value is found, an exception is thrown with the provided message
      *
      * @param key           the name of the property or environment variable
@@ -20,7 +21,7 @@ public class SystemManager {
     }
 
     /**
-     * Shortcut for getting the System Property or the Environment Variable
+     * Shortcut for getting the System Property or the Environment Variable.
      *
      * @param key           the name of the property or environment variable
      * @return              the value of the provided field name

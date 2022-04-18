@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Valid W3C unhandled Prompt Behavior values.
+ *
+ * @see <a href="https://docs.saucelabs.com/dev/test-configuration-options/#unhandledpromptbehavior">unhandledPromptBehavior</a>
+ */
 public enum UnhandledPromptBehavior {
     DISMISS("dismiss"),
     ACCEPT("accept"),

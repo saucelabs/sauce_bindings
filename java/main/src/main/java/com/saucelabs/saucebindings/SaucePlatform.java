@@ -6,9 +6,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
-// Supports traditional values, selenium.Platform enum and return values from platform API endpoint
-// TODO - remove the weird Windows names when require Selenium > v4.1.3
+/**
+ * Valid Platform Options.
+ * First item in list gets sent to Sauce.
+ * Additional items in list matches Selenium Platform enum, and Sauce Labs platform API endpoint values
+ * TODO: can remove the weird Windows names when require Selenium > v4.1.3
+ *
+ * @see <a href="https://docs.saucelabs.com/dev/test-configuration-options/#platformname">platformName</a>
+ */
 public enum SaucePlatform {
     LINUX("Linux"),
     WINDOWS_11("Windows 11"),
@@ -37,9 +44,7 @@ public enum SaucePlatform {
 
     SaucePlatform(String... values) {
         this.values = values;
-        for(String str: values) {
-            PlatformLookup.lookup.put(str, this.name());
-        }
+        Arrays.stream(values).forEach(str -> PlatformLookup.lookup.put(str, this.name()));
     }
 
     public static String fromString(String value) {
@@ -52,7 +57,7 @@ public enum SaucePlatform {
      * @return true if platform is OS X or macOS
      */
     public boolean isMac() {
-        return Arrays.stream(this.values).anyMatch(val -> val.contains("macOS") || val.contains("OS X") || val.contains("Mac"));
+        return Arrays.stream(this.values).anyMatch(val -> Stream.of("macOS", "OS X", "Mac").anyMatch(val::contains));
     }
 
     /**

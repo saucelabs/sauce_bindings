@@ -8,16 +8,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * This stores information about valid timeouts.
+ *
  * @deprecated each timeout has its own setter in options.SauceOptions
  */
 @Accessors(chain = true)
-@Setter @Getter
+@Setter
+@Getter
 @Deprecated
 public class TimeoutStore {
     private Integer implicitWait;
     private Integer script;
     private Integer pageLoad;
 
+    /**
+     * Timeout values if any set.
+     *
+     * @return timeout values
+     */
     public Map<Timeouts, Integer> getTimeouts() {
         HashMap<Timeouts, Integer> map = new HashMap<>();
         if (implicitWait != null) {

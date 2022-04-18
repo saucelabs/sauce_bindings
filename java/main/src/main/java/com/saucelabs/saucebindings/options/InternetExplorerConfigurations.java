@@ -2,6 +2,7 @@ package com.saucelabs.saucebindings.options;
 
 import org.openqa.selenium.ie.InternetExplorerOptions;
 
+/** Capabilities that apply only to Internet Explorer sessions. */
 public class InternetExplorerConfigurations extends VDCConfigurations<InternetExplorerConfigurations> {
     InternetExplorerConfigurations(InternetExplorerOptions internetExplorerOptions) {
         validatePrefix("se", internetExplorerOptions.asMap());
@@ -10,7 +11,8 @@ public class InternetExplorerConfigurations extends VDCConfigurations<InternetEx
     }
 
     /**
-     * You should almost always use the latest version of Selenium
+     * You should almost always use the latest version of Selenium.
+     *
      * @param version the version of Selenium Server to use for the test
      * @return instance of configuration
      */
@@ -20,7 +22,8 @@ public class InternetExplorerConfigurations extends VDCConfigurations<InternetEx
     }
 
     /**
-     * This should match the Selenium version
+     * This should match the Selenium version.
+     *
      * @param version the specific version of Driver to use with the job
      * @return instance of configuration
      */
@@ -30,9 +33,10 @@ public class InternetExplorerConfigurations extends VDCConfigurations<InternetEx
     }
 
     /**
-     * Sauce routes traffic through a proxy server so that HTTPS connections with self-signed certificates work everywhere.
+     * Sauce routes traffic through a proxy server so HTTPS connections with self-signed certificates work everywhere.
      * This method allows bypassing the proxy so browsers communicate directly the server.
      * Toggles avoid Proxy to True
+     *
      * @return instance of configuration
      */
     public InternetExplorerConfigurations setAvoidProxy() {

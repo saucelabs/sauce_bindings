@@ -2,6 +2,9 @@ package com.saucelabs.saucebindings.options;
 
 import org.openqa.selenium.firefox.FirefoxOptions;
 
+/**
+ * Capabilities that apply only to Firefox sessions.
+ */
 public class FirefoxConfigurations extends VDCConfigurations<FirefoxConfigurations> {
     FirefoxConfigurations(FirefoxOptions firefoxOptions) {
         validatePrefix("moz", firefoxOptions.asMap());
@@ -10,7 +13,8 @@ public class FirefoxConfigurations extends VDCConfigurations<FirefoxConfiguratio
     }
 
     /**
-     * You should almost always use the latest version of Selenium
+     * You should almost always use the latest version of Selenium.
+     *
      * @param version the version of Selenium Server to use for the test
      * @return instance of configuration
      */
@@ -20,6 +24,8 @@ public class FirefoxConfigurations extends VDCConfigurations<FirefoxConfiguratio
     }
 
     /**
+     * Version of Geckodriver.
+     *
      * @param version the specific version of Driver to use with the job
      * @return instance of configuration
      */
@@ -29,7 +35,8 @@ public class FirefoxConfigurations extends VDCConfigurations<FirefoxConfiguratio
     }
 
     /**
-     * Toggles on Extended Debugging for the job
+     * Toggles on Extended Debugging for the job.
+     *
      * @return instance of configuration
      * @see <a href="https://docs.saucelabs.com/insights/debug/index.html">Using Extended Debugging</a>
      */

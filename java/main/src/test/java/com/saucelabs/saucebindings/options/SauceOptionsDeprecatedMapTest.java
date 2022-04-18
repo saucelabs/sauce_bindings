@@ -5,8 +5,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * This Test uses the default SauceOptions constructor then adds configs via Map using mergeCapabilities
- *
+ * This Test uses the default SauceOptions constructor then adds configs via Map using mergeCapabilities.
  * This functionality has been replaced by supporting config files themselves in the constructor
  */
 public class SauceOptionsDeprecatedMapTest {
@@ -35,7 +34,8 @@ public class SauceOptionsDeprecatedMapTest {
 
     @Test(expected = InvalidSauceOptionsArgumentException.class)
     public void setsBadJobVisibilityFromMap() {
-        sauceOptions.mergeCapabilities(ImmutableMap.of("sauce", ImmutableMap.of("jobVisibility", "invalid")));
+        sauceOptions.mergeCapabilities(ImmutableMap.of("sauce",
+                ImmutableMap.of("jobVisibility", "invalid")));
     }
 
     @Test(expected = InvalidSauceOptionsArgumentException.class)
@@ -50,7 +50,8 @@ public class SauceOptionsDeprecatedMapTest {
 
     @Test(expected = InvalidSauceOptionsArgumentException.class)
     public void setsBadPrerunFromMap() {
-        sauceOptions.mergeCapabilities(ImmutableMap.of("sauce", ImmutableMap.of("prerun", ImmutableMap.of("invalid", ""))));
+        sauceOptions.mergeCapabilities(ImmutableMap.of("sauce",
+                ImmutableMap.of("prerun", ImmutableMap.of("invalid", ""))));
     }
 
     @Test(expected = InvalidSauceOptionsArgumentException.class)

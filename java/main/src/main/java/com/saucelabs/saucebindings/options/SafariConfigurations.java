@@ -3,6 +3,9 @@ package com.saucelabs.saucebindings.options;
 import com.saucelabs.saucebindings.SaucePlatform;
 import org.openqa.selenium.safari.SafariOptions;
 
+/**
+ * Capabilities that apply only to Safari sessions.
+ */
 public class SafariConfigurations extends VDCConfigurations<SafariConfigurations> {
     SafariConfigurations(SafariOptions safariOptions) {
         validatePrefix("safari", safariOptions.asMap());
@@ -14,9 +17,10 @@ public class SafariConfigurations extends VDCConfigurations<SafariConfigurations
     }
 
     /**
-     * Sauce routes traffic through a proxy server so that HTTPS connections with self-signed certificates work everywhere.
+     * Traffic is routed through a proxy server so that HTTPS connections with self-signed certificates work everywhere.
      * This method allows bypassing the proxy so browsers communicate directly the server.
      * Toggles avoid Proxy to True
+     *
      * @return instance of configuration
      */
     public SafariConfigurations setAvoidProxy() {
@@ -25,7 +29,8 @@ public class SafariConfigurations extends VDCConfigurations<SafariConfigurations
     }
 
     /**
-     * You should almost always use the latest version of Selenium
+     * You should almost always use the latest version of Selenium.
+     *
      * @param version the version of Selenium Server to use for the test
      * @return instance of configuration
      */

@@ -4,39 +4,43 @@ import org.junit.platform.engine.ConfigurationParameters;
 import org.junit.platform.engine.support.hierarchical.ParallelExecutionConfiguration;
 import org.junit.platform.engine.support.hierarchical.ParallelExecutionConfigurationStrategy;
 
-/**
- * @deprecated use CustomParallelStrategy instead
- */
-@Deprecated
-public class CustomStrategy implements ParallelExecutionConfiguration, ParallelExecutionConfigurationStrategy {
+public class CustomParallelStrategy implements ParallelExecutionConfiguration, ParallelExecutionConfigurationStrategy {
 
     @Override
     public int getParallelism() {
-        return Integer.parseInt(System.getProperty("PARALLELISM"));
+        return getParallelCount();
     }
 
     @Override
     public int getMinimumRunnable() {
-        return Integer.parseInt(System.getProperty("MINIMUM_RUNNABLE"));
+        return 0;
     }
 
     @Override
     public int getMaxPoolSize() {
-        return Integer.parseInt(System.getProperty("MAX_POOL_SIZE"));
+        return getParallelCount();
     }
 
     @Override
     public int getCorePoolSize() {
-        return Integer.parseInt(System.getProperty("CORE_POOL_SIZE"));
+        return getParallelCount();
     }
 
     @Override
     public int getKeepAliveSeconds() {
-        return 30;
+        return 60;
     }
 
     @Override
     public ParallelExecutionConfiguration createConfiguration(final ConfigurationParameters configurationParameters) {
         return this;
+    }
+
+    private int getParallelCount() {
+        if (System.getProperty("PARALLEL_COUNT") != null) {
+            return Integer.parseInt(System.getProperty("PARALLEL_COUNT"));
+        } else {
+            return Runtime.getRuntime().availableProcessors();
+        }
     }
 }

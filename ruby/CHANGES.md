@@ -1,3 +1,15 @@
+### 1.3.0 - June 15, 2022
+
+* Fix links to work all data centers
+* Manage credentials in Options instead of Session
+* Deprecate using magic strings for stopping a session
+* Implement pausing — `Session#pause`
+* Implement commenting in Sauce command list — `Session#annotate` 
+* Implement logging control — `Session#enable_logs`, `Session#disable_logs` 
+* Implement network control — `Session#stop_network`, `Session#start_network`
+* Implement updating test information — `Session#change_name`, `Session#tags=`
+* Require Selenium 4 and Ruby 2.7
+
 ### 1.2.1 - March 1, 2022
 
 * Added latest Windows and Mac platforms 

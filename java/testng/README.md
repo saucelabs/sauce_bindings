@@ -28,14 +28,14 @@ Just add saucebindings-testng to your pom file:
 ### Usage
 Extend your test class with `SauceBaseTest` and this library takes care of the rest!
 ```java
+import org.testng.Assert;
 import org.testng.annotations.Test;
-import static org.testng.Assert.assertEquals;
 
 public class QuickstartTest extends SauceBaseTest {
     @Test
     public void useAllDefaults() {
         getDriver().navigate().to("https://www.saucedemo.com");
-        assertEquals(getDriver().getTitle(), "Swagger Labs");
+        Assert.assertEquals(getDriver().getTitle(), "Swagger Labs");
     }
 }
 ```
@@ -120,7 +120,7 @@ public class ParameterizedOptionsTest extends SauceParameterizedBaseTest {
     @Test(dataProvider = "sauceBrowsers")
     public void useParameters(VDCConfigurations browser, String browserVersion, SaucePlatform saucePlatform) {
         getDriver().navigate().to("https://www.saucedemo.com");
-        assertEquals(getDriver().getTitle(), "Swagger Labs");
+        Assert.assertEquals(getDriver().getTitle(), "Swagger Labs");
     }
 }
 ```

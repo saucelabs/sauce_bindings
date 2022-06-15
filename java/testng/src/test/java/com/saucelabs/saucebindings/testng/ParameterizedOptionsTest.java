@@ -3,13 +3,11 @@ package com.saucelabs.saucebindings.testng;
 import com.saucelabs.saucebindings.SaucePlatform;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import com.saucelabs.saucebindings.options.VDCConfigurations;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
-
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class ParameterizedOptionsTest extends SauceParameterizedBaseTest {
 
@@ -32,8 +30,8 @@ public class ParameterizedOptionsTest extends SauceParameterizedBaseTest {
 
     @Test(dataProvider = "sauceBrowsers")
     public void useParameters(VDCConfigurations browser, String browserVersion, SaucePlatform saucePlatform) {
-        assertEquals(getDriver().getCapabilities().getBrowserName(), browser.build().getBrowserName().getValue());
+        Assert.assertEquals(getDriver().getCapabilities().getBrowserName(), browser.build().getBrowserName().getValue());
         String version = (String) getDriver().getCapabilities().getCapability("browserVersion");
-        assertTrue(version.contains(browserVersion));
+        Assert.assertTrue(version.contains(browserVersion));
     }
 }

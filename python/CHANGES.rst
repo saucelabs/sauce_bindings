@@ -1,6 +1,18 @@
 Changelog
 ==========================
 
+1.3.0 - Jun 15, 2022
+--------------------
+
+* Fix links to work all data centers
+* Manage credentials in Options instead of Session
+* Deprecate using magic strings for stopping a session
+* Require Selenium 4
+* Implement pausing
+* Implement commenting in Sauce command list
+* Implement logging & network control
+* Implement updating test information
+
 1.2.1 - Mar 1, 2022
 --------------------
 

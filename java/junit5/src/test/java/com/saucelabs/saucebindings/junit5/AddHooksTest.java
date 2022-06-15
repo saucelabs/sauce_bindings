@@ -1,6 +1,7 @@
 package com.saucelabs.saucebindings.junit5;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -23,6 +24,6 @@ public class AddHooksTest extends SauceBaseTest {
 
     @Test
     public void useCustomOptions() {
-        assertTrue(working);
+        Assertions.assertTrue(working);
     }
 }

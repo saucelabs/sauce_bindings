@@ -12,9 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 public class FirefoxConfigurationsTest {
 
     @Test
@@ -23,7 +20,7 @@ public class FirefoxConfigurationsTest {
 
         Assert.assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
         Assert.assertEquals(SaucePlatform.WINDOWS_10, sauceOptions.getPlatformName());
-        assertEquals("latest", sauceOptions.getBrowserVersion());
+        Assert.assertEquals("latest", sauceOptions.getBrowserVersion());
     }
 
     @Test
@@ -34,8 +31,8 @@ public class FirefoxConfigurationsTest {
 
         SauceOptions sauceOptions = SauceOptions.firefox(firefoxOptions).build();
 
-        assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
-        assertEquals(firefoxOptions, sauceOptions.getCapabilities());
+        Assert.assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
+        Assert.assertEquals(firefoxOptions, sauceOptions.getCapabilities());
     }
 
     @Test
@@ -47,9 +44,9 @@ public class FirefoxConfigurationsTest {
                 .setExtendedDebugging()
                 .build();
 
-        assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
-        assertEquals("68", sauceOptions.getBrowserVersion());
-        assertTrue(sauceOptions.sauce().getExtendedDebugging());
+        Assert.assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
+        Assert.assertEquals("68", sauceOptions.getBrowserVersion());
+        Assert.assertTrue(sauceOptions.sauce().getExtendedDebugging());
     }
 
     @Test
@@ -64,13 +61,13 @@ public class FirefoxConfigurationsTest {
                 .setScriptTimeout(Duration.ofSeconds(10))
                 .build();
 
-        assertEquals(true, sauceOptions.getAcceptInsecureCerts());
-        assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
-        assertEquals(UnhandledPromptBehavior.IGNORE, sauceOptions.getUnhandledPromptBehavior());
-        assertEquals(true, sauceOptions.getStrictFileInteractability());
-        assertEquals(Duration.ofSeconds(1), sauceOptions.getImplicitWaitTimeout());
-        assertEquals(Duration.ofSeconds(100), sauceOptions.getPageLoadTimeout());
-        assertEquals(Duration.ofSeconds(10), sauceOptions.getScriptTimeout());
+        Assert.assertEquals(true, sauceOptions.getAcceptInsecureCerts());
+        Assert.assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
+        Assert.assertEquals(UnhandledPromptBehavior.IGNORE, sauceOptions.getUnhandledPromptBehavior());
+        Assert.assertEquals(true, sauceOptions.getStrictFileInteractability());
+        Assert.assertEquals(Duration.ofSeconds(1), sauceOptions.getImplicitWaitTimeout());
+        Assert.assertEquals(Duration.ofSeconds(100), sauceOptions.getPageLoadTimeout());
+        Assert.assertEquals(Duration.ofSeconds(10), sauceOptions.getScriptTimeout());
     }
 
     @Test
@@ -119,26 +116,26 @@ public class FirefoxConfigurationsTest {
                 .disableVideoUploadOnPass()
                 .build();
 
-        assertEquals("Sample Build Name", sauceOptions.sauce().getBuild());
-        assertEquals(Integer.valueOf(2), sauceOptions.sauce().getCommandTimeout());
-        assertEquals(customData, sauceOptions.sauce().getCustomData());
-        assertEquals(true, sauceOptions.sauce().getExtendedDebugging());
-        assertEquals("0.28", sauceOptions.sauce().getGeckodriverVersion());
-        assertEquals(Integer.valueOf(20), sauceOptions.sauce().getIdleTimeout());
-        assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
-        assertEquals("Test name", sauceOptions.sauce().getName());
-        assertEquals("Mommy", sauceOptions.sauce().getParentTunnel());
-        assertEquals(prerun, sauceOptions.sauce().getPrerun());
-        assertEquals(Integer.valueOf(0), sauceOptions.sauce().getPriority());
-        assertEquals(JobVisibility.TEAM, sauceOptions.sauce().getJobVisibility());
-        assertEquals(false, sauceOptions.sauce().getRecordLogs());
-        assertEquals(false, sauceOptions.sauce().getRecordScreenshots());
-        assertEquals(false, sauceOptions.sauce().getRecordVideo());
-        assertEquals("3.141.0", sauceOptions.sauce().getSeleniumVersion());
-        assertEquals("1024x768", sauceOptions.sauce().getScreenResolution());
-        assertEquals(tags, sauceOptions.sauce().getTags());
-        assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
-        assertEquals("tunnelname", sauceOptions.sauce().getTunnelIdentifier());
-        assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());
+        Assert.assertEquals("Sample Build Name", sauceOptions.sauce().getBuild());
+        Assert.assertEquals(Integer.valueOf(2), sauceOptions.sauce().getCommandTimeout());
+        Assert.assertEquals(customData, sauceOptions.sauce().getCustomData());
+        Assert.assertEquals(true, sauceOptions.sauce().getExtendedDebugging());
+        Assert.assertEquals("0.28", sauceOptions.sauce().getGeckodriverVersion());
+        Assert.assertEquals(Integer.valueOf(20), sauceOptions.sauce().getIdleTimeout());
+        Assert.assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
+        Assert.assertEquals("Test name", sauceOptions.sauce().getName());
+        Assert.assertEquals("Mommy", sauceOptions.sauce().getParentTunnel());
+        Assert.assertEquals(prerun, sauceOptions.sauce().getPrerun());
+        Assert.assertEquals(Integer.valueOf(0), sauceOptions.sauce().getPriority());
+        Assert.assertEquals(JobVisibility.TEAM, sauceOptions.sauce().getJobVisibility());
+        Assert.assertEquals(false, sauceOptions.sauce().getRecordLogs());
+        Assert.assertEquals(false, sauceOptions.sauce().getRecordScreenshots());
+        Assert.assertEquals(false, sauceOptions.sauce().getRecordVideo());
+        Assert.assertEquals("3.141.0", sauceOptions.sauce().getSeleniumVersion());
+        Assert.assertEquals("1024x768", sauceOptions.sauce().getScreenResolution());
+        Assert.assertEquals(tags, sauceOptions.sauce().getTags());
+        Assert.assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
+        Assert.assertEquals("tunnelname", sauceOptions.sauce().getTunnelIdentifier());
+        Assert.assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());
     }
 }

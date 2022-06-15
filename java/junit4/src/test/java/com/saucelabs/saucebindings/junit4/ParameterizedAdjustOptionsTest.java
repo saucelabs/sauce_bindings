@@ -3,15 +3,13 @@ package com.saucelabs.saucebindings.junit4;
 import com.saucelabs.saucebindings.SaucePlatform;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import com.saucelabs.saucebindings.options.VDCConfigurations;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import java.util.Arrays;
 import java.util.Collection;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
 public class ParameterizedAdjustOptionsTest extends SauceBaseTest {
@@ -40,8 +38,8 @@ public class ParameterizedAdjustOptionsTest extends SauceBaseTest {
 
     @Test
     public void useParameterizedOptions() {
-        assertEquals(driver.getCapabilities().getBrowserName(), browser.build().getBrowserName().getValue());
+        Assert.assertEquals(driver.getCapabilities().getBrowserName(), browser.build().getBrowserName().getValue());
         String version = (String) driver.getCapabilities().getCapability("browserVersion");
-        assertTrue(version.contains(browserVersion));
+        Assert.assertTrue(version.contains(browserVersion));
     }
 }

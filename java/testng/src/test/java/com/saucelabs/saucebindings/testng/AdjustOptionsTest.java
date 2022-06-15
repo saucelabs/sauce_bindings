@@ -2,12 +2,11 @@ package com.saucelabs.saucebindings.testng;
 
 import com.saucelabs.saucebindings.JobVisibility;
 import com.saucelabs.saucebindings.options.SauceOptions;
+import org.testng.Assert;
 import org.openqa.selenium.Capabilities;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
-
-import static org.testng.Assert.assertEquals;
 
 public class AdjustOptionsTest extends SauceBaseTest {
 
@@ -23,7 +22,7 @@ public class AdjustOptionsTest extends SauceBaseTest {
     @Test
     public void useCustomOptions() {
         Capabilities caps = getDriver().getCapabilities();
-        assertEquals("firefox", caps.getBrowserName());
-        assertEquals("87.0", caps.getCapability("browserVersion"));
+        Assert.assertEquals("firefox", caps.getBrowserName());
+        Assert.assertEquals("87.0", caps.getCapability("browserVersion"));
     }
 }

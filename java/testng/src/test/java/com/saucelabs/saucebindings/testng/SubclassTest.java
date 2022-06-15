@@ -1,5 +1,6 @@
 package com.saucelabs.saucebindings.testng;
 
+import org.testng.Assert;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.ITestResult;
@@ -9,8 +10,6 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
-
-import static org.testng.Assert.assertEquals;
 
 public class SubclassTest extends SauceBaseTest {
     private static ThreadLocal<RemoteWebDriver> driver = new ThreadLocal<>();
@@ -50,6 +49,6 @@ public class SubclassTest extends SauceBaseTest {
     @Test
     public void subclassedExample() {
         getDriver().get("https://www.saucedemo.com");
-        assertEquals(getDriver().getTitle(), "Swag Labs");
+        Assert.assertEquals(getDriver().getTitle(), "Swag Labs");
     }
 }

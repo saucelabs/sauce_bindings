@@ -1,11 +1,11 @@
 package com.saucelabs.saucebindings.testng;
 
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
-import static org.testng.Assert.assertTrue;
 
 public class AddHooksTest extends SauceBaseTest {
     Boolean working = null;
@@ -23,6 +23,6 @@ public class AddHooksTest extends SauceBaseTest {
 
     @Test
     public void useCustomOptions() {
-        assertTrue(working);
+        Assert.assertTrue(working);
     }
 }

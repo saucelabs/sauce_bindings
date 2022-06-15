@@ -1,13 +1,12 @@
 package com.saucelabs.saucebindings.junit4;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.Description;
 import org.openqa.selenium.chrome.ChromeDriver;
-
-import static org.junit.Assert.assertEquals;
 
 public class SubclassTest extends SauceBaseTest {
     @Rule
@@ -30,7 +29,7 @@ public class SubclassTest extends SauceBaseTest {
     @Test
     public void subclassedExample() {
         driver.navigate().to("https://www.saucedemo.com");
-        assertEquals(driver.getTitle(), "Swag Labs");
+        Assert.assertEquals(driver.getTitle(), "Swag Labs");
     }
 
     public class MyTestWatcher extends SauceTestWatcher {

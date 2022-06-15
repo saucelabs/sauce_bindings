@@ -1,10 +1,9 @@
 package com.saucelabs.saucebindings.junit4;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.assertTrue;
 
 public class AddHooksTest extends SauceBaseTest {
     Boolean working = null;
@@ -22,6 +21,6 @@ public class AddHooksTest extends SauceBaseTest {
 
     @Test
     public void useCustomOptions() {
-        assertTrue(working);
+        Assert.assertTrue(working);
     }
 }

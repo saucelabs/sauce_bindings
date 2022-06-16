@@ -214,8 +214,8 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
 
     /**
      * If you have multiple new jobs waiting to start, jobs with a lower priority number take precedence over jobs with a higher number
-     * Sauce will attempt to find resources for Jobs with priority 0 before priority 1, etc
-     * This can be useful if you have a test that runs as part of a build and you don't want it to wait for a daily run to complete
+     * Sauce will attempt to find resources for Jobs with priority 0 before priority 1, etc.
+     * This can be useful if you have a test that runs as part of a build, and you don't want it to wait for a daily run to complete
      *
      * @param priority how important a given test is
      * @return instance of configuration

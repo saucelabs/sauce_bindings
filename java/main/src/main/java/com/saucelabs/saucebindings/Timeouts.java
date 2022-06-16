@@ -16,10 +16,10 @@ public enum Timeouts {
     private final String value;
 
     private static final class TimeoutsLookup {
-        private static final Map<String, String> lookup = new HashMap<String, String>();
+        private static final Map<String, String> lookup = new HashMap<>();
     }
 
-    public static Set keys() {
+    public static Set<String> keys() {
         return TimeoutsLookup.lookup.keySet();
     }
 

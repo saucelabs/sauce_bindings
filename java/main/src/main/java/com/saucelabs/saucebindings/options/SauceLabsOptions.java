@@ -36,7 +36,7 @@ public class SauceLabsOptions extends BaseOptions {
     private Map<Prerun, Object> prerun;
     private URL prerunUrl;
     private Integer priority = null;
-    private JobVisibility jobVisibility; // the actual key for this is a Java reserved keyword "public"; uses enum
+    private JobVisibility jobVisibility; // the actual key for this is a reserved keyword "public"
     private Boolean recordLogs = null;
     private Boolean recordScreenshots = null;
     private Boolean recordVideo = null;

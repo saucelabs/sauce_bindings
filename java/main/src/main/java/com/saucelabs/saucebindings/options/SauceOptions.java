@@ -22,7 +22,7 @@ import java.util.Map;
 @Accessors(chain = true)
 @Setter @Getter
 public class SauceOptions extends BaseOptions {
-    @Setter(AccessLevel.NONE) @Getter(AccessLevel.NONE) private SauceLabsOptions sauceLabsOptions = null;
+    @Setter(AccessLevel.NONE) @Getter(AccessLevel.NONE) private SauceLabsOptions sauceLabsOptions;
     public TimeoutStore timeout = new TimeoutStore();
 
     // w3c Settings

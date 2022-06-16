@@ -28,5 +28,5 @@ public abstract class BaseOptions {
      */
     protected void setCapability(String key, Object value) {
         capabilityManager.setCapability(key, value);
-    };
+    }
 }

@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Valid Browsers.
+ *
+ * @see <a href="https://docs.saucelabs.com/dev/test-configuration-options/#browsername">browserName</a>
+ */
 public enum Browser {
     CHROME("chrome"),
     INTERNET_EXPLORER("internet explorer"),

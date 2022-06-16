@@ -9,11 +9,15 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.Map;
 
+/**
+ * Capabilities common to all tests on Sauce Labs Virtual Device Cloud.
+ *
+ * @param <T> Configuration subclass to be returned by this superclass
+ */
 public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends BaseConfigurations<T> {
 
-    // W3C Values
-
     /**
+     * Version of Browser.
      * TODO: Set restrictions on allowed versions in subclass
      *
      * @param version The version of the browser you want to use in your test
@@ -25,7 +29,8 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
     }
 
     /**
-     * Note that this only applies on navigation commands, not as a result of clicking links
+     * Which Page Load Strategy to use.
+     * Note that this only applies on navigation commands, not as a result of clicking links.
      *
      * @param pageLoadStrategy the job's page load strategy
      * @return instance of configuration
@@ -36,7 +41,7 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
     }
 
     /**
-     * Indicates whether untrusted and self-signed TLS certificates are implicitly trusted on navigation
+     * Indicates whether untrusted and self-signed TLS certificates are implicitly trusted on navigation.
      *
      * @return instance of configuration
      */
@@ -46,6 +51,9 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
     }
 
     /**
+     * A proxy to be used by the driver.
+     * It is unlikely that this is the right thing for what you want to do.
+     *
      * @param proxy an instance of Selenium's Proxy class specifying the proxy to use
      * @return instance of configuration
      */
@@ -55,9 +63,9 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
     }
 
     /**
-     * Toggle on requirement that input elements with type=file need to be displayed and enabled in order to use
-     * Keep the default if the input fields on your site are never displayed
-     * Set with this method if you have an automated synchronization strategy that the default incorrectly bypasses
+     * Toggle on requirement that input elements with type=file need to be displayed and enabled in order to use.
+     * Keep the default if the input fields on your site are never displayed.
+     * Set with this method if you have an automated synchronization strategy that the default incorrectly bypasses.
      *
      * @return instance of configuration
      */
@@ -67,6 +75,8 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
     }
 
     /**
+     * Unhandled Prompt Behavior.
+     *
      * @param behavior enum for desired response when sending non-alert commands with an alert displayed
      * @return instance of configuration
      */
@@ -76,6 +86,8 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
     }
 
     /**
+     * Implicit Wait Timeout.
+     *
      * @param timeout the amount of time to wait for the element location command to complete
      * @return instance of configuration
      */
@@ -85,6 +97,8 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
     }
 
     /**
+     * Page Load Timeout.
+     *
      * @param timeout the amount of time to wait for an explicit navigation attempt
      * @return instance of configuration
      */
@@ -94,7 +108,8 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
     }
 
     /**
-     * A null value implies that scripts should never be interrupted, but instead run indefinitely
+     * Script Timeout.
+     * A null value implies that scripts should never be interrupted, but instead run indefinitely.
      *
      * @param timeout the amount of time to wait for an JavaScript execution command to complete
      * @return instance of configuration
@@ -104,12 +119,10 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
         return (T) this;
     }
 
-    // Sauce Values common to all browser sessions:
-
     /**
      * Toggles off Sauce Labs recording video of the session.
      * Not recommended since videos are very useful for debugging failures and visual reproduction of actions taken.
-     * If performance is the only concern, there is a (small) time savings during the test by disabling this
+     * If performance is the only concern, there is a (small) time savings during the test by disabling this.
      *
      * @return instance of configuration
      */
@@ -119,8 +132,8 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
     }
 
     /**
-     * Toggles off Sauce Labs video post-processing and uploading when test is reported passing
-     * If performance is the only concern, there is a (small) time savings after the test by disabling this
+     * Toggles off Sauce Labs video post-processing and uploading when test is reported passing.
+     * If performance is the only concern, there is a (small) time savings after the test by disabling this.
      *
      * @return instance of configuration
      */
@@ -130,8 +143,8 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
     }
 
     /**
-     * Toggles off the step-by-step screenshots Sauce Labs takes during a test run
-     * If performance is the only concern, there is a (small) time savings during the test by disabling this
+     * Toggles off the step-by-step screenshots Sauce Labs takes during a test run.
+     * If performance is the only concern, there is a (small) time savings during the test by disabling this.
      *
      * @return instance of configuration
      */
@@ -141,9 +154,9 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
     }
 
     /**
-     * Toggles off Sauce Labs recording logs of user commands
-     * If performance is the only concern, there is a (small) time savings during the test by disabling this
-     * Note that the Selenium Logs will still be recorded and available
+     * Toggles off Sauce Labs recording logs of user commands.
+     * If performance is the only concern, there is a (small) time savings during the test by disabling this.
+     * Note that the Selenium Logs will still be recorded and available.
      *
      * @return instance of configuration
      */
@@ -153,8 +166,8 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
     }
 
     /**
-     * This is a safety measure to prevent tests from running indefinitely
-     * The default is 30 minutes; the maximum is 180 minutes
+     * This is a safety measure to prevent tests from running indefinitely.
+     * The default is 30 minutes; the maximum is 180 minutes.
      *
      * @param timeout how long a test is allowed to run
      * @return instance of configuration
@@ -165,8 +178,8 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
     }
 
     /**
-     * This is a safety measure to prevent Selenium crashes from making your tests run indefinitely
-     * The default is 300 seconds; the maximum is 600 seconds
+     * This is a safety measure to prevent Selenium crashes from making your tests run indefinitely.
+     * The default is 300 seconds; the maximum is 600 seconds.
      *
      * @param timeout how long to wait for a response from the driver after sending a command
      * @return instance of configuration
@@ -177,8 +190,8 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
     }
 
     /**
-     * As a safety measure to prevent tests from running too long after something has gone wrong
-     * The default is 90 seconds; the maximum is 1000 seconds
+     * As a safety measure to prevent tests from running too long after something has gone wrong.
+     * The default is 90 seconds; the maximum is 1000 seconds.
      *
      * @param timeout how long to wait between commands from the test code
      * @return instance of configuration
@@ -189,7 +202,7 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
     }
 
     /**
-     * For faster performance, you may want to upload the executable to Sauce Storage, a private temporary storage space
+     * For faster performance you may want to upload the executable to Sauce Storage, a private temporary storage space.
      *
      * @param prerun a Map of the configurations for downloading and executing a file before the test begins
      * @return instance of configuration
@@ -201,7 +214,7 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
     }
 
     /**
-     * For faster performance, you may want to upload the executable to Sauce Storage, a private temporary storage space
+     * For faster performance you may want to upload the executable to Sauce Storage, a private temporary storage space.
      *
      * @param url the location of the executable file to be downloaded and run before the test begins
      * @return instance of configuration
@@ -213,9 +226,10 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
     }
 
     /**
-     * If you have multiple new jobs waiting to start, jobs with a lower priority number take precedence over jobs with a higher number
+     * If you have multiple new jobs waiting to start, jobs with a lower priority number take precedence.
      * Sauce will attempt to find resources for Jobs with priority 0 before priority 1, etc.
-     * This can be useful if you have a test that runs as part of a build, and you don't want it to wait for a daily run to complete
+     * This can be useful if you have a test that runs as part of a build,
+     * and you don't want it to wait for a daily run to complete.
      *
      * @param priority how important a given test is
      * @return instance of configuration
@@ -226,7 +240,7 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
     }
 
     /**
-     * The default screen resolution for Sauce tests when not specified is 1024x768
+     * The default screen resolution for Sauce tests when not specified is 1024x768.
      *
      * @param resolution The screen resolution to be used
      * @return instance of configuration
@@ -237,7 +251,9 @@ public abstract class VDCConfigurations<T extends VDCConfigurations<T>> extends 
     }
 
     /**
-     * @param timeZone the name of a city in the desired time zone to be set on the Operating System before the test starts
+     * Time zone.
+     *
+     * @param timeZone the name of a city in the desired time zone to be set on the Operating System.
      * @return instance of configuration
      */
     public T setTimeZone(String timeZone) {

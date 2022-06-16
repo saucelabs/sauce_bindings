@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Valid W3C timeout values.
+ *
+ * @see <a href="https://docs.saucelabs.com/dev/test-configuration-options/#timeouts">timeouts</a>
+ */
 public enum Timeouts {
 
     IMPLICIT("implicit"),

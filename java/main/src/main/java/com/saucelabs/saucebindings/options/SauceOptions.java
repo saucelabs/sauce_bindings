@@ -1,6 +1,12 @@
 package com.saucelabs.saucebindings.options;
 
-import com.saucelabs.saucebindings.*;
+import com.saucelabs.saucebindings.Browser;
+import com.saucelabs.saucebindings.PageLoadStrategy;
+import com.saucelabs.saucebindings.SaucePlatform;
+import com.saucelabs.saucebindings.SauceSession;
+import com.saucelabs.saucebindings.TimeoutStore;
+import com.saucelabs.saucebindings.Timeouts;
+import com.saucelabs.saucebindings.UnhandledPromptBehavior;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,10 +25,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * All Valid Options for a Sauce Labs Session.
+ *
+ * @see <a href="https://docs.saucelabs.com/dev/test-configuration-options/">Test Configuration Options</a>
+ */
 @Accessors(chain = true)
-@Setter @Getter
+@Setter
+@Getter
 public class SauceOptions extends BaseOptions {
     @Setter(AccessLevel.NONE) @Getter(AccessLevel.NONE) private SauceLabsOptions sauceLabsOptions;
+
+    /**
+     * A way to store timeout values.
+     */
     public TimeoutStore timeout = new TimeoutStore();
 
     // w3c Settings
@@ -38,8 +54,8 @@ public class SauceOptions extends BaseOptions {
     protected UnhandledPromptBehavior unhandledPromptBehavior;
 
     /**
-     * This needs to be public for Capabilities Manager to use it
-     * Valid list Sauce Labs specific options for currently supported platforms
+     * This needs to be public for Capabilities Manager to use it.
+     * Valid list Sauce Labs specific options for currently supported platforms.
      */
     public final List<String> validOptions = Arrays.asList(
             "browserName",
@@ -55,7 +71,8 @@ public class SauceOptions extends BaseOptions {
 
     /**
      * This method allows building a default Sauce Options instance for Chrome
-     * Call build() method on return value rather than using directly
+     * Call build() method on return value rather than using directly.
+     *
      * @return instance of ChromeConfigurations
      * @see ChromeConfigurations#build()
      */
@@ -64,8 +81,8 @@ public class SauceOptions extends BaseOptions {
     }
 
     /**
-     * This method allows building a Sauce Options instance for Chrome using a provided Selenium ChromeOptions instance
-     * Call build() method on return value rather than using directly
+     * This method allows building a Sauce Options instance for Chrome using a provided Selenium ChromeOptions instance.
+     * Call build() method on return value rather than using directly.
      *
      * @param chromeOptions an instance of a Selenium ChromeOptions class
      * @return instance of ChromeConfigurations
@@ -76,8 +93,8 @@ public class SauceOptions extends BaseOptions {
     }
 
     /**
-     * This method allows building a default Sauce Options instance for Edge
-     * Call build() method on return value rather than using directly
+     * This method allows building a default Sauce Options instance for Edge.
+     * Call build() method on return value rather than using directly.
      *
      * @return instance of EdgeConfigurations
      * @see EdgeConfigurations#build()
@@ -87,8 +104,8 @@ public class SauceOptions extends BaseOptions {
     }
 
     /**
-     * This method allows building a Sauce Options instance for Edge using a provided Selenium EdgeOptions instance
-     * Call build() method on return value rather than using directly
+     * This method allows building a Sauce Options instance for Edge using a provided Selenium EdgeOptions instance.
+     * Call build() method on return value rather than using directly.
      *
      * @param edgeOptions an instance of a Selenium EdgeOptions class
      * @return instance of EdgeConfigurations
@@ -99,8 +116,8 @@ public class SauceOptions extends BaseOptions {
     }
 
     /**
-     * This method allows building a default Sauce Options instance for Firefox
-     * Call build() method on return value rather than using directly
+     * This method allows building a default Sauce Options instance for Firefox.
+     * Call build() method on return value rather than using directly.
      *
      * @return instance of FirefoxConfigurations
      * @see FirefoxConfigurations#build()
@@ -110,8 +127,8 @@ public class SauceOptions extends BaseOptions {
     }
 
     /**
-     * This method allows building a Sauce Options instance for Firefox using a provided Selenium FirefoxOptions instance
-     * Call build() method on return value rather than using directly
+     * Allows building a Sauce Options instance for Firefox using a provided Selenium FirefoxOptions instance.
+     * Call build() method on return value rather than using directly.
      *
      * @param firefoxOptions an instance of a Selenium FirefoxOptions class
      * @return instance of FirefoxConfigurations
@@ -122,8 +139,8 @@ public class SauceOptions extends BaseOptions {
     }
 
     /**
-     * This method allows building a default Sauce Options instance for Internet Explorer
-     * Call build() method on return value rather than using directly
+     * Allows building a default Sauce Options instance for Internet Explorer.
+     * Call build() method on return value rather than using directly.
      *
      * @return instance of InternetExplorerConfigurations
      * @see InternetExplorerConfigurations#build()
@@ -133,8 +150,9 @@ public class SauceOptions extends BaseOptions {
     }
 
     /**
-     * This method allows building a Sauce Options instance for Internet Explorer using a provided Selenium InternetExplorerOptions instance
-     * Call build() method on return value rather than using directly
+     * Allows building a Sauce Options instance for Internet Explorer.
+     * Uses a provided Selenium InternetExplorerOptions instance.
+     * Call build() method on return value rather than using directly.
      *
      * @param internetExplorerOptions an instance of a Selenium InternetExplorerOptions class
      * @return instance of InternetExplorerConfigurations
@@ -145,8 +163,8 @@ public class SauceOptions extends BaseOptions {
     }
 
     /**
-     * This method allows building a default Sauce Options instance for Safari
-     * Call build() method on return value rather than using directly
+     * This method allows building a default Sauce Options instance for Safari.
+     * Call build() method on return value rather than using directly.
      *
      * @return instance of SafariConfigurations
      * @see SafariConfigurations#build()
@@ -156,8 +174,8 @@ public class SauceOptions extends BaseOptions {
     }
 
     /**
-     * This method allows building a Sauce Options instance for Safari using a provided Selenium SafariOptions instance
-     * Call build() method on return value rather than using directly
+     * This method allows building a Sauce Options instance for Safari using a provided Selenium SafariOptions instance.
+     * Call build() method on return value rather than using directly.
      *
      * @param safariOptions an instance of a Selenium SafariOptions class
      * @return instance of SafariConfigurations
@@ -168,7 +186,7 @@ public class SauceOptions extends BaseOptions {
     }
 
     /**
-     * This method does not need to be used if working with the static methods and the build() method
+     * This method allows getting values of Sauce specific values associated with SauceOptions.
      *
      * @return an instance of SauceLabsOptions built by configurations
      */
@@ -180,7 +198,15 @@ public class SauceOptions extends BaseOptions {
         this(new MutableCapabilities());
     }
 
-    // TODO: Make this private
+    /**
+     * This is not needed by the user, but is needed by the CapabilityManager.
+     * TODO: move this package private with lombok
+     *
+     * @see SauceOptions#getImplicitWaitTimeout()
+     * @see SauceOptions#getPageLoadTimeout()
+     * @see SauceOptions#getScriptTimeout()
+     * @return any timeouts set
+     */
     public Map<Timeouts, Integer> getTimeouts() {
         if (timeout.getTimeouts().isEmpty()) {
             return timeouts;
@@ -188,6 +214,14 @@ public class SauceOptions extends BaseOptions {
         return timeout.getTimeouts();
     }
 
+    /**
+     * For Configuration classes to build a SauceOptions instance.
+     * This resets Browser Options subclasses to MutableCapabilities superclass.
+     * Selenium deletes capabilities by default when making w3c safe, so need to do separate validations.
+     * Equivalent code: `new MutableCapabilities(CapabilitiesUtils.makeW3CSafe(options).findFirst().get().asMap())`
+     *
+     * @param options Selenium capability values
+     */
     SauceOptions(MutableCapabilities options) {
         capabilities = new MutableCapabilities(options.asMap());
         capabilityManager = new CapabilityManager(this);
@@ -198,6 +232,8 @@ public class SauceOptions extends BaseOptions {
     }
 
     /**
+     * Converts the SauceOptions settings into the capabilities that will get sent to Sauce Labs.
+     *
      * @return instance of MutableCapabilities representing all key value pairs set in SauceOptions
      * @see SauceSession#start()
      */
@@ -208,7 +244,7 @@ public class SauceOptions extends BaseOptions {
     }
 
     /**
-     * This method is to handle special cases and enums as necessary
+     * This method is to handle special cases and enums as necessary.
      *
      * @param key   Which capability to set on this instance's Selenium MutableCapabilities instance
      * @param value The value of the capability getting set
@@ -254,6 +290,8 @@ public class SauceOptions extends BaseOptions {
     }
 
     /**
+     * Implicit Wait.
+     *
      * @return duration to wait for finding an element
      */
     public Duration getImplicitWaitTimeout() {
@@ -261,6 +299,8 @@ public class SauceOptions extends BaseOptions {
     }
 
     /**
+     * Page Load Timeout.
+     *
      * @return duration to wait for page to load
      */
     public Duration getPageLoadTimeout() {
@@ -268,6 +308,8 @@ public class SauceOptions extends BaseOptions {
     }
 
     /**
+     * Script Timeout.
+     *
      * @return duration to wait for script to execute
      */
     public Duration getScriptTimeout() {

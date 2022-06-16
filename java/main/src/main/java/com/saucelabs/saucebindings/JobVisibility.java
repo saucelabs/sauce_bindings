@@ -6,6 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Valid Job Visibility Options.
+ * The Sauce Labs name for this capability is "public"
+ *
+ * @see <a href="https://docs.saucelabs.com/dev/test-configuration-options/#public">public</a>
+ */
 public enum JobVisibility {
     PUBLIC("public"),
     PUBLIC_RESTRICTED("public restricted"),

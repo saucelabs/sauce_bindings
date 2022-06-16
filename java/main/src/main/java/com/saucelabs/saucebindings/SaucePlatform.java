@@ -2,10 +2,20 @@ package com.saucelabs.saucebindings;
 
 import lombok.Getter;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
+/**
+ * Valid Platform Options.
+ * First item in list gets sent to Sauce.
+ * Additional items in list matches Selenium Platform enum, and Sauce Labs platform API endpoint values
+ * TODO: can remove the weird Windows names when require Selenium > v4.1.3
+ *
+ * @see <a href="https://docs.saucelabs.com/dev/test-configuration-options/#platformname">platformName</a>
+ */
 public enum SaucePlatform {
     LINUX("Linux"),
     WINDOWS_11("Windows 11"),
@@ -22,7 +32,7 @@ public enum SaucePlatform {
     MAC_YOSEMITE("OS X 10.10");
 
     @Getter
-    private final String value;
+    private final String[] values;
 
     private static final class PlatformLookup {
         private static final Map<String, String> lookup = new HashMap<>();
@@ -32,9 +42,9 @@ public enum SaucePlatform {
         return PlatformLookup.lookup.keySet();
     }
 
-    SaucePlatform(String value) {
-        this.value = value;
-        PlatformLookup.lookup.put(value, this.name());
+    SaucePlatform(String... values) {
+        this.values = values;
+        Arrays.stream(values).forEach(str -> PlatformLookup.lookup.put(str, this.name()));
     }
 
     public static String fromString(String value) {
@@ -47,7 +57,7 @@ public enum SaucePlatform {
      * @return true if platform is OS X or macOS
      */
     public boolean isMac() {
-        return this.value.contains("macOS") || this.value.contains("OS X");
+        return Arrays.stream(this.values).anyMatch(val -> Stream.of("macOS", "OS X", "Mac").anyMatch(val::contains));
     }
 
     /**
@@ -56,10 +66,10 @@ public enum SaucePlatform {
      * @return true if platform is Windows OS
      */
     public boolean isWindows() {
-        return this.value.contains("Windows");
+        return Arrays.stream(this.values).anyMatch(val -> val.contains("Windows"));
     }
 
     public String toString() {
-        return this.value;
+        return this.values[0];
     }
 }

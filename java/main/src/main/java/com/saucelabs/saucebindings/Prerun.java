@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Valid Pre-run executable options.
+ *
+ * @see <a href="https://docs.saucelabs.com/dev/test-configuration-options/#pre-run-executables">Pre-Run Executables</a>
+ */
 public enum Prerun {
     EXECUTABLE("executable"),
     ARGS("args"),

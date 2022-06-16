@@ -14,6 +14,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+/**
+ * Primary means of interacting with Sauce Labs functionality.
+ */
 public class SauceSession {
     @Getter protected RemoteWebDriver driver;
     @Getter @Setter private DataCenter dataCenter = DataCenter.US_WEST;
@@ -22,7 +25,7 @@ public class SauceSession {
     @Getter private String result;
 
     public SauceSession() {
-        this(new SauceOptions());
+        this(SauceOptions.chrome().build());
     }
 
     /**
@@ -47,9 +50,11 @@ public class SauceSession {
     public RemoteWebDriver start() {
         this.driver = createRemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities());
         return driver;
-	}
+    }
 
     /**
+     * URL to desired Sauce Data Center.
+     *
      * @return the full URL for sending to Sauce Labs based on the desired data center.
      */
     public URL getSauceUrl() {
@@ -102,7 +107,7 @@ public class SauceSession {
      * @return an object with the accessibility analysis
      */
     public Results getAccessibilityResults(AxeBuilder builder) {
-        validateSessionStarted("getAccessibilityResults()");
+        validateSessionStarted("getAccessibilityResults");
         return builder.analyze(driver);
     }
 
@@ -128,7 +133,7 @@ public class SauceSession {
      *     Providing Context for Selenium Commands</a>
      */
     public void annotate(String comment) {
-        validateSessionStarted("annotate()");
+        validateSessionStarted("annotate");
         driver.executeScript("sauce:context=" + comment);
     }
 
@@ -140,7 +145,7 @@ public class SauceSession {
      *     Test Annotation Methods</a>
      */
     public void pause() {
-        validateSessionStarted("pause()");
+        validateSessionStarted("pause");
         String sauceTestLink = String.format("https://app.saucelabs.com/tests/%s",
                 this.driver.getSessionId());
         driver.executeScript("sauce: break");
@@ -159,7 +164,7 @@ public class SauceSession {
      *     Test Annotation Methods</a>
      */
     public void disableLogging() {
-        validateSessionStarted("disableLogging()");
+        validateSessionStarted("disableLogging");
         driver.executeScript("sauce: disable log");
     }
 
@@ -171,7 +176,7 @@ public class SauceSession {
      *     Test Annotation Methods</a>
      */
     public void enableLogging() {
-        validateSessionStarted("enableLogging()");
+        validateSessionStarted("enableLogging");
         driver.executeScript("sauce: enable log");
     }
 
@@ -183,7 +188,7 @@ public class SauceSession {
      *     Test Annotation Methods</a>
      */
     public void stopNetwork() {
-        validateSessionStarted("stopNetwork()");
+        validateSessionStarted("stopNetwork");
         validateMac("Can only stop network for a Mac Platform;");
 
         driver.executeScript("sauce: stop network");
@@ -197,7 +202,7 @@ public class SauceSession {
      *     Test Annotation Methods</a>
      */
     public void startNetwork() {
-        validateSessionStarted("startNetwork()");
+        validateSessionStarted("startNetwork");
         validateMac("Can only start network for a Mac Platform;");
 
         driver.executeScript("sauce: start network");
@@ -213,7 +218,7 @@ public class SauceSession {
      * @see BaseConfigurations#setName(String)
      */
     public void changeTestName(String name) {
-        validateSessionStarted("changeName()");
+        validateSessionStarted("changeName");
         driver.executeScript("sauce:job-name=" + name);
     }
 
@@ -227,7 +232,7 @@ public class SauceSession {
      * @see BaseConfigurations#setTags(List)
      */
     public void addTags(List<String> tags) {
-        validateSessionStarted("setTags()");
+        validateSessionStarted("setTags");
         String tagString = String.join(",", tags);
         driver.executeScript("sauce:job-tags=" + tagString);
     }
@@ -269,7 +274,7 @@ public class SauceSession {
 
     private void validateSessionStarted(String method) {
         if (driver == null) {
-            throw new SauceSessionNotStartedException(method);
+            throw new SauceSessionNotStartedException(method + "()");
         }
     }
 

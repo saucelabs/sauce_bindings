@@ -7,13 +7,22 @@ import lombok.experimental.Accessors;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This stores information about valid timeouts.
+ */
 @Accessors(chain = true)
-@Setter @Getter
+@Setter
+@Getter
 public class TimeoutStore {
     private Integer implicitWait;
     private Integer script;
     private Integer pageLoad;
 
+    /**
+     * Timeout values if any set.
+     *
+     * @return timeout values
+     */
     public Map<Timeouts, Integer> getTimeouts() {
         HashMap<Timeouts, Integer> map = new HashMap<>();
         if (implicitWait != null) {

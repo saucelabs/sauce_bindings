@@ -353,8 +353,7 @@ public class SauceOptionsTest {
                         "extensions", new ArrayList<>()));
 
         expectedCapabilities.setCapability("goog:chromeOptions",
-                ImmutableMap.of("args", new ArrayList<>(),"extensions", new ArrayList<String>() {
-        }));
+                ImmutableMap.of("args", new ArrayList<>(), "extensions", new ArrayList<String>()));
         expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
         MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
 

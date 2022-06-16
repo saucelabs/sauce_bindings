@@ -50,7 +50,12 @@ public class VisualSession extends SauceSession {
         super.stop(passed);
     }
 
+    /**
+     * @deprecated Do not use magic strings, pass in boolean for whether test has
+     *             passed.
+     */
     @Override
+    @Deprecated()
     public void stop(String result) {
         if (driver != null) {
             super.stop(result);
@@ -59,8 +64,7 @@ public class VisualSession extends SauceSession {
 
     public void stop() {
         if (driver != null) {
-            Map<String, Object> results =
-                    (Map<String, Object>) driver.executeScript("/*@visual.end*/");
+            Map<String, Object> results = (Map<String, Object>) driver.executeScript("/*@visual.end*/");
             Boolean result = (Boolean) results.get("passed") ? true : false;
             super.stop(result);
         }

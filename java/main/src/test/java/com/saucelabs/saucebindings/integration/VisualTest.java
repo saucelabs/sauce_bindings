@@ -41,15 +41,16 @@ public class VisualTest {
 
     @Test
     public void takeMultipleSnapshots() {
-        VisualOptions vs = new VisualOptions("VisualTest takeMultipleSnapshots");
-        vs.setFailOnNewStates(false);
-        session = new VisualSession(vs);
+        VisualOptions vo = new VisualOptions("VisualTest takeMultipleSnapshots");
+        vo.setFailOnNewStates(false);
+        session = new VisualSession(vo);
         driver = session.start();
 
         session.takeSnapshot("Blank1");
-        //this is wrong
-//        session.newVisualTest("VisualTest runMultipleTests 2");
+        // this is wrong
+        // session.newVisualTest("VisualTest runMultipleTests 2");
         session.takeSnapshot("Blank2");
+        session.stop();
     }
 
     @Test

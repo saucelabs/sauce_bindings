@@ -68,15 +68,15 @@ public class SauceSessionTest {
 
     @Test
     public void defaultsToUSWestDataCenter() {
-        String expectedDataCenterEndpoint = DataCenter.US_WEST.getValue();
-        Assert.assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().getValue());
+        DataCenter expectedDataCenterEndpoint = DataCenter.US_WEST;
+        Assert.assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter());
     }
 
     @Test
     public void setsDataCenter() {
-        String expectedDataCenterEndpoint = DataCenter.US_EAST.getValue();
+        String expectedDataCenterEndpoint = DataCenter.US_EAST.toString();
         sauceSession.setDataCenter(DataCenter.US_EAST);
-        Assert.assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().getValue());
+        Assert.assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().toString());
     }
 
     @Test

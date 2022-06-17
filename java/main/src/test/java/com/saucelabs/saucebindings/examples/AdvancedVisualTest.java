@@ -41,7 +41,8 @@ public class AdvancedVisualTest {
         SauceOptions sauceOptions = SauceOptions.firefox()
                 .setPlatformName(SaucePlatform.MAC_HIGH_SIERRA)
                 .setBrowserVersion("99")
-                .setName("dataDrivenSession()")
+                .setName("dataDrivenSession() " + java.time.LocalDateTime
+                        .now())
                 .build();
 
         VisualOptions visualOptions = new VisualOptions(sauceOptions, "Data Driven Project");

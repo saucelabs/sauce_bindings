@@ -14,9 +14,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-@Accessors(chain = true) @Setter @Getter
+@Accessors(chain = true)
+@Setter
+@Getter
 public class VisualOptions extends BaseOptions {
-    @Setter(AccessLevel.NONE) private SauceOptions sauceOptions;
+    @Setter(AccessLevel.NONE)
+    private SauceOptions sauceOptions;
     private String projectName;
     private String viewportSize;
     private String branch;
@@ -46,36 +49,29 @@ public class VisualOptions extends BaseOptions {
             "iframes",
             "iframesOptions");
 
-    public VisualOptions(String testName) {
-        this(SauceOptions.chrome().setName(testName).build());
-    }
-
-    public VisualOptions(SauceOptions options) {
+    public VisualOptions(SauceOptions options, String projectName) {
         if (options.sauce().getName() == null) {
             String msg = "Visual Tests Require setting a name in SauceOptions";
             throw new InvalidSauceOptionsArgumentException(msg);
         }
-
+        this.projectName = projectName;
         this.sauceOptions = options;
         capabilityManager = new CapabilityManager(this);
     }
 
+    public VisualOptions(String testName, String projectName) {
+        this(SauceOptions.chrome().setName(testName).build(), projectName);
+    }
+
     /**
-     * @return instance of MutableCapabilities representing all key value pairs set in SauceOptions
+     * @return instance of MutableCapabilities representing all key value pairs set
+     *         in SauceOptions
      * @see SauceSession#start()
      */
     public MutableCapabilities toCapabilities() {
         String msg = "Environment Variable or System Property for 'SCREENER_API_KEY' must be provided";
         String sauceVisualApiKey = SystemManager.get("SCREENER_API_KEY", msg);
         capabilities.setCapability("apiKey", sauceVisualApiKey);
-
-        if (projectName == null) {
-            projectName = CITools.getBuildName();
-        }
-
-        if (branch == null) {
-            branch = GitManager.getCurrentBranch();
-        }
 
         capabilityManager.addCapabilities();
 
@@ -86,11 +82,14 @@ public class VisualOptions extends BaseOptions {
     }
 
     /**
-     * Use Case is pulling serialized information from JSON/YAML, converting it to a HashMap and passing it in
+     * Use Case is pulling serialized information from JSON/YAML, converting it to a
+     * HashMap and passing it in
      * This is a preferred pattern as it avoids conditionals in code
-     * Warning: For VisualOptions this adds a hard coded Test Name that needs to be updated
+     * Warning: For VisualOptions this adds a hard coded Test Name that needs to be
+     * updated
      *
-     * @param capabilitiesToMerge a Map object representing key value pairs to convert to capabilities
+     * @param capabilitiesToMerge a Map object representing key value pairs to
+     *                            convert to capabilities
      */
     public void mergeCapabilities(Map<String, Object> capabilitiesToMerge) {
         for (Map.Entry<String, Object> entry : capabilitiesToMerge.entrySet()) {

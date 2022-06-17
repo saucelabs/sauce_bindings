@@ -28,14 +28,15 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class VisualOptionsTest {
+    public final String PROJECT_NAME = "com.saucelabs.saucebindings.options.VisualOptionsTest.java";
+
     @Test
     public void createsDefaultVisualOptions() {
-        VisualOptions visualOptions = new VisualOptions("Required Test Name");
+        VisualOptions visualOptions = new VisualOptions("Required Test Name", PROJECT_NAME);
 
         MutableCapabilities visualCapabilities = new MutableCapabilities();
         visualCapabilities.setCapability("apiKey", System.getenv("SCREENER_API_KEY"));
-        visualCapabilities.setCapability("branch", GitManager.getCurrentBranch());
-        visualCapabilities.setCapability("projectName", CITools.getBuildName());
+        visualCapabilities.setCapability("projectName", PROJECT_NAME);
 
         assertEquals(visualCapabilities, visualOptions.toCapabilities().getCapability("sauce:visual"));
     }
@@ -59,7 +60,7 @@ public class VisualOptionsTest {
         Map<String, Object> iframesOptions = new HashMap<>();
         iframesOptions.put("maxFrames", "Infinity");
 
-        VisualOptions visualOptions = new VisualOptions(sauceOptions);
+        VisualOptions visualOptions = new VisualOptions(sauceOptions, PROJECT_NAME);
         visualOptions
                 .setProjectName("Visual Options Project Name")
                 .setViewportSize("1024x768")
@@ -111,7 +112,7 @@ public class VisualOptionsTest {
                 .setName("Parses Name From Sauce Options")
                 .build();
 
-        VisualOptions visualOptions = new VisualOptions(sauceOptions);
+        VisualOptions visualOptions = new VisualOptions(sauceOptions, PROJECT_NAME);
         visualOptions
                 .setProjectName("My Project")
                 .setViewportSize("1024x768")
@@ -161,7 +162,7 @@ public class VisualOptionsTest {
     public void requiresTestName() {
         SauceOptions sauceOptions = SauceOptions.chrome().build();
         try {
-            new VisualOptions(sauceOptions);
+            new VisualOptions(sauceOptions, PROJECT_NAME);
             fail("Expecting InvalidSauceOptionsArgumentException");
         } catch (InvalidSauceOptionsArgumentException e) {
             // Expected result
@@ -171,7 +172,7 @@ public class VisualOptionsTest {
     @Test
     public void setsCapabilitiesFromMap() {
         Map<String, Object> map = serialize("visualValues");
-        VisualOptions visualOptions = new VisualOptions("Required Test Name");
+        VisualOptions visualOptions = new VisualOptions("Required Test Name", PROJECT_NAME);
 
         visualOptions.mergeCapabilities(map);
 

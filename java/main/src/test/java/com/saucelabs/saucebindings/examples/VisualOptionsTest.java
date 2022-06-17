@@ -18,7 +18,7 @@ public class VisualOptionsTest {
                 .build();
 
         // 2. Create Visual Options instance with Sauce Options instance
-        VisualOptions visualOptions = new VisualOptions(sauceOptions);
+        VisualOptions visualOptions = new VisualOptions(sauceOptions, "VisualOptionsTest.java");
 
         // 3. Set desired visual options
         visualOptions.setFailOnNewStates(false);

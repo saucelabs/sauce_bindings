@@ -12,8 +12,8 @@ import java.util.Map;
 public class VisualSession extends SauceSession {
     private final VisualOptions visualOptions;
 
-    public VisualSession(String testName) {
-        this(new VisualOptions(SauceOptions.chrome().setName(testName).build()));
+    public VisualSession(String testName, String projectName) {
+        this(new VisualOptions(SauceOptions.chrome().setName(testName).build(), projectName));
     }
 
     public VisualSession(VisualOptions options) {
@@ -24,7 +24,7 @@ public class VisualSession extends SauceSession {
     @Override
     public RemoteWebDriver start() {
         this.driver = createRemoteWebDriver(getSauceUrl(), visualOptions.toCapabilities());
-        newVisualTest(getSauceOptions().sauce().getName());
+        driver.executeScript("/*@visual.init*/", getSauceOptions().sauce().getName());
         return driver;
     }
 
@@ -35,10 +35,6 @@ public class VisualSession extends SauceSession {
         } catch (MalformedURLException e) {
             throw new InvalidArgumentException("Invalid URL", e);
         }
-    }
-
-    public void newVisualTest(String testName) {
-        driver.executeScript("/*@visual.init*/", testName);
     }
 
     public void takeSnapshot(String name) {

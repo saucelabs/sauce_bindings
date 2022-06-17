@@ -10,7 +10,7 @@ public class VisualTest {
     public void visualSession() {
 
         // 1. Create Visual Session object with minimum required
-        VisualSession session = new VisualSession("visualSessionTest");
+        VisualSession session = new VisualSession("testName", "projectName");
 
         // 2. Start Session to get the driver
         RemoteWebDriver driver = session.start();

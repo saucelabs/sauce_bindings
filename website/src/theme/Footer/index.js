@@ -89,7 +89,7 @@ function Footer() {
 
           <div className="footer-column">
 
-            <div className="link-title__space"></div>
+            <p className="link-title">Platform</p>
 
             <div className="link-list">
                 <ul>

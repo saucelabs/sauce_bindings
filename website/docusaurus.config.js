@@ -71,6 +71,7 @@ module.exports={
       logo: {
         alt: 'Sauce Labs logo',
         src: 'img/logo-saucelabs.png',
+        srcDark: 'img/logo-saucelabs-inverted.png'
       },
       items: [
         {

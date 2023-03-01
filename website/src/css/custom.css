@@ -1,58 +1,19 @@
 /* stylelint-disable docusaurus/copyright-header */
-/**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
- */
 
-/* You can override the default Infima variables here. */
-/*
- * The Typekit service used to deliver this font or fonts for use on websites
- * is provided by Adobe and is subject to these Terms of Use
- * http://www.adobe.com/products/eulas/tou_typekit. For font license
- * information, see the list below.
- *
- * museo-sans:
- *   - http://typekit.com/eulas/00000000000000007735da11
- *   - http://typekit.com/eulas/00000000000000007735da14
- *   - http://typekit.com/eulas/00000000000000007735da1d
- *   - http://typekit.com/eulas/00000000000000007735da1e
- * museo-sans-condensed:
- *   - http://typekit.com/eulas/00000000000000007735d9f8
- *   - http://typekit.com/eulas/00000000000000007735da0c
- *   - http://typekit.com/eulas/00000000000000007735da10
- *   - http://typekit.com/eulas/00000000000000007735da13
- * museo-sans-display:
- *   - http://typekit.com/eulas/000000000000000077359978
- *   - http://typekit.com/eulas/000000000000000077359966
- * museo-sans-rounded:
- *   - http://typekit.com/eulas/000000000000000077359942
- *   - http://typekit.com/eulas/00000000000000007735994a
- *   - http://typekit.com/eulas/000000000000000077359977
- *   - http://typekit.com/eulas/000000000000000077359984
- *
- * © 2009-2020 Adobe Systems Incorporated. All Rights Reserved.
- */
-/*{"last_published":"2021-01-18 18:46:45 UTC"}*/
-/*@import "api-override.css";*/
-/*@import "fw-badge-override.css";*/
-@import url('https://use.typekit.net/bte6qhg.css');
-
-.tk-museo-sans { font-family: "museo-sans",sans-serif; }
-.tk-museo-sans-rounded { font-family: "museo-sans-rounded",sans-serif; }
-.tk-museo-sans-condensed { font-family: "museo-sans-condensed",sans-serif; }
-.tk-museo-sans-display { font-family: "museo-sans-display",sans-serif; }
+@import "https://fonts.googleapis.com/css?family=Playfair+Display:700|Roboto:400";
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&family=DM+Sans:wght@400;700&display=swap');
 
 
 :root {
-  --ifm-color-primary: #E2231A;
+  --ifm-color-primary: #132322;
   --ifm-color-primary-dark: rgb(229, 55, 48);
   --ifm-color-primary-darker: rgb(218, 41, 29);
   --ifm-color-primary-darkest: rgb(172, 20, 19);
   --ifm-color-primary-light: rgb(204, 205, 207);
   --ifm-color-primary-lighter: rgb(248, 248, 248);
   --ifm-color-primary-lightest: rgb(255, 255, 255);
-  --ifm-footer-background-color: rgb(172, 20, 19);
+  --ifm-background-color: #EDF7F5;
+  --ifm-navbar-background-color: #EDF7F5;
   --ifm-footer-link-color: rgb(255, 255, 255);
   --ifm-footer-title-color: rgb(248, 248, 248);
   --ifm-footer-color: rgb(255, 255, 255);
@@ -64,13 +25,15 @@
 }
 
 html[data-theme='dark'] {
-  --ifm-color-primary: #E2231A;
+  --ifm-color-primary: #3DDC91;
   --ifm-color-primary-dark: rgb(172, 20, 19);
   --ifm-font-color-base: rgb(255, 255, 255);
   --ifm-blockquote-color: #f0f0f0;
   --ifm-code-background: #44494F;
   --ifm-alert-color: #f0f0f0 !important;
-  --ifm-navbar-link-color: #464b54;
+  --ifm-navbar-link-color: #fff;
+  --ifm-navbar-background-color: #132322;
+  --ifm-background-color: #132322;
   --docsearch-muted-color: #969faf !important;
   /*--docsearch-searchbox-background: #ebedf0 !important;*/
   --docsearch-text-color: #fff !important;
@@ -95,18 +58,33 @@ html[data-theme='light'] {
   --ifm-hero-text-color: var(--ifm-font-color-base-inverse);
 }
 
-.navbar {
-  --ifm-navbar-background-color: #f8f8f8;
-}
-
 body {
-  font-family: museo-sans, sans-serif;
-  font-weight: semi-bold;
+  line-height: 1.2;
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 15px;
 }
 
-h1,h2,h3,h4,h5,h6 {
-  font-family: museo-sans, sans-serif;
-  font-weight: 500;
+p {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.8;
+  font-family: 'DM Sans', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'DM Mono', monospace;
+  line-height: 1.2
+}
+
+h1,
+.h1 {
+  font-size: 80px
 }
 
 /*nav.navbar.navbar--fixed-top.navbarHideable {*/
@@ -144,21 +122,20 @@ h3, .h3 {
 }
 
 .navbar__items.navbar__items--right a:nth-child(1) {
-  background: #E2231A;
-  background: -webkit-gradient(linear,right top, left top,from(#ee4439),to(#d92519));
-  background: linear-gradient(270deg,#ee4439,#d92519);
+  background: #3DDC91;
+  background: -webkit-gradient(linear,right top, left top,from(#64e3a7),to(#3DDC91));
+  background: linear-gradient(270deg,#64e3a7,#3DDC91);
   box-shadow: -3px 0 16px -11px #000;
   border-radius: 50px;
-  border-radius: 50px;
-  color: #fff;
+  color: #132322;
   padding: 4px 16px;
   --ifm-menu-color-background-hover: #fff;
 }
 
 .navbar__items.navbar__items--right a:nth-child(1):hover {
-  background: #f85d5d;
-  background: -webkit-gradient(linear,right top,left top,from(#f85d5d),to(#f83838));
-  background: linear-gradient(270deg,#f85d5d,#f83838);
+  background: #b1f1d3;
+  background: -webkit-gradient(linear,right top,left top,from(#b1f1d3),to(#8beabd));
+  background: linear-gradient(270deg,#b1f1d3,#8beabd);
 }
 /*.navbar__brand {*/
 /*    height: 1.5em !important;*/
@@ -173,9 +150,9 @@ h3, .h3 {
 }
 
 .footer {
-  font-family: museo-sans, sans-serif;
+  font-family: 'DM Sans', sans-serif;
   padding-bottom: 40px;
-  --ifm-footer-background-color: #ac1413;
+  --ifm-footer-background-color: #132322;
 }
 
 .footer__logo {
@@ -679,7 +656,7 @@ a.hero__button {
 }
 /* footer styles */
 footer {
-  background-color: #ac1414;
+  background-color: #132322;
   font-size: 13px;
   padding: 40px 0;
   text-align: center;
@@ -727,7 +704,7 @@ footer .link-title__space {
   padding: 30px 0 0 0;
 }
 footer .link-list {
-  border-top: 1px solid #B83737;
+  border-top: 1px solid #3DDC91;
   flex: 1;
   margin-right: 32px;
   padding: 10px 0 0 0;

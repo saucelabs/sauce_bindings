@@ -1,7 +1,9 @@
-# This workflow will build a Java project with Maven
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
 name: JDK 8
+env:
+  SCREENER_API_KEY: ${{ secrets.SCREENER_API_KEY }}
+  SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+  SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
 
 on:
   push:
@@ -19,9 +21,6 @@ jobs:
         with:
           java-version: 1.8
       - name: Test with Maven
-        env:
-          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
-          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
         run: make java_tests
   junit4:
     runs-on: ubuntu-latest
@@ -32,9 +31,6 @@ jobs:
         with:
           java-version: 1.8
       - name: Test with Maven
-        env:
-          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
-          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
         run: make junit4_tests
   junit5:
     runs-on: ubuntu-latest
@@ -45,7 +41,4 @@ jobs:
         with:
           java-version: 1.8
       - name: Test with Maven
-        env:
-          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
-          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
         run: make junit5_tests

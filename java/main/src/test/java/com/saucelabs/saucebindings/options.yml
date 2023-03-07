@@ -49,6 +49,77 @@ exampleValues:
     tunnelIdentifier: 'tunnelname'
     videoUploadOnPass: false
 
+visualValues:
+  browserName: 'firefox'
+  browserVersion: '68'
+  platformName: 'macOS 10.13'
+  acceptInsecureCerts: true
+  pageLoadStrategy: 'eager'
+  setWindowRect: true
+  unhandledPromptBehavior: "accept"
+  strictFileInteractability: true
+  timeouts:
+    implicit: 1000
+    pageLoad: 59000
+    script: 29000
+  visual:
+    projectName: 'My Project'
+    viewportSize: 393x786
+    baseBranch: baseBranch
+    ignore: '#some-id, .some-selector'
+    failOnNewStates: true
+    alwaysAcceptBaseBranch: true
+    disableBranchBaseline: true
+    scrollAndStitchScreenshots: true
+    disableCORS: true
+    iframes: true
+    diffOptions:
+      structure: true
+      layout: true
+      style: true
+      content: true
+      minLayoutPosition: 4
+      minLayoutDimension: 10
+    iframesOptions:
+      maxFrames: Infinity
+  sauce:
+    avoidProxy: true
+    build: 'Sample Build Name'
+    capturePerformance: true
+    chromedriverVersion: '71'
+    commandTimeout: 2
+    customData:
+      foo: 'foo'
+      bar: 'bar'
+    extendedDebugging: true
+    idleTimeout: 3
+    iedriverVersion: '3.141.0'
+    maxDuration: 300
+    name: 'Sample Test Name'
+    parentTunnel: 'Mommy'
+    prerun:
+      executable: "http://url.to/your/executable.exe"
+      args:
+        - --silent
+        - -a
+        - -q
+      background: false
+      timeout: 120
+    priority: 0
+    jobVisibility: 'team'
+    recordLogs: false
+    recordScreenshots: false
+    recordVideo: false
+    screenResolution: '10x10'
+    seleniumVersion: '3.141.59'
+    tags:
+      - foo
+      - bar
+      - foobar
+    timeZone: 'San Francisco'
+    tunnelIdentifier: 'tunnelname'
+    videoUploadOnPass: false
+
 badBrowser:
   browserName: "netscape"
 

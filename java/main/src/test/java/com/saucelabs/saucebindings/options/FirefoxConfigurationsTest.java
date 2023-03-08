@@ -1,18 +1,24 @@
 package com.saucelabs.saucebindings.options;
 
-import com.saucelabs.saucebindings.*;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.saucelabs.saucebindings.Browser;
+import com.saucelabs.saucebindings.JobVisibility;
+import com.saucelabs.saucebindings.PageLoadStrategy;
+import com.saucelabs.saucebindings.Prerun;
+import com.saucelabs.saucebindings.SaucePlatform;
+import com.saucelabs.saucebindings.UnhandledPromptBehavior;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class FirefoxConfigurationsTest {
+    FirefoxOptions firefoxOptions = new FirefoxOptions();
 
     @Test
     public void buildsDefaultSauceOptions() {
@@ -72,32 +78,18 @@ public class FirefoxConfigurationsTest {
 
     @Test
     public void acceptsSauceLabsSettings() {
-        Map<String, Object> customData = new HashMap<>();
-        customData.put("foo", "foo");
-        customData.put("bar", "bar");
-
-        List<String> args = new ArrayList<>();
-        args.add("--silent");
-        args.add("-a");
-        args.add("-q");
-
         Map<Prerun, Object> prerun = new HashMap<>();
-        prerun.put(Prerun.EXECUTABLE, "http://url.to/your/executable.exe");
-        prerun.put(Prerun.ARGS, args);
+        prerun.put(Prerun.EXECUTABLE, "https://url.to/your/executable.exe");
+        prerun.put(Prerun.ARGS, ImmutableList.of("--silent", "-a", "-q"));
         prerun.put(Prerun.BACKGROUND, false);
         prerun.put(Prerun.TIMEOUT, 120);
-
-        List<String> tags = new ArrayList<>();
-        tags.add("Foo");
-        tags.add("Bar");
-        tags.add("Foobar");
 
         SauceOptions sauceOptions = SauceOptions.firefox()
                 .setBuild("Sample Build Name")
                 .setName("Test name")
                 .setGeckodriverVersion("0.28")
                 .setCommandTimeout(Duration.ofSeconds(2))
-                .setCustomData(customData)
+                .setCustomData(ImmutableMap.of("foo", "foo", "bar", "bar"))
                 .setExtendedDebugging()
                 .setIdleTimeout(Duration.ofSeconds(20))
                 .setMaxDuration(Duration.ofSeconds(300))
@@ -110,15 +102,15 @@ public class FirefoxConfigurationsTest {
                 .disableRecordScreenshots()
                 .disableRecordVideo()
                 .setScreenResolution("1024x768")
-                .setTags(tags)
+                .setTags(ImmutableList.of("Foo", "Bar", "Foobar"))
                 .setTimeZone("San Francisco")
-                .setTunnelIdentifier("tunnelname")
+                .setTunnelIdentifier("tunnelName")
                 .disableVideoUploadOnPass()
                 .build();
 
         Assert.assertEquals("Sample Build Name", sauceOptions.sauce().getBuild());
         Assert.assertEquals(Integer.valueOf(2), sauceOptions.sauce().getCommandTimeout());
-        Assert.assertEquals(customData, sauceOptions.sauce().getCustomData());
+        Assert.assertEquals(ImmutableMap.of("foo", "foo", "bar", "bar"), sauceOptions.sauce().getCustomData());
         Assert.assertEquals(true, sauceOptions.sauce().getExtendedDebugging());
         Assert.assertEquals("0.28", sauceOptions.sauce().getGeckodriverVersion());
         Assert.assertEquals(Integer.valueOf(20), sauceOptions.sauce().getIdleTimeout());
@@ -133,9 +125,9 @@ public class FirefoxConfigurationsTest {
         Assert.assertEquals(false, sauceOptions.sauce().getRecordVideo());
         Assert.assertEquals("3.141.0", sauceOptions.sauce().getSeleniumVersion());
         Assert.assertEquals("1024x768", sauceOptions.sauce().getScreenResolution());
-        Assert.assertEquals(tags, sauceOptions.sauce().getTags());
+        Assert.assertEquals(ImmutableList.of("Foo", "Bar", "Foobar"), sauceOptions.sauce().getTags());
         Assert.assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
-        Assert.assertEquals("tunnelname", sauceOptions.sauce().getTunnelIdentifier());
+        Assert.assertEquals("tunnelName", sauceOptions.sauce().getTunnelIdentifier());
         Assert.assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());
     }
 }

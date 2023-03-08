@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Valid Browsers.
+ *
+ * @see <a href="https://docs.saucelabs.com/dev/test-configuration-options/#browsername">browserName</a>
+ */
 public enum Browser {
     CHROME("chrome"),
     INTERNET_EXPLORER("internet explorer"),
@@ -17,10 +22,10 @@ public enum Browser {
     private final String value;
 
     private static final class BrowserLookup {
-        private static final Map<String, String> lookup = new HashMap<String, String>();
+        private static final Map<String, String> lookup = new HashMap<>();
     }
 
-    public static Set keys() {
+    public static Set<String> keys() {
         return BrowserLookup.lookup.keySet();
     }
 

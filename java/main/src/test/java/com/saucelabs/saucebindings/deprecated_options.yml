@@ -54,3 +54,36 @@ badJobVisibility:
 badPrerun:
   prerun:
     nope: ""
+
+badBrowser:
+  browserName: "netscape"
+
+badPlatform:
+  platformName: "MAC"
+
+badJobVisibility:
+  sauce:
+    jobVisibility: "me"
+
+badPageLoad:
+  browserName: "fast"
+
+badPrompt:
+  browserName: "consume"
+
+badTimeout:
+  timeouts:
+    bad: 1
+
+invalidOption:
+  foo: "bar"
+  browser_Nme: "firefox"
+  browserVersion: "70"
+  platformName: "MacOS 10.12"
+
+invalidSauceOption:
+  browser_Nme: "firefox"
+  browserVersion: "70"
+  platformName: "MacOS 10.12"
+  sauce:
+    foo: "bar"

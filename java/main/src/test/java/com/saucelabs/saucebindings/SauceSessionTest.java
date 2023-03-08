@@ -18,7 +18,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class SauceSessionTest {
-    private SauceOptions sauceOptions = Mockito.spy(new SauceOptions());
+    private SauceOptions sauceOptions = Mockito.spy(SauceOptions.chrome().build());
     private SauceSession sauceSession = Mockito.spy(new SauceSession());
     private final SauceSession sauceOptsSession = Mockito.spy(new SauceSession(sauceOptions));
     private final RemoteWebDriver dummyRemoteDriver = Mockito.mock(RemoteWebDriver.class);
@@ -34,7 +34,7 @@ public class SauceSessionTest {
     }
 
     @Test
-    public void sauceSessionDefaultsToLatestChromeOnWindows() {
+    public void defaultsToLatestChromeOnWindows() {
         Browser actualBrowser = sauceSession.getSauceOptions().getBrowserName();
         String actualBrowserVersion = sauceSession.getSauceOptions().getBrowserVersion();
         SaucePlatform actualPlatformName = sauceSession.getSauceOptions().getPlatformName();
@@ -45,7 +45,7 @@ public class SauceSessionTest {
     }
 
     @Test
-    public void sauceSessionUsesProvidedSauceOptions() {
+    public void usesProvidedSauceOptions() {
         Mockito.doReturn(dummyMutableCapabilities).when(sauceOptions).toCapabilities();
         Mockito.doReturn(dummyRemoteDriver).when(sauceOptsSession)
                 .createRemoteWebDriver(Mockito.any(URL.class), Matchers.eq(dummyMutableCapabilities));
@@ -56,7 +56,7 @@ public class SauceSessionTest {
     }
 
     @Test
-    public void sauceSessionUsesProvidedSauceConfigs() {
+    public void usesProvidedSauceConfigs() {
         SauceSession sauceSession = new SauceSession(SauceOptions.chrome()
                 .setPlatformName(SaucePlatform.MAC_MOJAVE));
         SauceOptions sauceOptions = sauceSession.getSauceOptions();
@@ -68,21 +68,21 @@ public class SauceSessionTest {
 
     @Test
     public void defaultsToUSWestDataCenter() {
-        String expectedDataCenterEndpoint = DataCenter.US_WEST.getValue();
-        Assert.assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().getValue());
+        String expectedDataCenterEndpoint = DataCenter.US_WEST.toString();
+        Assert.assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().toString());
     }
 
     @Test
     public void setsDataCenter() {
-        String expectedDataCenterEndpoint = DataCenter.US_EAST.getValue();
+        String expectedDataCenterEndpoint = DataCenter.US_EAST.toString();
         sauceSession.setDataCenter(DataCenter.US_EAST);
-        Assert.assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().getValue());
+        Assert.assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().toString());
     }
 
     @Test
     public void setsSauceURLDirectly() throws MalformedURLException {
-        sauceSession.setSauceUrl(new URL("http://example.com"));
-        String expectedSauceUrl = "http://example.com";
+        sauceSession.setSauceUrl(new URL("https://example.com"));
+        String expectedSauceUrl = "https://example.com";
         Assert.assertEquals(expectedSauceUrl, sauceSession.getSauceUrl().toString());
     }
 

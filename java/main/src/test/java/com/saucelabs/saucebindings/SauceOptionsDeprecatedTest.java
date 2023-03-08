@@ -224,7 +224,7 @@ public class SauceOptionsDeprecatedTest {
 
     @SneakyThrows
     public Map<String, Object> serialize(String key) {
-        InputStream input = Files.newInputStream(Paths.get("src/test/java/com/saucelabs/saucebindings/options.yml"));
+        InputStream input = Files.newInputStream(Paths.get("src/test/java/com/saucelabs/saucebindings/deprecated_options.yml"));
         Yaml yaml = new Yaml();
         Map<String, Object> data = yaml.load(input);
         return (Map<String, Object>) data.get(key);

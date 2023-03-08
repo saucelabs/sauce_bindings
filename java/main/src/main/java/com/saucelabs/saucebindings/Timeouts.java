@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Valid W3C timeout values.
+ *
+ * @see <a href="https://docs.saucelabs.com/dev/test-configuration-options/#timeouts">timeouts</a>
+ */
 public enum Timeouts {
 
     IMPLICIT("implicit"),
@@ -16,10 +21,10 @@ public enum Timeouts {
     private final String value;
 
     private static final class TimeoutsLookup {
-        private static final Map<String, String> lookup = new HashMap<String, String>();
+        private static final Map<String, String> lookup = new HashMap<>();
     }
 
-    public static Set keys() {
+    public static Set<String> keys() {
         return TimeoutsLookup.lookup.keySet();
     }
 

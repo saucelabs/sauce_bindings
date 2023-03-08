@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Valid Pre-run executable options.
+ *
+ * @see <a href="https://docs.saucelabs.com/dev/test-configuration-options/#pre-run-executables">Pre-Run Executables</a>
+ */
 public enum Prerun {
     EXECUTABLE("executable"),
     ARGS("args"),
@@ -16,10 +21,10 @@ public enum Prerun {
     private final String value;
 
     private static final class PrerunLookup {
-        private static final Map<String, String> lookup = new HashMap<String, String>();
+        private static final Map<String, String> lookup = new HashMap<>();
     }
 
-    public static Set keys() {
+    public static Set<String> keys() {
         return PrerunLookup.lookup.keySet();
     }
 

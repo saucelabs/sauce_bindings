@@ -2,13 +2,14 @@ package com.saucelabs.saucebindings.options;
 
 import org.openqa.selenium.chrome.ChromeOptions;
 
+/** Capabilities that apply only to Chrome sessions. */
 public class ChromeConfigurations extends VDCConfigurations<ChromeConfigurations> {
     ChromeConfigurations(ChromeOptions chromeOptions) {
         sauceOptions = new SauceOptions(chromeOptions);
     }
 
     /**
-     * Enables Performance Capture feature
+     * Enables Performance Capture feature.
      *
      * @return instance of configuration
      */
@@ -22,20 +23,21 @@ public class ChromeConfigurations extends VDCConfigurations<ChromeConfigurations
     }
 
     /**
-     * Chrome requires the major browser version to match the major driver version
-     * This setting might be useful if there is a bug in the minor or point version of the default chromedriver
+     * Chrome requires the major browser version to match the major driver version.
+     * This setting might be useful if there is a bug in the minor or point version of the default chromedriver.
+     * TODO: Consider ensuring this matches the browser's major version number
+     *
      * @param version the specific version of driver to use for the test
      * @return instance of configuration
      */
-    // Use case is a different point release than the driver provided by default
-    // TODO - consider ensuring this matches browser major version number
     public ChromeConfigurations setChromedriverVersion(String version) {
         sauceOptions.sauce().setChromedriverVersion(version);
         return this;
     }
 
     /**
-     * Toggles on Extended Debugging for the job
+     * Toggles on Extended Debugging for the job.
+     *
      * @return instance of configuration
      * @see <a href="https://docs.saucelabs.com/insights/debug/index.html">Using Extended Debugging</a>
      */

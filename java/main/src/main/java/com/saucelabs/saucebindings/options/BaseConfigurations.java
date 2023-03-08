@@ -6,23 +6,30 @@ import com.saucelabs.saucebindings.SaucePlatform;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Capabilities common to all Sauce Labs tests.
+ *
+ * @param <T> Configuration subclass to be returned by this superclass
+ */
 public abstract class BaseConfigurations<T extends BaseConfigurations<T>> {
     // Needs to be instantiated in subclass
     SauceOptions sauceOptions = null;
 
-    // Available on all configs desktop & mobile
-
     /**
+     * Which platform Sauce will use to execute the test.
+     *
      * @param platform the enum representing the operating system the browser or mobile device should be running on
      * @return instance of configuration
      */
-    // Override this in subclasses to ensure valid enum
+    // Override this in subclasses as needed to ensure valid enum
     public T setPlatformName(SaucePlatform platform) {
         sauceOptions.setPlatformName(platform);
         return (T) this;
     }
 
     /**
+     * The name of the test.
+     *
      * @param name used to record test names for jobs and make it easier to find individual tests
      * @return instance of configuration
      */
@@ -32,7 +39,9 @@ public abstract class BaseConfigurations<T extends BaseConfigurations<T>> {
     }
 
     /**
-     * @param build used to associate jobs with a build number, which is then displayed on both the Dashboard and Archives view
+     * Build name for the test.
+     *
+     * @param build used to associate jobs with a build number then displayed on both the Dashboard and Archives view
      * @return instance of configuration
      */
     public T setBuild(String build) {
@@ -41,6 +50,8 @@ public abstract class BaseConfigurations<T extends BaseConfigurations<T>> {
     }
 
     /**
+     * Tags to associate with a test.
+     *
      * @param tags used to provide labels for grouping and filtering jobs in the Dashboard and Archives view.
      * @return instance of configuration
      */
@@ -50,7 +61,9 @@ public abstract class BaseConfigurations<T extends BaseConfigurations<T>> {
     }
 
     /**
-     * @param data used to provide any custom data associated with a test, limited to 64KB in size
+     * Key Value pairs that can be added to meta data of the test.
+     *
+     * @param data used to provide any custom data associated with a test, limited to 64 KB in size
      * @return instance of configuration
      */
     public T setCustomData(Map<String, Object> data) {
@@ -59,7 +72,8 @@ public abstract class BaseConfigurations<T extends BaseConfigurations<T>> {
     }
 
     /**
-     * This corresponds to "public" keyword in Sauce Documentation, but 'public' is a reserved keyword in Java
+     * This corresponds to "public" keyword in Sauce Documentation, but 'public' is a reserved keyword in Java.
+     *
      * @param visibility enum representing test result visibility level, which controls who can view the test details
      * @return instance of configuration
      */
@@ -69,6 +83,8 @@ public abstract class BaseConfigurations<T extends BaseConfigurations<T>> {
     }
 
     /**
+     * The Sauce Connect tunnel to use.
+     *
      * @param identifier the name of the Sauce Connect tunnel for the test to use
      * @return instance of configuration
      */
@@ -78,7 +94,8 @@ public abstract class BaseConfigurations<T extends BaseConfigurations<T>> {
     }
 
     /**
-     * Setting this requires also setting a tunnelIdentifier
+     * Setting this requires also setting a tunnelIdentifier.
+     *
      * @param identifier the ancestor account name associated with the Sauce Connect tunnel the test should use
      * @return instance of configuration
      */
@@ -88,6 +105,8 @@ public abstract class BaseConfigurations<T extends BaseConfigurations<T>> {
     }
 
     /**
+     * Generates the SauceOptions instance from the configuration class.
+     *
      * @return sauceOptions instance built from setter methods
      */
     public SauceOptions build() {

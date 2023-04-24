@@ -68,15 +68,15 @@ public class SauceSessionTest {
 
     @Test
     public void defaultsToUSWestDataCenter() {
-        String expectedDataCenterEndpoint = DataCenter.US_WEST.getValue();
-        Assert.assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().getValue());
+        DataCenter expectedDataCenterEndpoint = DataCenter.US_WEST;
+        Assert.assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter());
     }
 
     @Test
     public void setsDataCenter() {
-        String expectedDataCenterEndpoint = DataCenter.US_EAST.getValue();
+        String expectedDataCenterEndpoint = DataCenter.US_EAST.toString();
         sauceSession.setDataCenter(DataCenter.US_EAST);
-        Assert.assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().getValue());
+        Assert.assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().toString());
     }
 
     @Test
@@ -98,14 +98,14 @@ public class SauceSessionTest {
     public void stopWithBooleanTrue() {
         sauceSession.start();
         sauceSession.stop(true);
-        Mockito.verify(dummyRemoteDriver).executeScript("sauce:job-result=passed");
+        Mockito.verify(dummyRemoteDriver).executeScript("sauce:job-result=true");
     }
 
     @Test
     public void stopWithBooleanFalse() {
         sauceSession.start();
         sauceSession.stop(false);
-        Mockito.verify(dummyRemoteDriver).executeScript("sauce:job-result=failed");
+        Mockito.verify(dummyRemoteDriver).executeScript("sauce:job-result=false");
     }
 
     @Deprecated
@@ -113,7 +113,7 @@ public class SauceSessionTest {
     public void stopWithStringPassed() {
         sauceSession.start();
         sauceSession.stop("passed");
-        Mockito.verify(dummyRemoteDriver).executeScript("sauce:job-result=passed");
+        Mockito.verify(dummyRemoteDriver).executeScript("sauce:job-result=true");
     }
 
     @Deprecated
@@ -121,7 +121,7 @@ public class SauceSessionTest {
     public void stopWithStringFailed() {
         sauceSession.start();
         sauceSession.stop("failed");
-        Mockito.verify(dummyRemoteDriver).executeScript("sauce:job-result=failed");
+        Mockito.verify(dummyRemoteDriver).executeScript("sauce:job-result=false");
     }
 
     @Test(expected = SauceSessionNotStartedException.class)

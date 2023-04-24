@@ -64,7 +64,7 @@ public class DesktopBrowserTest {
         session.stop(true);
         session.stop(false);
 
-        Assert.assertEquals("passed", session.getResult());
+        Assert.assertEquals("true", session.getResult());
     }
 
     @Test

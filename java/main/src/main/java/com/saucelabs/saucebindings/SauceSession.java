@@ -114,8 +114,9 @@ public class SauceSession {
      */
     public void stop(Boolean passed) {
         if (this.driver != null) {
-            String update = passed ? "passed" : "failed";
-            updateResult(update);
+            // updateResult should actually just take a boolean and should work
+            // should be a bug
+            updateResult(passed.toString());
             quit();
         }
     }

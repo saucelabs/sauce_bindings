@@ -45,8 +45,8 @@ public abstract class CITools {
 
         for (Map.Entry<String, String> tool : KNOWN_TOOLS.entrySet()) {
             if (SystemManager.get(tool.getValue()) != null) {
-                buildName = BUILD_VALUES.get(tool.getKey()).get(0);
-                buildNumber = BUILD_VALUES.get(tool.getKey()).get(1);
+                buildName = SystemManager.get(BUILD_VALUES.get(tool.getKey()).get(0));
+                buildNumber = SystemManager.get(BUILD_VALUES.get(tool.getKey()).get(1));
                 buildInfoStored = true;
                 break;
             }

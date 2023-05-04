@@ -86,6 +86,7 @@ class TestInit(object):
                    'tags': ['foo', 'bar'],
                    'timeZone': 'Foo',
                    'tunnelIdentifier': 'foobar',
+                   'tunnelOwner': 'baz',
                    'videoUploadOnPass': False}
 
         sauce = SauceOptions.ie(**options)
@@ -113,6 +114,7 @@ class TestInit(object):
         assert sauce.tags == ['foo', 'bar']
         assert sauce.time_zone == 'Foo'
         assert sauce.tunnel_identifier == 'foobar'
+        assert sauce.tunnel_owner == 'baz'
         assert sauce.video_upload_on_pass is False
 
     def test_accepts_sauce_values_as_params(self):
@@ -142,6 +144,7 @@ class TestInit(object):
                              tags=['foo', 'bar'],
                              timeZone='Foo',
                              tunnelIdentifier='foobar',
+                             tunnelOwner='baz',
                              videoUploadOnPass=False)
 
         assert sauce.avoid_proxy is True
@@ -168,6 +171,7 @@ class TestInit(object):
         assert sauce.tags == ['foo', 'bar']
         assert sauce.time_zone == 'Foo'
         assert sauce.tunnel_identifier == 'foobar'
+        assert sauce.tunnel_owner == 'baz'
         assert sauce.video_upload_on_pass is False
 
     def test_accepts_selenium_browser_options_instance(self):
@@ -279,6 +283,7 @@ class TestSettingSpecificOptions(object):
         options.tags = tags
         options.time_zone = 'San Francisco'
         options.tunnel_identifier = 'tunnelname'
+        options.tunnel_owner = 'tunnelowner'
         options.video_upload_on_pass = False
 
         assert options.build == 'Sample Build Name'
@@ -300,6 +305,7 @@ class TestSettingSpecificOptions(object):
         assert options.tags == tags
         assert options.time_zone == 'San Francisco'
         assert options.tunnel_identifier == 'tunnelname'
+        assert options.tunnel_owner == 'tunnelowner'
         assert options.video_upload_on_pass is False
 
     def test_setting_browser_name(self):
@@ -379,6 +385,7 @@ class TestCapabilitiesCreation(object):
         options.tags = tags
         options.time_zone = 'San Francisco'
         options.tunnel_identifier = 'tunnelname'
+        options.tunnel_owner = 'tunnelowner'
         options.video_upload_on_pass = False
 
         expected_capabilities = {'browserName': 'internet explorer',
@@ -404,6 +411,7 @@ class TestCapabilitiesCreation(object):
                                                    'tags': ['foo', 'bar'],
                                                    'timeZone': 'San Francisco',
                                                    'tunnelIdentifier': 'tunnelname',
+                                                   'tunnelOwner': 'tunnelowner',
                                                    'videoUploadOnPass': False,
                                                    'username': os.getenv('SAUCE_USERNAME'),
                                                    'accessKey': os.getenv('SAUCE_ACCESS_KEY')}}

@@ -7,6 +7,7 @@ class Configs:
         'custom_data': 'customData',
         'public': 'public',
         'tunnel_identifier': 'tunnelIdentifier',
+        'tunnel_owner': 'tunnelOwner',
         'parent_tunnel': 'parentTunnel'
     }
 

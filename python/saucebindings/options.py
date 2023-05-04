@@ -43,6 +43,7 @@ sauce_configs = {
     'tags': 'tags',
     'time_zone': 'timeZone',
     'tunnel_identifier': 'tunnelIdentifier',
+    'tunnel_owner': 'tunnelOwner',
     'video_upload_on_pass': 'videoUploadOnPass',
     'capture_performance': 'capturePerformance'
 }

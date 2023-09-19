@@ -12,6 +12,7 @@ public enum SaucePlatform {
     WINDOWS_10("Windows 10"),
     WINDOWS_8_1("Windows 8.1"),
     WINDOWS_8("Windows 8"),
+    MAC_VENTURA("macOS 13"),
     MAC_MONTEREY("macOS 12"),
     MAC_BIG_SUR("macOS 11"),
     MAC_CATALINA("macOS 10.15"),

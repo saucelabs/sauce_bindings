@@ -14,18 +14,6 @@ class TestDataCenter(object):
 
         session.stop(True)
 
-    def test_runs_on_us_east(self):
-        options = SauceOptions()
-        options.platform_name = 'Linux'
-
-        session = SauceSession(options)
-        session.data_center = 'us-east'
-
-        session.start()
-
-        assert session.driver.session_id
-        assert "us-east-1" in session.remote_url
-
     def test_runs_on_eu_central(self):
         session = SauceSession()
         session.data_center = 'eu-central'

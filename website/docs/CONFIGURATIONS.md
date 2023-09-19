@@ -26,15 +26,13 @@ Things you may wish to configure:
    * [Virtual Device Capabilities](https://docs.saucelabs.com/dev/test-configuration-options/index.html#virtual-device-capabilities-sauce-specific--optional) 
      (e.g. timeouts, timezone, prerun executable, etc)
 
-3. [Browser Specific Options](BROWSER_OPTIONS.md) - these are capabilities that are exclusive to specific browsers
+3. [Browser Specific Options](BROWSER_OPTIONS.md) - these capabilities are exclusive to specific browsers
     * [Chrome Capabilities](https://chromedriver.chromium.org/capabilities)
     * [Microsoft Edge Capabilities](https://docs.microsoft.com/en-us/microsoft-edge/webdriver-chromium/capabilities-edge-options)
     * [Firefox Capabilities](https://developer.mozilla.org/en-US/docs/Web/WebDriver/Capabilities/firefoxOptions)
     * [Internet Explorer Capabilities](https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/ie/InternetExplorerDriver.html)
     * [Safari Capabilities](https://developer.apple.com/documentation/webkit/about_webdriver_for_safari)
 
-4. [Data Center](DATA_CENTER.md) - there are 4 different data centers to choose from:
+4. [Data Center](DATA_CENTER.md) - there are 2 data centers to choose from:
     * US West ("https://ondemand.us-west-1.saucelabs.com/wd/hub")
-    * US East ("https://ondemand.us-east-1.saucelabs.com/wd/hub")
     * EU Central ("https://ondemand.eu-central-1.saucelabs.com/wd/hub"),
-    * Asia Pacific ("https://ondemand.apac-southeast-1.saucelabs.com/wd/hub");

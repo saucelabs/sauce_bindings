@@ -5,9 +5,8 @@ import lombok.Getter;
 @Getter
 public enum DataCenter {
     US_WEST("us-west-1"),
-    US_EAST("us-east-1"),
-    EU_CENTRAL("eu-central-1"),
-    APAC_SOUTHEAST("apac-southeast-1");
+    US_EAST("us-east-4"),
+    EU_CENTRAL("eu-central-1");
 
     private final String value;
     private final String endpoint;

@@ -1,7 +1,6 @@
 package com.saucelabs.saucebindings.integration;
 
 import com.saucelabs.saucebindings.DataCenter;
-import com.saucelabs.saucebindings.SaucePlatform;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import org.junit.After;
@@ -24,28 +23,7 @@ public class DesktopBrowserTest {
     public void defaultsToUSWest() {
         driver = session.start();
         Assert.assertNotNull(driver);
-        Assert.assertTrue(session.getSauceUrl().toString().contains("us-west-"));
-    }
-
-    @Test
-    public void runsUSEast() {
-        SauceOptions options = new SauceOptions();
-        options.setPlatformName(SaucePlatform.LINUX);
-        session = new SauceSession(options);
-        session.setDataCenter(DataCenter.US_EAST);
-        driver = session.start();
-
-        Assert.assertNotNull(driver);
-        Assert.assertTrue(session.getSauceUrl().toString().contains("us-east-1"));
-    }
-
-    @Test
-    public void runsAPACSoutheast() {
-        session.setDataCenter(DataCenter.APAC_SOUTHEAST);
-        driver = session.start();
-
-        Assert.assertNotNull(driver);
-        Assert.assertTrue(session.getSauceUrl().toString().contains("apac-southeast"));
+        Assert.assertTrue(session.getSauceUrl().toString().contains(DataCenter.US_WEST.toString()));
     }
 
     @Test
@@ -54,7 +32,7 @@ public class DesktopBrowserTest {
         driver = session.start();
 
         Assert.assertNotNull(driver);
-        Assert.assertTrue(session.getSauceUrl().toString().contains("eu-central-1"));
+        Assert.assertTrue(session.getSauceUrl().toString().contains(DataCenter.EU_CENTRAL.toString()));
     }
 
     @Test

@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -48,7 +48,7 @@ public class SauceSessionTest {
     public void sauceSessionUsesProvidedSauceOptions() {
         Mockito.doReturn(dummyMutableCapabilities).when(sauceOptions).toCapabilities();
         Mockito.doReturn(dummyRemoteDriver).when(sauceOptsSession)
-                .createRemoteWebDriver(Mockito.any(URL.class), Matchers.eq(dummyMutableCapabilities));
+                .createRemoteWebDriver(Mockito.any(URL.class), ArgumentMatchers.eq(dummyMutableCapabilities));
 
         sauceOptsSession.start();
 

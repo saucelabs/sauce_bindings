@@ -8,8 +8,6 @@ import org.openqa.selenium.Capabilities;
 
 import java.time.Duration;
 
-import static org.junit.Assert.assertEquals;
-
 public class AdjustOptionsTest extends SauceBaseTest {
 
     @Override

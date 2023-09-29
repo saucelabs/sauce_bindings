@@ -34,12 +34,6 @@
             <organizationUrl>http://www.saucelabs.com/</organizationUrl>
         </developer>
         <developer>
-            <name>Josh Grant</name>
-            <email>josh.grant@saucelabs.com</email>
-            <organization>Sauce Labs</organization>
-            <organizationUrl>http://www.saucelabs.com/</organizationUrl>
-        </developer>
-        <developer>
             <name>Marcus Merrell</name>
             <email>marcus.merrell@saucelabs.com</email>
             <organization>Sauce Labs</organization>
@@ -83,7 +77,12 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.12.1</version>
+            <version>4.13.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-http-jdk-client</artifactId>
+            <version>4.13.0</version>
         </dependency>
         <dependency>
             <groupId>org.yaml</groupId>
@@ -125,6 +124,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.1.2</version>
                 <configuration>
+                    <systemPropertyVariables>
+                        <webdriver.http.factory>jdk-http-client</webdriver.http.factory>
+                    </systemPropertyVariables>
                     <properties>
                         <configurationParameters>
                             junit.jupiter.execution.parallel.enabled = true
@@ -153,7 +155,7 @@
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.7</version>
+                <version>1.6.13</version>
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>ossrh</serverId>
@@ -197,10 +199,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <source>8</source>
-                    <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
-                </configuration>
             </plugin>
         </plugins>
     </build>

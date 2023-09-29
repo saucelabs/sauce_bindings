@@ -2,7 +2,7 @@ package com.saucelabs.saucebindings.examples;
 
 import com.saucelabs.saucebindings.options.SauceOptions;
 import com.saucelabs.saucebindings.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class CommonOptionsTest {

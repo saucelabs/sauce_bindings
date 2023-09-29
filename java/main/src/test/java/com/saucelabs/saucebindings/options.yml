@@ -27,7 +27,7 @@ exampleValues:
     name: 'Sample Test Name'
     parentTunnel: 'Mommy'
     prerun:
-      executable: "http://url.to/your/executable.exe"
+      executable: "https://url.to/your/executable.exe"
       args:
         - --silent
         - -a

@@ -2,7 +2,7 @@ package com.saucelabs.saucebindings.examples;
 
 import com.deque.html.axecore.selenium.AxeBuilder;
 import com.saucelabs.saucebindings.SauceSession;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class AccessibilityTest {

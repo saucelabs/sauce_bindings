@@ -3,16 +3,16 @@ package com.saucelabs.saucebindings.integration;
 import com.saucelabs.saucebindings.DataCenter;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class DesktopBrowserTest {
     private SauceSession session = new SauceSession();
     private RemoteWebDriver driver;
 
-    @After
+    @AfterEach
     public void cleanUp() {
         if (session != null) {
             session.stop(true);
@@ -22,8 +22,8 @@ public class DesktopBrowserTest {
     @Test
     public void defaultsToUSWest() {
         driver = session.start();
-        Assert.assertNotNull(driver);
-        Assert.assertTrue(session.getSauceUrl().toString().contains(DataCenter.US_WEST.toString()));
+        Assertions.assertNotNull(driver);
+        Assertions.assertTrue(session.getSauceUrl().toString().contains(DataCenter.US_WEST.toString()));
     }
 
     @Test
@@ -31,8 +31,8 @@ public class DesktopBrowserTest {
         session.setDataCenter(DataCenter.EU_CENTRAL);
         driver = session.start();
 
-        Assert.assertNotNull(driver);
-        Assert.assertTrue(session.getSauceUrl().toString().contains(DataCenter.EU_CENTRAL.toString()));
+        Assertions.assertNotNull(driver);
+        Assertions.assertTrue(session.getSauceUrl().toString().contains(DataCenter.EU_CENTRAL.toString()));
     }
 
     @Test
@@ -42,7 +42,7 @@ public class DesktopBrowserTest {
         session.stop(true);
         session.stop(false);
 
-        Assert.assertEquals("passed", session.getResult());
+        Assertions.assertEquals("passed", session.getResult());
     }
 
     @Test
@@ -50,7 +50,7 @@ public class DesktopBrowserTest {
         driver = session.start();
         session.stop(true);
 
-        Assert.assertNull(session.getDriver());
+        Assertions.assertNull(session.getDriver());
     }
 
     @Test
@@ -62,11 +62,11 @@ public class DesktopBrowserTest {
 
         driver.get("https://www.saucedemo.com");
 
-        Assert.assertEquals("Failed to open page", driver.getTitle());
+        Assertions.assertEquals("Failed to open page", driver.getTitle());
 
         session.startNetwork();
         driver.get("https://www.saucedemo.com");
 
-        Assert.assertEquals("Swag Labs", driver.getTitle());
+        Assertions.assertEquals("Swag Labs", driver.getTitle());
     }
 }

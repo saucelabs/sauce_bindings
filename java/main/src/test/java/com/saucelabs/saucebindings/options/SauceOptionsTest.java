@@ -2,17 +2,13 @@ package com.saucelabs.saucebindings.options;
 
 import com.saucelabs.saucebindings.*;
 import lombok.SneakyThrows;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.time.Duration;
@@ -24,14 +20,11 @@ import java.util.Map;
 public class SauceOptionsTest {
     private SauceOptions sauceOptions = new SauceOptions();
 
-    @Rule
-    public MockitoRule initRule = MockitoJUnit.rule();
-
     @Test
     public void usesLatestChromeWindowsVersionsByDefault() {
-        Assert.assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
-        Assert.assertEquals(SaucePlatform.WINDOWS_10, sauceOptions.getPlatformName());
-        Assert.assertEquals("latest", sauceOptions.getBrowserVersion());
+        Assertions.assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
+        Assertions.assertEquals(SaucePlatform.WINDOWS_10, sauceOptions.getPlatformName());
+        Assertions.assertEquals("latest", sauceOptions.getBrowserVersion());
     }
 
     @Test
@@ -40,9 +33,9 @@ public class SauceOptionsTest {
         sauceOptions.setPlatformName(SaucePlatform.MAC_HIGH_SIERRA);
         sauceOptions.setBrowserVersion("68");
 
-        Assert.assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
-        Assert.assertEquals("68", sauceOptions.getBrowserVersion());
-        Assert.assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
+        Assertions.assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
+        Assertions.assertEquals("68", sauceOptions.getBrowserVersion());
+        Assertions.assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
     }
 
     @Test
@@ -51,9 +44,9 @@ public class SauceOptionsTest {
                 .setBrowserVersion("68")
                 .setPlatformName(SaucePlatform.MAC_HIGH_SIERRA);
 
-        Assert.assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
-        Assert.assertEquals("68", sauceOptions.getBrowserVersion());
-        Assert.assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
+        Assertions.assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
+        Assertions.assertEquals("68", sauceOptions.getBrowserVersion());
+        Assertions.assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
     }
 
     @Test
@@ -68,14 +61,14 @@ public class SauceOptionsTest {
         sauceOptions.timeout.setPageLoad(100000);
         sauceOptions.timeout.setScript(10000);
 
-        Assert.assertEquals(true, sauceOptions.getAcceptInsecureCerts());
-        Assert.assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
-        Assert.assertEquals(true, sauceOptions.getSetWindowRect());
-        Assert.assertEquals(UnhandledPromptBehavior.IGNORE, sauceOptions.getUnhandledPromptBehavior());
-        Assert.assertEquals(true, sauceOptions.getStrictFileInteractability());
-        Assert.assertEquals(Duration.ofSeconds(1), sauceOptions.getImplicitWaitTimeout());
-        Assert.assertEquals(Duration.ofSeconds(100), sauceOptions.getPageLoadTimeout());
-        Assert.assertEquals(Duration.ofSeconds(10), sauceOptions.getScriptTimeout());
+        Assertions.assertEquals(true, sauceOptions.getAcceptInsecureCerts());
+        Assertions.assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
+        Assertions.assertEquals(true, sauceOptions.getSetWindowRect());
+        Assertions.assertEquals(UnhandledPromptBehavior.IGNORE, sauceOptions.getUnhandledPromptBehavior());
+        Assertions.assertEquals(true, sauceOptions.getStrictFileInteractability());
+        Assertions.assertEquals(Duration.ofSeconds(1), sauceOptions.getImplicitWaitTimeout());
+        Assertions.assertEquals(Duration.ofSeconds(100), sauceOptions.getPageLoadTimeout());
+        Assertions.assertEquals(Duration.ofSeconds(10), sauceOptions.getScriptTimeout());
     }
 
     @Test
@@ -90,7 +83,7 @@ public class SauceOptionsTest {
         args.add("-q");
 
         Map<Prerun, Object> prerun = new HashMap<>();
-        prerun.put(Prerun.EXECUTABLE, "http://url.to/your/executable.exe");
+        prerun.put(Prerun.EXECUTABLE, "https://url.to/your/executable.exe");
         prerun.put(Prerun.ARGS, args);
         prerun.put(Prerun.BACKGROUND, false);
         prerun.put(Prerun.TIMEOUT, 120);
@@ -125,40 +118,40 @@ public class SauceOptionsTest {
         sauceOptions.sauce().setTunnelIdentifier("tunnelname");
         sauceOptions.sauce().setVideoUploadOnPass(false);
 
-        Assert.assertEquals(true, sauceOptions.sauce().getAvoidProxy());
-        Assert.assertEquals("Sample Build Name", sauceOptions.sauce().getBuild());
-        Assert.assertEquals(true, sauceOptions.sauce().getCapturePerformance());
-        Assert.assertEquals("71", sauceOptions.sauce().getChromedriverVersion());
-        Assert.assertEquals(Integer.valueOf(2), sauceOptions.sauce().getCommandTimeout());
-        Assert.assertEquals(customData, sauceOptions.sauce().getCustomData());
-        Assert.assertEquals(true, sauceOptions.sauce().getExtendedDebugging());
-        Assert.assertEquals(Integer.valueOf(3), sauceOptions.sauce().getIdleTimeout());
-        Assert.assertEquals("3.141.0", sauceOptions.sauce().getIedriverVersion());
-        Assert.assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
-        Assert.assertEquals("Test name", sauceOptions.sauce().getName());
-        Assert.assertEquals("Mommy", sauceOptions.sauce().getParentTunnel());
-        Assert.assertEquals(prerun, sauceOptions.sauce().getPrerun());
-        Assert.assertEquals(Integer.valueOf(0), sauceOptions.sauce().getPriority());
-        Assert.assertEquals(JobVisibility.TEAM, sauceOptions.sauce().getJobVisibility());
-        Assert.assertEquals(false, sauceOptions.sauce().getRecordLogs());
-        Assert.assertEquals(false, sauceOptions.sauce().getRecordScreenshots());
-        Assert.assertEquals(false, sauceOptions.sauce().getRecordVideo());
-        Assert.assertEquals("10x10", sauceOptions.sauce().getScreenResolution());
-        Assert.assertEquals("3.141.59", sauceOptions.sauce().getSeleniumVersion());
-        Assert.assertEquals(tags, sauceOptions.sauce().getTags());
-        Assert.assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
-        Assert.assertEquals("tunnelname", sauceOptions.sauce().getTunnelIdentifier());
-        Assert.assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());
+        Assertions.assertEquals(true, sauceOptions.sauce().getAvoidProxy());
+        Assertions.assertEquals("Sample Build Name", sauceOptions.sauce().getBuild());
+        Assertions.assertEquals(true, sauceOptions.sauce().getCapturePerformance());
+        Assertions.assertEquals("71", sauceOptions.sauce().getChromedriverVersion());
+        Assertions.assertEquals(Integer.valueOf(2), sauceOptions.sauce().getCommandTimeout());
+        Assertions.assertEquals(customData, sauceOptions.sauce().getCustomData());
+        Assertions.assertEquals(true, sauceOptions.sauce().getExtendedDebugging());
+        Assertions.assertEquals(Integer.valueOf(3), sauceOptions.sauce().getIdleTimeout());
+        Assertions.assertEquals("3.141.0", sauceOptions.sauce().getIedriverVersion());
+        Assertions.assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
+        Assertions.assertEquals("Test name", sauceOptions.sauce().getName());
+        Assertions.assertEquals("Mommy", sauceOptions.sauce().getParentTunnel());
+        Assertions.assertEquals(prerun, sauceOptions.sauce().getPrerun());
+        Assertions.assertEquals(Integer.valueOf(0), sauceOptions.sauce().getPriority());
+        Assertions.assertEquals(JobVisibility.TEAM, sauceOptions.sauce().getJobVisibility());
+        Assertions.assertEquals(false, sauceOptions.sauce().getRecordLogs());
+        Assertions.assertEquals(false, sauceOptions.sauce().getRecordScreenshots());
+        Assertions.assertEquals(false, sauceOptions.sauce().getRecordVideo());
+        Assertions.assertEquals("10x10", sauceOptions.sauce().getScreenResolution());
+        Assertions.assertEquals("3.141.59", sauceOptions.sauce().getSeleniumVersion());
+        Assertions.assertEquals(tags, sauceOptions.sauce().getTags());
+        Assertions.assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
+        Assertions.assertEquals("tunnelname", sauceOptions.sauce().getTunnelIdentifier());
+        Assertions.assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());
     }
 
     @Test
     public void createsDefaultBuildName() {
-        Assert.assertNotNull(sauceOptions.sauce().getBuild());
+        Assertions.assertNotNull(sauceOptions.sauce().getBuild());
     }
 
     @SneakyThrows
     public Map<String, Object> serialize(String key) {
-        InputStream input = new FileInputStream(new File("src/test/java/com/saucelabs/saucebindings/options.yml"));
+        InputStream input = new FileInputStream("src/test/java/com/saucelabs/saucebindings/options.yml");
         Yaml yaml = new Yaml();
         Map<String, Object> data = yaml.load(input);
         return (Map<String, Object>) data.get(key);
@@ -180,7 +173,7 @@ public class SauceOptionsTest {
         args.add("-q");
 
         Map<Prerun, Object> prerun = new HashMap<>();
-        prerun.put(Prerun.EXECUTABLE, "http://url.to/your/executable.exe");
+        prerun.put(Prerun.EXECUTABLE, "https://url.to/your/executable.exe");
         prerun.put(Prerun.ARGS, args);
         prerun.put(Prerun.BACKGROUND, false);
         prerun.put(Prerun.TIMEOUT, 120);
@@ -190,83 +183,91 @@ public class SauceOptionsTest {
         tags.add("bar");
         tags.add("foobar");
 
-        Assert.assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
-        Assert.assertEquals("68", sauceOptions.getBrowserVersion());
-        Assert.assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
-        Assert.assertEquals(true, sauceOptions.getAcceptInsecureCerts());
-        Assert.assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
-        Assert.assertEquals(true, sauceOptions.getSetWindowRect());
-        Assert.assertEquals(UnhandledPromptBehavior.ACCEPT, sauceOptions.getUnhandledPromptBehavior());
-        Assert.assertEquals(true, sauceOptions.getStrictFileInteractability());
-        Assert.assertEquals(Duration.ofSeconds(1), sauceOptions.getImplicitWaitTimeout());
-        Assert.assertEquals(Duration.ofSeconds(59), sauceOptions.getPageLoadTimeout());
-        Assert.assertEquals(Duration.ofSeconds(29), sauceOptions.getScriptTimeout());
-        Assert.assertEquals(true, sauceOptions.sauce().getAvoidProxy());
-        Assert.assertEquals("Sample Build Name", sauceOptions.sauce().getBuild());
-        Assert.assertEquals(true, sauceOptions.sauce().getCapturePerformance());
-        Assert.assertEquals("71", sauceOptions.sauce().getChromedriverVersion());
-        Assert.assertEquals(Integer.valueOf(2), sauceOptions.sauce().getCommandTimeout());
-        Assert.assertEquals(customData, sauceOptions.sauce().getCustomData());
-        Assert.assertEquals(true, sauceOptions.sauce().getExtendedDebugging());
-        Assert.assertEquals(Integer.valueOf(3), sauceOptions.sauce().getIdleTimeout());
-        Assert.assertEquals("3.141.0", sauceOptions.sauce().getIedriverVersion());
-        Assert.assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
-        Assert.assertEquals("Sample Test Name", sauceOptions.sauce().getName());
-        Assert.assertEquals("Mommy", sauceOptions.sauce().getParentTunnel());
-        Assert.assertEquals(prerun, sauceOptions.sauce().getPrerun());
-        Assert.assertEquals(Integer.valueOf(0), sauceOptions.sauce().getPriority());
-        Assert.assertEquals(JobVisibility.TEAM, sauceOptions.sauce().getJobVisibility());
-        Assert.assertEquals(false, sauceOptions.sauce().getRecordLogs());
-        Assert.assertEquals(false, sauceOptions.sauce().getRecordScreenshots());
-        Assert.assertEquals(false, sauceOptions.sauce().getRecordVideo());
-        Assert.assertEquals("10x10", sauceOptions.sauce().getScreenResolution());
-        Assert.assertEquals("3.141.59", sauceOptions.sauce().getSeleniumVersion());
-        Assert.assertEquals(tags, sauceOptions.sauce().getTags());
-        Assert.assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
-        Assert.assertEquals("tunnelname", sauceOptions.sauce().getTunnelIdentifier());
-        Assert.assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());
+        Assertions.assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
+        Assertions.assertEquals("68", sauceOptions.getBrowserVersion());
+        Assertions.assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
+        Assertions.assertEquals(true, sauceOptions.getAcceptInsecureCerts());
+        Assertions.assertEquals(PageLoadStrategy.EAGER, sauceOptions.getPageLoadStrategy());
+        Assertions.assertEquals(true, sauceOptions.getSetWindowRect());
+        Assertions.assertEquals(UnhandledPromptBehavior.ACCEPT, sauceOptions.getUnhandledPromptBehavior());
+        Assertions.assertEquals(true, sauceOptions.getStrictFileInteractability());
+        Assertions.assertEquals(Duration.ofSeconds(1), sauceOptions.getImplicitWaitTimeout());
+        Assertions.assertEquals(Duration.ofSeconds(59), sauceOptions.getPageLoadTimeout());
+        Assertions.assertEquals(Duration.ofSeconds(29), sauceOptions.getScriptTimeout());
+        Assertions.assertEquals(true, sauceOptions.sauce().getAvoidProxy());
+        Assertions.assertEquals("Sample Build Name", sauceOptions.sauce().getBuild());
+        Assertions.assertEquals(true, sauceOptions.sauce().getCapturePerformance());
+        Assertions.assertEquals("71", sauceOptions.sauce().getChromedriverVersion());
+        Assertions.assertEquals(Integer.valueOf(2), sauceOptions.sauce().getCommandTimeout());
+        Assertions.assertEquals(customData, sauceOptions.sauce().getCustomData());
+        Assertions.assertEquals(true, sauceOptions.sauce().getExtendedDebugging());
+        Assertions.assertEquals(Integer.valueOf(3), sauceOptions.sauce().getIdleTimeout());
+        Assertions.assertEquals("3.141.0", sauceOptions.sauce().getIedriverVersion());
+        Assertions.assertEquals(Integer.valueOf(300), sauceOptions.sauce().getMaxDuration());
+        Assertions.assertEquals("Sample Test Name", sauceOptions.sauce().getName());
+        Assertions.assertEquals("Mommy", sauceOptions.sauce().getParentTunnel());
+        Assertions.assertEquals(prerun, sauceOptions.sauce().getPrerun());
+        Assertions.assertEquals(Integer.valueOf(0), sauceOptions.sauce().getPriority());
+        Assertions.assertEquals(JobVisibility.TEAM, sauceOptions.sauce().getJobVisibility());
+        Assertions.assertEquals(false, sauceOptions.sauce().getRecordLogs());
+        Assertions.assertEquals(false, sauceOptions.sauce().getRecordScreenshots());
+        Assertions.assertEquals(false, sauceOptions.sauce().getRecordVideo());
+        Assertions.assertEquals("10x10", sauceOptions.sauce().getScreenResolution());
+        Assertions.assertEquals("3.141.59", sauceOptions.sauce().getSeleniumVersion());
+        Assertions.assertEquals(tags, sauceOptions.sauce().getTags());
+        Assertions.assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
+        Assertions.assertEquals("tunnelname", sauceOptions.sauce().getTunnelIdentifier());
+        Assertions.assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());
     }
 
-    @Test(expected = InvalidSauceOptionsArgumentException.class)
-    public void setsBadBrowserFromMap()  {
+    @Test
+    public void setsBadBrowserFromMap() {
         Map<String, Object> map = serialize("badBrowser");
-        sauceOptions.mergeCapabilities(map);
+
+        Assertions.assertThrows(InvalidSauceOptionsArgumentException.class, () ->
+                sauceOptions.mergeCapabilities(map));
     }
 
-    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    @Test
     public void setsBadPlatformFromMap() {
         Map<String, Object> map = serialize("badPlatform");
-        sauceOptions.mergeCapabilities(map);
+        Assertions.assertThrows(InvalidSauceOptionsArgumentException.class, () ->
+                sauceOptions.mergeCapabilities(map));
     }
 
-    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    @Test
     public void setsBadJobVisibilityFromMap() {
         Map<String, Object> map = serialize("badJobVisibility");
-        sauceOptions.mergeCapabilities(map);
+        Assertions.assertThrows(InvalidSauceOptionsArgumentException.class, () ->
+                sauceOptions.mergeCapabilities(map));
     }
 
-    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    @Test
     public void setsBadPromptFromMap() {
         Map<String, Object> map = serialize("badPrompt");
-        sauceOptions.mergeCapabilities(map);
+        Assertions.assertThrows(InvalidSauceOptionsArgumentException.class, () ->
+                sauceOptions.mergeCapabilities(map));
     }
 
-    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    @Test
     public void setsBadTimeoutFromMap() {
         Map<String, Object> map = serialize("badTimeout");
-        sauceOptions.mergeCapabilities(map);
+        Assertions.assertThrows(InvalidSauceOptionsArgumentException.class, () ->
+                sauceOptions.mergeCapabilities(map));
     }
 
-    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    @Test
     public void setsBadPrerunFromMap() {
         Map<String, Object> map = serialize("badPrerun");
-        sauceOptions.mergeCapabilities(map);
+        Assertions.assertThrows(InvalidSauceOptionsArgumentException.class, () ->
+                sauceOptions.mergeCapabilities(map));
     }
 
-    @Test(expected = InvalidSauceOptionsArgumentException.class)
+    @Test
     public void setsBadPageLoadFromMap() {
         Map<String, Object> map = serialize("badPageLoad");
-        sauceOptions.mergeCapabilities(map);
+        Assertions.assertThrows(InvalidSauceOptionsArgumentException.class, () ->
+                sauceOptions.mergeCapabilities(map));
     }
 
     @Test
@@ -307,7 +308,7 @@ public class SauceOptionsTest {
         expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
         MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
 
-        Assert.assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
+        Assertions.assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
     }
 
     @Test
@@ -322,7 +323,7 @@ public class SauceOptionsTest {
         args.add("-q");
 
         Map<Prerun, Object> prerun = new HashMap<>();
-        prerun.put(Prerun.EXECUTABLE, "http://url.to/your/executable.exe");
+        prerun.put(Prerun.EXECUTABLE, "https://url.to/your/executable.exe");
         prerun.put(Prerun.ARGS, args);
         prerun.put(Prerun.BACKGROUND, false);
         prerun.put(Prerun.TIMEOUT, 120);
@@ -394,7 +395,7 @@ public class SauceOptionsTest {
         MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
 
         // toString() serializes the enums
-        Assert.assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
+        Assertions.assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
     }
 
     @Test
@@ -420,7 +421,7 @@ public class SauceOptionsTest {
         expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
         MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
 
-        Assert.assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
+        Assertions.assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
     }
 
     @Test
@@ -472,6 +473,6 @@ public class SauceOptionsTest {
         expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
         MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
 
-        Assert.assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
+        Assertions.assertEquals(expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
     }
 }

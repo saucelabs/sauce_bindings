@@ -3,22 +3,20 @@ package com.saucelabs.saucebindings.integration;
 import com.deque.html.axecore.results.Results;
 import com.deque.html.axecore.results.Rule;
 import com.saucelabs.saucebindings.SauceSession;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.util.List;
 
 public class AccessibilityTest {
-    private SauceSession session = new SauceSession();
+    private final SauceSession session = new SauceSession();
     private RemoteWebDriver webDriver;
 
-    @After
+    @AfterEach
     public void cleanUp() {
-        if (session != null) {
-            session.stop(true);
-        }
+        session.stop(true);
     }
 
     @Test
@@ -29,7 +27,7 @@ public class AccessibilityTest {
         Results results = session.getAccessibilityResults();
         List<Rule> violations = results.getViolations();
         int problems = violations.stream().map(e -> e.getNodes().size()).reduce(0, Integer::sum);
-        Assert.assertEquals(16, problems);
+        Assertions.assertEquals(16, problems);
     }
 
     @Test
@@ -40,7 +38,7 @@ public class AccessibilityTest {
         Results results = session.getAccessibilityResults();
         List<Rule> violations = results.getViolations();
         int problems = violations.stream().map(e -> e.getNodes().size()).reduce(0, Integer::sum);
-        Assert.assertEquals(14, problems);
+        Assertions.assertEquals(14, problems);
     }
 
     @Test
@@ -51,7 +49,7 @@ public class AccessibilityTest {
         Results results = session.getAccessibilityResults(false);
         List<Rule> violations = results.getViolations();
         int problems = violations.stream().map(e -> e.getNodes().size()).reduce(0, Integer::sum);
-        Assert.assertEquals(7, problems);
+        Assertions.assertEquals(7, problems);
     }
 
     @Test
@@ -62,6 +60,6 @@ public class AccessibilityTest {
         Results results = session.getAccessibilityResults(false);
         List<Rule> violations = results.getViolations();
         int problems = violations.stream().map(e -> e.getNodes().size()).reduce(0, Integer::sum);
-        Assert.assertEquals(6, problems);
+        Assertions.assertEquals(6, problems);
     }
 }

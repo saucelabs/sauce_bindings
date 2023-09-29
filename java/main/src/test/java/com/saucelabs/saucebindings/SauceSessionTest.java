@@ -2,14 +2,15 @@ package com.saucelabs.saucebindings;
 
 import com.google.common.collect.ImmutableList;
 import com.saucelabs.saucebindings.options.SauceOptions;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -17,6 +18,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+@ExtendWith(MockitoExtension.class)
 public class SauceSessionTest {
     private SauceOptions sauceOptions = Mockito.spy(new SauceOptions());
     private SauceSession sauceSession = Mockito.spy(new SauceSession());
@@ -24,10 +26,7 @@ public class SauceSessionTest {
     private final RemoteWebDriver dummyRemoteDriver = Mockito.mock(RemoteWebDriver.class);
     private final MutableCapabilities dummyMutableCapabilities = Mockito.mock(MutableCapabilities.class);
 
-    @Rule
-    public MockitoRule initRule = MockitoJUnit.rule();
-
-    @Before
+    @BeforeEach
     public void setUp() {
         Mockito.doReturn(dummyRemoteDriver).when(sauceSession)
                 .createRemoteWebDriver(Mockito.any(URL.class), Mockito.any(MutableCapabilities.class));
@@ -39,9 +38,9 @@ public class SauceSessionTest {
         String actualBrowserVersion = sauceSession.getSauceOptions().getBrowserVersion();
         SaucePlatform actualPlatformName = sauceSession.getSauceOptions().getPlatformName();
 
-        Assert.assertEquals(Browser.CHROME, actualBrowser);
-        Assert.assertEquals(SaucePlatform.WINDOWS_10, actualPlatformName);
-        Assert.assertEquals("latest", actualBrowserVersion);
+        Assertions.assertEquals(Browser.CHROME, actualBrowser);
+        Assertions.assertEquals(SaucePlatform.WINDOWS_10, actualPlatformName);
+        Assertions.assertEquals("latest", actualBrowserVersion);
     }
 
     @Test
@@ -61,29 +60,29 @@ public class SauceSessionTest {
                 .setPlatformName(SaucePlatform.MAC_MOJAVE));
         SauceOptions sauceOptions = sauceSession.getSauceOptions();
 
-        Assert.assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
-        Assert.assertEquals(SaucePlatform.MAC_MOJAVE, sauceOptions.getPlatformName());
-        Assert.assertEquals("latest", sauceOptions.getBrowserVersion());
+        Assertions.assertEquals(Browser.CHROME, sauceOptions.getBrowserName());
+        Assertions.assertEquals(SaucePlatform.MAC_MOJAVE, sauceOptions.getPlatformName());
+        Assertions.assertEquals("latest", sauceOptions.getBrowserVersion());
     }
 
     @Test
     public void defaultsToUSWestDataCenter() {
-        String expectedDataCenterEndpoint = DataCenter.US_WEST.getValue();
-        Assert.assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().getValue());
+        String expectedDataCenterEndpoint = DataCenter.US_WEST.getEndpoint();
+        Assertions.assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().getEndpoint());
     }
 
     @Test
     public void setsDataCenter() {
-        String expectedDataCenterEndpoint = DataCenter.US_EAST.getValue();
+        String expectedDataCenterEndpoint = DataCenter.US_EAST.getEndpoint();
         sauceSession.setDataCenter(DataCenter.US_EAST);
-        Assert.assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().getValue());
+        Assertions.assertEquals(expectedDataCenterEndpoint, sauceSession.getDataCenter().getEndpoint());
     }
 
     @Test
     public void setsSauceURLDirectly() throws MalformedURLException {
-        sauceSession.setSauceUrl(new URL("http://example.com"));
-        String expectedSauceUrl = "http://example.com";
-        Assert.assertEquals(expectedSauceUrl, sauceSession.getSauceUrl().toString());
+        sauceSession.setSauceUrl(new URL("https://example.com"));
+        String expectedSauceUrl = "https://example.com";
+        Assertions.assertEquals(expectedSauceUrl, sauceSession.getSauceUrl().toString());
     }
 
     @Test
@@ -124,9 +123,10 @@ public class SauceSessionTest {
         Mockito.verify(dummyRemoteDriver).executeScript("sauce:job-result=failed");
     }
 
-    @Test(expected = SauceSessionNotStartedException.class)
+    @Test
     public void annotateRequiresStart() {
-        sauceSession.annotate("Comment Causes Failure");
+        Assertions.assertThrows(SauceSessionNotStartedException.class, () ->
+                sauceSession.annotate("Comment Causes Failure"));
     }
 
     @Test
@@ -136,9 +136,10 @@ public class SauceSessionTest {
         Mockito.verify(dummyRemoteDriver).executeScript("sauce:context=Comment in Command List");
     }
 
-    @Test(expected = SauceSessionNotStartedException.class)
+    @Test
     public void pauseRequiresStart() {
-        sauceSession.pause();
+        Assertions.assertThrows(SauceSessionNotStartedException.class, () ->
+                sauceSession.pause());
     }
 
     @Test
@@ -148,9 +149,10 @@ public class SauceSessionTest {
         Mockito.verify(dummyRemoteDriver).executeScript("sauce: break");
     }
 
-    @Test(expected = SauceSessionNotStartedException.class)
+    @Test
     public void disableLoggingRequiresStart() {
-        sauceSession.disableLogging();
+        Assertions.assertThrows(SauceSessionNotStartedException.class, () ->
+                sauceSession.disableLogging());
     }
 
     @Test
@@ -160,9 +162,10 @@ public class SauceSessionTest {
         Mockito.verify(dummyRemoteDriver).executeScript("sauce: disable log");
     }
 
-    @Test(expected = SauceSessionNotStartedException.class)
+    @Test
     public void enableLoggingRequiresStart() {
-        sauceSession.enableLogging();
+        Assertions.assertThrows(SauceSessionNotStartedException.class, () ->
+                sauceSession.enableLogging());
     }
 
     @Test
@@ -172,20 +175,23 @@ public class SauceSessionTest {
         Mockito.verify(dummyRemoteDriver).executeScript("sauce: enable log");
     }
 
-    @Test(expected = SauceSessionNotStartedException.class)
+    @Test
     public void stopNetworkRequiresStart() {
-        sauceSession.stopNetwork();
-    }
-
-    @Test(expected = InvalidArgumentException.class)
-    public void stopNetworkRequiresMac() {
-        sauceSession.start();
-        sauceSession.stopNetwork();
+        Assertions.assertThrows(SauceSessionNotStartedException.class, () ->
+                sauceSession.stopNetwork());
     }
 
     @Test
+    public void stopNetworkRequiresMac() {
+        sauceSession.start();
+
+        Assertions.assertThrows(InvalidArgumentException.class, () ->
+                sauceSession.stopNetwork());
+    }
+
+    @Test
+    @EnabledOnOs(OS.MAC)
     public void stopsNetwork() {
-        // Only works on Mac
         sauceOptions = Mockito.spy(SauceOptions.safari().build());
         sauceSession = Mockito.spy(new SauceSession(sauceOptions));
         Mockito.doReturn(dummyMutableCapabilities).when(sauceOptions).toCapabilities();
@@ -197,15 +203,18 @@ public class SauceSessionTest {
         Mockito.verify(dummyRemoteDriver).executeScript("sauce: stop network");
     }
 
-    @Test(expected = SauceSessionNotStartedException.class)
+    @Test
     public void startNetworkRequiresStart() {
-        sauceSession.startNetwork();
+        Assertions.assertThrows(SauceSessionNotStartedException.class, () ->
+                sauceSession.startNetwork());
     }
 
-    @Test(expected = InvalidArgumentException.class)
+    @Test
     public void startNetworkRequiresMac() {
         sauceSession.start();
-        sauceSession.startNetwork();
+
+        Assertions.assertThrows(InvalidArgumentException.class, () ->
+                sauceSession.startNetwork());
     }
 
     @Test
@@ -222,9 +231,10 @@ public class SauceSessionTest {
         Mockito.verify(dummyRemoteDriver).executeScript("sauce: start network");
     }
 
-    @Test(expected = SauceSessionNotStartedException.class)
+    @Test
     public void changeNameRequiresStart() {
-        sauceSession.changeTestName("New Name Causes Failure");
+        Assertions.assertThrows(SauceSessionNotStartedException.class, () ->
+                sauceSession.changeTestName("New Name Causes Failure"));
     }
 
     @Test
@@ -234,9 +244,10 @@ public class SauceSessionTest {
         Mockito.verify(dummyRemoteDriver).executeScript("sauce:job-name=New Name");
     }
 
-    @Test(expected = SauceSessionNotStartedException.class)
+    @Test
     public void addTagsRequiresStart() {
-        sauceSession.addTags(ImmutableList.of("foo", "bar"));
+        Assertions.assertThrows(SauceSessionNotStartedException.class, () ->
+                sauceSession.addTags(ImmutableList.of("foo", "bar")));
     }
 
     @Test

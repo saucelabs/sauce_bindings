@@ -4,7 +4,7 @@
 
     <groupId>com.saucelabs</groupId>
     <artifactId>saucebindings-junit5</artifactId>
-    <version>1.4.0</version>
+    <version>1.5-SNAPSHOT</version>
     <name>SauceBindings JUnit5</name>
     <description>Provides tools for interacting with SauceLabs with JUnit 5</description>
     <url>https://opensource.saucelabs.com/sauce_bindings</url>
@@ -52,7 +52,7 @@
         <connection>scm:git:git://github.com/saucelabs/sauce_bindings.git</connection>
         <developerConnection>scm:git:git@github.com:saucelabs/sauce_bindings.git</developerConnection>
         <url>https://github.com/saucelabs/sauce_bindings</url>
-        <tag>java-junit5-1.4.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <dependencies>

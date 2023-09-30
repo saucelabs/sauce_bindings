@@ -4,7 +4,7 @@
 
     <groupId>com.saucelabs</groupId>
     <artifactId>sauce_bindings</artifactId>
-    <version>1.4.0</version>
+    <version>1.3.1-SNAPSHOT</version>
     <name>saucebindings</name>
     <description>Java library which provides tools for interacting with Sauce Labs</description>
     <url>https://saucelabs.com</url>
@@ -52,7 +52,7 @@
         <connection>scm:git:git://github.com/saucelabs/sauce_bindings.git</connection>
         <developerConnection>scm:git:git@github.com:saucelabs/sauce_bindings.git</developerConnection>
         <url>https://github.com/saucelabs/sauce_bindings</url>
-        <tag>java-1.4.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <dependencies>

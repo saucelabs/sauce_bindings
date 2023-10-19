@@ -1,39 +1,37 @@
 package com.saucelabs.saucebindings;
 
-import lombok.Getter;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import lombok.Getter;
 
 public enum UnhandledPromptBehavior {
-    DISMISS("dismiss"),
-    ACCEPT("accept"),
-    DISMISS_AND_NOTIFY("dismiss and notify"),
-    ACCEPT_AND_NOTIFY("accept and notify"),
-    IGNORE("ignore");
+  DISMISS("dismiss"),
+  ACCEPT("accept"),
+  DISMISS_AND_NOTIFY("dismiss and notify"),
+  ACCEPT_AND_NOTIFY("accept and notify"),
+  IGNORE("ignore");
 
-    @Getter
-    private final String value;
+  @Getter private final String value;
 
-    private static final class UnhandledPromptBehaviorLookup {
-        private static final Map<String, String> lookup = new HashMap<String, String>();
-    }
+  private static final class UnhandledPromptBehaviorLookup {
+    private static final Map<String, String> lookup = new HashMap<String, String>();
+  }
 
-    public static Set keys() {
-        return UnhandledPromptBehaviorLookup.lookup.keySet();
-    }
+  public static Set keys() {
+    return UnhandledPromptBehaviorLookup.lookup.keySet();
+  }
 
-    UnhandledPromptBehavior(String value) {
-        this.value = value;
-        UnhandledPromptBehaviorLookup.lookup.put(value, this.name());
-    }
+  UnhandledPromptBehavior(String value) {
+    this.value = value;
+    UnhandledPromptBehaviorLookup.lookup.put(value, this.name());
+  }
 
-    public static String fromString(String value) {
-        return UnhandledPromptBehaviorLookup.lookup.get(value);
-    }
+  public static String fromString(String value) {
+    return UnhandledPromptBehaviorLookup.lookup.get(value);
+  }
 
-    public String toString() {
-        return this.value;
-    }
+  public String toString() {
+    return this.value;
+  }
 }

@@ -1,99 +1,114 @@
-module.exports={
+const lightCodeTheme = require('prism-react-renderer/themes/github');
+const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+
+// With JSDoc @type annotations, IDEs can provide config autocompletion
+/** @type {import('@docusaurus/types').DocusaurusConfig} */
+(module.exports = {
   title: 'Sauce Bindings',
   tagline: 'Provide Convenient Way to Use Sauce Labs',
   url: 'https://saucelabs.github.io',
   baseUrl: '/sauce_bindings/',
   organizationName: 'saucelabs',
   projectName: 'sauce_bindings',
-  scripts: [
-    'https://buttons.github.io/buttons.js'
-  ],
-  stylesheets: [
-    'https://use.typekit.net/zmt8tam.css'
-  ],
-  favicon: 'img/favicon.png',
-  customFields: {
-    disableHeaderTitle: true,
-    users: [
-      {
-        caption: 'Sauce Labs',
-        image: '/img/sauce-badge.png',
-        infoLink: 'https://saucelabs.com',
-        pinned: true
-      }
-    ],
-    fonts: {
-      saucelabsFont: [
-        'museo-sans',
-        'HelveticaNeue',
-        'Helvetica Neue',
-        'Serif'
-      ]
-    },
-    repoUrl: 'https://github.com/saucelabs/sauce_bindings'
-  },
-  onBrokenLinks: 'log',
-  onBrokenMarkdownLinks: 'log',
+  onBrokenLinks: 'throw',
+  onBrokenMarkdownLinks: 'warn',
+  favicon: 'img/favicon.ico',
+
   presets: [
     [
       '@docusaurus/preset-classic',
-      {
+      /** @type {import('@docusaurus/preset-classic').Options} */
+      ({
         docs: {
-          sidebarPath: 'sidebars.json',
-          routeBasePath: '/',
+          sidebarPath: require.resolve('./sidebars.js'),
+          // Please change this to your repo.
+          editUrl: 'https://github.com/facebook/docusaurus/edit/main/website/',
+        },
+        blog: {
+          showReadingTime: true,
+          // Please change this to your repo.
           editUrl:
-              'https://github.com/saucelabs/sauce_bindings/edit/main/website/',
-          showLastUpdateAuthor: true,
-          showLastUpdateTime: true,
+            'https://github.com/facebook/docusaurus/edit/main/website/blog/',
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css')
+          customCss: require.resolve('./src/css/custom.css'),
         },
-      }
-    ]
+      }),
+    ],
   ],
-  themes: [
-    '@saucelabs/theme-github-codeblock'
-  ],
-  plugins: [],
-  themeConfig: {
-    googleAnalytics: {
-      trackingID: 'UA-6735579-21',
-    },
-    hideableSidebar: true,
-    prism: {
-      additionalLanguages: ['java', 'ruby', 'csharp', 'bash', 'powershell', 'python'],
-    },
 
-    navbar: {
-      title: null,
-      hideOnScroll: false,
-      logo: {
-        alt: 'Sauce Labs logo',
-        src: 'img/logo-saucelabs.png',
-        srcDark: 'img/logo-saucelabs-inverted.png'
-      },
-      items: [
-        {
-          label: 'Try it Free',
-          position: 'right',
-          href: 'https://saucelabs.com/sign-up',
+  themeConfig:
+    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+    ({
+      navbar: {
+        title: 'My Site',
+        logo: {
+          alt: 'My Site Logo',
+          src: 'img/logo.svg',
         },
-        {
-          label: 'Sign In',
-          position: 'right',
-          href: 'https://accounts.saucelabs.com/',
-        },
-      ]
-    },
-    footer: {
-      logo: {
-        alt: 'Sauce Logo',
-        src: '/img/logo-saucelabs-inverted.png',
-        href: 'https://saucelabs.com',
+        items: [
+          // {
+          //   type: 'doc',
+          //   docId: 'intro',
+          //   position: 'left',
+          //   label: 'Tutorial',
+          // },
+          {to: '/blog', label: 'Blog', position: 'left'},
+          {
+            href: 'https://github.com/facebook/docusaurus',
+            label: 'GitHub',
+            position: 'right',
+          },
+        ],
       },
-      style: 'light',
-      copyright: `Copyright © ${new Date().getFullYear()} Sauce Labs, Inc. Built with Docusaurus.`,
-    },
-  }
-}
+      footer: {
+        style: 'dark',
+        links: [
+          {
+            title: 'Docs',
+            items: [
+              {
+                label: 'Tutorial',
+                to: '/docs/intro',
+              },
+            ],
+          },
+          {
+            title: 'Community',
+            items: [
+              {
+                label: 'Stack Overflow',
+                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              },
+              {
+                label: 'Discord',
+                href: 'https://discordapp.com/invite/docusaurus',
+              },
+              {
+                label: 'Twitter',
+                href: 'https://twitter.com/docusaurus',
+              },
+            ],
+          },
+          {
+            title: 'More',
+            items: [
+              {
+                label: 'Blog',
+                to: '/blog',
+              },
+              {
+                label: 'GitHub',
+                href: 'https://github.com/facebook/docusaurus',
+              },
+            ],
+          },
+        ],
+        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      },
+      prism: {
+        theme: lightCodeTheme,
+        darkTheme: darkCodeTheme,
+      },
+    }),
+});

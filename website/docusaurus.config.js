@@ -5,7 +5,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 (module.exports = {
   title: 'Sauce Bindings',
-  tagline: 'A nice tagline here',
+  tagline: 'Making test automation with Sauce Labs simple',
   url: 'https://saucelabs.github.io',
   baseUrl: '/',
   organizationName: 'saucelabs',
@@ -92,7 +92,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Sauce Bindings.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Sauce Labs.`,
       },
       prism: {
         theme: lightCodeTheme,

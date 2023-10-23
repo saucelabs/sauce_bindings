@@ -8,8 +8,7 @@ const FeatureList = [
     Svg: require('../../static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Sauce Bindings was designed from the ground up to easily run your tests in the Sauce Labs cloud. Using less code.
       </>
     ),
   },
@@ -18,8 +17,7 @@ const FeatureList = [
     Svg: require('../../static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Sauce Bindings lets you focus on your automation, and we&apos;ll guide you in your IDE.
       </>
     ),
   },

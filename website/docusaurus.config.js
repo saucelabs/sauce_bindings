@@ -43,13 +43,14 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
       navbar: {
         title: 'Sauce Bindings',
         logo: {
-          alt: 'My Site Logo',
+          alt: 'Sauce Bindings Logo',
           src: 'img/logo.svg',
         },
         items: [
           {to: '/docs', label: 'Docs', position: 'left'},
           {
-            href: 'https://github.com/facebook/docusaurus',
+            //TODO duplication of this URL, need to move to a constants file
+            href: 'https://github.com/saucelabs/sauce_bindings',
             label: 'GitHub',
             position: 'right',
           },
@@ -70,17 +71,14 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
           {
             title: 'Community',
             items: [
+              // {
+              //   label: 'Stack Overflow',
+              //   href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              // },
+              //TODO fix this URL to Sauce Community
               {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-              },
-              {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
-              },
-              {
-                label: 'Twitter',
-                href: 'https://twitter.com/docusaurus',
+                label: 'Chat with us',
+                href: 'https://saucelabs.com',
               },
             ],
           },
@@ -88,17 +86,13 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
             title: 'More',
             items: [
               {
-                label: 'Blog',
-                to: '/blog',
-              },
-              {
                 label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
+                href: 'https://github.com/saucelabs/sauce_bindings',
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Sauce Bindings.`,
       },
       prism: {
         theme: lightCodeTheme,

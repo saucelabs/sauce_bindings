@@ -44,7 +44,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
         title: 'Sauce Bindings',
         logo: {
           alt: 'Sauce Bindings Logo',
-          src: 'img/logo.svg',
+          src: 'img/sauce-bindings.svg',
         },
         items: [
           {to: '/docs', label: 'Docs', position: 'left'},
@@ -64,7 +64,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
             items: [
               {
                 label: 'Tutorial',
-                to: '/docs/intro',
+                to: '/docs/overview',
               },
             ],
           },

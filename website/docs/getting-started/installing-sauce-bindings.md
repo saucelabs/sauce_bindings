@@ -5,8 +5,9 @@ sidebar_position: 1
 
 ## Universal Prerequisites
 
-To start with make sure you have a valid [Sauce Labs](https://app.saucelabs.com/) account 
+1. Get your [Sauce Labs](https://app.saucelabs.com/) account 
 
+2. Set up your Sauce Credentials
 Since credentials should never be stored in code that might get added to a version control system, 
 we have decided to require users of Sauce Bindings to store these values in environment variables:
 
@@ -15,12 +16,12 @@ SAUCE_USERNAME='valid.username'
 SAUCE_ACCESS_KEY='valid.key'
 ```
 
-Here are instructions for setting environment variables on each Operating System: 
+How to set environment variables on each Operating System: 
 * [Windows 10](https://www.architectryan.com/2018/08/31/how-to-change-environment-variables-on-windows-10/) 
 * [MacOS](https://apple.stackexchange.com/questions/106778/how-do-i-set-environment-variables-on-os-x)
 * [Linux](https://askubuntu.com/questions/58814/how-do-i-add-environment-variables)
 
-## Language Specific  Prerequisites
+## Language Specific Prerequisites
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -31,15 +32,14 @@ values={[
 { label: 'Java', value: 'java', },
 { label: 'Python', value: 'python', },
 { label: 'Ruby', value: 'ruby', },
-{ label: 'C#', value: 'csharp', },
 ]
 }>
 
 <TabItem value="java">
 
-1. Install ***Java version 8*** or greater
+1. Install ***Java version 11*** or greater
 2. Install your favorite Java IDE (we really like IntelliJ and the Community Edition is free).
-3. Choose your [test runner](test-runners/) below, or use the Sauce Bindings directly without test runner support:
+3. Choose your [test runner](test-runners/) below:
 
 <Tabs
 defaultValue="junit5"
@@ -47,13 +47,12 @@ values={[
 { label: 'JUnit 5', value: 'junit5', },
 { label: 'JUnit 4', value: 'junit4', },
 { label: 'TestNG', value: 'testng', },
-{ label: 'Direct', value: 'direct', },
 ]
 }>
 
 <TabItem value="junit5">
 
-3. Add the following to your `.pom` file:
+1. Add the following to your `.pom` file:
 
 ```xml
 <!-- https://mvnrepository.com/artifact/com.saucelabs/saucebindings-junit4/latest -->
@@ -93,20 +92,7 @@ values={[
 ```
 
 </TabItem>
-<TabItem value="direct">
 
-3. Add the following to your `.pom` file:
-
-```xml
-<!-- https://mvnrepository.com/artifact/com.saucelabs/sauce_bindings/latest -->
-<dependency>
-    <groupId>com.saucelabs</groupId>
-    <artifactId>sauce_bindings</artifactId>
-    <version>1.2.0</version>
-</dependency>
-```
-
-</TabItem>
 </Tabs>
 
 </TabItem>

@@ -5,7 +5,7 @@ import styles from './HomepageFeatures.module.css';
 const FeatureList = [
   {
     title: 'Easy to Use',
-    Svg: require('../../static/img/sauce.svg').default,
+    Svg: require('../../static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
         Sauce Bindings was designed from the ground up to easily run your tests in the Sauce Labs cloud. Using less code.

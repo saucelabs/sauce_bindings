@@ -1,7 +1,6 @@
 ---
-id: getting-started
-title: Getting Started
-sidebar_label: Getting Started
+title: Installing Sauce Bindings
+sidebar_position: 1
 ---
 
 ## Universal Prerequisites

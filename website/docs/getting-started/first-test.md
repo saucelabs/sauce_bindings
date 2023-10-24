@@ -1,12 +1,8 @@
 ---
-id: create-session
-title: Creating a Session
-sidebar_label: Create Session
+title: First Test
+sidebar_label: First Test
+sidebar_position: 2
 ---
-
-Sauce Bindings allows you to configure numerous capabilities, but it also provides reasonable defaults.
-If you want to start and stop a session on a Windows 10 machine with the latest version of Chrome, 
-this is all you need to do:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -22,8 +18,6 @@ values={[
 }>
 
 <TabItem value="java">
-
-Select the [test runner](test-runners/) tab based on which library you [added to your `.pom` file](getting-started#language-specific--prerequisites)
 
 <Tabs
 defaultValue="junit5"

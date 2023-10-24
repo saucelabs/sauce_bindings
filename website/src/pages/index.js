@@ -16,13 +16,13 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/intro">
-            New Sauce User
+            to="/docs/getting-started/installing-sauce-bindings">
+            New Test Suite
           </Link>
           <Link
             className="button button--secondary button--lg"
             to="/docs/current-user">
-            Existing Sauce User
+            Existing Test Suite
           </Link>
         </div>
         <div className={styles.buttons}>

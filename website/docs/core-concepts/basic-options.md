@@ -23,27 +23,13 @@ the unhandled prompt behavior to `"ignore"`:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-<Tabs
-defaultValue="java"
-values={[
-{ label: 'Java', value: 'java', },
-{ label: 'Python', value: 'python', },
-{ label: 'Ruby', value: 'ruby', },
-{ label: 'C#', value: 'csharp', },
-]
-}>
-
-<TabItem value="java">
-
-Select the [test runner](test-runners/) tab based on which library you [added to your `.pom` file](getting-started#language-specific--prerequisites)
 
 <Tabs
 defaultValue="junit5"
 values={[
 { label: 'JUnit 5', value: 'junit5', },
 { label: 'JUnit 4', value: 'junit4', },
-{ label: 'TestNG', value: 'testng', },
-{ label: 'Direct', value: 'direct', },
+{ label: 'TestNG', value: 'testng', }
 ]
 }>
 
@@ -68,34 +54,5 @@ https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/java/testng/src/t
 ```
 
 </TabItem>
-<TabItem value="direct">
-
-```java reference
-https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/java/main/src/test/java/com/saucelabs/saucebindings/examples/CommonOptionsTest.java
-```
-
-</TabItem>
 </Tabs>
 
-
-</TabItem>
-<TabItem value="python">
-
-```python reference
-https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/python/tests/examples/test_basic_options.py
-```
-
-</TabItem>
-<TabItem value="ruby">
-
-```ruby reference
-https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/ruby/spec/examples/basic_options_spec.rb
-```
-
-</TabItem>
-<TabItem value="csharp">
-
-**C# bindings are coming soon...**
-
-</TabItem>
-</Tabs>

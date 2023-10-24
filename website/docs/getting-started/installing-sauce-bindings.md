@@ -29,9 +29,7 @@ import TabItem from '@theme/TabItem';
 <Tabs
 defaultValue="java"
 values={[
-{ label: 'Java', value: 'java', },
-{ label: 'Python', value: 'python', },
-{ label: 'Ruby', value: 'ruby', },
+{ label: 'Java', value: 'java', }
 ]
 }>
 
@@ -94,47 +92,6 @@ values={[
 </TabItem>
 
 </Tabs>
-
-</TabItem>
-<TabItem value="python">
-
-1. Install the package:
-```bash
-pip install saucebindings
-```
-2. Import it into your project
-```python
-from saucebindings.options import SauceOptions
-from saucebindings.session import SauceSession
-```
-
-</TabItem>
-<TabItem value="ruby">
-
-1. Add it to your Gemfile:
-```ruby
-gem 'sauce_bindings'
-```
-
-2. Require it in your project:
-```ruby
-require 'sauce_bindings'
-```
-
-If you are using Capybara, you must also require this file:
-```ruby
-require 'sauce_bindings/capybara_session'
-```
-
-Examples on this site are written to use RSpec, so to execute them you must also add this to your Gemfile:
-```ruby
-gem 'rspec'
-```
-
-</TabItem>
-<TabItem value="csharp">
-
-**C# bindings are coming soon...**
 
 </TabItem>
 </Tabs>

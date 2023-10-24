@@ -1,7 +1,15 @@
 ---
-title: First Test
-sidebar_position: 2
+title: Existing Test Suite Setup
+sidebar_position: 3
 ---
+
+# Add Sauce Bindings to Your Existing Test Suite
+
+Adding Sauce Bindings to your existing test suite is easy.
+
+1. First do X
+2. Then do Y
+3. Then do Z
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

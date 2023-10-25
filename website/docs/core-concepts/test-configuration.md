@@ -1,8 +1,9 @@
 ---
-id: basic-options
-title: Setting Common Options
-sidebar_label: Common Options
+title: Test Configuration
+sidebar_position: 1
 ---
+
+## Introduction
 
  The [three capabilities](https://docs.saucelabs.com/dev/test-configuration-options/index.html#webdriver-w3c-capabilities--required) that matter most to Sauce Labs users are: 
 * `browserName`

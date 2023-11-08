@@ -1,6 +1,6 @@
 ---
 title: Existing Test Suite Setup
-sidebar_position: 3
+sidebar_position: 1
 ---
 
 # Add Sauce Bindings to Your Existing Test Suite

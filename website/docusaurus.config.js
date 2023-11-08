@@ -40,6 +40,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      themes: ['@saucelabs/theme-github-codeblock'],
       navbar: {
         title: 'Sauce Bindings',
         logo: {

@@ -5,15 +5,40 @@ sidebar_position: 1
 
 ## Introduction
 
- The [three capabilities](https://docs.saucelabs.com/dev/test-configuration-options/index.html#webdriver-w3c-capabilities--required) that matter most to Sauce Labs users are: 
-* `browserName`
-* `browserVersion`
-* `platformName`
+Sauce Bindings provides reasonable defaults to make your developer experience better 👍
 
-By default, Sauce Bindings provides the latest version of Google Chrome on Windows 10.
+### Run a test on latest Chrome
 
-To see what values are supported by Sauce Labs for these 3 capabilities, take a look at our
-[Platform Configurator](https://saucelabs.com/platform/platform-configurator#/)
+```java reference
+
+https://github.com/saucelabs/sauce_bindings/blob/main/java/junit5/src/test/java/com/saucelabs/saucebindings/junit5/examples/SessionTest.java
+
+```
+
+### Run a test on Safari on Mac
+
+```java reference
+
+https://github.com/saucelabs/sauce_bindings/blob/main/java/junit5/src/test/java/com/saucelabs/saucebindings/junit5/examples/SessionTest.java
+
+```
+
+There are many configuration options available for your tests.
+See [Platform Configurator](https://saucelabs.com/platform/platform-configurator#/)
+
+## Browser Capabilities 
+
+There are many browser capabilities that can be configured to define a specific behavior for your tests. For example,
+
+### Set UnhandledPromptBehavior
+
+```java reference
+
+https://github.com/saucelabs/sauce_bindings/blob/main/java/junit5/src/test/java/com/saucelabs/saucebindings/junit5/examples/CommonOptionsTest.java
+
+```
+
+The test above will run on X, Y, Z.
 
 Additionally, there are [settings that apply to all browser sessions](https://docs.saucelabs.com/dev/test-configuration-options/index.html#browser-w3c-capabilities--optional) 
 that can be configured in `SauceOptions`

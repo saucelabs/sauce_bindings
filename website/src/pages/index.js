@@ -21,7 +21,7 @@ function HomepageHeader() {
           </Link>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/getting-started/existing-test-suite-setup">
+            to="/docs/core-concepts/existing-test-suite-setup">
             Existing Test Suite
           </Link>
         </div>

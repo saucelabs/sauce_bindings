@@ -2,9 +2,8 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-using Sauce.Bindings;
 
-namespace SauceBindings.Test
+namespace Sauce.Bindings.Test
 {
     [TestClass]
     public class SauceSessionTests : BaseTest

@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
@@ -6,11 +8,8 @@ using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Safari;
-using Sauce.Bindings;
-using System;
-using System.Collections.Generic;
 
-namespace SauceBindings.Test
+namespace Sauce.Bindings.Test
 {
     [TestClass]
     public class SauceOptionsTests : BaseTest

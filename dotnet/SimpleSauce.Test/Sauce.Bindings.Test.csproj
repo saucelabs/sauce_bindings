@@ -22,4 +22,8 @@
     <ProjectReference Include="..\Simple.Sauce\Sauce.Bindings.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Examples\" />
+  </ItemGroup>
+
 </Project>

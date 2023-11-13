@@ -6,21 +6,21 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class AddHooksTest extends SauceBaseTest {
-    Boolean working = null;
+  Boolean working = null;
 
-    @Before
-    public void setup() {
-        working = true;
-        super.setup();
-    }
+  @Before
+  public void setup() {
+    working = true;
+    super.setup();
+  }
 
-    @After
-    public void teardown() {
-        System.out.println("Can do something in teardown before test watcher methods");
-    }
+  @After
+  public void teardown() {
+    System.out.println("Can do something in teardown before test watcher methods");
+  }
 
-    @Test
-    public void useCustomOptions() {
-        Assert.assertTrue(working);
-    }
+  @Test
+  public void useCustomOptions() {
+    Assert.assertTrue(working);
+  }
 }

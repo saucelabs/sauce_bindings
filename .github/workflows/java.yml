@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  formatting:
+  formatting-main:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -22,7 +22,17 @@ jobs:
           skip-commit: true
       - name: Print diffs
         run: git --no-pager diff --exit-code
-
+  formatting-junit4:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: axel-op/googlejavaformat-action@v3
+        with:
+          args: "--replace"
+          files: "java/junit4/**/*.java"
+          skip-commit: true
+      - name: Print diffs
+        run: git --no-pager diff --exit-code
   main:
     runs-on: ubuntu-latest
     steps:

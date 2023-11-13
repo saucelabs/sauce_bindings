@@ -7,21 +7,21 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 
 public class AddHooksTest extends SauceBaseTest {
-    Boolean working = null;
+  Boolean working = null;
 
-    @BeforeEach
-    public void setUp(TestInfo testinfo) {
-        working = true;
-        super.setUp(testinfo);
-    }
+  @BeforeEach
+  public void setUp(TestInfo testinfo) {
+    working = true;
+    super.setUp(testinfo);
+  }
 
-    @AfterEach
-    public void teardown() {
-        System.out.println("Can do something in teardown before test watcher methods");
-    }
+  @AfterEach
+  public void teardown() {
+    System.out.println("Can do something in teardown before test watcher methods");
+  }
 
-    @Test
-    public void useCustomOptions() {
-        Assertions.assertTrue(working);
-    }
+  @Test
+  public void useCustomOptions() {
+    Assertions.assertTrue(working);
+  }
 }

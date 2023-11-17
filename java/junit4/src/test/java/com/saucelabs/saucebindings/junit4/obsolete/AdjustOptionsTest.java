@@ -1,6 +1,7 @@
-package com.saucelabs.saucebindings.junit4;
+package com.saucelabs.saucebindings.junit4.obsolete;
 
 import com.saucelabs.saucebindings.JobVisibility;
+import com.saucelabs.saucebindings.junit4.SauceBaseTest;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import java.time.Duration;
 import org.junit.Assert;

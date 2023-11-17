@@ -1,6 +1,7 @@
-package com.saucelabs.saucebindings.junit4;
+package com.saucelabs.saucebindings.junit4.obsolete;
 
 import com.saucelabs.saucebindings.DataCenter;
+import com.saucelabs.saucebindings.junit4.SauceBaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 

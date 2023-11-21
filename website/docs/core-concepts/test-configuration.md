@@ -5,7 +5,7 @@ sidebar_position: 1
 
 ## Introduction
 
-Sauce Bindings provides reasonable defaults to make your developer experience better 👍
+Sauce Bindings provides reasonable defaults to make your developer experience easier 👍
 
 ### Run a test on latest Chrome
 
@@ -23,7 +23,8 @@ https://github.com/saucelabs/sauce_bindings/blob/main/java/junit5/src/test/java/
 
 ```
 
-There are many configuration options available for your tests.
+Numerous configuration options are available for your tests.
+
 See [Platform Configurator](https://saucelabs.com/platform/platform-configurator#/)
 
 ## Browser Capabilities 

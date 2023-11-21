@@ -17,17 +17,17 @@ const FeatureList = [
     Svg: require('../../static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Sauce Bindings lets you focus on your automation, and we&apos;ll guide you in your IDE.
+        Focus on your automation, forget configuration. The IDE will guide you.
       </>
     ),
   },
   {
-    title: 'Powered by React',
+    title: 'Create Cleaner Code',
     Svg: require('../../static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        The intuitive intellisense will guide you into cleaner code,
+        saving you time.
       </>
     ),
   },

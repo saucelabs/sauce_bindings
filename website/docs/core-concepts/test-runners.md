@@ -1,7 +1,5 @@
 ---
-id: test-runners
 title: Test Runners
-sidebar_label: Test Runners
 ---
 
 Every programming language allows you can write code in a standalone file where you could import the

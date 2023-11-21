@@ -37,7 +37,7 @@ values={[
 
 1. Install ***Java version 11*** or greater
 2. Install your favorite Java IDE (we really like IntelliJ and the Community Edition is free).
-3. Choose your [test runner](test-runners/) below:
+3. Choose your [test runner](../core-concepts/test-runners.md) below:
 
 <Tabs
 defaultValue="junit5"

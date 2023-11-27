@@ -257,6 +257,7 @@ public class SauceOptions extends BaseOptions {
         setTimeouts(timeoutsMap);
         break;
       case "sauce":
+      case "sauce:options":
         sauce().mergeCapabilities((HashMap<String, Object>) value);
         break;
       default:

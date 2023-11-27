@@ -3,6 +3,7 @@ package com.saucelabs.saucebindings.junit5;
 import com.saucelabs.saucebindings.DataCenter;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
+import java.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -10,8 +11,8 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import java.util.Arrays;
-
+/** This class is deprecated, use the SauceBindingsExtension */
+@Deprecated
 public class SauceBaseTest {
   protected RemoteWebDriver driver;
   protected SauceSession session;

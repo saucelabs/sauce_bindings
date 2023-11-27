@@ -1,12 +1,12 @@
-package com.saucelabs.saucebindings.junit5;
+package com.saucelabs.saucebindings.junit5.obsolete;
 
 import com.saucelabs.saucebindings.JobVisibility;
+import com.saucelabs.saucebindings.junit5.SauceBaseTest;
 import com.saucelabs.saucebindings.options.SauceOptions;
+import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Capabilities;
-
-import java.time.Duration;
 
 public class AdjustOptionsTest extends SauceBaseTest {
 
@@ -20,7 +20,7 @@ public class AdjustOptionsTest extends SauceBaseTest {
   }
 
   @Test
-  public void useCustomOptions() {
+  public void useCustomOptionsObsolete() {
     Capabilities caps = driver.getCapabilities();
     Assertions.assertEquals("firefox", caps.getBrowserName());
     Assertions.assertEquals("87.0", caps.getCapability("browserVersion"));

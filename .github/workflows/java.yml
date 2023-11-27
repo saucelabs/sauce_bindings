@@ -52,6 +52,9 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
+      - name: Remove driver directories
+        run: |
+          sudo rm -rf $CHROMEWEBDRIVER $EDGEWEBDRIVER $GECKOWEBDRIVER
       - name: Test with Maven
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
@@ -65,6 +68,9 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
+      - name: Remove driver directories
+        run: |
+          sudo rm -rf $CHROMEWEBDRIVER $EDGEWEBDRIVER $GECKOWEBDRIVER
       - name: Test with Maven
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
@@ -78,6 +84,9 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
+      - name: Remove driver directories
+        run: |
+          sudo rm -rf $CHROMEWEBDRIVER $EDGEWEBDRIVER $GECKOWEBDRIVER
       - name: Test with Maven
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
@@ -91,6 +100,9 @@ jobs:
 #        uses: actions/setup-java@v1
 #        with:
 #          java-version: 11
+#      - name: Remove driver directories
+#        run: |
+#          sudo rm -rf $CHROMEWEBDRIVER $EDGEWEBDRIVER $GECKOWEBDRIVER
 #      - name: Test with Maven
 #        env:
 #          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}

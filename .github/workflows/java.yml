@@ -33,6 +33,17 @@ jobs:
           skip-commit: true
       - name: Print diffs
         run: git --no-pager diff --exit-code
+  formatting-junit5:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: axel-op/googlejavaformat-action@v3
+        with:
+          args: "--replace"
+          files: "java/junit5/**/*.java"
+          skip-commit: true
+      - name: Print diffs
+        run: git --no-pager diff --exit-code
   main:
     runs-on: ubuntu-latest
     steps:
@@ -41,6 +52,9 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
+      - name: Remove driver directories
+        run: |
+          sudo rm -rf $CHROMEWEBDRIVER $EDGEWEBDRIVER $GECKOWEBDRIVER
       - name: Test with Maven
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
@@ -54,6 +68,9 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
+      - name: Remove driver directories
+        run: |
+          sudo rm -rf $CHROMEWEBDRIVER $EDGEWEBDRIVER $GECKOWEBDRIVER
       - name: Test with Maven
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
@@ -67,6 +84,9 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
+      - name: Remove driver directories
+        run: |
+          sudo rm -rf $CHROMEWEBDRIVER $EDGEWEBDRIVER $GECKOWEBDRIVER
       - name: Test with Maven
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
@@ -80,6 +100,9 @@ jobs:
 #        uses: actions/setup-java@v1
 #        with:
 #          java-version: 11
+#      - name: Remove driver directories
+#        run: |
+#          sudo rm -rf $CHROMEWEBDRIVER $EDGEWEBDRIVER $GECKOWEBDRIVER
 #      - name: Test with Maven
 #        env:
 #          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}

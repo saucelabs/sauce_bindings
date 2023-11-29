@@ -5,16 +5,12 @@ import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.junit5.SauceBindingsExtension;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import java.time.Duration;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.api.extension.TestWatcher;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -36,37 +32,26 @@ public class ToggleLocalExample {
 
   @BeforeEach
   public void setup() {
-    if (isSauceDisabled()) {
-      driver = new ChromeDriver();
-    } else {
+    // TODO: Allow getting session even when disabled
+    if (isSauceEnabled()) {
       session = sauceExtension.getSession();
       driver = sauceExtension.getDriver();
+    } else {
+      driver = new ChromeDriver(getCapabilities());
     }
-  }
-
-  @AfterEach
-  public void tearDown() {
-    if (isSauceDisabled()) {
-      driver.quit();
-    }
-  }
-
-  @AfterAll
-  public static void resetSauce() {
-    System.clearProperty("sauce.disabled");
   }
 
   @Test
   public void localExample() {
-    if (!isSauceDisabled()) {
+    // TODO: Allow this method to be ignored if Sauce is disabled
+    if (isSauceEnabled()) {
       session.annotate("Navigating to Swag Labs");
     }
     driver.get("https://www.saucedemo.com/");
   }
 
   private static SauceOptions getSauceOptions() {
-    ChromeOptions chromeOptions = new ChromeOptions();
-    chromeOptions.addArguments("--hide-scrollbars");
+    ChromeOptions chromeOptions = getCapabilities();
 
     return SauceOptions.chrome(chromeOptions)
         .setPlatformName(SaucePlatform.MAC_CATALINA)
@@ -74,15 +59,34 @@ public class ToggleLocalExample {
         .build();
   }
 
-  private boolean isSauceDisabled() {
+  private static ChromeOptions getCapabilities() {
+    ChromeOptions chromeOptions = new ChromeOptions();
+    chromeOptions.addArguments("--hide-scrollbars");
+
+    return chromeOptions;
+  }
+
+  // TODO: Implement this as a method in SauceSession directly
+  private boolean isSauceEnabled() {
     String value = System.getenv("SAUCE_DISABLED");
     return Boolean.parseBoolean(value) || Boolean.getBoolean("sauce.disabled");
   }
 
   public class LocalTestWatcher implements TestWatcher {
     @Override
+    public void testSuccessful(ExtensionContext context) {
+      if (!isSauceEnabled()) {
+        System.out.println("Test Succeeded");
+        driver.quit();
+      }
+    }
+
+    @Override
     public void testFailed(ExtensionContext context, Throwable cause) {
-      ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+      if (!isSauceEnabled()) {
+        System.out.println("Test Failed");
+        driver.quit();
+      }
     }
   }
 }

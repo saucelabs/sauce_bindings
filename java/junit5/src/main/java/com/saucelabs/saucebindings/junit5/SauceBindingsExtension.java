@@ -104,6 +104,7 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback {
     }
   }
 
+  // TODO: Implement this in SauceSession directly
   private boolean isExtensionDisabled() {
     String value = System.getenv("SAUCE_DISABLED");
     return Boolean.parseBoolean(value) || Boolean.getBoolean("sauce.disabled");

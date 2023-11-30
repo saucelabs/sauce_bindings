@@ -11,6 +11,7 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openqa.selenium.InvalidArgumentException;
@@ -260,5 +261,16 @@ public class SauceSessionTest {
     sauceSession.start();
     sauceSession.addTags(ImmutableList.of("foo", "bar"));
     Mockito.verify(dummyRemoteDriver).executeScript("sauce:job-tags=foo,bar");
+  }
+
+  @Test
+  public void disablesSauce() {
+    try (MockedStatic<SystemManager> systemManager = Mockito.mockStatic(SystemManager.class)) {
+      systemManager.when(() -> SystemManager.getBoolean("sauce.disabled")).thenReturn(true);
+      sauceSession.start();
+
+      Mockito.verify(sauceSession, Mockito.never())
+          .createRemoteWebDriver(Mockito.any(URL.class), Mockito.any(MutableCapabilities.class));
+    }
   }
 }

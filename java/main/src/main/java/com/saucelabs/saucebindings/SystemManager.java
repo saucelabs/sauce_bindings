@@ -34,4 +34,16 @@ public class SystemManager {
       return null;
     }
   }
+
+  /**
+   * Shortcut for getting the boolean value of a System Property or Environment Variable
+   *
+   * @param key the name of the property or environment variable
+   * @return whether the provided key is set
+   */
+  public static boolean getBoolean(String key) {
+      boolean property = Boolean.getBoolean(key);
+      boolean env = Boolean.parseBoolean(System.getenv(key));
+      return property || env;
+  }
 }

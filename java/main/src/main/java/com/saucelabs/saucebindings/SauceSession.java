@@ -39,11 +39,24 @@ public class SauceSession {
   }
 
   /**
+   * Checks if the feature is disabled in either system property or environment variable.
+   *
+   * @return false if the feature is disabled, true otherwise.
+   */public boolean isEnabled() {
+    return !SystemManager.getBoolean("sauce.disabled")
+        && !SystemManager.getBoolean("SAUCE_DISABLED");
+  }
+
+  /**
    * Starts the session on Sauce Labs.
    *
    * @return the driver instance for using as normal in your tests.
    */
   public RemoteWebDriver start() {
+    if (!isEnabled()) {
+      return null;
+    }
+
     this.driver = createRemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities());
     return driver;
   }
@@ -98,6 +111,10 @@ public class SauceSession {
    * @return an object with the accessibility analysis
    */
   public Results getAccessibilityResults(AxeBuilder builder) {
+    if (!isEnabled()) {
+      return null;
+    }
+
     validateSessionStarted("getAccessibilityResults()");
     return builder.analyze(driver);
   }
@@ -109,6 +126,11 @@ public class SauceSession {
    * @param passed true if the test has passed, otherwise false
    */
   public void stop(Boolean passed) {
+    if (!isEnabled()) {
+      return;
+    }
+
+    // TODO: Log a warning if the driver is null
     if (this.driver != null) {
       String update = passed ? "passed" : "failed";
       updateResult(update);
@@ -125,6 +147,10 @@ public class SauceSession {
    *     Providing Context for Selenium Commands</a>
    */
   public void annotate(String comment) {
+    if (!isEnabled()) {
+      return;
+    }
+
     validateSessionStarted("annotate()");
     driver.executeScript("sauce:context=" + comment);
   }
@@ -138,6 +164,10 @@ public class SauceSession {
    *     Test Annotation Methods</a>
    */
   public void pause() {
+    if (!isEnabled()) {
+      return;
+    }
+
     validateSessionStarted("pause()");
     String sauceTestLink =
         String.format("https://app.saucelabs.com/tests/%s", this.driver.getSessionId());
@@ -158,6 +188,10 @@ public class SauceSession {
    *     Test Annotation Methods</a>
    */
   public void disableLogging() {
+    if (!isEnabled()) {
+      return;
+    }
+
     validateSessionStarted("disableLogging()");
     driver.executeScript("sauce: disable log");
   }
@@ -171,6 +205,10 @@ public class SauceSession {
    *     Test Annotation Methods</a>
    */
   public void enableLogging() {
+    if (!isEnabled()) {
+      return;
+    }
+
     validateSessionStarted("enableLogging()");
     driver.executeScript("sauce: enable log");
   }
@@ -184,6 +222,10 @@ public class SauceSession {
    *     Test Annotation Methods</a>
    */
   public void stopNetwork() {
+    if (!isEnabled()) {
+      return;
+    }
+
     validateSessionStarted("stopNetwork()");
     validateMac("Can only stop network for a Mac Platform;");
 
@@ -199,6 +241,10 @@ public class SauceSession {
    *     Test Annotation Methods</a>
    */
   public void startNetwork() {
+    if (!isEnabled()) {
+      return;
+    }
+
     validateSessionStarted("startNetwork()");
     validateMac("Can only start network for a Mac Platform;");
 
@@ -216,6 +262,10 @@ public class SauceSession {
    * @see BaseConfigurations#setName(String)
    */
   public void changeTestName(String name) {
+    if (!isEnabled()) {
+      return;
+    }
+
     validateSessionStarted("changeName()");
     driver.executeScript("sauce:job-name=" + name);
   }
@@ -231,6 +281,10 @@ public class SauceSession {
    * @see BaseConfigurations#setTags(List)
    */
   public void addTags(List<String> tags) {
+    if (!isEnabled()) {
+      return;
+    }
+
     validateSessionStarted("setTags()");
     String tagString = String.join(",", tags);
     driver.executeScript("sauce:job-tags=" + tagString);

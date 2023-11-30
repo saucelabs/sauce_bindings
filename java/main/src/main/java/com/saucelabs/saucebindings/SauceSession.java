@@ -42,7 +42,8 @@ public class SauceSession {
    * Checks if the feature is disabled in either system property or environment variable.
    *
    * @return false if the feature is disabled, true otherwise.
-   */public boolean isEnabled() {
+   */
+  public boolean isEnabled() {
     return !SystemManager.getBoolean("sauce.disabled")
         && !SystemManager.getBoolean("SAUCE_DISABLED");
   }
@@ -54,7 +55,7 @@ public class SauceSession {
    */
   public RemoteWebDriver start() {
     if (!isEnabled()) {
-      return null;
+      throw new RuntimeException("Sauce is Disabled by System Property or Environment Variable.");
     }
 
     this.driver = createRemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities());

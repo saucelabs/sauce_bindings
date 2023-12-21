@@ -43,6 +43,7 @@ exampleValues:
     - foobar
   timeZone: 'San Francisco'
   tunnelIdentifier: 'tunnelname'
+  tunnelOwner: 'tunnelowner'
   videoUploadOnPass: false
 
 invalidOption:

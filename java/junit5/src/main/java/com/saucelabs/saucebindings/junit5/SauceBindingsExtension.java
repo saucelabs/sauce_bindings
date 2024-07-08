@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Logger;
+
 import lombok.Getter;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -16,6 +18,7 @@ import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebDriver;
 
 public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback {
+  private static final Logger logger = Logger.getLogger(SauceBindingsExtension.class.getName());
   private final SauceOptions sauceOptions;
   private final DataCenter dataCenter;
   @Getter private SauceSession session;
@@ -84,7 +87,7 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback {
     try {
       session.stop(true);
     } catch (NoSuchSessionException e) {
-      System.out.println(
+      logger.severe(
           "Driver quit prematurely; Remove calls to `driver.quit()` to allow SauceBindingsExtension"
               + " to stop the test");
     }

@@ -1,16 +1,24 @@
 package com.saucelabs.saucebindings.junit5;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 public class DefaultTest {
-  static {
-    System.setProperty("sauce.enabled", "false");
+  @RegisterExtension static SauceBindingsExtension sauceExtension = new SauceBindingsExtension();
+
+  @BeforeAll
+  public static void disableSauce() {
+    System.setProperty("sauce.disabled", "true");
   }
 
-  @RegisterExtension static SauceBindingsExtension sauceExtension = new SauceBindingsExtension();
+  @AfterAll
+  public static void resetSauce() {
+    System.clearProperty("sauce.disabled");
+  }
 
   @Test
   public void useDefaults() {

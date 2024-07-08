@@ -43,6 +43,8 @@ public class CapabilitiesExample {
     options.setBrowserVersion("latest");
     Map<String, Object> sauceOptions = new HashMap<>();
     sauceOptions.put("idleTimeout", 30);
+    sauceOptions.put("username", System.getenv("SAUCE_USERNAME"));
+    sauceOptions.put("accessKey", System.getenv("SAUCE_ACCESS_KEY"));
     options.setCapability("sauce:options", sauceOptions);
 
     return options;

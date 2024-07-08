@@ -5,6 +5,8 @@ import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.junit5.SauceBindingsExtension;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import java.time.Duration;
+
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +30,11 @@ public class ToggleLocalExample {
   @BeforeAll
   public static void disableSauce() {
     System.setProperty("sauce.disabled", "true");
+  }
+
+  @AfterAll
+  public static void resetSauce() {
+    System.clearProperty("sauce.disabled");
   }
 
   @BeforeEach
@@ -69,7 +76,7 @@ public class ToggleLocalExample {
   // TODO: Implement this as a method in SauceSession directly
   private boolean isSauceEnabled() {
     String value = System.getenv("SAUCE_DISABLED");
-    return Boolean.parseBoolean(value) || Boolean.getBoolean("sauce.disabled");
+    return Boolean.parseBoolean(value) || !Boolean.getBoolean("sauce.disabled");
   }
 
   public class LocalTestWatcher implements TestWatcher {

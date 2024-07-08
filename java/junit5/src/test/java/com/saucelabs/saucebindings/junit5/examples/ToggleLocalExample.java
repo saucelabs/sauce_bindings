@@ -5,7 +5,6 @@ import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.junit5.SauceBindingsExtension;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import java.time.Duration;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;

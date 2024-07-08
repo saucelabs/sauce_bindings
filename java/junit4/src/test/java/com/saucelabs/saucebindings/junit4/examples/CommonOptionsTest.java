@@ -12,8 +12,8 @@ public class CommonOptionsTest extends SauceBaseTest {
   // 2. Create SauceOptions instance with common w3c options
   public SauceOptions createSauceOptions() {
     return SauceOptions.firefox()
-        .setBrowserVersion("85.0")
-        .setPlatformName(SaucePlatform.WINDOWS_8)
+        .setBrowserVersion("127.0")
+        .setPlatformName(SaucePlatform.WINDOWS_10)
         .setUnhandledPromptBehavior(UnhandledPromptBehavior.IGNORE)
         .build();
   }

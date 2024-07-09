@@ -41,6 +41,7 @@ jobs:
         if: ( inputs.component == matrix.combination.component )
         uses: actions/setup-java@v4
         with:
+          cache: maven
           java-version: '11'
           distribution: 'temurin'
           server-id: ossrh
@@ -69,6 +70,7 @@ jobs:
       - name: Publish package
         if: ( inputs.component == matrix.combination.component )
         run: mvn -B --no-transfer-progress clean deploy -DskipTests=true
+        working-directory: ${{ matrix.combination.path }}
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}

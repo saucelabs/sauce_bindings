@@ -22,7 +22,7 @@ permissions:
 
 jobs:
   release_sauce_bindings:
-    if: (github.repository_owner == 'saucelabs') && ( inputs.component == matrix.combination.component )
+    if: (github.repository_owner == 'saucelabs')
     runs-on: ubuntu-latest
     strategy:
       matrix:

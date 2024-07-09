@@ -67,6 +67,7 @@ jobs:
         run: git diff
 
       - name: Publish package
+        if: ( inputs.component == matrix.combination.component )
         run: mvn -B --no-transfer-progress clean deploy -DskipTests=true
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
@@ -74,6 +75,7 @@ jobs:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
 
       - name: Create GitHub Release
+        if: ( inputs.component == matrix.combination.component )
         id: create_release
         uses: actions/create-release@v1
         env:

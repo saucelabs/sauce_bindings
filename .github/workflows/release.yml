@@ -37,14 +37,10 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
 
-      - name: Test before release
+      - name: Build, Test, and locally deploy with Maven
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-        run: mvn clean test -Dmaven.javadoc.skip=true
-        working-directory: java/main
-
-      - name: Build with Maven
         run: mvn clean install -Dgpg.skip -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -V
         working-directory: java/main
 

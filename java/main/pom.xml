@@ -96,7 +96,7 @@
     <dependency>
       <groupId>com.deque.html.axe-core</groupId>
       <artifactId>selenium</artifactId>
-      <version>4.7.0</version>
+      <version>4.9.1</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>

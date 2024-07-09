@@ -24,11 +24,19 @@ jobs:
   release_sauce_bindings:
     if: (github.repository_owner == 'saucelabs') && (inputs.component == 'sauce_bindings')
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        combination: [
+          { component: sauce_bindings, path: java/main },
+          { component: saucebindings-junit4, path: java/junit4 },
+          { component: saucebindings-junit5, path: java/junit5 }
+        ]
     steps:
-      - run: echo "Will start a Maven Central upload with version ${{ github.event.inputs.version }}"
+      - run: echo "Will start a Maven Central upload with version ${{ github.event.inputs.version }} for ${{ github.event.inputs.component }}"
       - uses: actions/checkout@v4
 
       - name: Set up Maven Central Repository
+        if: ( inputs.component == matrix.combination.component )
         uses: actions/setup-java@v4
         with:
           java-version: '11'
@@ -38,43 +46,44 @@ jobs:
           server-password: MAVEN_PASSWORD
 
       - name: Build, Test, and locally deploy with Maven
+        if: ( inputs.component == matrix.combination.component )
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
         run: mvn clean install -Dgpg.skip -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -V
-        working-directory: java/main
+        working-directory: ${{ matrix.combination.path }}
 
       - name: Set projects Maven version to GitHub Action GUI set version
         run: mvn versions:set "-DnewVersion=${{ github.event.inputs.version }}" -DgenerateBackupPoms=false -B --no-transfer-progress
-        working-directory: java/main
+        working-directory: ${{ matrix.combination.path }}
 
       - name: Set projects Maven version to GitHub Action GUI set version
         run: git diff
 
-#      - name: Publish package
-#        run: mvn -B --no-transfer-progress clean deploy -DskipTests=true
-#        env:
-#          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-#          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-#          MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
-#
-#      - name: Create GitHub Release
-#        id: create_release
-#        uses: actions/create-release@v1
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        with:
-#          tag_name: ${{ github.event.inputs.version }}
-#          release_name: Java ${{ github.event.inputs.version }}
-#          body: |
-#            ```
-#            <dependencies>
-#              <dependency>
-#                <groupId>com.saucelabs</groupId>
-#                <artifactId>${{ github.event.inputs.component }}</artifactId>
-#                <version>${{ github.event.inputs.version }}</version>
-#              </dependency>
-#            </dependencies>
-#            ```
-#          draft: false
-#          prerelease: false
+  #      - name: Publish package
+  #        run: mvn -B --no-transfer-progress clean deploy -DskipTests=true
+  #        env:
+  #          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+  #          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+  #          MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+  #
+  #      - name: Create GitHub Release
+  #        id: create_release
+  #        uses: actions/create-release@v1
+  #        env:
+  #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #        with:
+  #          tag_name: ${{ github.event.inputs.version }}
+  #          release_name: Java ${{ github.event.inputs.version }}
+  #          body: |
+  #            ```
+  #            <dependencies>
+  #              <dependency>
+  #                <groupId>com.saucelabs</groupId>
+  #                <artifactId>${{ github.event.inputs.component }}</artifactId>
+  #                <version>${{ github.event.inputs.version }}</version>
+  #              </dependency>
+  #            </dependencies>
+  #            ```
+  #          draft: false
+  #          prerelease: false

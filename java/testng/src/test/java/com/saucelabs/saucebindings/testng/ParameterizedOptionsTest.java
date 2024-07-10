@@ -3,11 +3,10 @@ package com.saucelabs.saucebindings.testng;
 import com.saucelabs.saucebindings.SaucePlatform;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import com.saucelabs.saucebindings.options.VDCConfigurations;
+import java.lang.reflect.Method;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import java.lang.reflect.Method;
 
 public class ParameterizedOptionsTest extends SauceParameterizedBaseTest {
 

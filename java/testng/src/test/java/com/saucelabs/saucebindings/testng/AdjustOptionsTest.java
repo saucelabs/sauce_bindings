@@ -2,11 +2,10 @@ package com.saucelabs.saucebindings.testng;
 
 import com.saucelabs.saucebindings.JobVisibility;
 import com.saucelabs.saucebindings.options.SauceOptions;
-import org.testng.Assert;
-import org.openqa.selenium.Capabilities;
-import org.testng.annotations.Test;
-
 import java.time.Duration;
+import org.openqa.selenium.Capabilities;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 public class AdjustOptionsTest extends SauceBaseTest {
 

@@ -50,6 +50,14 @@ jobs:
           gpg-private-key: ${{ secrets.OSSRH_GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
+      - name: Setup Fluxbox and Xvfb
+        if: ( inputs.component == matrix.combination.component )
+        run: |
+          sudo apt-get -y install fluxbox
+          Xvfb :99 &
+          fluxbox -display :99 &
+          echo "DISPLAY=:99" >> "$GITHUB_ENV"
+
       - name: Build, Test, and locally deploy with Maven
         if: ( inputs.component == matrix.combination.component )
         env:
@@ -83,8 +91,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.event.inputs.version }}
-          release_name: Java ${{ github.event.inputs.version }}
+          tag_name: ${{ github.event.inputs.component }}-${{ github.event.inputs.version }}
+          release_name: Java ${{ github.event.inputs.component }} ${{ github.event.inputs.version }}
           body: |
             ```
             <dependencies>

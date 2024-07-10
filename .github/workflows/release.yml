@@ -17,6 +17,7 @@ on:
           - sauce_bindings
           - saucebindings-junit4
           - saucebindings-junit5
+          - saucebindings-testng
 permissions:
   contents: write
 
@@ -29,7 +30,8 @@ jobs:
         combination: [
           { component: sauce_bindings, path: java/main },
           { component: saucebindings-junit4, path: java/junit4 },
-          { component: saucebindings-junit5, path: java/junit5 }
+          { component: saucebindings-junit5, path: java/junit5 },
+          { component: saucebindings-testng, path: java/testng }
         ]
     steps:
       - run: echo "Will start a Maven Central upload with version ${{ github.event.inputs.version }} for ${{ github.event.inputs.component }}"

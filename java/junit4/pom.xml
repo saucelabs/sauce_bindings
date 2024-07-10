@@ -6,34 +6,34 @@
 
   <groupId>com.saucelabs</groupId>
   <artifactId>saucebindings-junit4</artifactId>
-  <version>1.1.0-SNAPSHOT</version>
+  <version>1.5.0-SNAPSHOT</version>
   <name>SauceBindings JUnit4</name>
   <description>Provides tools for interacting with SauceLabs with JUnit 4</description>
   <url>https://opensource.saucelabs.com/sauce_bindings</url>
   <licenses>
     <license>
       <name>MIT License</name>
-      <url>http://www.opensource.org/licenses/mit-license.php</url>
+      <url>https://www.opensource.org/licenses/mit-license.php</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
 
   <organization>
     <name>Sauce Labs</name>
-    <url>http://www.saucelabs.com/</url>
+    <url>https://www.saucelabs.com/</url>
   </organization>
   <developers>
     <developer>
       <name>Titus Fortner</name>
       <email>titus@saucelabs.com</email>
       <organization>Sauce Labs</organization>
-      <organizationUrl>http://www.saucelabs.com/</organizationUrl>
+      <organizationUrl>https://www.saucelabs.com/</organizationUrl>
     </developer>
     <developer>
       <name>Nikolay Advolodkin</name>
       <email>nikolay.advolodkin@saucelabs.com</email>
       <organization>Sauce Labs</organization>
-      <organizationUrl>http://www.saucelabs.com/</organizationUrl>
+      <organizationUrl>https://www.saucelabs.com/</organizationUrl>
     </developer>
   </developers>
 
@@ -54,7 +54,7 @@
     <dependency>
       <groupId>com.saucelabs</groupId>
       <artifactId>sauce_bindings</artifactId>
-      <version>1.3.0</version>
+      <version>1.5.0</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

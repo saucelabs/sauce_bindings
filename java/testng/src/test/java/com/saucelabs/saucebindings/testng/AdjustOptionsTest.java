@@ -10,19 +10,19 @@ import java.time.Duration;
 
 public class AdjustOptionsTest extends SauceBaseTest {
 
-    @Override
-    protected SauceOptions createSauceOptions() {
-        return SauceOptions.firefox()
-                .setMaxDuration(Duration.ofMinutes(30))
-                .setJobVisibility(JobVisibility.TEAM)
-                .setBrowserVersion("87.0")
-                .build();
-    }
+  @Override
+  protected SauceOptions createSauceOptions() {
+    return SauceOptions.firefox()
+        .setMaxDuration(Duration.ofMinutes(30))
+        .setJobVisibility(JobVisibility.TEAM)
+        .setBrowserVersion("127.0")
+        .build();
+  }
 
-    @Test
-    public void useCustomOptions() {
-        Capabilities caps = getDriver().getCapabilities();
-        Assert.assertEquals("firefox", caps.getBrowserName());
-        Assert.assertEquals("87.0", caps.getCapability("browserVersion"));
-    }
+  @Test
+  public void useCustomOptions() {
+    Capabilities caps = getDriver().getCapabilities();
+    Assert.assertEquals("firefox", caps.getBrowserName());
+    Assert.assertEquals("127.0", caps.getCapability("browserVersion"));
+  }
 }

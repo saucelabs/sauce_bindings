@@ -11,27 +11,30 @@ import java.lang.reflect.Method;
 
 public class ParameterizedOptionsTest extends SauceParameterizedBaseTest {
 
-    @DataProvider(name = "sauceBrowsers", parallel = true)
-    public static Object[][] sauceBrowserDataProvider() {
-        return new Object[][]{
-                new Object[]{SauceOptions.chrome(), "90.0", SaucePlatform.MAC_BIG_SUR},
-                new Object[]{SauceOptions.firefox(), "89.0", SaucePlatform.MAC_BIG_SUR},
-                new Object[]{SauceOptions.chrome(), "91.0", SaucePlatform.WINDOWS_10}
-        };
-    }
+  @DataProvider(name = "sauceBrowsers", parallel = true)
+  public static Object[][] sauceBrowserDataProvider() {
+    return new Object[][] {
+      new Object[] {SauceOptions.chrome(), "126.0", SaucePlatform.MAC_VENTURA},
+      new Object[] {SauceOptions.firefox(), "127.0", SaucePlatform.MAC_VENTURA},
+      new Object[] {SauceOptions.chrome(), "126.0", SaucePlatform.WINDOWS_10}
+    };
+  }
 
-    @Override
-    protected SauceOptions createSauceOptions(Method method, Object[] parameters) {
-        return ((VDCConfigurations) parameters[0])
-                .setBrowserVersion((String) parameters[1])
-                .setPlatformName((SaucePlatform) parameters[2])
-                .build();
-    }
+  @Override
+  protected SauceOptions createSauceOptions(Method method, Object[] parameters) {
+    return ((VDCConfigurations) parameters[0])
+        .setBrowserVersion((String) parameters[1])
+        .setPlatformName((SaucePlatform) parameters[2])
+        .build();
+  }
 
-    @Test(dataProvider = "sauceBrowsers")
-    public void useParameters(VDCConfigurations browser, String browserVersion, SaucePlatform saucePlatform) {
-        Assert.assertEquals(getDriver().getCapabilities().getBrowserName(), browser.build().getBrowserName().getValue());
-        String version = (String) getDriver().getCapabilities().getCapability("browserVersion");
-        Assert.assertTrue(version.contains(browserVersion));
-    }
+  @Test(dataProvider = "sauceBrowsers")
+  public void useParameters(
+      VDCConfigurations browser, String browserVersion, SaucePlatform saucePlatform) {
+    Assert.assertEquals(
+        getDriver().getCapabilities().getBrowserName(),
+        browser.build().getBrowserName().getValue());
+    String version = (String) getDriver().getCapabilities().getCapability("browserVersion");
+    Assert.assertTrue(version.contains(browserVersion));
+  }
 }

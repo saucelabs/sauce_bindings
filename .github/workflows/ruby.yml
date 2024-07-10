@@ -17,14 +17,14 @@ jobs:
       matrix:
         ruby: [ 2.7.5, 3.1.1 ]
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby }}
-    - name: Test with Ruby
-      run: make ruby_tests
-      env:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+      - name: Test with Ruby
+        run: make ruby_tests
+        env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}

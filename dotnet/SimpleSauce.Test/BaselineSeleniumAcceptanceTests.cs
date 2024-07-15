@@ -32,7 +32,7 @@ namespace SauceBindings.Test
             };
             chromeOptions.AddAdditionalOption("sauce:options", sauceOptions);
 
-            var driver = new RemoteWebDriver(new Uri("https://ondemand.saucelabs.com/wd/hub"),
+            var driver = new RemoteWebDriver(new Uri("https://ondemand.us-west-1.saucelabs.com/wd/hub"),
                 chromeOptions.ToCapabilities(), TimeSpan.FromSeconds(30));
             driver.Navigate().GoToUrl("https://www.google.com");
             driver.SessionId.Should().NotBeNull();

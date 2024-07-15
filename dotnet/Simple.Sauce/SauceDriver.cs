@@ -10,7 +10,7 @@ namespace Sauce.Bindings
         private IWebDriver _driver;
         public IWebDriver CreateRemoteWebDriver(DriverOptions browserOptions)
         {
-            _driver = new RemoteWebDriver(new Uri("https://ondemand.saucelabs.com/wd/hub"),
+            _driver = new RemoteWebDriver(new Uri("https://ondemand.us-west-1.saucelabs.com/wd/hub"),
                 browserOptions.ToCapabilities(), TimeSpan.FromSeconds(600));
             return _driver;
         }

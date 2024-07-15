@@ -9,9 +9,8 @@ import warnings
 
 data_centers = {
     'us-west': 'ondemand.us-west-1.saucelabs.com',
-    'us-east': 'ondemand.us-east-1.saucelabs.com',
-    'eu-central': 'ondemand.eu-central-1.saucelabs.com',
-    'apac-southeast': 'ondemand.apac-southeast-1.saucelabs.com'
+    'us-east': 'ondemand.us-east-4.saucelabs.com',
+    'eu-central': 'ondemand.eu-central-1.saucelabs.com'
 }
 
 

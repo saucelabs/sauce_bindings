@@ -1,3 +1,7 @@
+### 1.5.0 - July, 2024
+
+* Update links to all data centers
+
 ### 1.3.0 - June 15, 2022
 
 * Fix links to work all data centers

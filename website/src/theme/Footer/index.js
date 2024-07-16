@@ -82,7 +82,6 @@ function Footer() {
                     <li><a className="link" href="https://saucelabs.com/platform/real-device-cloud" target="" data-ta="click" data-tc="Text" data-tl="">Real Device Cloud</a></li>
                     <li><a className="link" href="https://saucelabs.com/platform/mobile-emulators-and-simulators" target="" data-ta="click" data-tc="Text" data-tl="">Emulators &amp; Simulators</a></li>
                     <li><a className="link" href="https://saucelabs.com/platform/cross-browser-testing" target="" data-ta="click" data-tc="Text" data-tl="">Cross-browser Testing</a></li>
-                    <li><a className="link" href="https://saucelabs.com/platform/sauce-headless" target="" data-ta="click" data-tc="Text" data-tl="">Sauce Headless</a></li>
                 </ul>
             </div>
           </div>

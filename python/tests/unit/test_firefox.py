@@ -352,7 +352,7 @@ class TestAddingCapabilities(object):
         assert options.build == 'Sample Build Name'
         assert options.command_timeout == 2
         assert options.custom_data == custom_data
-        assert options.extended_debugging == True
+        assert options.extended_debugging is True
         assert options.idle_timeout == 3
         assert options.geckodriver_version == '0.23'
         assert options.max_duration == 300
@@ -487,3 +487,17 @@ class TestCapabilitiesCreation(object):
                                  }
 
         assert options.to_capabilities() == expected_capabilities
+
+    def test_accepts_tunnel(self):
+        options = {'build': 'bar',
+                   'idleTimeout': 3,
+                   'name': 'foo',
+                   'tunnelOwner': 'bar',
+                   'tunnelName': 'foobar'}
+
+        sauce = SauceOptions.firefox(**options)
+
+        assert sauce.build == 'bar'
+        assert sauce.name == 'foo'
+        assert sauce.tunnel_owner == 'bar'
+        assert sauce.tunnel_name == 'foobar'

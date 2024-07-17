@@ -293,6 +293,20 @@ class TestSettingSpecificOptions(object):
         assert options.tunnel_identifier == 'tunnelname'
         assert options.video_upload_on_pass is False
 
+    def test_accepts_tunnel(self):
+        options = {'build': 'bar',
+                   'idleTimeout': 3,
+                   'name': 'foo',
+                   'tunnelOwner': 'bar',
+                   'tunnelName': 'foobar'}
+
+        sauce = SauceOptions.edge(**options)
+
+        assert sauce.build == 'bar'
+        assert sauce.name == 'foo'
+        assert sauce.tunnel_owner == 'bar'
+        assert sauce.tunnel_name == 'foobar'
+
     def test_setting_browser_name(self):
         options = SauceOptions.edge()
 

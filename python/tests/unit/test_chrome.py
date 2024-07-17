@@ -117,6 +117,20 @@ class TestInit(object):
         assert sauce.tunnel_identifier == 'foobar'
         assert sauce.video_upload_on_pass is False
 
+    def test_accepts_tunnel(self):
+        options = {'build': 'bar',
+                   'idleTimeout': 3,
+                   'name': 'foo',
+                   'tunnelOwner': 'bar',
+                   'tunnelName': 'foobar'}
+
+        sauce = SauceOptions.chrome(**options)
+
+        assert sauce.build == 'bar'
+        assert sauce.name == 'foo'
+        assert sauce.tunnel_owner == 'bar'
+        assert sauce.tunnel_name == 'foobar'
+
     def test_accepts_sauce_values_as_params(self):
         custom_data = {'foo': 'foo',
                        'bar': 'bar'}

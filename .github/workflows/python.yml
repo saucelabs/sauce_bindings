@@ -21,6 +21,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Set up Sauce Connect
+        uses: saucelabs/sauce-connect-action@v2
+        with:
+            username: ${{ secrets.SAUCE_USERNAME }}
+            accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
+            tunnelName: "sauce-bindings-${{ github.sha }}"
+            region: us-west
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
@@ -31,3 +38,10 @@ jobs:
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
         run: |
           make python_tests
+
+      - name: Sauce Connect cleanup
+        uses: actions/upload-artifact@v3
+        if: ${{ failure() }}
+        with:
+          name: sauce-connect-log
+          path: ${{ env.SAUCE_CONNECT_DIR_IN_HOST }}/sauce-connect.log

@@ -1,14 +1,17 @@
+import os
+
 from saucebindings.options import SauceOptions
 from saucebindings.session import SauceSession
 
 
-class TestCommonOptions(object):
+class TestSauceOptions(object):
 
     def test_creates_session(self):
-        # 1. Create SauceOptions instance with common w3c options
-        sauceOptions = SauceOptions.firefox(browserVersion='128',
-                                            platformName='Windows 11',
-                                            unhandledPromptBehavior="ignore")
+        # 1. Create a SauceOptions instance using tunnelName of a tunnel started earlier
+        tunnel_name = "sauce-bindings-{}".format(os.environ.get('GITHUB_SHA') or "test")
+        sauceOptions = SauceOptions.chrome(extendedDebugging=True,
+                                           idleTimeout=45,
+                                           tunnelName=tunnel_name)
 
         # 2. Create Session object with SauceOptions object instance
         session = SauceSession(sauceOptions)

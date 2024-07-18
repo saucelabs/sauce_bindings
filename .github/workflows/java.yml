@@ -6,8 +6,12 @@ name: Java
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'java/**'
   pull_request:
     branches: [ main ]
+    paths:
+      - 'java/**'
   workflow_dispatch:
 
 jobs:

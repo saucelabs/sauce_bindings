@@ -14,7 +14,6 @@ Adding Sauce Bindings to your existing test suite is easy.
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 <Tabs
 defaultValue="junit5"
 values={[
@@ -34,14 +33,14 @@ https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/java/junit5/src/t
 <TabItem value="junit4">
 
 ```java reference
-https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/java/junit4/src/test/java/com/saucelabs/saucebindings/junit4/examples/SessionTest.java
+Coming soon
 ```
 
 </TabItem>
 <TabItem value="testng">
 
 ```java reference
-https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/java/testng/src/test/java/com/saucelabs/saucebindings/testng/examples/SessionTest.java
+Coming soon
 ```
 
 </TabItem>

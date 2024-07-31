@@ -18,7 +18,13 @@ values={[
 <TabItem value="junit5">
 
 ```java reference
-https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/java/junit5/src/test/java/com/saucelabs/saucebindings/junit5/examples/SessionTest.java
+
+<pre>
+<code>
+https://cdn.rawgit.com/saucelabs/sauce_bindings/476096bbc8f56112646cdab572a7d80e0ea812a1/java/junit5/src/test/java/com/saucelabs/saucebindings/junit5/examples/QuickStartExample.java#L1-L27
+</code>
+</pre>
+https://github.com/saucelabs/sauce_bindings/blob/476096bbc8f56112646cdab572a7d80e0ea812a1/java/junit5/src/test/java/com/saucelabs/saucebindings/junit5/examples/QuickStartExample.java#L1-L27
 ```
 
 </TabItem>

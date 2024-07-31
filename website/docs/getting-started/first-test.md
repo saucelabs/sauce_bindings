@@ -18,13 +18,38 @@ values={[
 <TabItem value="junit5">
 
 ```java reference
+package com.saucelabs.saucebindings.junit5.examples;
 
-<pre>
-<code>
-https://cdn.rawgit.com/saucelabs/sauce_bindings/476096bbc8f56112646cdab572a7d80e0ea812a1/java/junit5/src/test/java/com/saucelabs/saucebindings/junit5/examples/QuickStartExample.java#L1-L27
-</code>
-</pre>
-https://github.com/saucelabs/sauce_bindings/blob/476096bbc8f56112646cdab572a7d80e0ea812a1/java/junit5/src/test/java/com/saucelabs/saucebindings/junit5/examples/QuickStartExample.java#L1-L27
+import com.saucelabs.saucebindings.SauceSession;
+import com.saucelabs.saucebindings.junit5.SauceBindingsExtension;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
+import org.openqa.selenium.WebDriver;
+
+public class QuickStartExample {
+  WebDriver driver;
+  SauceSession session;
+
+  // Register SauceBindingsExtension
+  @RegisterExtension static SauceBindingsExtension sauceExtension = new SauceBindingsExtension();
+
+  // Store the session and driver objects
+  @BeforeEach
+  public void storeVariables() {
+    session = sauceExtension.getSession();
+    driver = sauceExtension.getDriver();
+  }
+
+
+  @Test
+  public void quickStartExample() {
+    // Use session to interact with Sauce Labs
+    session.annotate("Navigating to Swag Labs");
+    // Use the driver to interact with the web as normal
+    driver.get("https://www.saucedemo.com/");
+  }
+}
 ```
 
 </TabItem>

@@ -1,47 +1,43 @@
 ---
+slug: /
+title: Why Sauce Bindings
+sidebar_label: Why Sauce Bindings
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+### Making test automation with Sauce Labs intuitively simple
 
-Let's discover **Docusaurus in less than 5 minutes**.
+```sh
 
-## Getting Started
-
-Get started by **creating a new site**.
-
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
-
-### What you'll need
-
-- [Node.js](https://nodejs.org/en/download/) version 18.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
-
-## Generate a new site
-
-Generate a new Docusaurus site using the **classic template**.
-
-The classic template will automatically be added to your project after you run the command:
-
-```bash
-npm init docusaurus@latest my-website classic
 ```
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+Writing and maintaining automated test frameworks is hard work.
+Sauce Labs wants to reduce the complexity of integrating with our service.
+We've created Sauce Bindings, an interface to simplify working with Sauce Labs session-related interactions.
 
-The command also installs all necessary dependencies you need to run Docusaurus.
+```sh
 
-## Start your site
-
-Run the development server:
-
-```bash
-cd my-website
-npm run start
 ```
 
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
+Sauce Bindings makes automation with Sauce Labs simple:
 
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
+✅ Reasonable defaults for common use cases and less code
 
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+✅ No magic strings
+
+✅ Too many docs! Let the IDE guide you through the API
+
+## Supported Language Bindings
+
+We support the most popular automation programming languages:
+
+- Java
+- Python (Coming Soon!)
+- Ruby (Coming Soon!)
+- C# (Coming Soon!)
+
+## Help
+
+Sauce Bindings are written and maintained by [Sauce Labs Experts](https://saucelabs.com/our-experts)
+
+We're here for you if you [have questions](mailto:opensource@saucelabs.com).

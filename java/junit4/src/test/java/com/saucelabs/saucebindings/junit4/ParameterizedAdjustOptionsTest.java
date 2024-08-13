@@ -24,9 +24,9 @@ public class ParameterizedAdjustOptionsTest extends SauceBaseTest {
   public static Collection<Object[]> crossBrowserData() {
     return Arrays.asList(
         new Object[][] {
-          {SauceOptions.chrome(), "90.0", SaucePlatform.MAC_BIG_SUR},
-          {SauceOptions.firefox(), "89.0", SaucePlatform.MAC_BIG_SUR},
-          {SauceOptions.chrome(), "91.0", SaucePlatform.WINDOWS_10}
+          {SauceOptions.chrome(), "125.0", SaucePlatform.MAC_BIG_SUR},
+          {SauceOptions.firefox(), "127.0", SaucePlatform.MAC_BIG_SUR},
+          {SauceOptions.chrome(), "125.0", SaucePlatform.WINDOWS_10}
         });
   }
 

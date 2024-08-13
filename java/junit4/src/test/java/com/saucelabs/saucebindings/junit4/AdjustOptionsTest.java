@@ -14,7 +14,7 @@ public class AdjustOptionsTest extends SauceBaseTest {
     return SauceOptions.firefox()
         .setMaxDuration(Duration.ofMinutes(30))
         .setJobVisibility(JobVisibility.TEAM)
-        .setBrowserVersion("87.0")
+        .setBrowserVersion("127.0")
         .build();
   }
 
@@ -22,6 +22,6 @@ public class AdjustOptionsTest extends SauceBaseTest {
   public void useCustomOptions() {
     Capabilities caps = driver.getCapabilities();
     Assert.assertEquals("firefox", caps.getBrowserName());
-    Assert.assertEquals("87.0", caps.getCapability("browserVersion"));
+    Assert.assertEquals("127.0", caps.getCapability("browserVersion"));
   }
 }

@@ -4,13 +4,13 @@ on:
   push:
     branches: [ main ]
     paths:
-    - '**.cs'
-    - '**.csproj'
+      - '**.cs'
+      - '**.csproj'
   pull_request:
     branches: [ main ]
     paths:
-    - '**.cs'
-    - '**.csproj'
+      - '**.cs'
+      - '**.csproj'
 
 env:
   SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
@@ -24,17 +24,17 @@ jobs:
     strategy:
       #fail-fast: false
       matrix:
-        os: [windows-latest, macOS-latest]
-        dotnet: ['5.0.x']
+        os: [ windows-latest, macOS-latest ]
+        dotnet: [ '6.0.x' ]
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: ${{ matrix.dotnet }}
-    - name: Test
-      run: |
-        cd ./dotnet/SimpleSauce.Test
-        dotnet test --verbosity normal
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ matrix.dotnet }}
+      - name: Test
+        run: |
+          cd ./dotnet/SimpleSauce.Test
+          dotnet test --verbosity normal

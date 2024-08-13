@@ -1,0 +1,109 @@
+name: Java Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version'
+        required: true
+        type: string
+        default: '1.5.0'
+      component:
+        description: Component to release
+        required: true
+        type: choice
+        default: "sauce_bindings"
+        options:
+          - sauce_bindings
+          - saucebindings-junit4
+          - saucebindings-junit5
+          - saucebindings-testng
+permissions:
+  contents: write
+
+jobs:
+  release_sauce_bindings:
+    if: (github.repository_owner == 'saucelabs')
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        combination: [
+          { component: sauce_bindings, path: java/main },
+          { component: saucebindings-junit4, path: java/junit4 },
+          { component: saucebindings-junit5, path: java/junit5 },
+          { component: saucebindings-testng, path: java/testng }
+        ]
+    steps:
+      - run: echo "Will start a Maven Central upload with version ${{ github.event.inputs.version }} for ${{ github.event.inputs.component }}"
+        if: ( inputs.component == matrix.combination.component )
+      - uses: actions/checkout@v4
+        if: ( inputs.component == matrix.combination.component )
+
+      - name: Set up Maven Central Repository
+        if: ( inputs.component == matrix.combination.component )
+        uses: actions/setup-java@v4
+        with:
+          cache: maven
+          java-version: '11'
+          distribution: 'temurin'
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          gpg-private-key: ${{ secrets.OSSRH_GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+      - name: Setup Fluxbox and Xvfb
+        if: ( inputs.component == matrix.combination.component )
+        run: |
+          sudo apt-get -y install fluxbox
+          Xvfb :99 &
+          fluxbox -display :99 &
+          echo "DISPLAY=:99" >> "$GITHUB_ENV"
+
+      - name: Build, Test, and locally deploy with Maven
+        if: ( inputs.component == matrix.combination.component )
+        env:
+          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+        run: mvn clean install -Dgpg.skip -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -V
+        working-directory: ${{ matrix.combination.path }}
+
+      - name: Set project's Maven version to GitHub Action GUI set version
+        if: ( inputs.component == matrix.combination.component )
+        run: mvn versions:set "-DnewVersion=${{ github.event.inputs.version }}" -DgenerateBackupPoms=false -B --no-transfer-progress
+        working-directory: ${{ matrix.combination.path }}
+
+      - name: Check version bump
+        if: ( inputs.component == matrix.combination.component )
+        run: git diff
+
+      - name: Publish package
+        if: ( inputs.component == matrix.combination.component )
+        run: mvn -B --no-transfer-progress clean deploy -DskipTests=true
+        working-directory: ${{ matrix.combination.path }}
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
+
+      - name: Create GitHub Release
+        if: ( inputs.component == matrix.combination.component )
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.component }}-${{ github.event.inputs.version }}
+          release_name: Java ${{ github.event.inputs.component }} ${{ github.event.inputs.version }}
+          body: |
+            ```
+            <dependencies>
+              <dependency>
+                <groupId>com.saucelabs</groupId>
+                <artifactId>${{ github.event.inputs.component }}</artifactId>
+                <version>${{ github.event.inputs.version }}</version>
+              </dependency>
+            </dependencies>
+            ```
+          draft: false
+          prerelease: false

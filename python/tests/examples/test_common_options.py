@@ -6,8 +6,8 @@ class TestCommonOptions(object):
 
     def test_creates_session(self):
         # 1. Create SauceOptions instance with common w3c options
-        sauceOptions = SauceOptions.firefox(browserVersion='73.0',
-                                            platformName='Windows 8',
+        sauceOptions = SauceOptions.firefox(browserVersion='128',
+                                            platformName='Windows 11',
                                             unhandledPromptBehavior="ignore")
 
         # 2. Create Session object with SauceOptions object instance

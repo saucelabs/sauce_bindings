@@ -5,23 +5,43 @@ name: Python
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+    paths:
+      - 'python/**'
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
+    paths:
+      - 'python/**'
 
 jobs:
-  build:
+  tests:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
-    - name: Test with pytest
-      env:
+      - uses: actions/checkout@v4
+      - name: Set up Sauce Connect
+        uses: saucelabs/sauce-connect-action@v2
+        with:
+            username: ${{ secrets.SAUCE_USERNAME }}
+            accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
+            tunnelName: "sauce-bindings-${{ github.sha }}"
+            region: us-west
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+      - name: Test with pytest
+        env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-      run: |
-        make python_tests
+        run: |
+          make python_tests
+
+      - name: Sauce Connect cleanup
+        uses: actions/upload-artifact@v3
+        if: ${{ failure() }}
+        with:
+          name: sauce-connect-log
+          path: ${{ env.SAUCE_CONNECT_DIR_IN_HOST }}/sauce-connect.log

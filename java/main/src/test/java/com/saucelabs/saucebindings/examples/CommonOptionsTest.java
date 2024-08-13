@@ -12,8 +12,8 @@ public class CommonOptionsTest {
     // 1. Create SauceOptions instance with common w3c options
     SauceOptions sauceOptions =
         SauceOptions.firefox()
-            .setBrowserVersion("85.0")
-            .setPlatformName(SaucePlatform.WINDOWS_8)
+            .setBrowserVersion("127.0")
+            .setPlatformName(SaucePlatform.WINDOWS_10)
             .setUnhandledPromptBehavior(UnhandledPromptBehavior.IGNORE)
             .build();
 

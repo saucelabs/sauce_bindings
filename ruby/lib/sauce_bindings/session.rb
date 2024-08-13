@@ -7,9 +7,8 @@ require 'selenium-webdriver'
 module SauceBindings
   class Session
     DATA_CENTERS = {US_WEST: 'us-west-1',
-                    US_EAST: 'us-east-1',
-                    EU_CENTRAL: 'eu-central-1',
-                    APAC_SOUTHEAST: 'apac-southeast-1'}.freeze
+                    US_EAST: 'us-east-4',
+                    EU_CENTRAL: 'eu-central-1'}.freeze
 
     attr_writer :url
     attr_reader :driver, :options, :data_center, :session_id

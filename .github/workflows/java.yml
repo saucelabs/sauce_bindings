@@ -1,20 +1,24 @@
 # This workflow will build a Java project with Maven
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: JAVA
+name: Java
 
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'java/**'
   pull_request:
     branches: [ main ]
+    paths:
+      - 'java/**'
   workflow_dispatch:
 
 jobs:
   formatting-main:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: axel-op/googlejavaformat-action@v3
         with:
           args: "--replace"
@@ -25,7 +29,7 @@ jobs:
   formatting-junit4:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: axel-op/googlejavaformat-action@v3
         with:
           args: "--replace"
@@ -33,14 +37,40 @@ jobs:
           skip-commit: true
       - name: Print diffs
         run: git --no-pager diff --exit-code
+  formatting-junit5:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: axel-op/googlejavaformat-action@v3
+        with:
+          args: "--replace"
+          files: "java/junit5/**/*.java"
+          skip-commit: true
+      - name: Print diffs
+        run: git --no-pager diff --exit-code
+  formatting-testng:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: axel-op/googlejavaformat-action@v3
+        with:
+          args: "--replace"
+          files: "java/testng/**/*.java"
+          skip-commit: true
+      - name: Print diffs
+        run: git --no-pager diff --exit-code
   main:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up JDK 11
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
           java-version: 11
+          distribution: 'temurin'
+      - name: Remove driver directories
+        run: |
+          sudo rm -rf $CHROMEWEBDRIVER $EDGEWEBDRIVER $GECKOWEBDRIVER
       - name: Test with Maven
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
@@ -49,11 +79,15 @@ jobs:
   junit4:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up JDK 11
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
           java-version: 11
+          distribution: 'temurin'
+      - name: Remove driver directories
+        run: |
+          sudo rm -rf $CHROMEWEBDRIVER $EDGEWEBDRIVER $GECKOWEBDRIVER
       - name: Test with Maven
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
@@ -62,26 +96,40 @@ jobs:
   junit5:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up JDK 11
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
           java-version: 11
+          distribution: 'temurin'
+      - name: Remove driver directories
+        run: |
+          sudo rm -rf $CHROMEWEBDRIVER $EDGEWEBDRIVER $GECKOWEBDRIVER
+      - name: Setup Fluxbox and Xvfb
+        run: |
+          sudo apt-get -y install fluxbox
+          Xvfb :99 &
+          fluxbox -display :99 &
+          echo "DISPLAY=:99" >> "$GITHUB_ENV"
       - name: Test with Maven
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
         run: cd java/junit5 && mvn clean test -Dmaven.javadoc.skip=true;
-#  testng:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Set up JDK 11
-#        uses: actions/setup-java@v1
-#        with:
-#          java-version: 11
-#      - name: Test with Maven
-#        env:
-#          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
-#          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-#        run: cd java/testng && mvn clean test -Dmaven.javadoc.skip=true;
+  testng:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 11
+        uses: actions/setup-java@v4
+        with:
+          java-version: 11
+          distribution: 'temurin'
+      - name: Remove driver directories
+        run: |
+          sudo rm -rf $CHROMEWEBDRIVER $EDGEWEBDRIVER $GECKOWEBDRIVER
+      - name: Test with Maven
+        env:
+          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+        run: cd java/testng && mvn clean test -Dmaven.javadoc.skip=true;

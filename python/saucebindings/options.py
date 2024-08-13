@@ -31,6 +31,7 @@ sauce_configs = {
     'iedriver_version': 'iedriverVersion',
     'max_duration': 'maxDuration',
     'name': 'name',
+    # parent_tunnel is deprecated and being replaced with tunnel_owner.
     'parent_tunnel': 'parentTunnel',
     'prerun': 'prerun',
     'priority': 'priority',
@@ -42,7 +43,10 @@ sauce_configs = {
     'selenium_version': 'seleniumVersion',
     'tags': 'tags',
     'time_zone': 'timeZone',
+    # tunnel_identifier is deprecated and being replaced with tunnel_name.
     'tunnel_identifier': 'tunnelIdentifier',
+    'tunnel_name': 'tunnelName',
+    'tunnel_owner': 'tunnelOwner',
     'video_upload_on_pass': 'videoUploadOnPass',
     'capture_performance': 'capturePerformance'
 }

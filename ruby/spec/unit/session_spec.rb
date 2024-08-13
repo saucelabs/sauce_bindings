@@ -194,7 +194,7 @@ module SauceBindings
         session = Session.new
         session.data_center = :US_EAST
 
-        expect(session.url).to eq('https://ondemand.us-east-1.saucelabs.com/wd/hub')
+        expect(session.url).to eq('https://ondemand.us-east-4.saucelabs.com/wd/hub')
       end
 
       it 'raises exception if data center is invalid' do

@@ -18,7 +18,7 @@ driver.findElement("id").click();
 
 Make sure you have the common Sauce Bindings [prerequisites](https://github.com/saucelabs/sauce_bindings#getting-started-and-prerequisites) set up, as well as
 
--  Java 8+ JDK,
+-  Java 11+ JDK,
 -  Maven,
 -  Your favorite Java IDE ([IntelliJ](https://www.jetbrains.com/idea/download/index.html) preferred but not required).
 

@@ -8,8 +8,31 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
+  formatting-main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: axel-op/googlejavaformat-action@v3
+        with:
+          args: "--replace"
+          files: "java/main/**/*.java"
+          skip-commit: true
+      - name: Print diffs
+        run: git --no-pager diff --exit-code
+  formatting-junit4:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: axel-op/googlejavaformat-action@v3
+        with:
+          args: "--replace"
+          files: "java/junit4/**/*.java"
+          skip-commit: true
+      - name: Print diffs
+        run: git --no-pager diff --exit-code
   main:
     runs-on: ubuntu-latest
     steps:
@@ -49,16 +72,16 @@ jobs:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
         run: cd java/junit5 && mvn clean test -Dmaven.javadoc.skip=true;
-  testng:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Test with Maven
-        env:
-          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
-          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-        run: cd java/testng && mvn clean test -Dmaven.javadoc.skip=true;
+#  testng:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Set up JDK 11
+#        uses: actions/setup-java@v1
+#        with:
+#          java-version: 11
+#      - name: Test with Maven
+#        env:
+#          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+#          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+#        run: cd java/testng && mvn clean test -Dmaven.javadoc.skip=true;

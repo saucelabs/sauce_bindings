@@ -12,7 +12,7 @@ const config = {
   tagline: "Make Your Testing Sweeter with Sauce",
   url: "https://saucelabs.github.io",
   favicon: "img/favicon.ico",
-  baseUrl: "/",
+  baseUrl: "sauce_bindings/",
   organizationName: "saucelabs",
   projectName: "sauce_bindings",
   onBrokenLinks: "warn",

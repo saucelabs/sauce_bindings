@@ -58,7 +58,7 @@ const config = {
       // Replace with your project's social card
       image: "img/docusaurus-social-card.jpg",
       navbar: {
-        title: "Sauce Bdindings",
+        title: "Sauce Bindings",
         logo: {
           alt: "Sauce Bindings Logo",
           src: "img/sauce-bindings.svg",

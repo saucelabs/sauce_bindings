@@ -1,99 +1,127 @@
-module.exports={
-  title: 'Sauce Bindings',
-  tagline: 'Provide Convenient Way to Use Sauce Labs',
-  url: 'https://saucelabs.github.io',
-  baseUrl: '/sauce_bindings/',
-  organizationName: 'saucelabs',
-  projectName: 'sauce_bindings',
-  scripts: [
-    'https://buttons.github.io/buttons.js'
-  ],
-  stylesheets: [
-    'https://use.typekit.net/zmt8tam.css'
-  ],
-  favicon: 'img/favicon.png',
-  customFields: {
-    disableHeaderTitle: true,
-    users: [
-      {
-        caption: 'Sauce Labs',
-        image: '/img/sauce-badge.png',
-        infoLink: 'https://saucelabs.com',
-        pinned: true
-      }
-    ],
-    fonts: {
-      saucelabsFont: [
-        'museo-sans',
-        'HelveticaNeue',
-        'Helvetica Neue',
-        'Serif'
-      ]
-    },
-    repoUrl: 'https://github.com/saucelabs/sauce_bindings'
+// @ts-check
+// `@type` JSDoc annotations allow editor autocompletion and type checking
+// (when paired with `@ts-check`).
+// There are various equivalent ways to declare your Docusaurus config.
+// See: https://docusaurus.io/docs/api/docusaurus-config
+
+import { themes as prismThemes } from "prism-react-renderer";
+
+/** @type {import('@docusaurus/types').Config} */
+const config = {
+  title: "Sauce Bindings",
+  tagline: "Make Your Testing Sweeter with Sauce",
+  url: "https://saucelabs.github.io",
+  favicon: "img/favicon.ico",
+  baseUrl: "/",
+  organizationName: "saucelabs",
+  projectName: "sauce_bindings",
+  onBrokenLinks: "warn",
+  onBrokenMarkdownLinks: "warn",
+
+  // Even if you don't use internationalization, you can use this field to set
+  // useful metadata like html lang. For example, if your site is Chinese, you
+  // may want to replace "en" with "zh-Hans".
+  i18n: {
+    defaultLocale: "en",
+    locales: ["en"],
   },
-  onBrokenLinks: 'log',
-  onBrokenMarkdownLinks: 'log',
+
+  themes: ["@saucelabs/theme-github-codeblock"],
+
   presets: [
     [
-      '@docusaurus/preset-classic',
-      {
+      "classic",
+      /** @type {import('@docusaurus/preset-classic').Options} */
+      ({
         docs: {
-          sidebarPath: 'sidebars.json',
-          routeBasePath: '/',
+          sidebarPath: "./sidebars.js",
           editUrl:
-              'https://github.com/saucelabs/sauce_bindings/edit/main/website/',
-          showLastUpdateAuthor: true,
-          showLastUpdateTime: true,
+            "https://github.com/saucelabs/sauce_bindings/edit/main/website/",
+        },
+        blog: {
+          showReadingTime: true,
+          // Please change this to your repo.
+          // Remove this to remove the "edit this page" links.
+          editUrl:
+            "https://github.com/saucelabs/sauce_bindings/edit/main/website/blog/",
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css')
+          customCss: "./src/css/custom.css",
         },
-      }
-    ]
+      }),
+    ],
   ],
-  themes: [
-    '@saucelabs/theme-github-codeblock'
-  ],
-  plugins: [],
-  themeConfig: {
-    googleAnalytics: {
-      trackingID: 'UA-6735579-21',
-    },
-    hideableSidebar: true,
-    prism: {
-      additionalLanguages: ['java', 'ruby', 'csharp', 'bash', 'powershell', 'python'],
-    },
 
-    navbar: {
-      title: null,
-      hideOnScroll: false,
-      logo: {
-        alt: 'Sauce Labs logo',
-        src: 'img/logo-saucelabs.png',
-        srcDark: 'img/logo-saucelabs-inverted.png'
-      },
-      items: [
-        {
-          label: 'Try it Free',
-          position: 'right',
-          href: 'https://saucelabs.com/sign-up',
+  themeConfig:
+    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+    ({
+      // Replace with your project's social card
+      image: "img/docusaurus-social-card.jpg",
+      navbar: {
+        title: "Sauce Bindings",
+        logo: {
+          alt: "Sauce Bindings Logo",
+          src: "img/sauce-bindings.svg",
         },
-        {
-          label: 'Sign In',
-          position: 'right',
-          href: 'https://accounts.saucelabs.com/',
-        },
-      ]
-    },
-    footer: {
-      logo: {
-        alt: 'Sauce Logo',
-        src: '/img/logo-saucelabs-inverted.png',
-        href: 'https://saucelabs.com',
+        items: [
+          {
+            type: "docSidebar",
+            sidebarId: "tutorialSidebar",
+            position: "left",
+            label: "Tutorial",
+          },
+          { to: "/docs", label: "Docs", position: "left" },
+          {
+            //TODO duplication of this URL, need to move to a constants file
+            href: "https://github.com/saucelabs/sauce_bindings",
+            label: "GitHub",
+            position: "right",
+          },
+        ],
       },
-      style: 'light',
-      copyright: `Copyright © ${new Date().getFullYear()} Sauce Labs, Inc. Built with Docusaurus.`,
-    },
-  }
-}
+      footer: {
+        style: "dark",
+        links: [
+          {
+            title: "Docs",
+            items: [
+              {
+                label: "Tutorial",
+                to: "/docs/getting-started/first-test",
+              },
+            ],
+          },
+          {
+            title: "Community",
+            items: [
+              // {
+              //   label: "Stack Overflow",
+              //   href: "https://stackoverflow.com/questions/tagged/docusaurus",
+              // },
+              //TODO fix this URL to Sauce Community
+              {
+                label: "Chat with us",
+                href: "https://saucelabs.com",
+              },
+            ],
+          },
+          {
+            title: "More",
+            items: [
+              {
+                label: "GitHub",
+                href: "https://github.com/saucelabs/sauce_bindings",
+              },
+            ],
+          },
+        ],
+        copyright: `Copyright © ${new Date().getFullYear()} Sauce Labs, Inc.`,
+      },
+      prism: {
+        theme: prismThemes.github,
+        darkTheme: prismThemes.dracula,
+      },
+    }),
+};
+
+export default config;

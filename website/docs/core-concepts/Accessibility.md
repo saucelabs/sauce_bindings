@@ -1,7 +1,6 @@
 ---
 id: accessibility
-title: Accessibility
-sidebar_label: Accessibility
+title: Accessibility Testing
 ---
 
 As of version 1.2, Sauce Bindings supports the new Sauce Labs 

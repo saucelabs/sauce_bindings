@@ -1,5 +1,4 @@
 ---
-id: configurations
 title: Configuration Overview
 sidebar_label: Overview
 ---

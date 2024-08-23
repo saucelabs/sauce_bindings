@@ -7,6 +7,8 @@ import com.saucelabs.saucebindings.options.SauceOptions;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.Capabilities;
@@ -44,6 +46,10 @@ public class SauceSession {
    * @return the driver instance for using as normal in your tests.
    */
   public RemoteWebDriver start() {
+    if (isDisabled()) {
+      return null;
+    }
+
     this.driver = createRemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities());
     return driver;
   }
@@ -98,7 +104,11 @@ public class SauceSession {
    * @return an object with the accessibility analysis
    */
   public Results getAccessibilityResults(AxeBuilder builder) {
+    if (isDisabled()) {
+      return null;
+    }
     validateSessionStarted("getAccessibilityResults()");
+
     return builder.analyze(driver);
   }
 
@@ -125,7 +135,11 @@ public class SauceSession {
    *     Providing Context for Selenium Commands</a>
    */
   public void annotate(String comment) {
+    if (isDisabled()) {
+      return;
+    }
     validateSessionStarted("annotate()");
+
     driver.executeScript("sauce:context=" + comment);
   }
 
@@ -138,7 +152,11 @@ public class SauceSession {
    *     Test Annotation Methods</a>
    */
   public void pause() {
+    if (isDisabled()) {
+      return;
+    }
     validateSessionStarted("pause()");
+
     String sauceTestLink =
         String.format("https://app.saucelabs.com/tests/%s", this.driver.getSessionId());
     driver.executeScript("sauce: break");
@@ -158,7 +176,11 @@ public class SauceSession {
    *     Test Annotation Methods</a>
    */
   public void disableLogging() {
+    if (isDisabled()) {
+      return;
+    }
     validateSessionStarted("disableLogging()");
+
     driver.executeScript("sauce: disable log");
   }
 
@@ -171,7 +193,11 @@ public class SauceSession {
    *     Test Annotation Methods</a>
    */
   public void enableLogging() {
+    if (isDisabled()) {
+      return;
+    }
     validateSessionStarted("enableLogging()");
+
     driver.executeScript("sauce: enable log");
   }
 
@@ -184,6 +210,9 @@ public class SauceSession {
    *     Test Annotation Methods</a>
    */
   public void stopNetwork() {
+    if (isDisabled()) {
+      return;
+    }
     validateSessionStarted("stopNetwork()");
     validateMac("Can only stop network for a Mac Platform;");
 
@@ -199,6 +228,9 @@ public class SauceSession {
    *     Test Annotation Methods</a>
    */
   public void startNetwork() {
+    if (isDisabled()) {
+      return;
+    }
     validateSessionStarted("startNetwork()");
     validateMac("Can only start network for a Mac Platform;");
 
@@ -216,7 +248,11 @@ public class SauceSession {
    * @see BaseConfigurations#setName(String)
    */
   public void changeTestName(String name) {
+    if (isDisabled()) {
+      return;
+    }
     validateSessionStarted("changeName()");
+
     driver.executeScript("sauce:job-name=" + name);
   }
 
@@ -231,7 +267,11 @@ public class SauceSession {
    * @see BaseConfigurations#setTags(List)
    */
   public void addTags(List<String> tags) {
+    if (isDisabled()) {
+      return;
+    }
     validateSessionStarted("setTags()");
+
     String tagString = String.join(",", tags);
     driver.executeScript("sauce:job-tags=" + tagString);
   }
@@ -290,5 +330,9 @@ public class SauceSession {
       String error = msg + " current platform is: " + platformName;
       throw new InvalidArgumentException(error);
     }
+  }
+
+  private boolean isDisabled() {
+    return Objects.equals(System.getProperty("saucelabs"), "false");
   }
 }

@@ -57,13 +57,6 @@ public class AccessibilityExample {
 ```
 
 </TabItem>
-<TabItem value="junit4">
-
-```java reference
-https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/java/junit4/src/test/java/com/saucelabs/saucebindings/junit4/examples/AccessibilityTest.java
-```
-
-</TabItem>
 </Tabs>
 
 </TabItem>

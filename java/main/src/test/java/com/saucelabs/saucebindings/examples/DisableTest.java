@@ -36,6 +36,6 @@ public class DisableTest {
 
   @AfterEach
   public void stopSession() {
-    System.clearProperty("saucelabs");
+    System.clearProperty("sauce.disabled");
   }
 }

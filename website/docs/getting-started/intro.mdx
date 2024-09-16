@@ -1,0 +1,88 @@
+---
+slug: /
+title: Why Sauce Bindings
+sidebar_label: Why Sauce Bindings
+sidebar_position: 1
+---
+
+## Automation with Sauce Labs intuitively simple
+
+Sauce Bindings improves automation with Sauce Labs:
+
+✅ Reasonable defaults for common use cases
+
+✅ Less code and maintenance
+
+✅ No magic strings
+
+✅ Less docs - let the IDE guide your automation
+
+## Less code and maintenance
+
+```java title="withoutSauceBindings.java"
+    // Without Sauce Bindings - 23 LOC
+    ChromeOptions browserOptions = new ChromeOptions();
+    browserOptions.setPlatformName("Windows 11");
+    browserOptions.setBrowserVersion("latest");
+    Map<String, Object> sauceOptions = new HashMap<>();
+    sauceOptions.put("username", "$USERNAME");
+    sauceOptions.put("accessKey", "$ACCESS_KEY");
+    sauceOptions.put("build", "<your build id>");
+    sauceOptions.put("name", "<your test name>");
+    browserOptions.setCapability("sauce:options", sauceOptions);
+
+    // start the session
+    URL url = new URL("https://ondemand.us-west-1.saucelabs.com:443/wd/hub");
+    RemoteWebDriver driver = new RemoteWebDriver(url, browserOptions);
+
+    // run commands and assertions
+    driver.get("https://saucedemo.com");
+    String title = driver.getTitle();
+    boolean titleIsCorrect = title.contains("Swag Labs");
+    String jobStatus = titleIsCorrect ? "passed" : "failed";
+
+    // end the session
+    driver.executeScript("sauce:job-result=" + jobStatus);
+    driver.quit();
+```
+
+```java title="withBindings.java"
+    // With Sauce Bindings - 8 LOC
+    WebDriver driver;
+    SauceSession session;
+
+    @RegisterExtension static SauceBindingsExtension sauceExtension = new SauceBindingsExtension();
+
+    @BeforeEach
+    public void storeVariables() {
+        // Reasonable defaults start a latest windows with latest chrome
+        session = sauceExtension.getSession();
+        driver = sauceExtension.getDriver();
+    }
+
+    @Test
+    public void quickStartExample() {
+        session.annotate("Navigating to Swag Labs");
+        // execute your tests as normal
+        driver.get("https://www.saucedemo.com/");
+    }
+```
+
+## Supported Language Bindings
+
+We support the most popular automation programming languages:
+
+- Java
+- Python (Coming Soon!)
+- Ruby (Coming Soon!)
+- C# (Coming Soon!)
+
+## Help
+
+Sauce Bindings are written and maintained by Sauce Labs Experts
+
+We're here for you if you have questions.
+
+```
+
+```

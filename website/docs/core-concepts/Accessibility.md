@@ -1,5 +1,4 @@
 ---
-id: accessibility
 title: Accessibility Testing
 ---
 

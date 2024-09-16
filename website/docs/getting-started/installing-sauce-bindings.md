@@ -1,6 +1,6 @@
 ---
 title: Installing Sauce Bindings
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 ## Universal Prerequisites

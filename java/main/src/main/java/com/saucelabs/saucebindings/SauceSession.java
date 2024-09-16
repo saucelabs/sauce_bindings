@@ -332,6 +332,6 @@ public class SauceSession {
   }
 
   private boolean isDisabled() {
-    return Objects.equals(System.getProperty("saucelabs"), "false");
+    return Objects.equals(System.getProperty("sauce.disabled"), "true");
   }
 }

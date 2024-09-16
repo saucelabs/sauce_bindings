@@ -1,5 +1,4 @@
 ---
-id: sauce-options
 title: Setting Sauce Labs Options
 sidebar_label: Sauce Options
 ---

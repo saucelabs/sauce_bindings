@@ -12,7 +12,6 @@ public class DisableExample {
   @Test
   public void startSession() {
     // 1. Toggle off sauce labs
-    System.out.println("disabling sauce");
     System.setProperty("sauce.disabled", "true");
 
     // 2. Create a Sauce Session
@@ -38,6 +37,5 @@ public class DisableExample {
   @AfterEach
   public void stopSession() {
     System.clearProperty("sauce.disabled");
-    System.out.println("clearing disable");
   }
 }

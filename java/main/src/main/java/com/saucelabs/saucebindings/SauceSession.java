@@ -332,6 +332,7 @@ public class SauceSession {
   }
 
   private boolean isDisabled() {
-    return Objects.equals(System.getProperty("sauce.disabled"), "true");
+    return Boolean.parseBoolean(System.getenv("SAUCE_DISABLED"))
+        || Boolean.getBoolean("sauce.disabled");
   }
 }

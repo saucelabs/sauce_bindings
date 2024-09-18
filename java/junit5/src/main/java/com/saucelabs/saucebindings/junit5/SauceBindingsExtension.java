@@ -64,10 +64,6 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback {
 
   @Override
   public void beforeEach(ExtensionContext context) {
-    if (isExtensionDisabled()) {
-      return;
-    }
-
     if (sauceOptions.sauce().getName() == null) {
       sauceOptions.sauce().setName(context.getDisplayName());
     }
@@ -79,10 +75,6 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback {
 
   @Override
   public void testSuccessful(ExtensionContext context) {
-    if (isExtensionDisabled()) {
-      return;
-    }
-
     try {
       session.stop(true);
     } catch (NoSuchSessionException e) {
@@ -104,11 +96,5 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback {
 
       session.stop(false);
     }
-  }
-
-  // TODO: Implement this in SauceSession directly
-  private boolean isExtensionDisabled() {
-    String value = System.getenv("SAUCE_DISABLED");
-    return Boolean.parseBoolean(value) || Boolean.getBoolean("sauce.disabled");
   }
 }

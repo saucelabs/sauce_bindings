@@ -5,7 +5,9 @@ import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.junit5.SauceBindingsExtension;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import java.time.Duration;
+import java.util.List;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,40 +22,42 @@ public class ToggleLocalExample {
   WebDriver driver;
   SauceSession session;
 
+  // Allow registering multiple test watchers
   @RegisterExtension
   static SauceBindingsExtension sauceExtension = new SauceBindingsExtension(getSauceOptions());
 
   @RegisterExtension TestWatcher testWatcher = new LocalTestWatcher();
 
-  // To run test on Sauce Labs, change this to "false"
+  // Run tests with this property set to "false" to execute on Sauce Labs
   @BeforeAll
   public static void disableSauce() {
     System.setProperty("sauce.disabled", "true");
   }
 
-  @AfterAll
-  public static void resetSauce() {
-    System.clearProperty("sauce.disabled");
-  }
-
   @BeforeEach
   public void setup() {
-    // TODO: Allow getting session even when disabled
-    if (isSauceEnabled()) {
-      session = sauceExtension.getSession();
-      driver = sauceExtension.getDriver();
-    } else {
+    session = sauceExtension.getSession();
+    if (SauceSession.isDisabled()) {
       driver = new ChromeDriver(getCapabilities());
+    } else {
+      driver = sauceExtension.getDriver();
     }
   }
 
   @Test
   public void localExample() {
-    // TODO: Allow this method to be ignored if Sauce is disabled
-    if (isSauceEnabled()) {
-      session.annotate("Navigating to Swag Labs");
-    }
+    // This code executes whether running locally or on Sauce
     driver.get("https://www.saucedemo.com/");
+
+    // This code executes if Sauce enabled, and is ignored when disabled
+    Assertions.assertDoesNotThrow(
+        () -> {
+          session.annotate("This gets ignored");
+          session.addTags(List.of("ignored"));
+          session.stopNetwork();
+          session.enableLogging();
+          session.getAccessibilityResults();
+        });
   }
 
   private static SauceOptions getSauceOptions() {
@@ -66,33 +70,30 @@ public class ToggleLocalExample {
   }
 
   private static ChromeOptions getCapabilities() {
-    ChromeOptions chromeOptions = new ChromeOptions();
-    chromeOptions.addArguments("--hide-scrollbars");
-
-    return chromeOptions;
+    return new ChromeOptions();
   }
 
-  // TODO: Implement this as a method in SauceSession directly
-  private boolean isSauceEnabled() {
-    String value = System.getenv("SAUCE_DISABLED");
-    return Boolean.parseBoolean(value) || !Boolean.getBoolean("sauce.disabled");
-  }
-
+  // Do not quit the driver if running on Sauce Labs
   public class LocalTestWatcher implements TestWatcher {
     @Override
     public void testSuccessful(ExtensionContext context) {
-      if (!isSauceEnabled()) {
-        System.out.println("Test Succeeded");
+      System.out.println("Test Succeeded");
+      if (SauceSession.isDisabled()) {
         driver.quit();
       }
     }
 
     @Override
     public void testFailed(ExtensionContext context, Throwable cause) {
-      if (!isSauceEnabled()) {
-        System.out.println("Test Failed");
+      System.out.println("Test Failed: " + cause.getMessage());
+      if (SauceSession.isDisabled()) {
         driver.quit();
       }
     }
+  }
+
+  @AfterAll
+  public static void resetSauce() {
+    System.clearProperty("sauce.disabled");
   }
 }

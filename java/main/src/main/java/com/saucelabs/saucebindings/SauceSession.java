@@ -274,6 +274,11 @@ public class SauceSession {
     driver.executeScript("sauce:job-tags=" + tagString);
   }
 
+  public static boolean isDisabled() {
+    return Boolean.parseBoolean(System.getenv("SAUCE_DISABLED"))
+        || Boolean.getBoolean("sauce.disabled");
+  }
+
   /**
    * @deprecated Do not use magic strings, pass in boolean for whether test has passed.
    */
@@ -328,10 +333,5 @@ public class SauceSession {
       String error = msg + " current platform is: " + platformName;
       throw new InvalidArgumentException(error);
     }
-  }
-
-  private boolean isDisabled() {
-    return Boolean.parseBoolean(System.getenv("SAUCE_DISABLED"))
-        || Boolean.getBoolean("sauce.disabled");
   }
 }

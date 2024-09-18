@@ -5,7 +5,7 @@ import com.saucelabs.saucebindings.SauceSession;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class AccessibilityTest {
+public class AccessibilityExample {
 
   @Test
   public void startSession() {

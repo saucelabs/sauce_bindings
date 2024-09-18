@@ -2,20 +2,19 @@ package com.saucelabs.saucebindings.examples;
 
 import com.saucelabs.saucebindings.*;
 import com.saucelabs.saucebindings.options.SauceOptions;
-import java.time.Duration;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class SauceLabsOptionsTest {
+public class CommonOptionsExample {
 
   @Test
-  public void sauceOptions() {
-    // 1. Specify Sauce Specific Options Based on Browser
+  public void basicOptions() {
+    // 1. Create SauceOptions instance with common w3c options
     SauceOptions sauceOptions =
         SauceOptions.firefox()
-            .setExtendedDebugging()
-            .setIdleTimeout(Duration.ofSeconds(45))
-            .setTimeZone("Alaska")
+            .setBrowserVersion("127.0")
+            .setPlatformName(SaucePlatform.WINDOWS_10)
+            .setUnhandledPromptBehavior(UnhandledPromptBehavior.IGNORE)
             .build();
 
     // 2. Create Session object with the Options object instance

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class BrowserOptionsTest {
+public class BrowserOptionsExample {
 
   @Test
   public void browserOptions() {

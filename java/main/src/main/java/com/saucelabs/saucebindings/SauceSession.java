@@ -7,7 +7,6 @@ import com.saucelabs.saucebindings.options.SauceOptions;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.Capabilities;
@@ -275,6 +274,11 @@ public class SauceSession {
     driver.executeScript("sauce:job-tags=" + tagString);
   }
 
+  public static boolean isDisabled() {
+    return Boolean.parseBoolean(System.getenv("SAUCE_DISABLED"))
+        || Boolean.getBoolean("sauce.disabled");
+  }
+
   /**
    * @deprecated Do not use magic strings, pass in boolean for whether test has passed.
    */
@@ -329,9 +333,5 @@ public class SauceSession {
       String error = msg + " current platform is: " + platformName;
       throw new InvalidArgumentException(error);
     }
-  }
-
-  private boolean isDisabled() {
-    return Objects.equals(System.getProperty("saucelabs"), "false");
   }
 }

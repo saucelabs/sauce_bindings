@@ -7,12 +7,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 
-public class DisableTest {
+public class DisableExample {
 
   @Test
   public void startSession() {
     // 1. Toggle off sauce labs
-    System.setProperty("saucelabs", "false");
+    System.setProperty("sauce.disabled", "true");
 
     // 2. Create a Sauce Session
     SauceSession session = new SauceSession();
@@ -22,6 +22,7 @@ public class DisableTest {
     Assertions.assertNull(driver);
 
     // 4. All session commands will be ignored
+    Assertions.assertNull(session.getDriver());
     Assertions.assertDoesNotThrow(
         () -> {
           session.annotate("This gets ignored");
@@ -35,6 +36,6 @@ public class DisableTest {
 
   @AfterEach
   public void stopSession() {
-    System.clearProperty("saucelabs");
+    System.clearProperty("sauce.disabled");
   }
 }

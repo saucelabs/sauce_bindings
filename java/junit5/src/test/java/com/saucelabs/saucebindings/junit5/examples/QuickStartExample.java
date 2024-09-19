@@ -15,13 +15,16 @@ public class QuickStartExample {
 
   @BeforeEach
   public void storeVariables() {
+    // env variables are automatically read from system
     session = sauceExtension.getSession();
     driver = sauceExtension.getDriver();
   }
 
   @Test
   public void quickStartExample() {
+    //method name and build name automatically captured
     session.annotate("Navigating to Swag Labs");
     driver.get("https://www.saucedemo.com/");
+    //driver.quit() and test status automatically set with no extra code
   }
 }

@@ -1,6 +1,6 @@
 ---
 title: First Test
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 import Tabs from '@theme/Tabs';
@@ -9,9 +9,7 @@ import TabItem from '@theme/TabItem';
 <Tabs
 defaultValue="junit5"
 values={[
-{ label: 'JUnit 5', value: 'junit5', },
-{ label: 'JUnit 4', value: 'junit4', },
-{ label: 'TestNG', value: 'testng', },
+{ label: 'JUnit 5', value: 'junit5', }
 ]
 }>
 

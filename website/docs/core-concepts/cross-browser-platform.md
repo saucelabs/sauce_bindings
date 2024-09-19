@@ -1,6 +1,6 @@
 ---
-title: Test Configuration
-sidebar_position: 1
+title: Cross Browser and Platform
+sidebar_position: 2
 ---
 
 ## Introduction
@@ -27,7 +27,7 @@ Numerous configuration options are available for your tests.
 
 See [Platform Configurator](https://saucelabs.com/platform/platform-configurator#/)
 
-## Browser Capabilities 
+## Browser Capabilities
 
 There are many browser capabilities that can be configured to define a specific behavior for your tests. For example,
 
@@ -41,7 +41,7 @@ https://github.com/saucelabs/sauce_bindings/blob/main/java/junit5/src/test/java/
 
 The test above will run on X, Y, Z.
 
-Additionally, there are [settings that apply to all browser sessions](https://docs.saucelabs.com/dev/test-configuration-options/index.html#browser-w3c-capabilities--optional) 
+Additionally, there are [settings that apply to all browser sessions](https://docs.saucelabs.com/dev/test-configuration-options/index.html#browser-w3c-capabilities--optional)
 that can be configured in `SauceOptions`
 
 Here's an example of running a test on Firefox and Windows 8.0, that accepts insecure certificates and changes
@@ -49,7 +49,6 @@ the unhandled prompt behavior to `"ignore"`:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 <Tabs
 defaultValue="junit5"
@@ -82,4 +81,3 @@ https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/java/testng/src/t
 
 </TabItem>
 </Tabs>
-

@@ -1,12 +1,11 @@
 ---
-id: data-center
 title: Setting Data Center
 sidebar_label: Data Center
 ---
 
 While the Sauce Options class allows you to specify how you want your tests to run,
-you may also want to adjust where your tests are run with the Sauce Session class. 
-By default, tests are executed on our US West Coast Data Center. 
+you may also want to adjust where your tests are run with the Sauce Session class.
+By default, tests are executed on our US West Coast Data Center.
 You can Specify US East (real mobile devices only), or Central EU data centers with the Session class.
 Here's an example of setting the data center to EU:
 

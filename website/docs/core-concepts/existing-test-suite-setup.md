@@ -68,6 +68,7 @@ public class CapabilitiesExample {
     session.annotate("Navigating to Swag Labs");
     // Use the driver to interact with your browser
     driver.get("https://www.saucedemo.com/");
+    // Sauce Bindings quits the driver and sets test status for you ;)
   }
 }
 ```

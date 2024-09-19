@@ -12,7 +12,7 @@ const config = {
   tagline: "Make Your Testing Sweeter with Sauce",
   url: "https://saucelabs.github.io",
   favicon: "img/favicon.ico",
-  baseUrl: '/sauce_bindings/',
+  baseUrl: "/sauce_bindings/",
   organizationName: "saucelabs",
   projectName: "sauce_bindings",
   onBrokenLinks: "warn",
@@ -120,6 +120,7 @@ const config = {
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
+        additionalLanguages: ["java", "ruby", "csharp"],
       },
     }),
 };

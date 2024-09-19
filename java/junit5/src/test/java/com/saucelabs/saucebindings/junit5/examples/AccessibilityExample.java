@@ -23,6 +23,8 @@ public class AccessibilityExample {
   @Test
   public void accessibilityExample() {
     driver.get("https://www.saucedemo.com/");
+    //store the accessibility results into an object
     Results accessibilityResults = session.getAccessibilityResults();
+    //if you want, you can assert on the accessibilityResults
   }
 }

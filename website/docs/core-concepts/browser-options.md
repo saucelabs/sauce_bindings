@@ -85,4 +85,3 @@ https://github.com/saucelabs/sauce_bindings/tree/website-1.2.0/ruby/spec/example
 
 </TabItem>
 </Tabs>
-

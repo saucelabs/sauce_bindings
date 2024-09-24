@@ -36,16 +36,16 @@ public abstract class CITools {
           "Travis", ImmutableList.of("TRAVIS_JOB_NAME", "TRAVIS_JOB_NUMBER"));
 
   private static void storeBuildInfo() {
-    if (buildInfoStored) {
-      return;
-    }
-
-    for (Map.Entry<String, String> tool : KNOWN_TOOLS.entrySet()) {
-      if (SystemManager.get(tool.getValue()) != null) {
-        buildName = BUILD_VALUES.get(tool.getKey()).get(0);
-        buildNumber = BUILD_VALUES.get(tool.getKey()).get(1);
-        buildInfoStored = true;
-        break;
+    if (!buildInfoStored) {
+      for (Map.Entry<String, String> tool : KNOWN_TOOLS.entrySet()) {
+        if (SystemManager.get(tool.getValue()) != null) {
+          buildName = SystemManager.get(BUILD_VALUES.get(tool.getKey()).get(0));
+          buildNumber = SystemManager.get(BUILD_VALUES.get(tool.getKey()).get(1));
+          if (buildName != null && buildNumber != null) {
+            buildInfoStored = true;
+            break;
+          }
+        }
       }
     }
   }

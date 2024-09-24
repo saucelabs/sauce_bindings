@@ -1,4 +1,4 @@
-package com.saucelabs.saucebindings.junit4.examples;
+package com.saucelabs.saucebindings.junit4.examples.obsolete;
 
 import com.deque.html.axecore.selenium.AxeBuilder;
 import com.saucelabs.saucebindings.junit4.SauceBaseTest;

@@ -11,6 +11,8 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+/** This class is deprecated, use the SauceBindingsWatcher Rule */
+@Deprecated
 public class SauceBaseTest {
   protected RemoteWebDriver driver;
   protected SauceSession session;

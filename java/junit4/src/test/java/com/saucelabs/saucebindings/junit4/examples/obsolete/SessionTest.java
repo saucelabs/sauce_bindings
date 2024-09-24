@@ -1,4 +1,4 @@
-package com.saucelabs.saucebindings.junit4.examples;
+package com.saucelabs.saucebindings.junit4.examples.obsolete;
 
 import com.saucelabs.saucebindings.junit4.SauceBaseTest;
 import org.junit.Test;

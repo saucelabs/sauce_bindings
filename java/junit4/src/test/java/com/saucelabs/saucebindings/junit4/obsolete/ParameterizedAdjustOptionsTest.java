@@ -1,6 +1,7 @@
-package com.saucelabs.saucebindings.junit4;
+package com.saucelabs.saucebindings.junit4.obsolete;
 
 import com.saucelabs.saucebindings.SaucePlatform;
+import com.saucelabs.saucebindings.junit4.SauceBaseTest;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import com.saucelabs.saucebindings.options.VDCConfigurations;
 import java.util.Arrays;

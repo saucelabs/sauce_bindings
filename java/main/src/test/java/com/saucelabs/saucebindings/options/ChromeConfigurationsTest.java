@@ -2,10 +2,8 @@ package com.saucelabs.saucebindings.options;
 
 import com.saucelabs.saucebindings.*;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
@@ -126,6 +124,10 @@ public class ChromeConfigurationsTest {
             .disableVideoUploadOnPass()
             .build();
 
+    //Fix up the tags in the "expected" option to account for the sauce-bindings tags
+    List<String> expectedTags = new ArrayList<>(Arrays.asList("sauce-bindings", "java"));
+    expectedTags.addAll(tags);
+
     Assertions.assertEquals("Sample Build Name", sauceOptions.sauce().getBuild());
     Assertions.assertEquals(true, sauceOptions.sauce().getCapturePerformance());
     Assertions.assertEquals("71", sauceOptions.sauce().getChromedriverVersion());
@@ -143,7 +145,7 @@ public class ChromeConfigurationsTest {
     Assertions.assertEquals(false, sauceOptions.sauce().getRecordScreenshots());
     Assertions.assertEquals(false, sauceOptions.sauce().getRecordVideo());
     Assertions.assertEquals("1024x768", sauceOptions.sauce().getScreenResolution());
-    Assertions.assertEquals(tags, sauceOptions.sauce().getTags());
+    Assertions.assertEquals(expectedTags, sauceOptions.sauce().getTags());
     Assertions.assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
     Assertions.assertEquals("tunnelname", sauceOptions.sauce().getTunnelIdentifier());
     Assertions.assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());

@@ -4,10 +4,8 @@ import com.saucelabs.saucebindings.*;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -119,6 +117,10 @@ public class SauceOptionsTest {
     sauceOptions.sauce().setTunnelIdentifier("tunnelname");
     sauceOptions.sauce().setVideoUploadOnPass(false);
 
+    //Fix up the tags in the "expected" option to account for the sauce-bindings tags
+    List<String> expectedTags = new ArrayList<>(Arrays.asList("sauce-bindings", "java"));
+    expectedTags.addAll(tags);
+
     Assertions.assertEquals(true, sauceOptions.sauce().getAvoidProxy());
     Assertions.assertEquals("Sample Build Name", sauceOptions.sauce().getBuild());
     Assertions.assertEquals(true, sauceOptions.sauce().getCapturePerformance());
@@ -139,7 +141,7 @@ public class SauceOptionsTest {
     Assertions.assertEquals(false, sauceOptions.sauce().getRecordVideo());
     Assertions.assertEquals("10x10", sauceOptions.sauce().getScreenResolution());
     Assertions.assertEquals("3.141.59", sauceOptions.sauce().getSeleniumVersion());
-    Assertions.assertEquals(tags, sauceOptions.sauce().getTags());
+    Assertions.assertEquals(expectedTags, sauceOptions.sauce().getTags());
     Assertions.assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
     Assertions.assertEquals("tunnelname", sauceOptions.sauce().getTunnelIdentifier());
     Assertions.assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());
@@ -185,6 +187,10 @@ public class SauceOptionsTest {
     tags.add("bar");
     tags.add("foobar");
 
+    //Fix up the tags in the "expected" option to account for the sauce-bindings tags
+    List<String> expectedTags = new ArrayList<>(Arrays.asList("sauce-bindings", "java"));
+    expectedTags.addAll(tags);
+
     Assertions.assertEquals(Browser.FIREFOX, sauceOptions.getBrowserName());
     Assertions.assertEquals("68", sauceOptions.getBrowserVersion());
     Assertions.assertEquals(SaucePlatform.MAC_HIGH_SIERRA, sauceOptions.getPlatformName());
@@ -217,7 +223,7 @@ public class SauceOptionsTest {
     Assertions.assertEquals(false, sauceOptions.sauce().getRecordVideo());
     Assertions.assertEquals("10x10", sauceOptions.sauce().getScreenResolution());
     Assertions.assertEquals("3.141.59", sauceOptions.sauce().getSeleniumVersion());
-    Assertions.assertEquals(tags, sauceOptions.sauce().getTags());
+    Assertions.assertEquals(expectedTags, sauceOptions.sauce().getTags());
     Assertions.assertEquals("San Francisco", sauceOptions.sauce().getTimeZone());
     Assertions.assertEquals("tunnelname", sauceOptions.sauce().getTunnelIdentifier());
     Assertions.assertEquals(false, sauceOptions.sauce().getVideoUploadOnPass());
@@ -308,6 +314,7 @@ public class SauceOptionsTest {
     sauceCapabilities.setCapability("build", "Build Name");
     sauceCapabilities.setCapability("username", SystemManager.get("SAUCE_USERNAME"));
     sauceCapabilities.setCapability("accessKey", SystemManager.get("SAUCE_ACCESS_KEY"));
+    sauceCapabilities.setCapability("tags", "[sauce-bindings, java]");
     expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
     MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
 
@@ -362,6 +369,10 @@ public class SauceOptionsTest {
     sauceOptions.sauce().setTunnelIdentifier("tunnelname");
     sauceOptions.sauce().setVideoUploadOnPass(false);
 
+    //Fix up the tags in the "expected" option to account for the sauce-bindings tags
+    List<String> expectedTags = new ArrayList<>(Arrays.asList("sauce-bindings", "java"));
+    expectedTags.addAll(tags);
+
     MutableCapabilities sauceCapabilities = new MutableCapabilities();
     sauceCapabilities.setCapability("avoidProxy", true);
     sauceCapabilities.setCapability("build", "Sample Build Name");
@@ -383,12 +394,13 @@ public class SauceOptionsTest {
     sauceCapabilities.setCapability("recordVideo", false);
     sauceCapabilities.setCapability("screenResolution", "10x10");
     sauceCapabilities.setCapability("seleniumVersion", "3.141.59");
-    sauceCapabilities.setCapability("tags", tags);
+    sauceCapabilities.setCapability("tags", expectedTags);
     sauceCapabilities.setCapability("timeZone", "San Francisco");
     sauceCapabilities.setCapability("tunnelIdentifier", "tunnelname");
     sauceCapabilities.setCapability("videoUploadOnPass", false);
     sauceCapabilities.setCapability("username", SystemManager.get("SAUCE_USERNAME"));
     sauceCapabilities.setCapability("accessKey", SystemManager.get("SAUCE_ACCESS_KEY"));
+
 
     MutableCapabilities expectedCapabilities = new MutableCapabilities();
     expectedCapabilities.setCapability("browserName", "chrome");
@@ -423,6 +435,8 @@ public class SauceOptionsTest {
     sauceCapabilities.setCapability("build", "Build Name");
     sauceCapabilities.setCapability("username", SystemManager.get("SAUCE_USERNAME"));
     sauceCapabilities.setCapability("accessKey", SystemManager.get("SAUCE_ACCESS_KEY"));
+    sauceCapabilities.setCapability("tags", Arrays.asList("sauce-bindings", "java"));
+
     expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
     MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
 
@@ -448,6 +462,7 @@ public class SauceOptionsTest {
 
     sauceOptions.sauce().setBuild("CUSTOM BUILD: 12");
     sauceCapabilities.setCapability("build", "CUSTOM BUILD: 12");
+    sauceCapabilities.setCapability("tags", "[sauce-bindings, java]");
 
     sauceOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
     expectedCapabilities.setCapability("pageLoadStrategy", PageLoadStrategy.EAGER);
@@ -473,6 +488,7 @@ public class SauceOptionsTest {
     sauceCapabilities.setCapability("public", JobVisibility.SHARE);
     sauceCapabilities.setCapability("username", SystemManager.get("SAUCE_USERNAME"));
     sauceCapabilities.setCapability("accessKey", SystemManager.get("SAUCE_ACCESS_KEY"));
+    sauceCapabilities.setCapability("tags", "[sauce-bindings, java]");
 
     expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
     MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();

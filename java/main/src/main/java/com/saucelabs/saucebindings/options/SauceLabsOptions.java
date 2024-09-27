@@ -6,10 +6,8 @@ import com.saucelabs.saucebindings.Prerun;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.SystemManager;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -44,7 +42,18 @@ public class SauceLabsOptions extends BaseOptions {
   private Boolean recordVideo = null;
   private String screenResolution;
   private String seleniumVersion;
-  private List<String> tags = null;
+
+  public BaseOptions setTags(List<String> tags) {
+    this.tags.addAll(tags);
+    return this;
+  }
+
+  public BaseOptions setTag(String tags) {
+    this.tags.add(tags);
+    return this;
+  }
+
+  private List<String> tags = new ArrayList<>(Arrays.asList("sauce-bindings", "java"));
   private String timeZone;
   private String tunnelIdentifier;
   private Boolean videoUploadOnPass = null;
@@ -135,7 +144,17 @@ public class SauceLabsOptions extends BaseOptions {
                 prerunMap.put(Prerun.valueOf(keyString), val);
               });
       setPrerun(prerunMap);
-    } else {
+    } else if ("tags".equals(key)) {
+      try {
+        List<String> tagsList = (List) value;
+        for (String tag: tagsList) {
+          tags.add(tag);
+        }
+      } catch (ClassCastException e) {
+        throw new RuntimeException(e);
+      }
+    }
+    else {
       super.setCapability(key, value);
     }
   }

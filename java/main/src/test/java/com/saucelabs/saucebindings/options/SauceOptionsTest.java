@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.time.Duration;
 import java.util.*;
-
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -117,7 +116,7 @@ public class SauceOptionsTest {
     sauceOptions.sauce().setTunnelIdentifier("tunnelname");
     sauceOptions.sauce().setVideoUploadOnPass(false);
 
-    //Fix up the tags in the "expected" option to account for the sauce-bindings tags
+    // Fix up the tags in the "expected" option to account for the sauce-bindings tags
     List<String> expectedTags = new ArrayList<>(Arrays.asList("sauce-bindings", "java"));
     expectedTags.addAll(tags);
 
@@ -187,7 +186,7 @@ public class SauceOptionsTest {
     tags.add("bar");
     tags.add("foobar");
 
-    //Fix up the tags in the "expected" option to account for the sauce-bindings tags
+    // Fix up the tags in the "expected" option to account for the sauce-bindings tags
     List<String> expectedTags = new ArrayList<>(Arrays.asList("sauce-bindings", "java"));
     expectedTags.addAll(tags);
 
@@ -369,7 +368,7 @@ public class SauceOptionsTest {
     sauceOptions.sauce().setTunnelIdentifier("tunnelname");
     sauceOptions.sauce().setVideoUploadOnPass(false);
 
-    //Fix up the tags in the "expected" option to account for the sauce-bindings tags
+    // Fix up the tags in the "expected" option to account for the sauce-bindings tags
     List<String> expectedTags = new ArrayList<>(Arrays.asList("sauce-bindings", "java"));
     expectedTags.addAll(tags);
 
@@ -400,7 +399,6 @@ public class SauceOptionsTest {
     sauceCapabilities.setCapability("videoUploadOnPass", false);
     sauceCapabilities.setCapability("username", SystemManager.get("SAUCE_USERNAME"));
     sauceCapabilities.setCapability("accessKey", SystemManager.get("SAUCE_ACCESS_KEY"));
-
 
     MutableCapabilities expectedCapabilities = new MutableCapabilities();
     expectedCapabilities.setCapability("browserName", "chrome");

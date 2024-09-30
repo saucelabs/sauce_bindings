@@ -7,7 +7,6 @@ import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.SystemManager;
 import java.net.URL;
 import java.util.*;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -147,14 +146,13 @@ public class SauceLabsOptions extends BaseOptions {
     } else if ("tags".equals(key)) {
       try {
         List<String> tagsList = (List) value;
-        for (String tag: tagsList) {
+        for (String tag : tagsList) {
           tags.add(tag);
         }
       } catch (ClassCastException e) {
         throw new RuntimeException(e);
       }
-    }
-    else {
+    } else {
       super.setCapability(key, value);
     }
   }
@@ -168,8 +166,8 @@ public class SauceLabsOptions extends BaseOptions {
   }
 
   /**
-   * @deprecated This method is no longer supported
    * @return whether CI is accounted for in code
+   * @deprecated This method is no longer supported
    */
   @Deprecated
   public boolean isKnownCI() {

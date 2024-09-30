@@ -3,7 +3,6 @@ package com.saucelabs.saucebindings.options;
 import com.saucelabs.saucebindings.*;
 import java.time.Duration;
 import java.util.*;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
@@ -117,7 +116,7 @@ public class FirefoxConfigurationsTest {
             .disableVideoUploadOnPass()
             .build();
 
-    //Fix up the tags in the "expected" option to account for the sauce-bindings tags
+    // Fix up the tags in the "expected" option to account for the sauce-bindings tags
     List<String> expectedTags = new ArrayList<>(Arrays.asList("sauce-bindings", "java"));
     expectedTags.addAll(tags);
 

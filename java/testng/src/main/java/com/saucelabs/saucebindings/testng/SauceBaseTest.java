@@ -10,6 +10,10 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
+/**
+ * @deprecated Use SauceBindingsListener instead
+ */
+@Deprecated
 public class SauceBaseTest {
   private static ThreadLocal<SauceSession> session = new ThreadLocal<>();
   private static ThreadLocal<DataCenter> dataCenterThreadLocal = new ThreadLocal<>();

@@ -1,24 +1,25 @@
-package com.saucelabs.saucebindings.testng.examples;
+package com.saucelabs.saucebindings.testng.examples.obsolete;
 
+import com.saucelabs.saucebindings.SaucePlatform;
+import com.saucelabs.saucebindings.UnhandledPromptBehavior;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import com.saucelabs.saucebindings.testng.SauceBaseTest;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.Test;
 
 // 1. Extend the provided base test class
-public class BrowserOptionsTest extends SauceBaseTest {
+public class CommonOptionsTest extends SauceBaseTest {
 
-  // 2. Create Sauce Options with Sauce Labs class for browser specific details
-  @Override
+  // 2. Create SauceOptions instance with common w3c options
   protected SauceOptions createSauceOptions() {
-    ChromeOptions browserOptions = new ChromeOptions();
-    browserOptions.addArguments("--start-fullscreen");
-
-    return SauceOptions.chrome(browserOptions).build();
+    return SauceOptions.firefox()
+        .setBrowserVersion("127.0")
+        .setPlatformName(SaucePlatform.WINDOWS_10)
+        .setUnhandledPromptBehavior(UnhandledPromptBehavior.IGNORE)
+        .build();
   }
 
   @Test
-  public void browserOptions() {
+  public void basicOptions() {
     // 3. Session and Driver are created automatically by superclass
 
     // 4. Use the driver in your tests just like normal

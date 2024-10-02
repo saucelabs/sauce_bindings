@@ -1,0 +1,24 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Parameterized Suite">
+
+    <test name="Chrome">
+        <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="com.saucelabs.saucebindings.testng.examples.ParameterizedExample"/>
+        </classes>
+    </test>
+
+    <test name="Firefox">
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="com.saucelabs.saucebindings.testng.examples.ParameterizedExample"/>
+        </classes>
+    </test>
+
+    <test name="Safari">
+        <parameter name="browser" value="safari"/>
+        <classes>
+            <class name="com.saucelabs.saucebindings.testng.examples.ParameterizedExample"/>
+        </classes>
+    </test>
+</suite>

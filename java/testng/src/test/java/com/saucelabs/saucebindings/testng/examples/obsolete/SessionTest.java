@@ -1,4 +1,4 @@
-package com.saucelabs.saucebindings.testng.examples;
+package com.saucelabs.saucebindings.testng.examples.obsolete;
 
 import com.saucelabs.saucebindings.testng.SauceBaseTest;
 import org.testng.annotations.Test;

@@ -1,4 +1,4 @@
-package com.saucelabs.saucebindings.testng.examples;
+package com.saucelabs.saucebindings.testng.examples.obsolete;
 
 import com.deque.html.axecore.selenium.AxeBuilder;
 import com.saucelabs.saucebindings.testng.SauceBaseTest;

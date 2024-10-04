@@ -68,9 +68,7 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback {
       return;
     }
 
-    if (sauceOptions.sauce().getName() == null) {
-      sauceOptions.sauce().setName(context.getDisplayName());
-    }
+    sauceOptions.sauce().setName(context.getDisplayName());
 
     session = new SauceSession(sauceOptions);
     session.setDataCenter(dataCenter);

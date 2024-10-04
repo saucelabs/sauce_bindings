@@ -102,6 +102,9 @@
               <goal>test</goal>
             </goals>
             <configuration>
+              <includes>
+                <include>**/*Test.java</include>
+              </includes>
               <properties>
                 <configurationParameters>
                   junit.jupiter.execution.parallel.enabled = true

@@ -3,6 +3,12 @@ package com.saucelabs.saucebindings.testng;
 import com.saucelabs.saucebindings.DataCenter;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.logging.Logger;
 import lombok.Setter;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.NoSuchSessionException;
@@ -10,13 +16,6 @@ import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
-
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.logging.Logger;
 
 public class SauceBindingsListener implements ITestListener {
   private static final Logger LOGGER = Logger.getLogger(SauceBindingsListener.class.getName());
@@ -29,13 +28,13 @@ public class SauceBindingsListener implements ITestListener {
     // TODO: Update Sauce Bindings to handle "sauce:options" the same as it handles "sauce
     Map<String, Object> capabilitiesMap = new HashMap<>(capabilities.asMap());
     Optional.ofNullable(capabilitiesMap.get("sauce:options"))
-            .filter(Map.class::isInstance)
-            .map(Map.class::cast)
-            .ifPresent(
-                    sauceOptionsMap -> {
-                      capabilitiesMap.put("sauce", sauceOptionsMap);
-                      capabilitiesMap.remove("sauce:options");
-                    });
+        .filter(Map.class::isInstance)
+        .map(Map.class::cast)
+        .ifPresent(
+            sauceOptionsMap -> {
+              capabilitiesMap.put("sauce", sauceOptionsMap);
+              capabilitiesMap.remove("sauce:options");
+            });
 
     options.mergeCapabilities(capabilitiesMap);
     setSauceOptions(options);

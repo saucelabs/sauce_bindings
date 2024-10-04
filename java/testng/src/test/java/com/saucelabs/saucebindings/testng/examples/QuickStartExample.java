@@ -2,13 +2,12 @@ package com.saucelabs.saucebindings.testng.examples;
 
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.testng.SauceBindingsListener;
+import java.lang.reflect.Method;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
-import java.lang.reflect.Method;
 
 @Listeners(SauceBindingsListener.class)
 public class QuickStartExample {

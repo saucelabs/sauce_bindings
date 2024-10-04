@@ -1,6 +1,5 @@
 package com.saucelabs.saucebindings.testng.examples;
 
-import com.saucelabs.saucebindings.DataCenter;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import com.saucelabs.saucebindings.testng.SauceBindingsListener;

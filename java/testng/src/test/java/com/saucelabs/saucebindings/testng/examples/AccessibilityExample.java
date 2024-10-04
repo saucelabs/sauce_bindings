@@ -29,6 +29,5 @@ public class AccessibilityExample {
 
     // store the accessibility results into an object you can make assertions on
     Results accessibilityResults = session.getAccessibilityResults();
-
   }
 }

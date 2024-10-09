@@ -1,36 +1,25 @@
 package com.saucelabs.saucebindings.integration;
 
-import com.saucelabs.saucebindings.DataCenter;
 import com.saucelabs.saucebindings.SauceSession;
-import com.saucelabs.saucebindings.options.SauceOptions;
-import org.junit.jupiter.api.AfterEach;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
+import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
-
-import java.util.List;
 
 public class DisableSauceTest {
-  private SauceSession session = new SauceSession();
-  private RemoteWebDriver driver;
-
-  @AfterEach
-  public void cleanUp() {
-    System.clearProperty("sauce.disabled");
-    if (session != null) {
-      session.stop(true);
-    }
-  }
 
   @Test
+  @EnabledIfSystemProperty(named = "sauce.disabled", matches = "true")
+  @DisabledIfSystemProperty(named = "sauce.disabled", matches = "(?!true)") // Needed for IntelliJ
   public void disableSauce() {
-    System.setProperty("sauce.disabled", "true");
     SauceSession session = new SauceSession();
     WebDriver driver = session.start();
-    Assertions.assertNull(driver);
 
+    Assertions.assertNull(driver);
     Assertions.assertNull(session.getDriver());
+
     Assertions.assertDoesNotThrow(
         () -> {
           session.annotate("This gets ignored");

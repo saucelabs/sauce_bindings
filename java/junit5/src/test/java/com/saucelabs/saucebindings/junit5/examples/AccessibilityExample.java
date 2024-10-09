@@ -15,9 +15,9 @@ public class AccessibilityExample {
   @RegisterExtension static SauceBindingsExtension sauceExtension = new SauceBindingsExtension();
 
   @BeforeEach
-  public void storeVariables() {
-    session = sauceExtension.getSession();
-    driver = sauceExtension.getDriver();
+  public void setUp(SauceSession session) {
+    this.session = session;
+    this.driver = session.getDriver();
   }
 
   @Test

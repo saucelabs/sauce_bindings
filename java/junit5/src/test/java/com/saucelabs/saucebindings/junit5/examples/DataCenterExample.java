@@ -13,12 +13,13 @@ public class DataCenterExample {
   SauceSession session;
 
   @RegisterExtension
-  static SauceBindingsExtension sauceExtension = new SauceBindingsExtension(DataCenter.EU_CENTRAL);
+  static SauceBindingsExtension sauceExtension =
+      new SauceBindingsExtension.Builder().withDataCenter(DataCenter.EU_CENTRAL).build();
 
   @BeforeEach
-  public void storeVariables() {
-    session = sauceExtension.getSession();
-    driver = sauceExtension.getDriver();
+  public void setUp(SauceSession session, WebDriver driver) {
+    this.session = session;
+    this.driver = driver;
   }
 
   @Test

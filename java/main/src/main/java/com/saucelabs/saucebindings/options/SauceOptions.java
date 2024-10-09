@@ -261,11 +261,7 @@ public class SauceOptions extends BaseOptions {
         sauce().mergeCapabilities((HashMap<String, Object>) value);
         break;
       default:
-        if (sauce().getValidOptions().contains(key)) {
-          deprecatedSetCapability(key, value);
-        } else {
-          super.setCapability(key, value);
-        }
+        super.setCapability(key, value);
     }
   }
 
@@ -288,11 +284,5 @@ public class SauceOptions extends BaseOptions {
    */
   public Duration getScriptTimeout() {
     return Duration.ofMillis(getTimeouts().get(Timeouts.SCRIPT));
-  }
-
-  private void deprecatedSetCapability(String key, Object value) {
-    System.out.println("WARNING: using merge() of Map with value of (" + key + ") is DEPRECATED");
-    System.out.println("place this value inside a nested Map with the keyword 'sauce'");
-    sauce().setCapability(key, value);
   }
 }

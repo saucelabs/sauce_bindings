@@ -202,6 +202,8 @@ public class SauceOptionsTest {
     Assertions.assertEquals(true, sauceOptions.sauce().getCapturePerformance());
     Assertions.assertEquals("71", sauceOptions.sauce().getChromedriverVersion());
     Assertions.assertEquals(Integer.valueOf(2), sauceOptions.sauce().getCommandTimeout());
+    customData.put("ci-tool", CITools.getCiToolName());
+    customData.put("sauce-bindings", "java");
     Assertions.assertEquals(customData, sauceOptions.sauce().getCustomData());
     Assertions.assertEquals(true, sauceOptions.sauce().getExtendedDebugging());
     Assertions.assertEquals(Integer.valueOf(3), sauceOptions.sauce().getIdleTimeout());
@@ -308,6 +310,8 @@ public class SauceOptionsTest {
     sauceCapabilities.setCapability("build", "Build Name");
     sauceCapabilities.setCapability("username", SystemManager.get("SAUCE_USERNAME"));
     sauceCapabilities.setCapability("accessKey", SystemManager.get("SAUCE_ACCESS_KEY"));
+    Map<String, Object> customData = Map.of("ci-tool", CITools.getCiToolName(), "sauce-bindings", "java");
+    sauceCapabilities.setCapability("custom-data", customData);
     expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
     MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
 
@@ -361,6 +365,7 @@ public class SauceOptionsTest {
     sauceOptions.sauce().setTimeZone("San Francisco");
     sauceOptions.sauce().setTunnelIdentifier("tunnelname");
     sauceOptions.sauce().setVideoUploadOnPass(false);
+    MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
 
     MutableCapabilities sauceCapabilities = new MutableCapabilities();
     sauceCapabilities.setCapability("avoidProxy", true);
@@ -368,6 +373,8 @@ public class SauceOptionsTest {
     sauceCapabilities.setCapability("capturePerformance", true);
     sauceCapabilities.setCapability("chromedriverVersion", "71");
     sauceCapabilities.setCapability("commandTimeout", 2);
+    customData.put("ci-tool", CITools.getCiToolName());
+    customData.put("sauce-bindings", "java");
     sauceCapabilities.setCapability("custom-data", customData);
     sauceCapabilities.setCapability("extendedDebugging", true);
     sauceCapabilities.setCapability("idleTimeout", 3);
@@ -396,7 +403,6 @@ public class SauceOptionsTest {
     expectedCapabilities.setCapability("platformName", "Windows 10");
 
     expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
-    MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
 
     // toString() serializes the enums
     Assertions.assertEquals(
@@ -412,6 +418,7 @@ public class SauceOptionsTest {
 
     sauceOptions = SauceOptions.firefox(firefoxOptions).build();
     sauceOptions.sauce().setBuild("Build Name");
+    MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
 
     MutableCapabilities expectedCapabilities = new MutableCapabilities();
     expectedCapabilities.setCapability("browserName", "firefox");
@@ -423,8 +430,9 @@ public class SauceOptionsTest {
     sauceCapabilities.setCapability("build", "Build Name");
     sauceCapabilities.setCapability("username", SystemManager.get("SAUCE_USERNAME"));
     sauceCapabilities.setCapability("accessKey", SystemManager.get("SAUCE_ACCESS_KEY"));
+    Map<String, Object> customData = Map.of("ci-tool", CITools.getCiToolName(), "sauce-bindings", "java");
+    sauceCapabilities.setCapability("custom-data", customData);
     expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
-    MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
 
     Assertions.assertEquals(
         expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
@@ -473,6 +481,8 @@ public class SauceOptionsTest {
     sauceCapabilities.setCapability("public", JobVisibility.SHARE);
     sauceCapabilities.setCapability("username", SystemManager.get("SAUCE_USERNAME"));
     sauceCapabilities.setCapability("accessKey", SystemManager.get("SAUCE_ACCESS_KEY"));
+    Map<String, Object> customData = Map.of("ci-tool", CITools.getCiToolName(), "sauce-bindings", "java");
+    sauceCapabilities.setCapability("custom-data", customData);
 
     expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
     MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();

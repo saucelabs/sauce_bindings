@@ -24,7 +24,8 @@ public class ToggleLocalExample {
 
   // Allow registering multiple test watchers
   @RegisterExtension
-  static SauceBindingsExtension sauceExtension = new SauceBindingsExtension(getSauceOptions());
+  static SauceBindingsExtension sauceExtension =
+          new SauceBindingsExtension.Builder().withSauceOptions(getSauceOptions()).build();
 
   @RegisterExtension TestWatcher testWatcher = new LocalTestWatcher();
 
@@ -35,13 +36,9 @@ public class ToggleLocalExample {
   }
 
   @BeforeEach
-  public void setup() {
-    session = sauceExtension.getSession();
-    if (SauceSession.isDisabled()) {
-      driver = new ChromeDriver(getCapabilities());
-    } else {
-      driver = sauceExtension.getDriver();
-    }
+  public void setUp(SauceSession session, WebDriver driver) {
+    this.session = session;
+    this.driver = SauceSession.isDisabled() ? new ChromeDriver() : driver;
   }
 
   @Test

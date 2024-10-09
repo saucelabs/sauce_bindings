@@ -1,23 +1,26 @@
 package com.saucelabs.saucebindings.junit5;
 
 import com.saucelabs.saucebindings.DataCenter;
+import com.saucelabs.saucebindings.SauceSession;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.openqa.selenium.WebDriver;
 
 public class DataCenterTest {
   @RegisterExtension
-  static SauceBindingsExtension sauceExtension = new SauceBindingsExtension(DataCenter.EU_CENTRAL);
+  static SauceBindingsExtension sauceExtension =
+      new SauceBindingsExtension.Builder().withDataCenter(DataCenter.EU_CENTRAL).build();
 
   @Test
-  public void setDataCenter() {
-    DataCenter dataCenter = sauceExtension.getSession().getDataCenter();
+  public void setDataCenter(SauceSession session, WebDriver driver) {
+    DataCenter dataCenter = session.getDataCenter();
     Assertions.assertEquals(DataCenter.EU_CENTRAL, dataCenter);
 
     Assertions.assertDoesNotThrow(
         () -> {
-          sauceExtension.getSession().annotate("Annotating test");
-          sauceExtension.getDriver().get("https://www.saucedemo.com/");
+          session.annotate("Annotating test");
+          driver.get("https://www.saucedemo.com/");
         },
         "Driver and Session should be available");
   }

@@ -1,27 +1,35 @@
-package com.saucelabs.saucebindings.examples;
+package com.saucelabs.saucebindings.integration;
 
+import com.saucelabs.saucebindings.DataCenter;
 import com.saucelabs.saucebindings.SauceSession;
-import java.util.List;
+import com.saucelabs.saucebindings.options.SauceOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class DisableExample {
+import java.util.List;
+
+public class DisableSauceTest {
+  private SauceSession session = new SauceSession();
+  private RemoteWebDriver driver;
+
+  @AfterEach
+  public void cleanUp() {
+    System.clearProperty("sauce.disabled");
+    if (session != null) {
+      session.stop(true);
+    }
+  }
 
   @Test
-  public void startSession() {
-    // 1. Toggle off sauce labs
+  public void disableSauce() {
     System.setProperty("sauce.disabled", "true");
-
-    // 2. Create a Sauce Session
     SauceSession session = new SauceSession();
-
-    // 3. Starting the session will not create a driver
     WebDriver driver = session.start();
     Assertions.assertNull(driver);
 
-    // 4. All session commands will be ignored
     Assertions.assertNull(session.getDriver());
     Assertions.assertDoesNotThrow(
         () -> {
@@ -32,10 +40,5 @@ public class DisableExample {
           session.getAccessibilityResults();
           session.stop(true);
         });
-  }
-
-  @AfterEach
-  public void stopSession() {
-    System.clearProperty("sauce.disabled");
   }
 }

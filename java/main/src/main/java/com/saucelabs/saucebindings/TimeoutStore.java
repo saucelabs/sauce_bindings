@@ -1,5 +1,6 @@
 package com.saucelabs.saucebindings;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @Setter
 @Getter
-public class TimeoutStore {
+public class TimeoutStore implements Serializable {
   private Integer implicitWait;
   private Integer script;
   private Integer pageLoad;

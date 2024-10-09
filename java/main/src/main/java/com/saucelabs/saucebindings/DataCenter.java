@@ -12,11 +12,6 @@ public enum DataCenter {
   private final String endpoint;
   private final String testLink;
 
-  @Deprecated
-  public String getValue() {
-    return this.endpoint;
-  }
-
   DataCenter(String value) {
     this.value = value;
     this.endpoint = "https://ondemand." + value + ".saucelabs.com/wd/hub";

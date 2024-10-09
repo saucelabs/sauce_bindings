@@ -280,14 +280,6 @@ public class SauceSession {
   }
 
   /**
-   * @deprecated Do not use magic strings, pass in boolean for whether test has passed.
-   */
-  @Deprecated
-  public void stop(String result) {
-    stop(result.equals("passed"));
-  }
-
-  /**
    * Not intended for subclassing. Package-private for testing.
    *
    * @param url to send session commands to

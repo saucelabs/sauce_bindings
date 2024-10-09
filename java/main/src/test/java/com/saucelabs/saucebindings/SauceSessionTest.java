@@ -110,22 +110,6 @@ public class SauceSessionTest {
     Mockito.verify(dummyRemoteDriver).executeScript("sauce:job-result=failed");
   }
 
-  @Deprecated
-  @Test
-  public void stopWithStringPassed() {
-    sauceSession.start();
-    sauceSession.stop("passed");
-    Mockito.verify(dummyRemoteDriver).executeScript("sauce:job-result=passed");
-  }
-
-  @Deprecated
-  @Test
-  public void stopWithStringFailed() {
-    sauceSession.start();
-    sauceSession.stop("failed");
-    Mockito.verify(dummyRemoteDriver).executeScript("sauce:job-result=failed");
-  }
-
   @Test
   public void annotateRequiresStart() {
     Assertions.assertThrows(

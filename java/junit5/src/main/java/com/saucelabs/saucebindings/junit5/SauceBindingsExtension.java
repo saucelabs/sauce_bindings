@@ -1,5 +1,6 @@
 package com.saucelabs.saucebindings.junit5;
 
+import com.saucelabs.saucebindings.CITools;
 import com.saucelabs.saucebindings.DataCenter;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
@@ -21,14 +22,18 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, ParameterResolver {
   private static final Logger LOGGER = Logger.getLogger(SauceBindingsExtension.class.getName());
+  private final String buildName;
   protected SauceOptions sauceOptions = new SauceOptions();
   protected DataCenter dataCenter = DataCenter.US_WEST;
 
-  public SauceBindingsExtension() {}
+  public SauceBindingsExtension() {
+    this(new SauceOptions(), DataCenter.US_WEST);
+  }
 
   private SauceBindingsExtension(SauceOptions sauceOptions, DataCenter dataCenter) {
     this.sauceOptions = sauceOptions;
     this.dataCenter = dataCenter;
+    this.buildName = CITools.getBuildName() + ": " + CITools.getBuildNumber();
   }
 
   @Override
@@ -52,6 +57,7 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
     } else {
       options.sauce().setTags(new ArrayList<>(context.getTags()));
     }
+    options.sauce().setBuild(buildName);
 
     return options;
   }
@@ -132,8 +138,10 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
       ParameterContext parameterContext, ExtensionContext extensionContext) {
     if (parameterContext.getParameter().getType() == WebDriver.class) {
       return getStore(extensionContext).get("driver");
-    } else {
+    } else if (parameterContext.getParameter().getType() == SauceSession.class) {
       return getStore(extensionContext).get("session");
+    } else {
+      throw new RuntimeException("Only session and driver instances are supported");
     }
   }
 

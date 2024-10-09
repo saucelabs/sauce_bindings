@@ -1,11 +1,12 @@
 package com.saucelabs.saucebindings.options;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import lombok.Getter;
 import org.openqa.selenium.MutableCapabilities;
 
-public abstract class BaseOptions {
+public abstract class BaseOptions implements Serializable {
   @Getter protected MutableCapabilities capabilities = new MutableCapabilities();
   protected CapabilityManager capabilityManager;
   @Getter public final List<String> validOptions = null;
@@ -30,5 +31,4 @@ public abstract class BaseOptions {
   protected void setCapability(String key, Object value) {
     capabilityManager.setCapability(key, value);
   }
-  ;
 }

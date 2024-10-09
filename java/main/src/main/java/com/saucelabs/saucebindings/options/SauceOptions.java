@@ -1,6 +1,12 @@
 package com.saucelabs.saucebindings.options;
 
 import com.saucelabs.saucebindings.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -203,6 +209,23 @@ public class SauceOptions extends BaseOptions {
     sauceLabsOptions = new SauceLabsOptions();
     if (options.getCapability("browserName") != null) {
       setCapability("browserName", options.getCapability("browserName"));
+    }
+  }
+
+  public SauceOptions copy() {
+    try {
+      //Serializing the object to a byte array
+      ByteArrayOutputStream bos = new ByteArrayOutputStream();
+      ObjectOutputStream out = new ObjectOutputStream(bos);
+      out.writeObject(this);
+
+      //Deserializing the bytes into a new object
+      ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+      ObjectInputStream in = new ObjectInputStream(bis);
+      return (SauceOptions) in.readObject();
+    }
+    catch (IOException | ClassNotFoundException e) {
+      throw new Error(e);
     }
   }
 

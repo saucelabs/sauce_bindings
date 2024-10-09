@@ -15,6 +15,16 @@ public class CapabilitiesExample {
   WebDriver driver;
   SauceSession session;
 
+  @RegisterExtension
+  SauceBindingsExtension sauceExtension =
+      new SauceBindingsExtension.Builder().withCapabilities(getCapabilities()).build();
+
+  @BeforeEach
+  public void setUp(SauceSession session, WebDriver driver) {
+    this.session = session;
+    this.driver = driver;
+  }
+
   private static Capabilities getCapabilities() {
     SafariOptions browserOptions = new SafariOptions();
     browserOptions.setPlatformName("macOS 12");
@@ -23,15 +33,6 @@ public class CapabilitiesExample {
     sauceOptions.put("idleTimeout", 30);
     browserOptions.setCapability("sauce:options", sauceOptions);
     return browserOptions;
-  }
-
-  @RegisterExtension
-  static SauceBindingsExtension sauceExtension = new SauceBindingsExtension(getCapabilities());
-
-  @BeforeEach
-  public void storeVariables() {
-    session = sauceExtension.getSession();
-    driver = sauceExtension.getDriver();
   }
 
   @Test

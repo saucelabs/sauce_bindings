@@ -22,7 +22,7 @@ public class CapabilitiesExample {
   TestInfo testInfo;
   SessionId sessionId;
 
-  @RegisterExtension public SauceTestWatcher watcher = new SauceTestWatcher();
+  @RegisterExtension SauceTestWatcher watcher = new SauceTestWatcher();
 
   @BeforeEach
   public void startSession(TestInfo testInfo) {

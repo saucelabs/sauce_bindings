@@ -15,6 +15,16 @@ public class OptionsExample {
   WebDriver driver;
   SauceSession session;
 
+  @RegisterExtension
+  static SauceBindingsExtension sauceExtension =
+      new SauceBindingsExtension.Builder().withSauceOptions(getSauceOptions()).build();
+
+  @BeforeEach
+  public void setUp(SauceSession session, WebDriver driver) {
+    this.session = session;
+    this.driver = driver;
+  }
+
   public static SauceOptions getSauceOptions() {
     ChromeOptions chromeOptions = new ChromeOptions();
     chromeOptions.addArguments("--hide-scrollbars");
@@ -23,15 +33,6 @@ public class OptionsExample {
         .setPlatformName(SaucePlatform.MAC_CATALINA)
         .setIdleTimeout(Duration.ofSeconds(30))
         .build();
-  }
-
-  @RegisterExtension
-  static SauceBindingsExtension sauceExtension = new SauceBindingsExtension(getSauceOptions());
-
-  @BeforeEach
-  public void storeVariables() {
-    session = sauceExtension.getSession();
-    driver = sauceExtension.getDriver();
   }
 
   @Test

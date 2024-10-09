@@ -117,9 +117,25 @@ public class SauceSession {
    * @param passed true if the test has passed, otherwise false
    */
   public void stop(Boolean passed) {
+    if (isDisabled()) {
+      return;
+    }
+
     if (this.driver != null) {
       String update = passed ? "passed" : "failed";
       updateResult(update);
+      quit();
+    }
+  }
+
+  /** Ends the session on Sauce Labs and quits the driver without setting a test result. */
+  public void abort() {
+    if (isDisabled()) {
+      return;
+    }
+
+    if (this.driver != null) {
+      printToConsole();
       quit();
     }
   }
@@ -294,6 +310,10 @@ public class SauceSession {
     this.result = result;
     getDriver().executeScript("sauce:job-result=" + result);
 
+    printToConsole();
+  }
+
+  public void printToConsole() {
     // Add output for the Sauce OnDemand Jenkins plugin
     // The first print statement will automatically populate links on Jenkins to Sauce
     // The second print statement will output the job link to logging/console

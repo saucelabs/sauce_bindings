@@ -3,15 +3,14 @@ package com.saucelabs.saucebindings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Determines the information a test needs based on what CI Tool is being used. It does not need to
  * be initialized.
  */
 public abstract class CITools {
-  private static String buildName = "Default Build Name";
-  private static String buildNumber = String.valueOf(System.currentTimeMillis());
-  private static Boolean buildInfoStored = false;
+  private static String ciToolName;
 
   /** Map of CI Tools and what Environment variable, if present, indicates its usage. */
   public static final Map<String, String> KNOWN_TOOLS =
@@ -35,19 +34,16 @@ public abstract class CITools {
           "TeamCity", ImmutableList.of("TEAMCITY_PROJECT_NAME", "BUILD_NUMBER"),
           "Travis", ImmutableList.of("TRAVIS_JOB_NAME", "TRAVIS_JOB_NUMBER"));
 
-  private static void storeBuildInfo() {
-    if (!buildInfoStored) {
+  public static String getCiToolName() {
+    if (ciToolName == null) {
       for (Map.Entry<String, String> tool : KNOWN_TOOLS.entrySet()) {
         if (SystemManager.get(tool.getValue()) != null) {
-          buildName = SystemManager.get(BUILD_VALUES.get(tool.getKey()).get(0));
-          buildNumber = SystemManager.get(BUILD_VALUES.get(tool.getKey()).get(1));
-          if (buildName != null && buildNumber != null) {
-            buildInfoStored = true;
-            break;
-          }
+          ciToolName = tool.getKey();
+          break;
         }
       }
     }
+    return ciToolName == null ? "unknown" : ciToolName;
   }
 
   /**
@@ -56,8 +52,11 @@ public abstract class CITools {
    * @return the constant name of the build
    */
   public static String getBuildName() {
-    storeBuildInfo();
-    return buildName;
+    if (!Objects.equals(getCiToolName(), "unknown")) {
+      String buildNameKey = BUILD_VALUES.get(getCiToolName()).get(0);
+      return SystemManager.get(buildNameKey);
+    }
+    return "Default Build Name";
   }
 
   /**
@@ -66,7 +65,10 @@ public abstract class CITools {
    * @return the variable number of the current build
    */
   public static String getBuildNumber() {
-    storeBuildInfo();
-    return buildNumber;
+    if (!Objects.equals(getCiToolName(), "unknown")) {
+      String buildNumberKey = BUILD_VALUES.get(getCiToolName()).get(1);
+      return SystemManager.get(buildNumberKey);
+    }
+    return String.valueOf(System.currentTimeMillis());
   }
 }

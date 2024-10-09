@@ -148,20 +148,6 @@ public class SauceLabsOptions extends BaseOptions {
     return build != null ? build : CITools.getBuildName() + ": " + CITools.getBuildNumber();
   }
 
-  /**
-   * @deprecated This method is no longer supported
-   * @return whether CI is accounted for in code
-   */
-  @Deprecated
-  public boolean isKnownCI() {
-    return CITools.getBuildName() != null;
-  }
-
-  /**
-   * @deprecated use CITools.knownTools instead
-   */
-  @Deprecated public static final Map<String, String> knownCITools = CITools.KNOWN_TOOLS;
-
   protected String getSauceUsername() {
     return SystemManager.get("SAUCE_USERNAME", "Sauce Username was not provided");
   }

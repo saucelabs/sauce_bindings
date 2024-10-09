@@ -1,9 +1,8 @@
 package com.saucelabs.saucebindings.junit5;
 
+import com.saucelabs.saucebindings.SauceSession;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.saucelabs.saucebindings.SauceSession;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;

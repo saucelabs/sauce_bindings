@@ -1,9 +1,9 @@
 package com.saucelabs.saucebindings.junit5;
 
+import com.saucelabs.saucebindings.CITools;
 import com.saucelabs.saucebindings.DataCenter;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,14 +21,18 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, ParameterResolver {
   private static final Logger LOGGER = Logger.getLogger(SauceBindingsExtension.class.getName());
+  private final String buildName;
   protected SauceOptions sauceOptions = new SauceOptions();
   protected DataCenter dataCenter = DataCenter.US_WEST;
 
-  public SauceBindingsExtension() {}
+  public SauceBindingsExtension() {
+    this(new SauceOptions(), DataCenter.US_WEST);
+  }
 
   private SauceBindingsExtension(SauceOptions sauceOptions, DataCenter dataCenter) {
     this.sauceOptions = sauceOptions;
     this.dataCenter = dataCenter;
+    this.buildName = CITools.getBuildName() + ": " + CITools.getBuildNumber();
   }
 
   @Override
@@ -52,6 +56,7 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
     } else {
       options.sauce().setTags(new ArrayList<>(context.getTags()));
     }
+    options.sauce().setBuild(buildName);
 
     return options;
   }
@@ -70,8 +75,8 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
         session.stop(true);
       } catch (NoSuchSessionException e) {
         LOGGER.severe(
-            "Driver quit prematurely; Remove calls to `driver.quit()` to allow SauceBindingsExtension"
-                + " to stop the test");
+            "Driver quit prematurely; Remove calls to `driver.quit()` to allow"
+                + "  SauceBindingsExtension to stop the test");
       }
     }
   }
@@ -91,8 +96,8 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
         session.stop(false);
       } catch (NoSuchSessionException e) {
         LOGGER.severe(
-            "Driver quit prematurely; Remove calls to `driver.quit()` to allow SauceBindingsExtension"
-                + " to stop the test");
+            "Driver quit prematurely; Remove calls to `driver.quit()` to allow"
+                + "  SauceBindingsExtension to stop the test");
       }
     }
   }
@@ -106,9 +111,9 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
       session.annotate("Reason: " + cause.getMessage());
 
       Arrays.stream(cause.getStackTrace())
-              .map(StackTraceElement::toString)
-              .filter(line -> !line.contains("sun"))
-              .forEach(session::annotate);
+          .map(StackTraceElement::toString)
+          .filter(line -> !line.contains("sun"))
+          .forEach(session::annotate);
 
       session.abort();
     }
@@ -116,7 +121,8 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
 
   @Override
   public void testDisabled(ExtensionContext context, Optional<String> reason) {
-    LOGGER.info("A Sauce session was not started for " + context.getDisplayName() + " because " + reason);
+    LOGGER.info(
+        "A Sauce session was not started for " + context.getDisplayName() + " because " + reason);
   }
 
   @Override
@@ -132,8 +138,10 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
       ParameterContext parameterContext, ExtensionContext extensionContext) {
     if (parameterContext.getParameter().getType() == WebDriver.class) {
       return getStore(extensionContext).get("driver");
-    } else {
+    } else if (parameterContext.getParameter().getType() == SauceSession.class) {
       return getStore(extensionContext).get("session");
+    } else {
+      throw new RuntimeException("Only session and driver instances are supported");
     }
   }
 

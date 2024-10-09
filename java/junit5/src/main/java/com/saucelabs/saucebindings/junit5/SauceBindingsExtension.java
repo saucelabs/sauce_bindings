@@ -7,6 +7,7 @@ import com.saucelabs.saucebindings.options.SauceOptions;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -94,6 +95,28 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
                 + " to stop the test");
       }
     }
+  }
+
+  @Override
+  public void testAborted(ExtensionContext context, Throwable cause) {
+    LOGGER.fine("Test Aborted: " + cause.getMessage());
+    SauceSession session = (SauceSession) getStore(context).get("session");
+    if (session != null) {
+      session.annotate("Test Aborted; marking completed instead of failed");
+      session.annotate("Reason: " + cause.getMessage());
+
+      Arrays.stream(cause.getStackTrace())
+              .map(StackTraceElement::toString)
+              .filter(line -> !line.contains("sun"))
+              .forEach(session::annotate);
+
+      session.abort();
+    }
+  }
+
+  @Override
+  public void testDisabled(ExtensionContext context, Optional<String> reason) {
+    LOGGER.info("A Sauce session was not started for " + context.getDisplayName() + " because " + reason);
   }
 
   @Override

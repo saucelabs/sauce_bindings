@@ -1,13 +1,7 @@
 package com.saucelabs.saucebindings.junit5.examples;
 
-import com.saucelabs.saucebindings.SaucePlatform;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.junit5.SauceBindingsExtension;
-import com.saucelabs.saucebindings.options.SauceOptions;
-import java.time.Duration;
-import java.util.List;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,23 +10,19 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 
 public class ToggleLocalExample {
   WebDriver driver;
   SauceSession session;
 
-  // Allow registering multiple test watchers
-  @RegisterExtension
-  static SauceBindingsExtension sauceExtension =
-          new SauceBindingsExtension.Builder().withSauceOptions(getSauceOptions()).build();
-
+  // Register multiple test watchers for local and sauce execution
+  @RegisterExtension static SauceBindingsExtension sauceExtension = new SauceBindingsExtension();
   @RegisterExtension TestWatcher testWatcher = new LocalTestWatcher();
 
-  // Run tests with this property set to "false" to execute on Sauce Labs
+  // Change this property to "true" to run locally
   @BeforeAll
-  public static void disableSauce() {
-    System.setProperty("sauce.disabled", "true");
+  public static void toggleSauce() {
+    System.setProperty("sauce.disabled", "false");
   }
 
   @BeforeEach
@@ -42,39 +32,16 @@ public class ToggleLocalExample {
   }
 
   @Test
-  public void localExample() {
-    // This code executes whether running locally or on Sauce
+  public void toggleExample() {
     driver.get("https://www.saucedemo.com/");
-
-    // This code executes if Sauce enabled, and is ignored when disabled
-    Assertions.assertDoesNotThrow(
-        () -> {
-          session.annotate("This gets ignored");
-          session.addTags(List.of("ignored"));
-          session.stopNetwork();
-          session.enableLogging();
-          session.getAccessibilityResults();
-        });
+    session.annotate("This gets ignored when sauce is disabled");
   }
 
-  private static SauceOptions getSauceOptions() {
-    ChromeOptions chromeOptions = getCapabilities();
-
-    return SauceOptions.chrome(chromeOptions)
-        .setPlatformName(SaucePlatform.MAC_CATALINA)
-        .setIdleTimeout(Duration.ofSeconds(30))
-        .build();
-  }
-
-  private static ChromeOptions getCapabilities() {
-    return new ChromeOptions();
-  }
-
-  // Do not quit the driver if running on Sauce Labs
   public class LocalTestWatcher implements TestWatcher {
     @Override
     public void testSuccessful(ExtensionContext context) {
       System.out.println("Test Succeeded");
+      // Do not quit the driver if sauce is not disabled
       if (SauceSession.isDisabled()) {
         driver.quit();
       }
@@ -87,10 +54,5 @@ public class ToggleLocalExample {
         driver.quit();
       }
     }
-  }
-
-  @AfterAll
-  public static void resetSauce() {
-    System.clearProperty("sauce.disabled");
   }
 }

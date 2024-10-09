@@ -97,13 +97,14 @@
         <version>3.1.2</version>
         <executions>
           <execution>
-            <id>parallel-tests</id>
+            <id>sauce-enabled</id>
             <goals>
               <goal>test</goal>
             </goals>
             <configuration>
               <properties>
                 <configurationParameters>
+                  sauce.disabled = false
                   junit.jupiter.execution.parallel.enabled = true
                   junit.jupiter.execution.parallel.mode.default = concurrent
                   junit.jupiter.execution.parallel.config.strategy = fixed
@@ -114,16 +115,17 @@
             </configuration>
           </execution>
           <execution>
-            <id>sequential-tests</id>
+            <id>sauce-disabled</id>
             <goals>
               <goal>test</goal>
             </goals>
             <configuration>
               <includes>
-                <include>**/*Example.java</include>
+                <include>**/ToggleTest.java</include>
               </includes>
               <properties>
                 <configurationParameters>
+                  sauce.disabled = true
                   junit.jupiter.execution.parallel.enabled = false
                 </configurationParameters>
               </properties>

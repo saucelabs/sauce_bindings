@@ -92,7 +92,7 @@ jobs:
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-        run: cd java/junit4 && mvn clean test -Dmaven.javadoc.skip=true;
+        run: cd java/junit4 && mvn clean test -Dmaven.javadoc.skip=true
   junit5:
     runs-on: ubuntu-latest
     steps:
@@ -111,11 +111,13 @@ jobs:
           Xvfb :99 &
           fluxbox -display :99 &
           echo "DISPLAY=:99" >> "$GITHUB_ENV"
+      - name: Install main bindings snapshot
+        run: cd java/main && mvn clean package install -DskipTests -Dgpg.skip=true
       - name: Test with Maven
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-        run: cd java/junit5 && mvn clean test -Dmaven.javadoc.skip=true;
+        run: cd java/junit5 && mvn clean test -Dmaven.javadoc.skip=true
   testng:
     runs-on: ubuntu-latest
     steps:
@@ -132,4 +134,4 @@ jobs:
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-        run: cd java/testng && mvn clean test -Dmaven.javadoc.skip=true;
+        run: cd java/testng && mvn clean test -Dmaven.javadoc.skip=true

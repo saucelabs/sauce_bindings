@@ -14,7 +14,7 @@ public class QuickStartExample {
   @RegisterExtension static SauceBindingsExtension sauceExtension = new SauceBindingsExtension();
 
   @BeforeEach
-  public void getVariables(SauceSession session, WebDriver driver) {
+  public void setUp(SauceSession session, WebDriver driver) {
     this.session = session;
     this.driver = driver;
   }

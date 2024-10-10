@@ -1,6 +1,17 @@
 package com.saucelabs.saucebindings.options;
 
-import com.saucelabs.saucebindings.*;
+import com.saucelabs.saucebindings.Browser;
+import com.saucelabs.saucebindings.PageLoadStrategy;
+import com.saucelabs.saucebindings.SaucePlatform;
+import com.saucelabs.saucebindings.SauceSession;
+import com.saucelabs.saucebindings.TimeoutStore;
+import com.saucelabs.saucebindings.Timeouts;
+import com.saucelabs.saucebindings.UnhandledPromptBehavior;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,7 +35,7 @@ import org.openqa.selenium.safari.SafariOptions;
 public class SauceOptions extends BaseOptions {
   @Setter(AccessLevel.NONE)
   @Getter(AccessLevel.NONE)
-  private SauceLabsOptions sauceLabsOptions = null;
+  private SauceLabsOptions sauceLabsOptions;
 
   public TimeoutStore timeout = new TimeoutStore();
 
@@ -206,6 +217,22 @@ public class SauceOptions extends BaseOptions {
     }
   }
 
+  public SauceOptions copy() {
+    try {
+      // Serializing the object to a byte array
+      ByteArrayOutputStream bos = new ByteArrayOutputStream();
+      ObjectOutputStream out = new ObjectOutputStream(bos);
+      out.writeObject(this);
+
+      // Deserializing the bytes into a new object
+      ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+      ObjectInputStream in = new ObjectInputStream(bis);
+      return (SauceOptions) in.readObject();
+    } catch (IOException | ClassNotFoundException e) {
+      throw new Error(e);
+    }
+  }
+
   /**
    * @return instance of MutableCapabilities representing all key value pairs set in SauceOptions
    * @see SauceSession#start()
@@ -261,11 +288,7 @@ public class SauceOptions extends BaseOptions {
         sauce().mergeCapabilities((HashMap<String, Object>) value);
         break;
       default:
-        if (sauce().getValidOptions().contains(key)) {
-          deprecatedSetCapability(key, value);
-        } else {
-          super.setCapability(key, value);
-        }
+        super.setCapability(key, value);
     }
   }
 
@@ -288,11 +311,5 @@ public class SauceOptions extends BaseOptions {
    */
   public Duration getScriptTimeout() {
     return Duration.ofMillis(getTimeouts().get(Timeouts.SCRIPT));
-  }
-
-  private void deprecatedSetCapability(String key, Object value) {
-    System.out.println("WARNING: using merge() of Map with value of (" + key + ") is DEPRECATED");
-    System.out.println("place this value inside a nested Map with the keyword 'sauce'");
-    sauce().setCapability(key, value);
   }
 }

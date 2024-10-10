@@ -25,7 +25,7 @@ public class SauceLabsOptions extends BaseOptions {
   private Boolean capturePerformance = null;
   private String chromedriverVersion;
   private Integer commandTimeout = null;
-  private Map<String, Object> customData = null;
+  private Map<String, Object> customData = new HashMap<>();
   private Boolean extendedDebugging = null;
   private String geckodriverVersion;
   private String edgedriverVersion;
@@ -89,28 +89,22 @@ public class SauceLabsOptions extends BaseOptions {
    * @see SauceSession#start()
    */
   public MutableCapabilities toCapabilities() {
+    capabilityManager.addCapabilities();
+
     capabilities.setCapability("username", getSauceUsername());
     capabilities.setCapability("accessKey", getSauceAccessKey());
 
-    Object visibilityValue = capabilityManager.getCapability("jobVisibility");
-    if (visibilityValue != null) {
-      capabilities.setCapability("public", visibilityValue);
-      setJobVisibility(null);
+    capabilities.setCapability("public", capabilities.getCapability("jobVisibility"));
+    capabilities.setCapability("jobVisibility", (Object) null);
+
+    capabilities.setCapability("custom-data", capabilities.getCapability("customData"));
+    capabilities.setCapability("customData", (Object) null);
+
+    if (capabilities.getCapability("prerunUrl") != null) {
+      capabilities.setCapability("prerun", capabilities.getCapability("prerunUrl"));
+      capabilities.setCapability("prerunUrl", (Object) null);
     }
 
-    Object customDataValue = capabilityManager.getCapability("customData");
-    if (customDataValue != null) {
-      capabilities.setCapability("custom-data", customDataValue);
-      setCustomData(null);
-    }
-
-    Object prerunValue = capabilityManager.getCapability("prerunUrl");
-    if (prerunValue != null) {
-      capabilities.setCapability("prerun", prerunValue);
-      setPrerunUrl(null);
-    }
-
-    capabilityManager.addCapabilities();
     return capabilities;
   }
 
@@ -148,19 +142,11 @@ public class SauceLabsOptions extends BaseOptions {
     return build != null ? build : CITools.getBuildName() + ": " + CITools.getBuildNumber();
   }
 
-  /**
-   * @deprecated This method is no longer supported
-   * @return whether CI is accounted for in code
-   */
-  @Deprecated
-  public boolean isKnownCI() {
-    return CITools.getBuildName() != null;
+  public Map<String, Object> getCustomData() {
+    customData.putIfAbsent("sauce-bindings", "java"); // might be set by plugin already
+    customData.put("ci-tool", CITools.getCiToolName());
+    return customData;
   }
-
-  /**
-   * @deprecated use CITools.knownTools instead
-   */
-  @Deprecated public static final Map<String, String> knownCITools = CITools.KNOWN_TOOLS;
 
   protected String getSauceUsername() {
     return SystemManager.get("SAUCE_USERNAME", "Sauce Username was not provided");

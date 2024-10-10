@@ -4,11 +4,17 @@ import com.saucelabs.saucebindings.CITools;
 import com.saucelabs.saucebindings.DataCenter;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.logging.Logger;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
@@ -49,7 +55,16 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
   private SauceOptions updateOptions(ExtensionContext context) {
     SauceOptions options = sauceOptions.copy();
     options.sauce().setName(context.getDisplayName());
-    options.sauce().getCustomData().put("sauce-bindings", "junit5");
+
+    Properties prop = new Properties();
+    try (InputStream input = getClass().getResourceAsStream("/app.properties")) {
+      prop.load(input);
+      String version = prop.getProperty("version", "unknown");
+      options.sauce().getCustomData().put("sauce-bindings-junit5", version);
+    } catch (IOException ignored) {
+      options.sauce().getCustomData().put("sauce-bindings-junit5", "unknown");
+    }
+
     List<String> tags = options.sauce().getTags();
     if (tags != null) {
       tags.addAll(context.getTags());

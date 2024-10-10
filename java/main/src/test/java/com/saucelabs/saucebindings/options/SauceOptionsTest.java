@@ -2,12 +2,14 @@ package com.saucelabs.saucebindings.options;
 
 import com.saucelabs.saucebindings.*;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -204,6 +206,7 @@ public class SauceOptionsTest {
     Assertions.assertEquals(Integer.valueOf(2), sauceOptions.sauce().getCommandTimeout());
     customData.put("ci-tool", CITools.getCiToolName());
     customData.put("sauce-bindings", "java");
+    customData.put("sauce-bindings-java", getPackageVersion());
     Assertions.assertEquals(customData, sauceOptions.sauce().getCustomData());
     Assertions.assertEquals(true, sauceOptions.sauce().getExtendedDebugging());
     Assertions.assertEquals(Integer.valueOf(3), sauceOptions.sauce().getIdleTimeout());
@@ -311,7 +314,13 @@ public class SauceOptionsTest {
     sauceCapabilities.setCapability("username", SystemManager.get("SAUCE_USERNAME"));
     sauceCapabilities.setCapability("accessKey", SystemManager.get("SAUCE_ACCESS_KEY"));
     Map<String, Object> customData =
-        Map.of("ci-tool", CITools.getCiToolName(), "sauce-bindings", "java");
+        Map.of(
+            "ci-tool",
+            CITools.getCiToolName(),
+            "sauce-bindings",
+            "java",
+            "sauce-bindings-java",
+            getPackageVersion());
     sauceCapabilities.setCapability("custom-data", customData);
     expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
     MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
@@ -432,7 +441,13 @@ public class SauceOptionsTest {
     sauceCapabilities.setCapability("username", SystemManager.get("SAUCE_USERNAME"));
     sauceCapabilities.setCapability("accessKey", SystemManager.get("SAUCE_ACCESS_KEY"));
     Map<String, Object> customData =
-        Map.of("ci-tool", CITools.getCiToolName(), "sauce-bindings", "java");
+        Map.of(
+            "ci-tool",
+            CITools.getCiToolName(),
+            "sauce-bindings",
+            "java",
+            "sauce-bindings-java",
+            getPackageVersion());
     sauceCapabilities.setCapability("custom-data", customData);
     expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
 
@@ -484,7 +499,13 @@ public class SauceOptionsTest {
     sauceCapabilities.setCapability("username", SystemManager.get("SAUCE_USERNAME"));
     sauceCapabilities.setCapability("accessKey", SystemManager.get("SAUCE_ACCESS_KEY"));
     Map<String, Object> customData =
-        Map.of("ci-tool", CITools.getCiToolName(), "sauce-bindings", "java");
+        Map.of(
+            "ci-tool",
+            CITools.getCiToolName(),
+            "sauce-bindings",
+            "java",
+            "sauce-bindings-java",
+            getPackageVersion());
     sauceCapabilities.setCapability("custom-data", customData);
 
     expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
@@ -492,5 +513,15 @@ public class SauceOptionsTest {
 
     Assertions.assertEquals(
         expectedCapabilities.asMap().toString(), actualCapabilities.asMap().toString());
+  }
+
+  private String getPackageVersion() {
+    Properties prop = new Properties();
+    try (InputStream input = getClass().getResourceAsStream("/app.properties")) {
+      prop.load(input);
+      return prop.getProperty("version", "unknown");
+    } catch (IOException ignored) {
+      return "unknown";
+    }
   }
 }

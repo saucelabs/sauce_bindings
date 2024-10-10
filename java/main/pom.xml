@@ -6,7 +6,7 @@
 
   <groupId>com.saucelabs</groupId>
   <artifactId>sauce_bindings</artifactId>
-  <version>2.0.0-beta.1-SNAPSHOT</version>
+  <version>${saucebindings.version}</version>
   <name>saucebindings</name>
   <description>Java library which provides tools for interacting with Sauce Labs</description>
   <url>https://saucelabs.com</url>
@@ -44,6 +44,7 @@
   </developers>
 
   <properties>
+    <saucebindings.version>2.0.0-beta.1-SNAPSHOT</saucebindings.version>
     <surefire.parallel>8</surefire.parallel>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
@@ -106,6 +107,12 @@
   </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

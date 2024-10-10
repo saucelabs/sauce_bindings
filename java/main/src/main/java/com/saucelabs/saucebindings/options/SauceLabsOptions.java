@@ -5,11 +5,14 @@ import com.saucelabs.saucebindings.JobVisibility;
 import com.saucelabs.saucebindings.Prerun;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.SystemManager;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -143,8 +146,17 @@ public class SauceLabsOptions extends BaseOptions {
   }
 
   public Map<String, Object> getCustomData() {
-    customData.putIfAbsent("sauce-bindings", "java"); // might be set by plugin already
     customData.put("ci-tool", CITools.getCiToolName());
+    customData.put("sauce-bindings", "java");
+
+    Properties prop = new Properties();
+    try (InputStream input = getClass().getResourceAsStream("/app.properties")) {
+      prop.load(input);
+      customData.put("sauce-bindings-java", prop.getProperty("version", "unknown"));
+    } catch (IOException ignored) {
+      customData.put("sauce-bindings-java", "unknown");
+    }
+
     return customData;
   }
 

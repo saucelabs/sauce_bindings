@@ -5,12 +5,18 @@ import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class DesktopBrowserTest {
-  private SauceSession session = new SauceSession();
+  private SauceSession session;
   private RemoteWebDriver driver;
+
+  @BeforeEach
+  public void setUp() {
+    this.session = new SauceSession();
+  }
 
   @AfterEach
   public void cleanUp() {
@@ -56,7 +62,7 @@ public class DesktopBrowserTest {
 
   @Test
   public void stopsNetwork() {
-    session = new SauceSession(SauceOptions.safari());
+    this.session = new SauceSession(SauceOptions.safari());
     driver = session.start();
 
     session.stopNetwork();

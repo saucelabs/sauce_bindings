@@ -6,12 +6,18 @@ import com.saucelabs.saucebindings.SauceSession;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class AccessibilityTest {
-  private final SauceSession session = new SauceSession();
+  private SauceSession session;
   private RemoteWebDriver webDriver;
+
+  @BeforeEach
+  public void setUp() {
+    this.session = new SauceSession();
+  }
 
   @AfterEach
   public void cleanUp() {

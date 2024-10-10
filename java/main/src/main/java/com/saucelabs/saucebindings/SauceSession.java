@@ -6,19 +6,26 @@ import com.saucelabs.saucebindings.options.BaseConfigurations;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.InvalidArgumentException;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.SessionId;
 
 public class SauceSession {
   @Getter protected RemoteWebDriver driver;
   @Getter @Setter private DataCenter dataCenter = DataCenter.US_WEST;
   @Getter private final SauceOptions sauceOptions;
   @Setter private URL sauceUrl;
-  @Getter private String result;
+  @Getter private Boolean result;
+  private SessionId id;
+  private SauceRest rest;
 
   public SauceSession() {
     this(new SauceOptions());
@@ -49,6 +56,8 @@ public class SauceSession {
     }
 
     this.driver = createRemoteWebDriver(getSauceUrl(), sauceOptions.toCapabilities());
+    this.id = driver.getSessionId();
+    this.rest = new SauceRest(dataCenter, id);
     return driver;
   }
 
@@ -65,6 +74,10 @@ public class SauceSession {
     } catch (MalformedURLException e) {
       throw new InvalidArgumentException("Invalid URL", e);
     }
+  }
+
+  public Assets assets() {
+    return new Assets(rest);
   }
 
   /**
@@ -122,8 +135,7 @@ public class SauceSession {
     }
 
     if (this.driver != null) {
-      String update = passed ? "passed" : "failed";
-      updateResult(update);
+      updateResult(passed);
       quit();
     }
   }
@@ -138,6 +150,14 @@ public class SauceSession {
       printToConsole();
       quit();
     }
+  }
+
+  public void delete() {
+    if (isDisabled()) {
+      return;
+    }
+
+    rest.delete();
   }
 
   /**
@@ -172,7 +192,7 @@ public class SauceSession {
     validateSessionStarted("pause()");
 
     String sauceTestLink =
-        String.format("https://app.saucelabs.com/tests/%s", this.driver.getSessionId());
+        String.format("https://app.saucelabs.com/tests/%s", this.id);
     driver.executeScript("sauce: break");
     System.out.println("\nThis test has been stopped; no more driver commands will be accepted");
     System.out.println(
@@ -265,9 +285,22 @@ public class SauceSession {
     if (isDisabled()) {
       return;
     }
-    validateSessionStarted("changeName()");
+    validateSessionStarted("changeTestName()");
 
-    driver.executeScript("sauce:job-name=" + name);
+    rest.changeName(name);
+  }
+
+  public void changeBuildName(String name) {
+    if (isDisabled()) {
+      return;
+    }
+    validateSessionStarted("changeBuildName()");
+
+    rest.changeBuild(name);
+  }
+
+  public void addTag(String tag) {
+    addTags(List.of(tag));
   }
 
   /**
@@ -284,16 +317,33 @@ public class SauceSession {
     if (isDisabled()) {
       return;
     }
-    validateSessionStarted("setTags()");
+    validateSessionStarted("addTags()");
 
-    String tagString = String.join(",", tags);
-    driver.executeScript("sauce:job-tags=" + tagString);
+    rest.addTags(tags);
+  }
+
+  public List<String> getTags() {
+    if (isDisabled()) {
+      return new ArrayList<>();
+    }
+    validateSessionStarted("addTags()");
+
+    return rest.getTags();
+  }
+
+  public void addCustomData(Map<String, String> data) {
+    rest.addCustomData(data);
+  }
+
+  public void addCustomData(String key, String value) {
+    rest.addCustomData(Map.of(key, value));
   }
 
   public static boolean isDisabled() {
     return Boolean.parseBoolean(System.getenv("SAUCE_DISABLED"))
         || Boolean.getBoolean("sauce.disabled");
   }
+
 
   /**
    * Not intended for subclassing. Package-private for testing.
@@ -306,24 +356,25 @@ public class SauceSession {
     return new RemoteWebDriver(url, capabilities);
   }
 
-  private void updateResult(String result) {
+  @SneakyThrows
+  private void updateResult(Boolean result) {
     this.result = result;
-    getDriver().executeScript("sauce:job-result=" + result);
+    rest.setResult(result);
 
     printToConsole();
   }
 
-  public void printToConsole() {
+  private void printToConsole() {
     // Add output for the Sauce OnDemand Jenkins plugin
     // The first print statement will automatically populate links on Jenkins to Sauce
     // The second print statement will output the job link to logging/console
     String sauceReporter =
         String.format(
             "SauceOnDemandSessionID=%s job-name=%s",
-            this.driver.getSessionId(), this.sauceOptions.sauce().getName());
+            this.id, this.sauceOptions.sauce().getName());
     String sauceTestLink =
         String.format(
-            "Test Job Link:" + getDataCenter().getTestLink() + "%s", this.driver.getSessionId());
+            "Test Job Link:" + getDataCenter().getTestLink() + "%s", this.id);
     System.out.print(sauceReporter + "\n" + sauceTestLink + "\n");
   }
 
@@ -334,8 +385,15 @@ public class SauceSession {
   }
 
   private void quit() {
-    driver.quit();
-    driver = null;
+    try {
+      driver.quit();
+    } catch (WebDriverException e) {
+      if (rest != null) {
+        rest.stop();
+      }
+    } finally {
+      driver = null;
+    }
   }
 
   private void validateMac(String msg) {

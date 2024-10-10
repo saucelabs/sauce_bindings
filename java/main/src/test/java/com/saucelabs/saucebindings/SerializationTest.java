@@ -7,14 +7,14 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 public class SerializationTest {
 
-    @Test
-    public void copyOptions() {
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--hide-scrollbars");
-        SauceOptions options = SauceOptions.chrome(chromeOptions).setBuild("TEST BUILD").build();
+  @Test
+  public void copyOptions() {
+    ChromeOptions chromeOptions = new ChromeOptions();
+    chromeOptions.addArguments("--hide-scrollbars");
+    SauceOptions options = SauceOptions.chrome(chromeOptions).setBuild("TEST BUILD").build();
 
-        SauceOptions copiedOptions = options.copy();
-        Assertions.assertNotEquals(options, copiedOptions);
-        Assertions.assertEquals(options.toCapabilities(), copiedOptions.toCapabilities());
-    }
+    SauceOptions copiedOptions = options.copy();
+    Assertions.assertNotEquals(options, copiedOptions);
+    Assertions.assertEquals(options.toCapabilities(), copiedOptions.toCapabilities());
+  }
 }

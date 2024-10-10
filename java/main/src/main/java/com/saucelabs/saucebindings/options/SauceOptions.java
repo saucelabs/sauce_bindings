@@ -1,7 +1,12 @@
 package com.saucelabs.saucebindings.options;
 
-import com.saucelabs.saucebindings.*;
-
+import com.saucelabs.saucebindings.Browser;
+import com.saucelabs.saucebindings.PageLoadStrategy;
+import com.saucelabs.saucebindings.SaucePlatform;
+import com.saucelabs.saucebindings.SauceSession;
+import com.saucelabs.saucebindings.TimeoutStore;
+import com.saucelabs.saucebindings.Timeouts;
+import com.saucelabs.saucebindings.UnhandledPromptBehavior;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -30,7 +35,7 @@ import org.openqa.selenium.safari.SafariOptions;
 public class SauceOptions extends BaseOptions {
   @Setter(AccessLevel.NONE)
   @Getter(AccessLevel.NONE)
-  private SauceLabsOptions sauceLabsOptions = null;
+  private SauceLabsOptions sauceLabsOptions;
 
   public TimeoutStore timeout = new TimeoutStore();
 
@@ -214,17 +219,16 @@ public class SauceOptions extends BaseOptions {
 
   public SauceOptions copy() {
     try {
-      //Serializing the object to a byte array
+      // Serializing the object to a byte array
       ByteArrayOutputStream bos = new ByteArrayOutputStream();
       ObjectOutputStream out = new ObjectOutputStream(bos);
       out.writeObject(this);
 
-      //Deserializing the bytes into a new object
+      // Deserializing the bytes into a new object
       ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
       ObjectInputStream in = new ObjectInputStream(bis);
       return (SauceOptions) in.readObject();
-    }
-    catch (IOException | ClassNotFoundException e) {
+    } catch (IOException | ClassNotFoundException e) {
       throw new Error(e);
     }
   }

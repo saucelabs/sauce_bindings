@@ -1,13 +1,12 @@
 package com.saucelabs.saucebindings.integration;
 
 import com.saucelabs.saucebindings.SauceSession;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.openqa.selenium.WebDriver;
-
-import java.util.List;
 
 public class DisableSauceTest {
 

@@ -13,8 +13,14 @@ public class QuickStartExample {
 
   @RegisterExtension static SauceBindingsExtension sauceExtension = new SauceBindingsExtension();
 
+  @BeforeEach
+  public void getVariables(SauceSession session, WebDriver driver) {
+    this.session = session;
+    this.driver = driver;
+  }
+
   @Test
-  public void quickStartExample(SauceSession session, WebDriver driver) {
+  public void quickStartExample() {
     session.annotate("Navigating to Swag Labs");
     driver.get("https://www.saucedemo.com/");
   }

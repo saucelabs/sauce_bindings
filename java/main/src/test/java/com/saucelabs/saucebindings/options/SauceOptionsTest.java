@@ -310,7 +310,8 @@ public class SauceOptionsTest {
     sauceCapabilities.setCapability("build", "Build Name");
     sauceCapabilities.setCapability("username", SystemManager.get("SAUCE_USERNAME"));
     sauceCapabilities.setCapability("accessKey", SystemManager.get("SAUCE_ACCESS_KEY"));
-    Map<String, Object> customData = Map.of("ci-tool", CITools.getCiToolName(), "sauce-bindings", "java");
+    Map<String, Object> customData =
+        Map.of("ci-tool", CITools.getCiToolName(), "sauce-bindings", "java");
     sauceCapabilities.setCapability("custom-data", customData);
     expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
     MutableCapabilities actualCapabilities = sauceOptions.toCapabilities();
@@ -430,7 +431,8 @@ public class SauceOptionsTest {
     sauceCapabilities.setCapability("build", "Build Name");
     sauceCapabilities.setCapability("username", SystemManager.get("SAUCE_USERNAME"));
     sauceCapabilities.setCapability("accessKey", SystemManager.get("SAUCE_ACCESS_KEY"));
-    Map<String, Object> customData = Map.of("ci-tool", CITools.getCiToolName(), "sauce-bindings", "java");
+    Map<String, Object> customData =
+        Map.of("ci-tool", CITools.getCiToolName(), "sauce-bindings", "java");
     sauceCapabilities.setCapability("custom-data", customData);
     expectedCapabilities.setCapability("sauce:options", sauceCapabilities);
 
@@ -481,7 +483,8 @@ public class SauceOptionsTest {
     sauceCapabilities.setCapability("public", JobVisibility.SHARE);
     sauceCapabilities.setCapability("username", SystemManager.get("SAUCE_USERNAME"));
     sauceCapabilities.setCapability("accessKey", SystemManager.get("SAUCE_ACCESS_KEY"));
-    Map<String, Object> customData = Map.of("ci-tool", CITools.getCiToolName(), "sauce-bindings", "java");
+    Map<String, Object> customData =
+        Map.of("ci-tool", CITools.getCiToolName(), "sauce-bindings", "java");
     sauceCapabilities.setCapability("custom-data", customData);
 
     expectedCapabilities.setCapability("sauce:options", sauceCapabilities);

@@ -4,7 +4,6 @@ import com.saucelabs.saucebindings.CITools;
 import com.saucelabs.saucebindings.DataCenter;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -76,8 +75,8 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
         session.stop(true);
       } catch (NoSuchSessionException e) {
         LOGGER.severe(
-            "Driver quit prematurely; Remove calls to `driver.quit()` to allow SauceBindingsExtension"
-                + " to stop the test");
+            "Driver quit prematurely; Remove calls to `driver.quit()` to allow"
+                + "  SauceBindingsExtension to stop the test");
       }
     }
   }
@@ -97,8 +96,8 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
         session.stop(false);
       } catch (NoSuchSessionException e) {
         LOGGER.severe(
-            "Driver quit prematurely; Remove calls to `driver.quit()` to allow SauceBindingsExtension"
-                + " to stop the test");
+            "Driver quit prematurely; Remove calls to `driver.quit()` to allow"
+                + "  SauceBindingsExtension to stop the test");
       }
     }
   }
@@ -112,9 +111,9 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
       session.annotate("Reason: " + cause.getMessage());
 
       Arrays.stream(cause.getStackTrace())
-              .map(StackTraceElement::toString)
-              .filter(line -> !line.contains("sun"))
-              .forEach(session::annotate);
+          .map(StackTraceElement::toString)
+          .filter(line -> !line.contains("sun"))
+          .forEach(session::annotate);
 
       session.abort();
     }
@@ -122,7 +121,8 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
 
   @Override
   public void testDisabled(ExtensionContext context, Optional<String> reason) {
-    LOGGER.info("A Sauce session was not started for " + context.getDisplayName() + " because " + reason);
+    LOGGER.info(
+        "A Sauce session was not started for " + context.getDisplayName() + " because " + reason);
   }
 
   @Override

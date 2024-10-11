@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
@@ -125,10 +126,10 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
       session.annotate("Test Aborted; marking completed instead of failed");
       session.annotate("Reason: " + cause.getMessage());
 
-      Arrays.stream(cause.getStackTrace())
-          .map(StackTraceElement::toString)
-          .filter(line -> !line.contains("sun"))
-          .forEach(session::annotate);
+      String stackTrace = Arrays.stream(cause.getStackTrace())
+              .map(StackTraceElement::toString)
+              .collect(Collectors.joining("\n"));
+      session.annotate(stackTrace);
 
       session.abort();
     }

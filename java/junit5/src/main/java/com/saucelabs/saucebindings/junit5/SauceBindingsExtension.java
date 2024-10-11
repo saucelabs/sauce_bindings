@@ -4,7 +4,6 @@ import com.saucelabs.saucebindings.CITools;
 import com.saucelabs.saucebindings.DataCenter;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -29,8 +27,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, ParameterResolver {
   private static final Logger LOGGER = Logger.getLogger(SauceBindingsExtension.class.getName());
   private final String buildName;
-  protected SauceOptions sauceOptions = new SauceOptions();
-  protected DataCenter dataCenter = DataCenter.US_WEST;
+  protected SauceOptions sauceOptions;
+  protected DataCenter dataCenter;
 
   public SauceBindingsExtension() {
     this(new SauceOptions(), DataCenter.US_WEST);
@@ -133,7 +131,8 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
       session.annotate("Test Aborted; marking completed instead of failed");
       session.annotate("Reason: " + cause.getMessage());
 
-      String stackTrace = Arrays.stream(cause.getStackTrace())
+      String stackTrace =
+          Arrays.stream(cause.getStackTrace())
               .map(StackTraceElement::toString)
               .collect(Collectors.joining("\n"));
       session.annotate(stackTrace);

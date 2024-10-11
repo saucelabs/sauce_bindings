@@ -55,7 +55,14 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
 
   private SauceOptions updateOptions(ExtensionContext context) {
     SauceOptions options = sauceOptions.copy();
-    options.sauce().setName(context.getDisplayName());
+    if (context.getRequiredTestMethod().getDeclaredAnnotation(DisplayName.class) != null) {
+      // Use value specified by @DisplayName annotation if present
+      options.sauce().setName(context.getDisplayName());
+    } else {
+      String className = context.getRequiredTestClass().getSimpleName();
+      String methodName = context.getRequiredTestMethod().getName();
+      options.sauce().setName(className + ": " + methodName);
+    }
 
     Properties prop = new Properties();
     try (InputStream input = getClass().getResourceAsStream("/app.properties")) {

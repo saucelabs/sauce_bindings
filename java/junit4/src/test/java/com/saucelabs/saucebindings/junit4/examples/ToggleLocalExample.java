@@ -26,16 +26,13 @@ public class ToggleLocalExample {
 
   // 1. Use the SauceBindingsWatcher rule
   @Rule public SauceBindingsWatcher sauceWatcher = new SauceBindingsWatcher();
+  @Rule public TestWatcher localWatcher = new LocalTestWatcher();
 
   // 2. Get variables created by Watcher
   @Before
   public void storeVariables() {
-    if (SauceSession.isDisabled()) {
-      this.session = sauceWatcher.getSession();
-      this.driver = sauceWatcher.getDriver();
-    } else {
-      driver = new ChromeDriver();
-    }
+    this.session = sauceWatcher.getSession();
+    this.driver = SauceSession.isDisabled() ? new ChromeDriver() : sauceWatcher.getDriver();
   }
 
   @Test

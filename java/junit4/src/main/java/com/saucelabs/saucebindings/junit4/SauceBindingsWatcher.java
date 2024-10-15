@@ -4,7 +4,6 @@ import com.saucelabs.saucebindings.CITools;
 import com.saucelabs.saucebindings.DataCenter;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
@@ -13,7 +12,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import lombok.Getter;
+import org.junit.AssumptionViolatedException;
 import org.junit.experimental.categories.Category;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
@@ -23,7 +24,7 @@ import org.openqa.selenium.WebDriver;
 
 @Getter
 public class SauceBindingsWatcher extends TestWatcher {
-  private static final Logger logger = Logger.getLogger(SauceBindingsWatcher.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(SauceBindingsWatcher.class.getName());
   private final SauceOptions sauceOptions;
   private final DataCenter dataCenter;
   private SauceSession session;
@@ -88,7 +89,7 @@ public class SauceBindingsWatcher extends TestWatcher {
     try {
       session.stop(true);
     } catch (NoSuchSessionException e) {
-      logger.severe(
+      LOGGER.severe(
           "Driver quit prematurely; Remove calls to `driver.quit()` to allow"
               + " SauceBindingsExtension to stop the test");
     }
@@ -107,10 +108,27 @@ public class SauceBindingsWatcher extends TestWatcher {
 
         session.stop(false);
       } catch (NoSuchSessionException ex) {
-        logger.severe(
+        LOGGER.severe(
             "Driver quit prematurely; Remove calls to `driver.quit()` to allow"
                 + " SauceBindingsExtension to stop the test");
       }
+    }
+  }
+
+  @Override
+  public void skipped(AssumptionViolatedException e, Description description) {
+    LOGGER.fine("Test Aborted: " + e.getMessage());
+    if (session != null) {
+      session.annotate("Test Skipped; marking completed instead of failed");
+      session.annotate("Reason: " + e.getMessage());
+
+      String stackTrace =
+          Arrays.stream(e.getStackTrace())
+              .map(StackTraceElement::toString)
+              .collect(Collectors.joining("\n"));
+      session.annotate(stackTrace);
+
+      session.abort();
     }
   }
 

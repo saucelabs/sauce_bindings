@@ -2,9 +2,6 @@ package com.saucelabs.saucebindings.junit4.examples;
 
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.junit4.SauceBindingsWatcher;
-import java.util.List;
-import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -18,17 +15,17 @@ public class ToggleLocalExample {
   private SauceSession session;
   private WebDriver driver;
 
-  // To run test on Sauce Labs, change this to "false"
+  // Change this property to "true" to run locally
   @BeforeClass
   public static void disableSauce() {
-    System.setProperty("sauce.disabled", "true");
+    System.setProperty("sauce.disabled", "false");
   }
 
-  // 1. Use the SauceBindingsWatcher rule
+  // 1. Set multiple rules for when Sauce is and isn't enabled
   @Rule public SauceBindingsWatcher sauceWatcher = new SauceBindingsWatcher();
   @Rule public TestWatcher localWatcher = new LocalTestWatcher();
 
-  // 2. Get variables created by Watcher
+  // 2. Start driver if running locally
   @Before
   public void storeVariables() {
     this.session = sauceWatcher.getSession();
@@ -39,22 +36,7 @@ public class ToggleLocalExample {
   public void localSession() {
     // This code executes whether running locally or on Sauce
     driver.get("https://www.saucedemo.com/");
-
-    // This code executes if Sauce enabled, and is ignored when disabled
-    try {
-      session.annotate("This gets ignored");
-      session.addTags(List.of("ignored"));
-      session.stopNetwork();
-      session.enableLogging();
-      session.getAccessibilityResults();
-    } catch (Exception e) {
-      Assert.fail("There should not be an exception here");
-    }
-  }
-
-  @AfterClass
-  public static void resetSauce() {
-    System.clearProperty("sauce.disabled");
+    session.annotate("This gets ignored when sauce is disabled");
   }
 
   // Do not quit the driver if running on Sauce Labs

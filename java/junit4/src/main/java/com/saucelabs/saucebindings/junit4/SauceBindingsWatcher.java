@@ -1,14 +1,23 @@
 package com.saucelabs.saucebindings.junit4;
 
+import com.saucelabs.saucebindings.CITools;
 import com.saucelabs.saucebindings.DataCenter;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.logging.Logger;
 import lombok.Getter;
+import org.junit.experimental.categories.Category;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.openqa.selenium.Capabilities;
@@ -22,6 +31,7 @@ public class SauceBindingsWatcher extends TestWatcher {
   private final DataCenter dataCenter;
   private SauceSession session;
   private WebDriver driver;
+  private static final String buildName = CITools.getBuildName() + ": " + CITools.getBuildNumber();
 
   public SauceBindingsWatcher() {
     this(new SauceOptions(), DataCenter.US_WEST);
@@ -61,13 +71,46 @@ public class SauceBindingsWatcher extends TestWatcher {
 
   @Override
   protected void starting(Description description) {
-    if (sauceOptions.sauce().getName() == null) {
-      sauceOptions.sauce().setName(description.getMethodName());
-    }
+    updateOptions(description);
 
     session = new SauceSession(sauceOptions);
     session.setDataCenter(dataCenter);
     driver = session.start();
+  }
+
+  private void updateOptions(Description description) {
+    String className = description.getClassName();
+    String simpleClassName = className.substring(className.lastIndexOf(".") + 1);
+    sauceOptions.sauce().setName(simpleClassName + ": " + description.getMethodName());
+    sauceOptions.sauce().setBuild(buildName);
+
+    Properties prop = new Properties();
+    try (InputStream input = getClass().getResourceAsStream("/app.properties")) {
+      prop.load(input);
+      String version = prop.getProperty("version", "unknown");
+      sauceOptions.sauce().getCustomData().put("sauce-bindings-junit4", version);
+    } catch (IOException ignored) {
+      sauceOptions.sauce().getCustomData().put("sauce-bindings-junit4", "unknown");
+    }
+
+    List<String> tags = sauceOptions.sauce().getTags();
+
+    List<Annotation> annotations = (List<Annotation>) description.getAnnotations();
+    for (Annotation annotation : annotations) {
+      if (annotation instanceof Category) {
+        Category category = (Category) annotation;
+        for (Class<?> categoryClass : category.value()) {
+          if (tags == null) {
+            tags = new ArrayList<>();
+          }
+          tags.add(categoryClass.getSimpleName());
+        }
+      }
+    }
+
+    if (tags != null) {
+      sauceOptions.sauce().setTags(tags);
+    }
   }
 
   @Override

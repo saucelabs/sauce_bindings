@@ -13,7 +13,9 @@ public class DataCenterExample {
   private WebDriver driver;
 
   // 1. Pass in desired Datacenter to the SauceBindingsWatcher rule
-  @Rule public SauceBindingsWatcher sauceWatcher = new SauceBindingsWatcher(DataCenter.EU_CENTRAL);
+  @Rule
+  public SauceBindingsWatcher sauceWatcher =
+      new SauceBindingsWatcher.Builder().withDataCenter(DataCenter.EU_CENTRAL).build();
 
   // 2. Get variables created by Watcher
   @Before

@@ -10,10 +10,7 @@ import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.logging.Logger;
 import lombok.Getter;
@@ -37,36 +34,9 @@ public class SauceBindingsWatcher extends TestWatcher {
     this(new SauceOptions(), DataCenter.US_WEST);
   }
 
-  public SauceBindingsWatcher(SauceOptions sauceOptions) {
-    this(sauceOptions, DataCenter.US_WEST);
-  }
-
-  public SauceBindingsWatcher(SauceOptions sauceOptions, DataCenter dataCenter) {
+  private SauceBindingsWatcher(SauceOptions sauceOptions, DataCenter dataCenter) {
     this.sauceOptions = sauceOptions;
     this.dataCenter = dataCenter;
-  }
-
-  public SauceBindingsWatcher(Capabilities capabilities) {
-    this(capabilities, DataCenter.US_WEST);
-  }
-
-  public SauceBindingsWatcher(Capabilities capabilities, DataCenter dataCenter) {
-    this.sauceOptions = new SauceOptions();
-    Map<String, Object> capabilitiesMap = new HashMap<>(capabilities.asMap());
-    Optional.ofNullable(capabilitiesMap.get("sauce:options"))
-        .filter(Map.class::isInstance)
-        .map(Map.class::cast)
-        .ifPresent(
-            sauceOptionsMap -> {
-              capabilitiesMap.put("sauce", sauceOptionsMap);
-              capabilitiesMap.remove("sauce:options");
-            });
-    this.sauceOptions.mergeCapabilities(capabilitiesMap);
-    this.dataCenter = dataCenter;
-  }
-
-  public SauceBindingsWatcher(DataCenter dataCenter) {
-    this(new SauceOptions(), dataCenter);
   }
 
   @Override
@@ -141,6 +111,30 @@ public class SauceBindingsWatcher extends TestWatcher {
             "Driver quit prematurely; Remove calls to `driver.quit()` to allow"
                 + " SauceBindingsExtension to stop the test");
       }
+    }
+  }
+
+  public static class Builder {
+    private SauceOptions sauceOptions = new SauceOptions();
+    private DataCenter dataCenter = DataCenter.US_WEST;
+
+    public Builder withSauceOptions(SauceOptions sauceOptions) {
+      this.sauceOptions = sauceOptions;
+      return this;
+    }
+
+    public Builder withCapabilities(Capabilities capabilities) {
+      this.sauceOptions.mergeCapabilities(capabilities.asMap());
+      return this;
+    }
+
+    public Builder withDataCenter(DataCenter dataCenter) {
+      this.dataCenter = dataCenter;
+      return this;
+    }
+
+    public SauceBindingsWatcher build() {
+      return new SauceBindingsWatcher(sauceOptions, dataCenter);
     }
   }
 }

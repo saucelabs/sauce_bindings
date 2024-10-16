@@ -5,6 +5,7 @@ import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.testng.SauceBindingsListener;
 import java.lang.reflect.Method;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.ITestContext;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
@@ -18,6 +19,7 @@ public class AccessibilityExample {
   @BeforeMethod
   public void startSession(Method method, ITestContext context) {
     SauceBindingsListener.startSession(method, context);
+
     this.driver = SauceBindingsListener.getDriver(context);
     this.session = SauceBindingsListener.getSession(context);
   }

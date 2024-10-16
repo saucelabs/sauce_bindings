@@ -1,48 +1,38 @@
 package com.saucelabs.saucebindings;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.saucelabs.saucebindings.citools.Bamboo;
+import com.saucelabs.saucebindings.citools.CITool;
+import com.saucelabs.saucebindings.citools.CircleCI;
+import com.saucelabs.saucebindings.citools.DefaultTool;
+import com.saucelabs.saucebindings.citools.GitHub;
+import com.saucelabs.saucebindings.citools.GitLab;
+import com.saucelabs.saucebindings.citools.Jenkins;
+import com.saucelabs.saucebindings.citools.TeamCity;
+import com.saucelabs.saucebindings.citools.TravisCI;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Determines the information a test needs based on what CI Tool is being used. It does not need to
  * be initialized.
  */
 public abstract class CITools {
-  private static String ciToolName;
+  private static CITool ciTool;
 
   /** Map of CI Tools and what Environment variable, if present, indicates its usage. */
-  public static final Map<String, String> KNOWN_TOOLS =
+  public static final Map<String, Supplier<CITool>> KNOWN_TOOLS =
       ImmutableMap.of(
-          "Bamboo", "bamboo_agentId",
-          "Circle", "CIRCLE_JOB",
-          "Github", "GITHUB_SHA",
-          "GitLab", "CI",
-          "Jenkins", "JENKINS_HOME",
-          "TeamCity", "TEAMCITY_PROJECT_NAME",
-          "Travis", "TRAVIS_JOB_ID");
-
-  /** The Build Name and Build Number values to properly differentiate test runs. */
-  public static final Map<String, ImmutableList<String>> BUILD_VALUES =
-      ImmutableMap.of(
-          "Bamboo", ImmutableList.of("bamboo_shortJobName", "bamboo_buildNumber"),
-          "Circle", ImmutableList.of("CIRCLE_JOB", "CIRCLE_BUILD_NUM"),
-          "Github", ImmutableList.of("GITHUB_JOB", "GITHUB_RUN_NUMBER"),
-          "GitLab", ImmutableList.of("CI_JOB_NAME", "CI_JOB_ID"),
-          "Jenkins", ImmutableList.of("BUILD_NAME", "BUILD_NUMBER"),
-          "TeamCity", ImmutableList.of("TEAMCITY_PROJECT_NAME", "BUILD_NUMBER"),
-          "Travis", ImmutableList.of("TRAVIS_JOB_NAME", "TRAVIS_JOB_NUMBER"));
+          "bamboo_agentId", Bamboo::new,
+          "CIRCLE_JOB", CircleCI::new,
+          "GITHUB_SHA", GitHub::new,
+          "CI", GitLab::new,
+          "JENKINS_HOME", Jenkins::new,
+          "TEAMCITY_PROJECT_NAME", TeamCity::new,
+          "TRAVIS_JOB_ID", TravisCI::new);
 
   public static String getCiToolName() {
-    if (ciToolName == null) {
-      for (Map.Entry<String, String> tool : KNOWN_TOOLS.entrySet()) {
-        if (SystemManager.get(tool.getValue()) != null) {
-          ciToolName = tool.getKey();
-          return ciToolName;
-        }
-      }
-    }
-    return ciToolName == null ? "unknown" : ciToolName;
+    return getCiTool().getToolName();
   }
 
   /**
@@ -51,11 +41,7 @@ public abstract class CITools {
    * @return the constant name of the build
    */
   public static String getBuildName() {
-    if (!getCiToolName().equalsIgnoreCase("unknown")) {
-      String buildNameKey = BUILD_VALUES.get(getCiToolName()).get(0);
-      return SystemManager.get(buildNameKey);
-    }
-    return "Default Build Name";
+    return getCiTool().getBuildName();
   }
 
   /**
@@ -64,10 +50,23 @@ public abstract class CITools {
    * @return the variable number of the current build
    */
   public static String getBuildNumber() {
-    if (!getCiToolName().equalsIgnoreCase("unknown")) {
-      String buildNumberKey = BUILD_VALUES.get(getCiToolName()).get(1);
-      return SystemManager.get(buildNumberKey);
+    return getCiTool().getBuildNumber();
+  }
+
+  private static CITool getCiTool() {
+    if (ciTool != null) {
+      return ciTool;
+    } else if (SystemManager.get("SAUCE_BUILD_NAME") != null) {
+      return new DefaultTool();
+    } else {
+      for (Map.Entry<String, Supplier<CITool>> tool : KNOWN_TOOLS.entrySet()) {
+        if (System.getenv(tool.getKey()) != null) {
+          ciTool = tool.getValue().get();
+          return ciTool;
+        }
+      }
+      ciTool = new DefaultTool();
+      return ciTool;
     }
-    return String.valueOf(System.currentTimeMillis());
   }
 }

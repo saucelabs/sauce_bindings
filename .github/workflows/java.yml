@@ -138,6 +138,8 @@ jobs:
       - name: Remove driver directories
         run: |
           sudo rm -rf $CHROMEWEBDRIVER $EDGEWEBDRIVER $GECKOWEBDRIVER
+      - name: Install main bindings snapshot
+        run: cd java/main && mvn clean package install -DskipTests -Dgpg.skip=true
       - name: Test with Maven
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}

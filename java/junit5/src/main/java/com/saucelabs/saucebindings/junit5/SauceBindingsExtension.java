@@ -53,15 +53,26 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
 
   private SauceOptions updateOptions(ExtensionContext context) {
     SauceOptions options = sauceOptions.copy();
+    options.sauce().setBuild(buildName);
+    updateTestName(options, context);
+    updateCustomData(options);
+    updateTags(options, context);
+
+    return options;
+  }
+
+  private void updateTestName(SauceOptions options, ExtensionContext context) {
+    // Use value specified by @DisplayName annotation if present
     if (context.getRequiredTestMethod().getDeclaredAnnotation(DisplayName.class) != null) {
-      // Use value specified by @DisplayName annotation if present
       options.sauce().setName(context.getDisplayName());
     } else {
       String className = context.getRequiredTestClass().getSimpleName();
       String methodName = context.getRequiredTestMethod().getName();
       options.sauce().setName(className + ": " + methodName);
     }
+  }
 
+  private void updateCustomData(SauceOptions options) {
     Properties prop = new Properties();
     try (InputStream input = getClass().getResourceAsStream("/app.properties")) {
       prop.load(input);
@@ -70,16 +81,15 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
     } catch (IOException ignored) {
       options.sauce().getCustomData().put("sauce-bindings-junit5", "unknown");
     }
+  }
 
+  private void updateTags(SauceOptions options, ExtensionContext context) {
     List<String> tags = options.sauce().getTags();
     if (tags != null) {
       tags.addAll(context.getTags());
     } else {
       options.sauce().setTags(new ArrayList<>(context.getTags()));
     }
-    options.sauce().setBuild(buildName);
-
-    return options;
   }
 
   private ExtensionContext.Store getStore(ExtensionContext context) {

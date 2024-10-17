@@ -4,6 +4,7 @@ import com.saucelabs.saucebindings.SauceSession;
 
 import java.util.Arrays;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import org.openqa.selenium.NoSuchSessionException;
 import org.testng.IInvokedMethod;
@@ -41,8 +42,7 @@ public class SauceBindingsListener implements ITestListener, IInvokedMethodListe
 
   @Override
   public void onTestFailure(ITestResult result) {
-    String key = result.getMethod().getRealClass().getSimpleName() + "." + result.getMethod().getMethodName() + "_session";
-    SauceSession session = (SauceSession) result.getTestContext().getAttribute(key);
+    SauceSession session = SessionContext.getSession(result);
 
     if (session == null) {
       LOGGER.warning("Session appears not to have started; check for problems in before hook");
@@ -52,10 +52,11 @@ public class SauceBindingsListener implements ITestListener, IInvokedMethodListe
 
         session.annotate("Failure Reason: " + cause.getMessage());
 
-        Arrays.stream(cause.getStackTrace())
-            .map(StackTraceElement::toString)
-            .filter(line -> !line.contains("sun"))
-            .forEach(session::annotate);
+        String stackTrace =
+            Arrays.stream(cause.getStackTrace())
+                .map(StackTraceElement::toString)
+                .collect(Collectors.joining("\n"));
+        session.annotate(stackTrace);
 
         session.stop(false);
       } catch (NoSuchSessionException e) {

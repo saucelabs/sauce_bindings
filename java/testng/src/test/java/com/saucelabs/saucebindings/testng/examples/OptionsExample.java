@@ -3,6 +3,7 @@ package com.saucelabs.saucebindings.testng.examples;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import com.saucelabs.saucebindings.testng.SauceBindingsListener;
+import com.saucelabs.saucebindings.testng.SessionContext;
 import java.lang.reflect.Method;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
@@ -17,13 +18,13 @@ public class OptionsExample {
 
   @BeforeMethod
   public void startSession(Method method, ITestContext context) {
-    SauceBindingsListener.startSession(
-        SauceBindingsListener.configure().withSauceOptions(SauceOptions.firefox().build()),
-        method,
-        context);
+    SessionContext sessionContext =
+        SessionContext.build(method, context)
+            .withSauceOptions(SauceOptions.firefox().build())
+            .start();
 
-    this.driver = SauceBindingsListener.getDriver(context);
-    this.session = SauceBindingsListener.getSession(context);
+    this.driver = sessionContext.getDriver();
+    this.session = sessionContext.getSession();
   }
 
   @Test

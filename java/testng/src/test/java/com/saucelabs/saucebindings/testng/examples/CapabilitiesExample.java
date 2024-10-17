@@ -1,8 +1,8 @@
 package com.saucelabs.saucebindings.testng.examples;
 
 import com.saucelabs.saucebindings.SauceSession;
-import com.saucelabs.saucebindings.options.SauceOptions;
 import com.saucelabs.saucebindings.testng.SauceBindingsListener;
+import com.saucelabs.saucebindings.testng.SessionContext;
 import java.lang.reflect.Method;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -18,13 +18,11 @@ public class CapabilitiesExample {
 
   @BeforeMethod
   public void startSession(Method method, ITestContext context) {
-    SauceBindingsListener.startSession(
-            SauceBindingsListener.configure().withCapabilities(new FirefoxOptions()),
-            method,
-            context);
+    SessionContext sessionContext =
+        SessionContext.build(method, context).withCapabilities(new FirefoxOptions()).start();
 
-    this.driver = SauceBindingsListener.getDriver(context);
-    this.session = SauceBindingsListener.getSession(context);
+    this.driver = sessionContext.getDriver();
+    this.session = sessionContext.getSession();
   }
 
   @Test

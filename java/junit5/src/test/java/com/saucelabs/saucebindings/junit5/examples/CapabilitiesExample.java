@@ -17,7 +17,7 @@ public class CapabilitiesExample {
 
   @RegisterExtension
   SauceBindingsExtension sauceExtension =
-      new SauceBindingsExtension.Builder().withCapabilities(getCapabilities()).build();
+      SauceBindingsExtension.builder().withCapabilities(getCapabilities()).build();
 
   @BeforeEach
   public void setUp(SauceSession session, WebDriver driver) {

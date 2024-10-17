@@ -24,7 +24,7 @@ public class CapabilitiesTest {
 
   @RegisterExtension
   static SauceBindingsExtension sauceExtension =
-      new SauceBindingsExtension.Builder().withCapabilities(getCapabilities()).build();
+      SauceBindingsExtension.builder().withCapabilities(getCapabilities()).build();
 
   @Test
   public void useCustomCapabilities(SauceSession session, WebDriver driver) {

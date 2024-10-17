@@ -14,7 +14,7 @@ public class DataCenterExample {
 
   @RegisterExtension
   static SauceBindingsExtension sauceExtension =
-      new SauceBindingsExtension.Builder().withDataCenter(DataCenter.EU_CENTRAL).build();
+      SauceBindingsExtension.builder().withDataCenter(DataCenter.EU_CENTRAL).build();
 
   @BeforeEach
   public void setUp(SauceSession session, WebDriver driver) {

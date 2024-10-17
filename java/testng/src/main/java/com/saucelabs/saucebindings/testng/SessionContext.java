@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Properties;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.Test;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
+import org.testng.annotations.Test;
 
 public class SessionContext {
   private final String key;
@@ -29,8 +29,16 @@ public class SessionContext {
   }
 
   public static boolean isListening(Method method, ITestContext context) {
-    String className = method.getDeclaringClass().getName();
-    return Boolean.parseBoolean((String) context.getAttribute(className + "_listener"));
+    Class<?> currentClass = method.getDeclaringClass();
+
+    while (currentClass != null) {
+      String className = currentClass.getName();
+      if (Boolean.parseBoolean((String) context.getAttribute(className + "_listener"))) {
+        return true;
+      }
+      currentClass = currentClass.getSuperclass();
+    }
+    return false;
   }
 
   public static SauceSession getSession(ITestResult result) {
@@ -120,7 +128,9 @@ public class SessionContext {
 
     public SessionContext start() {
       if (!isListening(method, context)) {
-        String msg = "SauceBindingsListener must be configured in test suite xml or with @Listeners annotation";
+        String msg =
+            "SauceBindingsListener must be configured in test suite xml or with @Listeners"
+                + " annotation";
         throw new RuntimeException(msg + " for: " + method.getDeclaringClass().getName());
       }
 

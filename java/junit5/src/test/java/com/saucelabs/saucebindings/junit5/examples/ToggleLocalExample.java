@@ -33,15 +33,16 @@ public class ToggleLocalExample {
 
   @Test
   public void toggleExample() {
+    // This code executes whether running locally or on Sauce
     driver.get("https://www.saucedemo.com/");
     session.annotate("This gets ignored when sauce is disabled");
   }
 
+  // Make sure only local drivers are quit in the local test watcher
   public class LocalTestWatcher implements TestWatcher {
     @Override
     public void testSuccessful(ExtensionContext context) {
       System.out.println("Test Succeeded");
-      // Do not quit the driver if sauce is not disabled
       if (SauceSession.isDisabled()) {
         driver.quit();
       }

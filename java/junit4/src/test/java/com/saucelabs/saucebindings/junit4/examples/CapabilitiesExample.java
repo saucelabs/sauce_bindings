@@ -29,7 +29,7 @@ public class CapabilitiesExample {
   // 2. Pass these options to the SauceBindingsWatcher rule
   @Rule
   public SauceBindingsWatcher sauceWatcher =
-      new SauceBindingsWatcher.Builder().withCapabilities(createCapabilities()).build();
+      SauceBindingsWatcher.builder().withCapabilities(createCapabilities()).build();
 
   // 3. Get variables created by Watcher
   @Before

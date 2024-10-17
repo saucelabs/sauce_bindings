@@ -15,7 +15,7 @@ public class DataCenterExample {
   // 1. Pass in desired Datacenter to the SauceBindingsWatcher rule
   @Rule
   public SauceBindingsWatcher sauceWatcher =
-      new SauceBindingsWatcher.Builder().withDataCenter(DataCenter.EU_CENTRAL).build();
+      SauceBindingsWatcher.builder().withDataCenter(DataCenter.EU_CENTRAL).build();
 
   // 2. Get variables created by Watcher
   @Before

@@ -40,6 +40,10 @@ public class SauceBindingsWatcher extends TestWatcher {
     this.dataCenter = dataCenter;
   }
 
+  public static Builder builder() {
+    return new Builder();
+  }
+
   @Override
   protected void starting(Description description) {
     updateOptions(description);

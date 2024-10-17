@@ -17,7 +17,7 @@ public class OptionsExample {
 
   @RegisterExtension
   static SauceBindingsExtension sauceExtension =
-      new SauceBindingsExtension.Builder().withSauceOptions(getSauceOptions()).build();
+      SauceBindingsExtension.builder().withSauceOptions(getSauceOptions()).build();
 
   @BeforeEach
   public void setUp(SauceSession session, WebDriver driver) {

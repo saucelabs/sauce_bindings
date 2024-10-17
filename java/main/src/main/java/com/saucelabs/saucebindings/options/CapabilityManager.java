@@ -47,7 +47,11 @@ public class CapabilityManager implements Serializable {
       Method method = options.getClass().getMethod(setter, type);
       method.invoke(options, value);
     } catch (NoSuchFieldException e) {
-      throw new InvalidSauceOptionsArgumentException(key + " is not a valid configuration value");
+      if (key.contains(":")) {
+        options.capabilities.setCapability(key, value);
+      } else {
+        throw new InvalidSauceOptionsArgumentException(key + " is not a valid configuration value");
+      }
     } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
       throw new RuntimeException("Unable to set capability for " + key, e);
     }

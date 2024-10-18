@@ -91,7 +91,6 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
   public void testSuccessful(ExtensionContext context) {
     if (!SauceSession.isDisabled()) {
       SauceSession session = (SauceSession) getStore(context).get("session");
-      RemoteWebDriver driver = session.getDriver();
       try {
         session.stop(true);
       } catch (NoSuchSessionException e) {
@@ -107,14 +106,7 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
     if (!SauceSession.isDisabled()) {
       SauceSession session = (SauceSession) getStore(context).get("session");
       try {
-        session.annotate("Failure Reason: " + cause.getMessage());
-
-        Arrays.stream(cause.getStackTrace())
-            .map(StackTraceElement::toString)
-            .filter(line -> !line.contains("sun"))
-            .forEach(session::annotate);
-
-        session.stop(false);
+        session.stop(cause);
       } catch (NoSuchSessionException e) {
         LOGGER.severe(
             "Driver quit prematurely; Remove calls to `driver.quit()` to allow"
@@ -128,16 +120,7 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
     LOGGER.fine("Test Aborted: " + cause.getMessage());
     SauceSession session = (SauceSession) getStore(context).get("session");
     if (session != null) {
-      session.annotate("Test Aborted; marking completed instead of failed");
-      session.annotate("Reason: " + cause.getMessage());
-
-      String stackTrace =
-          Arrays.stream(cause.getStackTrace())
-              .map(StackTraceElement::toString)
-              .collect(Collectors.joining("\n"));
-      session.annotate(stackTrace);
-
-      session.abort();
+      session.abort(cause);
     }
   }
 

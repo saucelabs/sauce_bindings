@@ -6,7 +6,9 @@ import com.saucelabs.saucebindings.options.BaseConfigurations;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.Capabilities;
@@ -128,13 +130,32 @@ public class SauceSession {
     }
   }
 
-  /** Ends the session on Sauce Labs and quits the driver without setting a test result. */
-  public void abort() {
+  public void stop(Throwable cause) {
     if (isDisabled()) {
       return;
     }
 
     if (this.driver != null) {
+      annotate("Failure Reason: " + cause.getMessage());
+
+      sendStackTrace(cause);
+      updateResult("failed");
+      quit();
+    }
+  }
+
+  /** Ends the session on Sauce Labs and quits the driver without setting a test result. */
+  public void abort(Throwable cause) {
+    if (isDisabled()) {
+      return;
+    }
+
+    this.result = "complete";
+    if (this.driver != null) {
+      annotate("Test Aborted; marking completed instead of failed");
+      annotate("Reason: " + cause.getMessage());
+
+      sendStackTrace(cause);
       printToConsole();
       quit();
     }
@@ -311,6 +332,14 @@ public class SauceSession {
     getDriver().executeScript("sauce:job-result=" + result);
 
     printToConsole();
+  }
+
+  private void sendStackTrace(Throwable cause) {
+    String stackTrace =
+        Arrays.stream(cause.getStackTrace())
+            .map(StackTraceElement::toString)
+            .collect(Collectors.joining("\n"));
+    annotate(stackTrace);
   }
 
   public void printToConsole() {

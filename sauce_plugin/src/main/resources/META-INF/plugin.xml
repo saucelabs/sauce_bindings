@@ -1,0 +1,66 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>com.saucelabs.plugin</id>
+
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+    <name>SaucePlugin</name>
+
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor email="opensource@saucelabs.com" url="https://www.saucelabs.com">Sauce Labs</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+    <description>Plugin to make it simple to run tests on Sauce Labs</description>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <executor implementation="com.saucelabs.plugin.SauceExecutor"/>
+        <programRunner implementation="com.saucelabs.plugin.SauceProgramRunner"/>
+    </extensions>
+
+<!--    <actions>-->
+<!--        <action-->
+<!--                id="RunOnSauce"-->
+<!--                class="com.saucelabs.plugin.RunOnSauceSimple"-->
+<!--                text="Run This on Sauce Labs"-->
+<!--                description="Toggles test to run on Sauce Labs instead of locally">-->
+<!--&lt;!&ndash;            <add-to-group group-id="RunTab.TopToolbar" anchor="last"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <add-to-group group-id="RunDashboardPopup" anchor="last"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <add-to-group group-id="RunDashboardContentToolbar" anchor="last"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <add-to-group group-id="RunMenu" anchor="last"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <add-to-group group-id="CreateRunConfiguration" anchor="last"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <add-to-group group-id="CreateNewRunConfiguration" anchor="last"/>&ndash;&gt;-->
+
+<!--            <add-to-group group-id="RunToolbarMainActionGroup" anchor="last"/>-->
+<!--            <add-to-group group-id="RunTestGroup" anchor="last"/>-->
+<!--            <add-to-group group-id="RunContextPopupGroup" anchor="last"/>-->
+<!--            <add-to-group group-id="RunContextGroup" anchor="last"/>-->
+<!--            <add-to-group group-id="RunContextGroupInner" anchor="last"/>-->
+<!--            <add-to-group group-id="RunContextGroupMore" anchor="last"/>-->
+<!--            <add-to-group group-id="RunTab.TopToolbar.More" anchor="last"/>-->
+<!--            <add-to-group group-id="RunTab.TopToolbar.Old" anchor="last"/>-->
+<!--            <add-to-group group-id="RunToolbarTopLevelExecutorActionGroup" anchor="last"/>-->
+<!--            <add-to-group group-id="RunToolbarSlotContextMenuGroup" anchor="last"/>-->
+<!--            <add-to-group group-id="AdditionalRunningOptionsGroup" anchor="last"/>-->
+<!--            <add-to-group group-id="AdditionalRunningOptionsGroupMain" anchor="last"/>-->
+<!--            <add-to-group group-id="ToolbarRunGroup" anchor="last"/>-->
+<!--            <add-to-group group-id="ExternalSystemView.RunConfigurationMenu" anchor="last"/>-->
+<!--            <add-to-group group-id="ExternalSystem.CreateRunConfiguration" anchor="last"/>-->
+
+
+<!--        </action>-->
+<!--    </actions>-->
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+    <depends>JUnit</depends>
+
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+
+    </extensions>
+</idea-plugin>

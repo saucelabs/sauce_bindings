@@ -373,9 +373,26 @@ public class SauceSession {
     return rest.getCustomData();
   }
 
+  /**
+   * By default, this library is enabled, which can cause problems when a user adds Sauce Bindings
+   * specific code, but wants to run locally. To avoid adding a conditional every time Sauce
+   * specific features are included in the code, the user can set the code to ignore methods from
+   * this library by setting an environment variable or System Property. This value needs to be able
+   * to be overridden in the CI tool or with a Plugin, which needs to set the Environment Variable.
+   *
+   * @return whether the methods in this library are ignored (true) or executed (false)
+   */
   public static boolean isDisabled() {
-    return Boolean.parseBoolean(System.getenv("SAUCE_DISABLED"))
-        || Boolean.getBoolean("sauce.disabled");
+    String env = System.getenv("SAUCE_DISABLED");
+    String prop = System.getProperty("sauce.disabled");
+
+    if (env != null) {
+      return Boolean.parseBoolean(env);
+    } else if (prop != null) {
+      return Boolean.parseBoolean(prop);
+    } else {
+      return true;
+    }
   }
 
   /**

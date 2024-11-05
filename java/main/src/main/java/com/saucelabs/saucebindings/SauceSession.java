@@ -382,17 +382,21 @@ public class SauceSession {
    *
    * @return whether the methods in this library are ignored (true) or executed (false)
    */
-  public static boolean isDisabled() {
-    String env = System.getenv("SAUCE_DISABLED");
-    String prop = System.getProperty("sauce.disabled");
+  public static boolean isEnabled() {
+    String env = System.getenv("SAUCE_ENABLED");
+    String prop = System.getProperty("sauce.enabled");
 
     if (env != null) {
       return Boolean.parseBoolean(env);
     } else if (prop != null) {
       return Boolean.parseBoolean(prop);
     } else {
-      return true;
+      return false;
     }
+  }
+
+  private static boolean isDisabled() {
+    return !isEnabled();
   }
 
   /**

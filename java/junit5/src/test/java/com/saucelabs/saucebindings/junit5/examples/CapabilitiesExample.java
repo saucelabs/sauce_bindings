@@ -15,9 +15,15 @@ public class CapabilitiesExample {
   WebDriver driver;
   SauceSession session;
 
+  // Register extension with Selenium capabilities instance
   @RegisterExtension
-  SauceBindingsExtension sauceExtension =
+  static SauceBindingsExtension sauceExtension =
       SauceBindingsExtension.builder().withCapabilities(getCapabilities()).build();
+
+  // Enable extension (this also can be done by running with -Dsaucelabs.enable=true)
+  static {
+    sauceExtension.enable();
+  }
 
   @BeforeEach
   public void setUp(SauceSession session, WebDriver driver) {

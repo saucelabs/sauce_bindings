@@ -15,20 +15,22 @@ public class ToggleLocalExample {
   WebDriver driver;
   SauceSession session;
 
-  // Register multiple test watchers for local and sauce execution
+  // Register Sauce Bindings extension with defaults
   @RegisterExtension static SauceBindingsExtension sauceExtension = new SauceBindingsExtension();
+  // Register additional test watcher(s) for local execution
   @RegisterExtension TestWatcher testWatcher = new LocalTestWatcher();
 
-  // Change this property to "true" to run locally
-  @BeforeAll
-  public static void toggleSauce() {
-    System.setProperty("sauce.disabled", "false");
+  // Sauce Labs execution is disabled by default,
+  // To run tests without Sauce, remove this code block and do not execute code with
+  // `-Dsaucelabs.enabled=true`
+  static {
+    sauceExtension.enable();
   }
 
   @BeforeEach
   public void setUp(SauceSession session, WebDriver driver) {
     this.session = session;
-    this.driver = SauceSession.isDisabled() ? new ChromeDriver() : driver;
+    this.driver = SauceSession.isEnabled() ? driver : new ChromeDriver();
   }
 
   @Test
@@ -43,7 +45,7 @@ public class ToggleLocalExample {
     @Override
     public void testSuccessful(ExtensionContext context) {
       System.out.println("Test Succeeded");
-      if (SauceSession.isDisabled()) {
+      if (!SauceSession.isEnabled()) {
         driver.quit();
       }
     }
@@ -51,7 +53,7 @@ public class ToggleLocalExample {
     @Override
     public void testFailed(ExtensionContext context, Throwable cause) {
       System.out.println("Test Failed: " + cause.getMessage());
-      if (SauceSession.isDisabled()) {
+      if (!SauceSession.isEnabled()) {
         driver.quit();
       }
     }

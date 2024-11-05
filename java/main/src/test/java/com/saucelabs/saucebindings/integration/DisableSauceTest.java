@@ -11,8 +11,8 @@ import org.openqa.selenium.WebDriver;
 public class DisableSauceTest {
 
   @Test
-  @EnabledIfSystemProperty(named = "sauce.disabled", matches = "true")
-  @DisabledIfSystemProperty(named = "sauce.disabled", matches = "(?!true)") // Needed for IntelliJ
+  @EnabledIfSystemProperty(named = "sauce.enabled", matches = "(!?true)")
+  @DisabledIfSystemProperty(named = "sauce.enabled", matches = "true") // Needed for IntelliJ
   public void disableSauce() {
     SauceSession session = new SauceSession();
     WebDriver driver = session.start();

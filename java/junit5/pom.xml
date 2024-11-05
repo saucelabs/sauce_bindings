@@ -111,7 +111,7 @@
                         <configuration>
                             <properties>
                                 <configurationParameters>
-                                    sauce.disabled = false
+                                    sauce.enabled = true
                                     junit.jupiter.execution.parallel.enabled = true
                                     junit.jupiter.execution.parallel.mode.default = concurrent
                                     junit.jupiter.execution.parallel.config.strategy = fixed
@@ -132,7 +132,6 @@
                             </includes>
                             <properties>
                                 <configurationParameters>
-                                    sauce.disabled = true
                                     junit.jupiter.execution.parallel.enabled = false
                                 </configurationParameters>
                             </properties>

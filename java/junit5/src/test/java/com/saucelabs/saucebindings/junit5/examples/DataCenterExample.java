@@ -12,9 +12,15 @@ public class DataCenterExample {
   WebDriver driver;
   SauceSession session;
 
+  // Register extension with custom data center
   @RegisterExtension
   static SauceBindingsExtension sauceExtension =
       SauceBindingsExtension.builder().withDataCenter(DataCenter.EU_CENTRAL).build();
+
+  // Enable extension (this also can be done by running with -Dsaucelabs.enable=true)
+  static {
+    sauceExtension.enable();
+  }
 
   @BeforeEach
   public void setUp(SauceSession session, WebDriver driver) {

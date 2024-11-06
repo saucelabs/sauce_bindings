@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,26 +12,29 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.SessionId;
 
 @ExtendWith(MockitoExtension.class)
 public class SauceSessionTest {
-  private SauceOptions sauceOptions = Mockito.spy(new SauceOptions());
-  private SauceSession sauceSession = Mockito.spy(new SauceSession());
-  private final SauceSession sauceOptsSession = Mockito.spy(new SauceSession(sauceOptions));
-  private final RemoteWebDriver dummyRemoteDriver = Mockito.mock(RemoteWebDriver.class);
-  private final MutableCapabilities dummyMutableCapabilities =
-      Mockito.mock(MutableCapabilities.class);
+  private SauceOptions sauceOptions;
+  private SauceSession sauceSession;
+  private SauceSession safariSession;
+
+  @Mock private RemoteWebDriver dummyRemoteDriver;
+  @Mock private MutableCapabilities dummyMutableCapabilities;
+  @Mock private SauceRest dummyRestClient;
 
   @BeforeEach
   public void setUp() {
-    Mockito.doReturn(dummyRemoteDriver)
-        .when(sauceSession)
-        .createRemoteWebDriver(Mockito.any(URL.class), Mockito.any(MutableCapabilities.class));
+    sauceOptions = Mockito.spy(SauceOptions.safari().build());
+    sauceSession = Mockito.spy(new SauceSession());
+    safariSession = Mockito.spy(new SauceSession(sauceOptions));
   }
 
   @Test
@@ -48,11 +52,12 @@ public class SauceSessionTest {
   public void sauceSessionUsesProvidedSauceOptions() {
     Mockito.doReturn(dummyMutableCapabilities).when(sauceOptions).toCapabilities();
     Mockito.doReturn(dummyRemoteDriver)
-        .when(sauceOptsSession)
+        .when(safariSession)
         .createRemoteWebDriver(
             Mockito.any(URL.class), ArgumentMatchers.eq(dummyMutableCapabilities));
+    setRestMocks(safariSession);
 
-    sauceOptsSession.start();
+    safariSession.start();
 
     Mockito.verify(sauceOptions).toCapabilities();
   }
@@ -90,6 +95,7 @@ public class SauceSessionTest {
 
   @Test
   public void stopCallsDriverQuitPassing() {
+    setMocks();
     sauceSession.start();
     sauceSession.stop(true);
 
@@ -98,16 +104,18 @@ public class SauceSessionTest {
 
   @Test
   public void stopWithBooleanTrue() {
+    setMocks();
     sauceSession.start();
     sauceSession.stop(true);
-    Mockito.verify(dummyRemoteDriver).executeScript("sauce:job-result=passed");
+    Mockito.verify(dummyRestClient).setResult(true);
   }
 
   @Test
   public void stopWithBooleanFalse() {
+    setMocks();
     sauceSession.start();
     sauceSession.stop(false);
-    Mockito.verify(dummyRemoteDriver).executeScript("sauce:job-result=failed");
+    Mockito.verify(dummyRestClient).setResult(false);
   }
 
   @Test
@@ -119,6 +127,7 @@ public class SauceSessionTest {
 
   @Test
   public void annotates() {
+    setMocks();
     sauceSession.start();
     sauceSession.annotate("Comment in Command List");
     Mockito.verify(dummyRemoteDriver).executeScript("sauce:context=Comment in Command List");
@@ -131,6 +140,7 @@ public class SauceSessionTest {
 
   @Test
   public void pauses() {
+    setMocks();
     sauceSession.start();
     sauceSession.pause();
     Mockito.verify(dummyRemoteDriver).executeScript("sauce: break");
@@ -144,6 +154,7 @@ public class SauceSessionTest {
 
   @Test
   public void disablesLogs() {
+    setMocks();
     sauceSession.start();
     sauceSession.disableLogging();
     Mockito.verify(dummyRemoteDriver).executeScript("sauce: disable log");
@@ -157,6 +168,7 @@ public class SauceSessionTest {
 
   @Test
   public void enablesLogs() {
+    setMocks();
     sauceSession.start();
     sauceSession.enableLogging();
     Mockito.verify(dummyRemoteDriver).executeScript("sauce: enable log");
@@ -178,15 +190,13 @@ public class SauceSessionTest {
   @Test
   @EnabledOnOs(OS.MAC)
   public void stopsNetwork() {
-    sauceOptions = Mockito.spy(SauceOptions.safari().build());
-    sauceSession = Mockito.spy(new SauceSession(sauceOptions));
-    Mockito.doReturn(dummyMutableCapabilities).when(sauceOptions).toCapabilities();
     Mockito.doReturn(dummyRemoteDriver)
-        .when(sauceSession)
-        .createRemoteWebDriver(Mockito.any(URL.class), Mockito.eq(dummyMutableCapabilities));
+        .when(safariSession)
+        .createRemoteWebDriver(Mockito.any(URL.class), Mockito.any(MutableCapabilities.class));
+    setRestMocks(safariSession);
 
-    sauceSession.start();
-    sauceSession.stopNetwork();
+    safariSession.start();
+    safariSession.stopNetwork();
     Mockito.verify(dummyRemoteDriver).executeScript("sauce: stop network");
   }
 
@@ -205,16 +215,14 @@ public class SauceSessionTest {
 
   @Test
   public void startsNetwork() {
-    // Only works on Mac
-    sauceOptions = Mockito.spy(SauceOptions.safari().build());
-    sauceSession = Mockito.spy(new SauceSession(sauceOptions));
     Mockito.doReturn(dummyMutableCapabilities).when(sauceOptions).toCapabilities();
     Mockito.doReturn(dummyRemoteDriver)
-        .when(sauceSession)
+        .when(safariSession)
         .createRemoteWebDriver(Mockito.any(URL.class), Mockito.eq(dummyMutableCapabilities));
+    setRestMocks(safariSession);
 
-    sauceSession.start();
-    sauceSession.startNetwork();
+    safariSession.start();
+    safariSession.startNetwork();
     Mockito.verify(dummyRemoteDriver).executeScript("sauce: start network");
   }
 
@@ -222,14 +230,15 @@ public class SauceSessionTest {
   public void changeNameRequiresStart() {
     Assertions.assertThrows(
         SauceSessionNotStartedException.class,
-        () -> sauceSession.changeTestName("New Name Causes Failure"));
+        () -> sauceSession.changeName("New Name Causes Failure"));
   }
 
   @Test
   public void changesName() {
+    setMocks();
     sauceSession.start();
-    sauceSession.changeTestName("New Name");
-    Mockito.verify(dummyRemoteDriver).executeScript("sauce:job-name=New Name");
+    sauceSession.changeName("New Name");
+    Mockito.verify(dummyRestClient).changeName("New Name");
   }
 
   @Test
@@ -241,8 +250,25 @@ public class SauceSessionTest {
 
   @Test
   public void addTags() {
+    setMocks();
     sauceSession.start();
-    sauceSession.addTags(ImmutableList.of("foo", "bar"));
-    Mockito.verify(dummyRemoteDriver).executeScript("sauce:job-tags=foo,bar");
+    List<String> tags = List.of("foo", "bar");
+    sauceSession.addTags(tags);
+    Mockito.verify(dummyRestClient).addTags(tags);
+  }
+
+  private void setMocks() {
+    Mockito.doReturn(dummyRemoteDriver)
+        .when(sauceSession)
+        .createRemoteWebDriver(Mockito.any(URL.class), Mockito.any(MutableCapabilities.class));
+    setRestMocks(sauceSession);
+  }
+
+  private void setRestMocks(SauceSession session) {
+    Mockito.doReturn(new SessionId("id")).when(dummyRemoteDriver).getSessionId();
+
+    Mockito.doReturn(dummyRestClient)
+        .when(session)
+        .sauceRest(Mockito.any(DataCenter.class), Mockito.any(SessionId.class));
   }
 }

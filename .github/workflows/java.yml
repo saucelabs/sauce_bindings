@@ -61,6 +61,9 @@ jobs:
         run: git --no-pager diff --exit-code
   main:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        profile: [enabled, disabled]
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 11
@@ -71,11 +74,11 @@ jobs:
       - name: Remove driver directories
         run: |
           sudo rm -rf $CHROMEWEBDRIVER $EDGEWEBDRIVER $GECKOWEBDRIVER
-      - name: Test with Maven
+      - name: Sauce (${{ matrix.profile }})
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-        run: cd java/main && mvn clean test -Dmaven.javadoc.skip=true
+        run: cd java/main && mvn clean test -Psauce-${{ matrix.profile }} -Dmaven.javadoc.skip=true
   junit4:
     runs-on: ubuntu-latest
     steps:
@@ -95,6 +98,9 @@ jobs:
         run: cd java/junit4 && mvn clean test -Dmaven.javadoc.skip=true
   junit5:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        profile: [enabled, disabled]
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 11
@@ -113,11 +119,11 @@ jobs:
           echo "DISPLAY=:99" >> "$GITHUB_ENV"
       - name: Install main bindings snapshot
         run: cd java/main && mvn clean package install -DskipTests -Dgpg.skip=true
-      - name: Test with Maven
+      - name: Sauce (${{ matrix.profile }})
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-        run: cd java/junit5 && mvn clean test -Dmaven.javadoc.skip=true
+        run: cd java/junit5 && mvn clean test -Psauce-${{ matrix.profile }} -Dmaven.javadoc.skip=true
   testng:
     runs-on: ubuntu-latest
     steps:

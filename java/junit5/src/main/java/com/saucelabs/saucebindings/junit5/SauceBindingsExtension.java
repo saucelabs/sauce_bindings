@@ -41,11 +41,11 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
     System.setProperty("sauce.enabled", "true");
   }
 
-    public static Builder builder() {
-        return new Builder();
-    }
+  public static Builder builder() {
+    return new Builder();
+  }
 
-    @Override
+  @Override
   public void beforeEach(ExtensionContext context) {
     SauceOptions options = updateOptions(context);
     SauceSession session = new SauceSession(options);

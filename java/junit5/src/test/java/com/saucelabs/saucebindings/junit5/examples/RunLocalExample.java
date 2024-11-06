@@ -2,7 +2,6 @@ package com.saucelabs.saucebindings.junit5.examples;
 
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.junit5.SauceBindingsExtension;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -11,7 +10,7 @@ import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class ToggleLocalExample {
+public class RunLocalExample {
   WebDriver driver;
   SauceSession session;
 
@@ -20,17 +19,18 @@ public class ToggleLocalExample {
   // Register additional test watcher(s) for local execution
   @RegisterExtension TestWatcher testWatcher = new LocalTestWatcher();
 
-  // Sauce Labs execution is disabled by default,
-  // To run tests without Sauce, remove this code block and do not execute code with
-  // `-Dsaucelabs.enabled=true`
-  static {
-    sauceExtension.enable();
-  }
-
   @BeforeEach
   public void setUp(SauceSession session, WebDriver driver) {
     this.session = session;
     this.driver = SauceSession.isEnabled() ? driver : new ChromeDriver();
+  }
+
+  // Sauce Labs execution is disabled by default,
+  // To run tests without Sauce, do not enable the extension (`sauceExtension.enable()`)
+  // and do not execute with `-Dsaucelabs.enabled=true`
+  static {
+    System.out.println("Sauce Bindings Extension not Enabled");
+    // sauceExtension.enable();
   }
 
   @Test
@@ -45,15 +45,9 @@ public class ToggleLocalExample {
     @Override
     public void testSuccessful(ExtensionContext context) {
       System.out.println("Test Succeeded");
-      if (!SauceSession.isEnabled()) {
-        driver.quit();
-      }
-    }
-
-    @Override
-    public void testFailed(ExtensionContext context, Throwable cause) {
-      System.out.println("Test Failed: " + cause.getMessage());
-      if (!SauceSession.isEnabled()) {
+      if (SauceSession.isEnabled()) {
+        throw new RuntimeException("Test should not run when Extension is enabled");
+      } else {
         driver.quit();
       }
     }

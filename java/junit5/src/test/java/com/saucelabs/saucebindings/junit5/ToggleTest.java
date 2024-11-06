@@ -13,8 +13,8 @@ public class ToggleTest {
   @RegisterExtension static SauceBindingsExtension sauceExtension = new SauceBindingsExtension();
 
   @Test
-  @EnabledIfSystemProperty(named = "sauce.disabled", matches = "true")
-  @DisabledIfSystemProperty(named = "sauce.disabled", matches = "(?!true)") // Needed for IntelliJ
+  @DisabledIfSystemProperty(named = "sauce.enabled", matches = "true")
+  @EnabledIfSystemProperty(named = "sauce.enabled", matches = "(?!true)") // Needed for IntelliJ
   public void disableSauce(SauceSession session, WebDriver driver) {
     Assertions.assertNull(driver);
 

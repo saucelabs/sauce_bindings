@@ -1,19 +1,14 @@
-package com.saucelabs.saucebindings.integration;
+package com.saucelabs.saucebindings;
 
-import com.saucelabs.saucebindings.SauceSession;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
-import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.openqa.selenium.WebDriver;
 
-public class DisableSauceTest {
+public class DisabledSauceTest {
 
   @Test
-  @EnabledIfSystemProperty(named = "sauce.enabled", matches = "(!?true)")
-  @DisabledIfSystemProperty(named = "sauce.enabled", matches = "true") // Needed for IntelliJ
-  public void disableSauce() {
+  public void disabledByDefault() {
     SauceSession session = new SauceSession();
     WebDriver driver = session.start();
 

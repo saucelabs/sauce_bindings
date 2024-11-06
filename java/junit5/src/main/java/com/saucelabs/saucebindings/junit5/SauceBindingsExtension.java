@@ -37,6 +37,10 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
     this.buildName = CITools.getBuildName() + ": " + CITools.getBuildNumber();
   }
 
+  public static Builder builder() {
+    return new Builder();
+  }
+
   @Override
   public void beforeEach(ExtensionContext context) {
     SauceOptions options = updateOptions(context);

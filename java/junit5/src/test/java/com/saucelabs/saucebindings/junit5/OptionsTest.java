@@ -20,7 +20,7 @@ public class OptionsTest {
 
   @RegisterExtension
   static SauceBindingsExtension sauceExtension =
-      new SauceBindingsExtension.Builder().withSauceOptions(getSauceOptions()).build();
+      SauceBindingsExtension.builder().withSauceOptions(getSauceOptions()).build();
 
   @Test
   public void useCustomOptions(SauceSession session, WebDriver driver) {

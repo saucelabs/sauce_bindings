@@ -10,7 +10,7 @@ import org.openqa.selenium.WebDriver;
 public class DataCenterTest {
   @RegisterExtension
   static SauceBindingsExtension sauceExtension =
-      new SauceBindingsExtension.Builder().withDataCenter(DataCenter.EU_CENTRAL).build();
+      SauceBindingsExtension.builder().withDataCenter(DataCenter.EU_CENTRAL).build();
 
   @Test
   public void setDataCenter(SauceSession session, WebDriver driver) {

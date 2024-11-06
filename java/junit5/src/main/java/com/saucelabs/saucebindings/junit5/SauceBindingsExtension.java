@@ -7,12 +7,10 @@ import com.saucelabs.saucebindings.options.SauceOptions;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -22,7 +20,6 @@ import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, ParameterResolver {
   private static final Logger LOGGER = Logger.getLogger(SauceBindingsExtension.class.getName());
@@ -57,15 +54,26 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
 
   private SauceOptions updateOptions(ExtensionContext context) {
     SauceOptions options = sauceOptions.copy();
+    options.sauce().setBuild(buildName);
+    updateTestName(options, context);
+    updateCustomData(options);
+    updateTags(options, context);
+
+    return options;
+  }
+
+  private void updateTestName(SauceOptions options, ExtensionContext context) {
+    // Use value specified by @DisplayName annotation if present
     if (context.getRequiredTestMethod().getDeclaredAnnotation(DisplayName.class) != null) {
-      // Use value specified by @DisplayName annotation if present
       options.sauce().setName(context.getDisplayName());
     } else {
       String className = context.getRequiredTestClass().getSimpleName();
       String methodName = context.getRequiredTestMethod().getName();
       options.sauce().setName(className + ": " + methodName);
     }
+  }
 
+  private void updateCustomData(SauceOptions options) {
     Properties prop = new Properties();
     try (InputStream input = getClass().getResourceAsStream("/app.properties")) {
       prop.load(input);
@@ -74,16 +82,15 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
     } catch (IOException ignored) {
       options.sauce().getCustomData().put("sauce-bindings-junit5", "unknown");
     }
+  }
 
+  private void updateTags(SauceOptions options, ExtensionContext context) {
     List<String> tags = options.sauce().getTags();
     if (tags != null) {
       tags.addAll(context.getTags());
     } else {
       options.sauce().setTags(new ArrayList<>(context.getTags()));
     }
-    options.sauce().setBuild(buildName);
-
-    return options;
   }
 
   private ExtensionContext.Store getStore(ExtensionContext context) {
@@ -95,7 +102,6 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
   public void testSuccessful(ExtensionContext context) {
     if (!SauceSession.isDisabled()) {
       SauceSession session = (SauceSession) getStore(context).get("session");
-      RemoteWebDriver driver = session.getDriver();
       try {
         session.stop(true);
       } catch (NoSuchSessionException e) {
@@ -111,14 +117,7 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
     if (!SauceSession.isDisabled()) {
       SauceSession session = (SauceSession) getStore(context).get("session");
       try {
-        session.annotate("Failure Reason: " + cause.getMessage());
-
-        Arrays.stream(cause.getStackTrace())
-            .map(StackTraceElement::toString)
-            .filter(line -> !line.contains("sun"))
-            .forEach(session::annotate);
-
-        session.stop(false);
+        session.stop(cause);
       } catch (NoSuchSessionException e) {
         LOGGER.severe(
             "Driver quit prematurely; Remove calls to `driver.quit()` to allow"
@@ -132,16 +131,7 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
     LOGGER.fine("Test Aborted: " + cause.getMessage());
     SauceSession session = (SauceSession) getStore(context).get("session");
     if (session != null) {
-      session.annotate("Test Aborted; marking completed instead of failed");
-      session.annotate("Reason: " + cause.getMessage());
-
-      String stackTrace =
-          Arrays.stream(cause.getStackTrace())
-              .map(StackTraceElement::toString)
-              .collect(Collectors.joining("\n"));
-      session.annotate(stackTrace);
-
-      session.abort();
+      session.abort(cause);
     }
   }
 

@@ -26,10 +26,17 @@ public class SystemManager {
    * @return the value of the provided field name
    */
   public static String get(String key) {
+    String systemPropertyKey = key.toLowerCase().replace("_", ".");
+    String systemEnvKey = key.toUpperCase().replace(".", "_");
+
     if (System.getProperty(key) != null) {
-      return System.getProperty(key);
+      return System.getProperty(systemPropertyKey);
     } else if (System.getenv(key) != null) {
       return System.getenv(key);
+    } else if (System.getProperty(systemPropertyKey) != null) {
+      return System.getProperty(systemPropertyKey);
+    } else if (System.getenv(systemEnvKey) != null) {
+      return System.getenv(systemEnvKey);
     } else {
       return null;
     }

@@ -12,7 +12,13 @@ public class AccessibilityExample {
   WebDriver driver;
   SauceSession session;
 
+  // Register extension
   @RegisterExtension static SauceBindingsExtension sauceExtension = new SauceBindingsExtension();
+
+  // Enable extension (this also can be done by running with -Dsaucelabs.enable=true)
+  static {
+    sauceExtension.enable();
+  }
 
   @BeforeEach
   public void setUp(SauceSession session) {

@@ -37,6 +37,10 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
     this.buildName = CITools.getBuildName() + ": " + CITools.getBuildNumber();
   }
 
+  public void enable() {
+    System.setProperty("sauce.enabled", "true");
+  }
+
   public static Builder builder() {
     return new Builder();
   }
@@ -100,7 +104,7 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
 
   @Override
   public void testSuccessful(ExtensionContext context) {
-    if (!SauceSession.isDisabled()) {
+    if (SauceSession.isEnabled()) {
       SauceSession session = (SauceSession) getStore(context).get("session");
       try {
         session.stop(true);
@@ -114,7 +118,7 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
 
   @Override
   public void testFailed(ExtensionContext context, Throwable cause) {
-    if (!SauceSession.isDisabled()) {
+    if (SauceSession.isEnabled()) {
       SauceSession session = (SauceSession) getStore(context).get("session");
       try {
         session.stop(cause);

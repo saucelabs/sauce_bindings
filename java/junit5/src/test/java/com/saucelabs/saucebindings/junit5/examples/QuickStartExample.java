@@ -11,7 +11,13 @@ public class QuickStartExample {
   WebDriver driver;
   SauceSession session;
 
+  // Register extension with defaults
   @RegisterExtension static SauceBindingsExtension sauceExtension = new SauceBindingsExtension();
+
+  // Enable extension (this also can be done by running with -Dsaucelabs.enable=true)
+  static {
+    sauceExtension.enable();
+  }
 
   @BeforeEach
   public void setUp(SauceSession session, WebDriver driver) {

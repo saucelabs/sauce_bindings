@@ -111,6 +111,58 @@
     </dependency>
   </dependencies>
 
+  <profiles>
+    <profile>
+      <id>sauce-enabled</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.5.1</version>
+            <configuration>
+              <excludes>
+                <exclude>**/DisabledSauceTest.java</exclude>
+              </excludes>
+              <systemPropertyVariables>
+                <sauce.enabled>true</sauce.enabled>
+              </systemPropertyVariables>
+              <properties>
+                <configurationParameters>
+                  junit.jupiter.execution.parallel.enabled = true
+                  junit.jupiter.execution.parallel.mode.default = concurrent
+                  junit.jupiter.execution.parallel.config.strategy = fixed
+                  junit.jupiter.execution.parallel.config.fixed.parallelism = ${surefire.parallel}
+                  junit.jupiter.execution.parallel.config.fixed.max-pool-size = ${surefire.parallel}
+                </configurationParameters>
+              </properties>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>sauce-disabled</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.5.1</version>
+            <configuration>
+              <includes>
+                <include>**/DisabledSauceTest.java</include>
+              </includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
   <build>
     <resources>
       <resource>
@@ -130,48 +182,6 @@
             <goals>
               <goal>jar-no-fork</goal>
             </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.1.2</version>
-        <executions>
-          <execution>
-            <id>sauce-enabled</id>
-            <goals>
-              <goal>test</goal>
-            </goals>
-            <configuration>
-              <properties>
-                <configurationParameters>
-                  sauce.disabled = false
-                  junit.jupiter.execution.parallel.enabled = true
-                  junit.jupiter.execution.parallel.mode.default = concurrent
-                  junit.jupiter.execution.parallel.config.strategy = fixed
-                  junit.jupiter.execution.parallel.config.fixed.parallelism = ${surefire.parallel}
-                  junit.jupiter.execution.parallel.config.fixed.max-pool-size = ${surefire.parallel}
-                </configurationParameters>
-              </properties>
-            </configuration>
-          </execution>
-          <execution>
-            <id>sauce-disabled</id>
-            <goals>
-              <goal>test</goal>
-            </goals>
-            <configuration>
-              <includes>
-                <include>**/DisableSauceTest.java</include>
-              </includes>
-              <properties>
-                <configurationParameters>
-                  sauce.disabled = true
-                  junit.jupiter.execution.parallel.enabled = false
-                </configurationParameters>
-              </properties>
-            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -221,7 +231,7 @@
           <dependency>
             <groupId>org.apache.maven.scm</groupId>
             <artifactId>maven-scm-provider-gitexe</artifactId>
-            <version>2.1.0</version>
+            <version>2.0.1</version>
           </dependency>
         </dependencies>
       </plugin>

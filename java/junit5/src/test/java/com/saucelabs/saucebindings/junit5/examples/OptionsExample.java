@@ -15,9 +15,15 @@ public class OptionsExample {
   WebDriver driver;
   SauceSession session;
 
+  // Register extension with SauceOptions
   @RegisterExtension
   static SauceBindingsExtension sauceExtension =
       SauceBindingsExtension.builder().withSauceOptions(getSauceOptions()).build();
+
+  // Enable extension (this also can be done by running with -Dsaucelabs.enable=true)
+  static {
+    sauceExtension.enable();
+  }
 
   @BeforeEach
   public void setUp(SauceSession session, WebDriver driver) {

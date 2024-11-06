@@ -7,7 +7,6 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,31 +30,32 @@ public class ToggleLocalExample {
   @RegisterExtension TestWatcher watcher = new SauceTestWatcher();
   @RegisterExtension TestWatcher testWatcher = new LocalTestWatcher();
 
-  // To run test on Sauce Labs, change this to "false"
+  // All Sauce specific code must use conditionals to avoid errors
+  // This is an example of how a user would toggle those conditionals
+  // This property would typically get set in the run command that gets executed on the CI tool
+  boolean sauceEnabled() {
+    return Boolean.getBoolean("sauce.enabled");
+  }
+
   @BeforeAll
-  public static void disableSauce() {
-    System.setProperty("sauce.disabled", "true");
+  public static void enableSauce() {
+    System.setProperty("sauce.enabled", "true");
   }
 
   @BeforeEach
   public void setup(TestInfo testInfo) {
-    if (isSauceDisabled()) {
-      driver = new ChromeDriver();
-    } else {
+    if (sauceEnabled()) {
       this.testInfo = testInfo;
       driver = new RemoteWebDriver(getSauceUrl(), getCapabilities());
       this.sessionId = ((RemoteWebDriver) driver).getSessionId();
+    } else {
+      driver = new ChromeDriver();
     }
-  }
-
-  @AfterAll
-  public static void resetSauce() {
-    System.clearProperty("sauce.disabled");
   }
 
   @Test
   public void toggleLocal() {
-    if (!isSauceDisabled()) {
+    if (sauceEnabled()) {
       ((JavascriptExecutor) driver).executeScript("sauce:context=Navigating to Swag Labs");
     }
 
@@ -70,11 +70,6 @@ public class ToggleLocalExample {
         .setPlatformName(SaucePlatform.MAC_CATALINA)
         .setIdleTimeout(Duration.ofSeconds(30))
         .build();
-  }
-
-  private boolean isSauceDisabled() {
-    String value = System.getenv("SAUCE_DISABLED");
-    return Boolean.parseBoolean(value) || Boolean.getBoolean("sauce.disabled");
   }
 
   private Capabilities getCapabilities() {
@@ -114,7 +109,7 @@ public class ToggleLocalExample {
   private class SauceTestWatcher implements TestWatcher {
     @Override
     public void testSuccessful(ExtensionContext context) {
-      if (isSauceDisabled()) {
+      if (!sauceEnabled()) {
         return;
       }
 
@@ -129,7 +124,7 @@ public class ToggleLocalExample {
 
     @Override
     public void testFailed(ExtensionContext context, Throwable cause) {
-      if (isSauceDisabled()) {
+      if (!sauceEnabled()) {
         return;
       }
 

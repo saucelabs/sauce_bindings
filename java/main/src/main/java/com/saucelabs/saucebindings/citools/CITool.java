@@ -1,7 +1,7 @@
 package com.saucelabs.saucebindings.citools;
 
 public interface CITool {
-  String getToolName();
+  String getClientPlatform();
 
   String getBuildName();
 

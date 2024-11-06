@@ -1,19 +1,23 @@
 package com.saucelabs.saucebindings.citools;
 
+import com.saucelabs.saucebindings.SystemManager;
+
 public class TravisCI implements CITool {
 
   @Override
-  public String getToolName() {
+  public String getClientPlatform() {
     return "Travis CI";
   }
 
   @Override
   public String getBuildName() {
-    return System.getenv("TRAVIS_JOB_NAME");
+    String buildName = SystemManager.get("SAUCE_BUILD_NAME");
+    return buildName != null ? buildName : System.getenv("TRAVIS_JOB_NAME");
   }
 
   @Override
   public String getBuildNumber() {
-    return System.getenv("TRAVIS_JOB_NUMBER");
+    String buildNumber = SystemManager.get("SAUCE_BUILD_NUMBER");
+    return buildNumber != null ? buildNumber : System.getenv("TRAVIS_JOB_NUMBER");
   }
 }

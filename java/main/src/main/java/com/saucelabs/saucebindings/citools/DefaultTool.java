@@ -5,9 +5,9 @@ import com.saucelabs.saucebindings.SystemManager;
 public class DefaultTool implements CITool {
 
   @Override
-  public String getToolName() {
-    String toolName = SystemManager.get("SAUCE_TOOL_NAME");
-    return toolName != null ? toolName : "Unknown";
+  public String getClientPlatform() {
+    String clientPlatform = SystemManager.get("SAUCE_CLIENT_PLATFORM");
+    return clientPlatform != null ? clientPlatform : "Unknown";
   }
 
   @Override

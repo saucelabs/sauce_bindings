@@ -1,19 +1,23 @@
 package com.saucelabs.saucebindings.citools;
 
+import com.saucelabs.saucebindings.SystemManager;
+
 public class TeamCity implements CITool {
 
   @Override
-  public String getToolName() {
+  public String getClientPlatform() {
     return "Team City";
   }
 
   @Override
   public String getBuildName() {
-    return System.getenv("TEAMCITY_PROJECT_NAME");
+    String buildName = SystemManager.get("SAUCE_BUILD_NAME");
+    return buildName != null ? buildName : System.getenv("TEAMCITY_PROJECT_NAME");
   }
 
   @Override
   public String getBuildNumber() {
-    return System.getenv("BUILD_NUMBER");
+    String buildNumber = SystemManager.get("SAUCE_BUILD_NUMBER");
+    return buildNumber != null ? buildNumber : System.getenv("BUILD_NUMBER");
   }
 }

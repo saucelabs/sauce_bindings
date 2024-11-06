@@ -32,7 +32,7 @@ public abstract class CITools {
           "TRAVIS_JOB_ID", TravisCI::new);
 
   public static String getCiToolName() {
-    return getCiTool().getToolName();
+    return getCiTool().getClientPlatform();
   }
 
   /**
@@ -56,7 +56,8 @@ public abstract class CITools {
   private static CITool getCiTool() {
     if (ciTool != null) {
       return ciTool;
-    } else if (SystemManager.get("SAUCE_BUILD_NAME") != null) {
+    } else if (SystemManager.get("SAUCE_CLIENT_PLATFORM") != null) {
+      // Override the CI Tool lookup when this environment variable is set.
       return new DefaultTool();
     } else {
       for (Map.Entry<String, Supplier<CITool>> tool : KNOWN_TOOLS.entrySet()) {

@@ -16,7 +16,12 @@ public class AccessibilityExample {
   // 1. Use the SauceBindingsWatcher rule
   @Rule public SauceBindingsWatcher sauceWatcher = new SauceBindingsWatcher();
 
-  // 2. Get variables created by Watcher
+  // 2. Enable SauceBindingsWatcher rule
+  static {
+    SauceBindingsWatcher.enable();
+  }
+
+  // 3. Get variables created by Watcher
   @Before
   public void storeVariables() {
     this.session = sauceWatcher.getSession();
@@ -25,13 +30,13 @@ public class AccessibilityExample {
 
   @Test
   public void startSession() {
-    // 3. Use the driver in your tests just like normal
+    // 4. Use the driver in your tests just like normal
     driver.get("https://www.saucedemo.com/");
 
-    // 4. Get and assert on accessibility results
+    // 5. Get and assert on accessibility results
     Results results = session.getAccessibilityResults();
     Assert.assertEquals(3, results.getViolations().size());
 
-    // 5. Session is stopped and results are sent to Sauce Labs automatically by the superclass
+    // 6. Session is stopped and results are sent to Sauce Labs automatically by the superclass
   }
 }

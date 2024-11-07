@@ -8,11 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import org.junit.AssumptionViolatedException;
 import org.junit.experimental.categories.Category;
@@ -29,7 +28,7 @@ public class SauceBindingsWatcher extends TestWatcher {
   private final DataCenter dataCenter;
   private SauceSession session;
   private WebDriver driver;
-  private static final String buildName = CITools.getBuildName() + ": " + CITools.getBuildNumber();
+  private static final String build = CITools.getBuildName() + ": " + CITools.getBuildNumber();
 
   public SauceBindingsWatcher() {
     this(new SauceOptions(), DataCenter.US_WEST);
@@ -44,21 +43,29 @@ public class SauceBindingsWatcher extends TestWatcher {
     return new Builder();
   }
 
+  public static void enable() {
+    System.setProperty("sauce.enabled", "true");
+  }
+
   @Override
   protected void starting(Description description) {
-    updateOptions(description);
+    sauceOptions.sauce().setBuild(build);
+    updateTestName(description);
+    updateCustomData();
+    updateTags(description);
 
     session = new SauceSession(sauceOptions);
     session.setDataCenter(dataCenter);
     driver = session.start();
   }
 
-  private void updateOptions(Description description) {
+  public void updateTestName(Description description) {
     String className = description.getClassName();
     String simpleClassName = className.substring(className.lastIndexOf(".") + 1);
     sauceOptions.sauce().setName(simpleClassName + ": " + description.getMethodName());
-    sauceOptions.sauce().setBuild(buildName);
+  }
 
+  private void updateCustomData() {
     Properties prop = new Properties();
     try (InputStream input = getClass().getResourceAsStream("/app.properties")) {
       prop.load(input);
@@ -67,23 +74,23 @@ public class SauceBindingsWatcher extends TestWatcher {
     } catch (IOException ignored) {
       sauceOptions.sauce().getCustomData().put("sauce-bindings-junit4", "unknown");
     }
+  }
 
-    List<String> tags = sauceOptions.sauce().getTags();
+  private void updateTags(Description description) {
+    List<String> tags =
+        Objects.requireNonNullElseGet(sauceOptions.sauce().getTags(), ArrayList::new);
 
     List<Annotation> annotations = (List<Annotation>) description.getAnnotations();
     for (Annotation annotation : annotations) {
       if (annotation instanceof Category) {
         Category category = (Category) annotation;
         for (Class<?> categoryClass : category.value()) {
-          if (tags == null) {
-            tags = new ArrayList<>();
-          }
           tags.add(categoryClass.getSimpleName());
         }
       }
     }
 
-    if (tags != null) {
+    if (!tags.isEmpty()) {
       sauceOptions.sauce().setTags(tags);
     }
   }
@@ -103,14 +110,7 @@ public class SauceBindingsWatcher extends TestWatcher {
   protected void failed(Throwable e, Description description) {
     if (session != null) {
       try {
-        session.annotate("Failure Reason: " + e.getMessage());
-
-        Arrays.stream(e.getStackTrace())
-            .map(StackTraceElement::toString)
-            .filter(line -> !line.contains("sun"))
-            .forEach(session::annotate);
-
-        session.stop(false);
+        session.stop(e);
       } catch (NoSuchSessionException ex) {
         LOGGER.severe(
             "Driver quit prematurely; Remove calls to `driver.quit()` to allow"
@@ -123,16 +123,7 @@ public class SauceBindingsWatcher extends TestWatcher {
   public void skipped(AssumptionViolatedException e, Description description) {
     LOGGER.fine("Test Aborted: " + e.getMessage());
     if (session != null) {
-      session.annotate("Test Skipped; marking completed instead of failed");
-      session.annotate("Reason: " + e.getMessage());
-
-      String stackTrace =
-          Arrays.stream(e.getStackTrace())
-              .map(StackTraceElement::toString)
-              .collect(Collectors.joining("\n"));
-      session.annotate(stackTrace);
-
-      session.abort();
+      session.abort(e);
     }
   }
 

@@ -31,7 +31,12 @@ public class CapabilitiesExample {
   public SauceBindingsWatcher sauceWatcher =
       SauceBindingsWatcher.builder().withCapabilities(createCapabilities()).build();
 
-  // 3. Get variables created by Watcher
+  // 3. Enable SauceBindingsWatcher rule
+  static {
+    SauceBindingsWatcher.enable();
+  }
+
+  // 4. Get variables created by Watcher
   @Before
   public void storeVariables() {
     this.session = sauceWatcher.getSession();
@@ -40,12 +45,12 @@ public class CapabilitiesExample {
 
   @Test
   public void basicOptions() {
-    // 4. Use the session instance to do Sauce Labs things
+    // 5. Use the session instance to do Sauce Labs things
     session.annotate("Navigating to Swag Labs");
 
-    // 5. Use the driver instance to do Selenium things
+    // 6. Use the driver instance to do Selenium things
     driver.get("https://www.saucedemo.com/");
 
-    // 6. Watcher does all teardown activities
+    // 7. Watcher does all teardown activities
   }
 }

@@ -15,10 +15,6 @@ public class ToggleTest {
 
   @Rule public SauceBindingsWatcher sauceWatcher = new SauceBindingsWatcher();
 
-  static {
-    System.setProperty("sauce.disabled", "true");
-  }
-
   @Before
   public void storeVariables() {
     this.session = sauceWatcher.getSession();
@@ -27,7 +23,7 @@ public class ToggleTest {
 
   @Test
   public void disableSauce() {
-    Assume.assumeTrue("true".equals(System.getProperty("sauce.disabled")));
+    Assume.assumeFalse(Boolean.getBoolean("sauce.enabled"));
 
     Assert.assertNull(driver);
 

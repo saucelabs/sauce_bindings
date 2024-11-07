@@ -14,12 +14,12 @@ public class QuickStartExample {
   // 1. Use the SauceBindingsWatcher rule
   @Rule public SauceBindingsWatcher sauceWatcher = new SauceBindingsWatcher();
 
-  // 2. Enable SauceBindingsWatcher rule
+  // 2. Enable this watcher in the static block
   static {
     SauceBindingsWatcher.enable();
   }
 
-  // 3. Get variables created by Watcher
+  // 3. Get variables created by the watcher
   @Before
   public void storeVariables() {
     this.session = sauceWatcher.getSession();
@@ -33,7 +33,5 @@ public class QuickStartExample {
 
     // 5. Use the driver instance to do Selenium things
     driver.get("https://www.saucedemo.com/");
-
-    // 6. Watcher does all teardown activities
   }
 }

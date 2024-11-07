@@ -12,17 +12,17 @@ public class DataCenterExample {
   private SauceSession session;
   private WebDriver driver;
 
-  // 1. Pass in desired Datacenter to the SauceBindingsWatcher rule
+  // 1. Use the SauceBindingsWatcher rule with specific DataCenter
   @Rule
   public SauceBindingsWatcher sauceWatcher =
       SauceBindingsWatcher.builder().withDataCenter(DataCenter.EU_CENTRAL).build();
 
-  // 2. Enable SauceBindingsWatcher rule
+  // 2. Enable this watcher in the static block
   static {
     SauceBindingsWatcher.enable();
   }
 
-  // 3. Get variables created by Watcher
+  // 3. Get variables created by the watcher
   @Before
   public void storeVariables() {
     this.session = sauceWatcher.getSession();
@@ -36,7 +36,5 @@ public class DataCenterExample {
 
     // 5. Use the driver instance to do Selenium things
     driver.get("https://www.saucedemo.com/");
-
-    // 6. Watcher does all teardown activities
   }
 }

@@ -15,7 +15,7 @@ public class CapabilitiesExample {
   WebDriver driver;
   SauceSession session;
 
-  // 1. Create Selenium Capabilities instance in static method
+  // 1. Create Selenium Capabilities instance in a static method
   private static Capabilities createCapabilities() {
     SafariOptions browserOptions = new SafariOptions();
     browserOptions.setPlatformName("macOS 12");
@@ -26,17 +26,17 @@ public class CapabilitiesExample {
     return browserOptions;
   }
 
-  // 2. Pass these options to the SauceBindingsWatcher rule
+  // 2. Use the SauceBindingsWatcher rule with these capabilities
   @Rule
   public SauceBindingsWatcher sauceWatcher =
       SauceBindingsWatcher.builder().withCapabilities(createCapabilities()).build();
 
-  // 3. Enable SauceBindingsWatcher rule
+  // 3. Enable this watcher in the static block
   static {
     SauceBindingsWatcher.enable();
   }
 
-  // 4. Get variables created by Watcher
+  // 4. Get variables created by the watcher
   @Before
   public void storeVariables() {
     this.session = sauceWatcher.getSession();
@@ -50,7 +50,5 @@ public class CapabilitiesExample {
 
     // 6. Use the driver instance to do Selenium things
     driver.get("https://www.saucedemo.com/");
-
-    // 7. Watcher does all teardown activities
   }
 }

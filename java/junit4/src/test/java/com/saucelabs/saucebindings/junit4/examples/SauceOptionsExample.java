@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 public class SauceOptionsExample {
   WebDriver driver;
@@ -17,26 +18,27 @@ public class SauceOptionsExample {
 
   // 1. Create SauceOptions instance in static method
   public static SauceOptions createSauceOptions() {
-    return SauceOptions.firefox()
-        .setBrowserVersion("127.0")
-        .setPlatformName(SaucePlatform.WINDOWS_10)
+    ChromeOptions chromeOptions = new ChromeOptions();
+    chromeOptions.addArguments("--hide-scrollbars");
+
+    return SauceOptions.chrome(chromeOptions)
+        .setPlatformName(SaucePlatform.MAC_CATALINA)
         .setUnhandledPromptBehavior(UnhandledPromptBehavior.IGNORE)
-        .setIdleTimeout(Duration.ofSeconds(45))
-        .setTimeZone("Alaska")
+        .setIdleTimeout(Duration.ofSeconds(30))
         .build();
   }
 
-  // 2. Pass these options to the SauceBindingsWatcher rule
+  // 2. Create SauceBindingsWatcher rule with these options
   @Rule
   public SauceBindingsWatcher sauceWatcher =
       SauceBindingsWatcher.builder().withSauceOptions(createSauceOptions()).build();
 
-  // 3. Enable SauceBindingsWatcher rule
+  // 3. Enable this watcher in the static block
   static {
     SauceBindingsWatcher.enable();
   }
 
-  // 4. Get variables created by Watcher
+  // 4. Get variables created by the watcher
   @Before
   public void storeVariables() {
     this.session = sauceWatcher.getSession();
@@ -50,7 +52,5 @@ public class SauceOptionsExample {
 
     // 6. Use the driver instance to do Selenium things
     driver.get("https://www.saucedemo.com/");
-
-    // 7. Watcher does all teardown activities
   }
 }

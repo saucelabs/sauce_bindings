@@ -12,14 +12,15 @@ public class AccessibilityExample {
   WebDriver driver;
   SauceSession session;
 
-  // Register extension
+  // 1. Register Sauce Bindings extension with defaults
   @RegisterExtension static SauceBindingsExtension sauceExtension = new SauceBindingsExtension();
 
-  // Enable extension (this also can be done by running with -Dsauce.enabled=true)
+  // 2. Enable extension (this also can be done by running with -Dsauce.enabled=true)
   static {
     sauceExtension.enable();
   }
 
+  // 3. Get variables created by the Sauce Bindings extension
   @BeforeEach
   public void setUp(SauceSession session) {
     this.session = session;
@@ -28,9 +29,12 @@ public class AccessibilityExample {
 
   @Test
   public void accessibilityExample() {
+    // 4. Use the driver instance to do Selenium things
     driver.get("https://www.saucedemo.com/");
-    // store the accessibility results into an object
+
+    // 5. store the accessibility results into an object
     Results accessibilityResults = session.getAccessibilityResults();
-    // if you want, you can assert on the accessibilityResults
+
+    // 6. you can assert on the accessibilityResults as desired
   }
 }

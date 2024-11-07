@@ -11,11 +11,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class RunLocalExample {
-  private SauceSession session;
   private WebDriver driver;
+  private SauceSession session;
 
-  // 1. Set multiple rules for when Sauce is and isn't enabled
+  // 1. Register Watchers
+  // Register Sauce Bindings watcher with defaults
   @Rule public SauceBindingsWatcher sauceWatcher = new SauceBindingsWatcher();
+  // Register additional test watcher(s) for local execution
   @Rule public TestWatcher localWatcher = new LocalTestWatcher();
 
   // Sauce Labs execution is disabled by default,
@@ -26,11 +28,11 @@ public class RunLocalExample {
     // SauceBindingsWatcher.enable();
   }
 
-  // 2. Start driver if running locally
+  // Only start driver if Sauce Watcher is not enabled
   @Before
   public void storeVariables() {
     this.session = sauceWatcher.getSession();
-    this.driver = SauceSession.isEnabled() ? sauceWatcher.getDriver(): new ChromeDriver();
+    this.driver = SauceSession.isEnabled() ? sauceWatcher.getDriver() : new ChromeDriver();
   }
 
   @Test

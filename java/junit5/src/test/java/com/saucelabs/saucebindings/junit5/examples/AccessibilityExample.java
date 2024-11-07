@@ -15,7 +15,7 @@ public class AccessibilityExample {
   // Register extension
   @RegisterExtension static SauceBindingsExtension sauceExtension = new SauceBindingsExtension();
 
-  // Enable extension (this also can be done by running with -Dsaucelabs.enable=true)
+  // Enable extension (this also can be done by running with -Dsauce.enabled=true)
   static {
     sauceExtension.enable();
   }

@@ -139,9 +139,15 @@ public class SauceSession {
       return;
     }
 
-    if (this.driver != null) {
+    try {
       updateResult(passed);
-      quit();
+      driver.quit();
+    } catch (Exception e) {
+      if (rest != null) {
+        rest.stop();
+      }
+    } finally {
+      driver = null;
     }
   }
 
@@ -150,12 +156,17 @@ public class SauceSession {
       return;
     }
 
-    if (this.driver != null) {
-      annotate("Failure Reason: " + cause.getMessage());
-
-      sendStackTrace(cause);
+    try {
       updateResult(false);
-      quit();
+      annotate("Failure Reason: " + cause.getMessage());
+      sendStackTrace(cause);
+      driver.quit();
+    } catch (Exception e) {
+      if (rest != null) {
+        rest.stop();
+      }
+    } finally {
+      driver = null;
     }
   }
 
@@ -165,13 +176,18 @@ public class SauceSession {
       return;
     }
 
-    if (this.driver != null) {
+    try {
+      printToConsole();
       annotate("Test Aborted; marking completed instead of failed");
       annotate("Reason: " + cause.getMessage());
-
       sendStackTrace(cause);
-      printToConsole();
-      quit();
+      driver.quit();
+    } catch (Exception e) {
+      if (rest != null) {
+        rest.stop();
+      }
+    } finally {
+      driver = null;
     }
   }
 
@@ -374,13 +390,10 @@ public class SauceSession {
   }
 
   /**
-   * By default, this library is enabled, which can cause problems when a user adds Sauce Bindings
-   * specific code, but wants to run locally. To avoid adding a conditional every time Sauce
-   * specific features are included in the code, the user can set the code to ignore methods from
-   * this library by setting an environment variable or System Property. This value needs to be able
-   * to be overridden in the CI tool or with a Plugin, which needs to set the Environment Variable.
+   * To enable Sauce Bindings, users must set environment variable of `SAUCE_ENABLED`, or system
+   * property `sauce.enabled` to true
    *
-   * @return whether the methods in this library are ignored (true) or executed (false)
+   * @return whether the methods in this library are executed (true) or ignored (false)
    */
   public static boolean isEnabled() {
     String env = System.getenv("SAUCE_ENABLED");
@@ -447,10 +460,6 @@ public class SauceSession {
   private void quit() {
     try {
       driver.quit();
-    } catch (Exception e) {
-      if (rest != null) {
-        rest.stop();
-      }
     } finally {
       driver = null;
     }

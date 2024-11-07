@@ -1,13 +1,9 @@
 package com.saucelabs.saucebindings.junit5.examples.without;
 
-import com.saucelabs.saucebindings.SaucePlatform;
-import com.saucelabs.saucebindings.options.SauceOptions;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -27,8 +23,7 @@ public class ToggleLocalExample {
   TestInfo testInfo;
   SessionId sessionId;
 
-  @RegisterExtension TestWatcher watcher = new SauceTestWatcher();
-  @RegisterExtension TestWatcher testWatcher = new LocalTestWatcher();
+  @RegisterExtension TestWatcher testWatcher = new CustomTestWatcher();
 
   // All Sauce specific code must use conditionals to avoid errors
   // This is an example of how a user would toggle those conditionals
@@ -37,24 +32,19 @@ public class ToggleLocalExample {
     return Boolean.getBoolean("sauce.enabled");
   }
 
-  @BeforeAll
-  public static void enableSauce() {
-    System.setProperty("sauce.enabled", "true");
-  }
-
   @BeforeEach
   public void setup(TestInfo testInfo) {
     if (sauceEnabled()) {
       this.testInfo = testInfo;
-      driver = new RemoteWebDriver(getSauceUrl(), getCapabilities());
+      driver = new RemoteWebDriver(getSauceUrl(), getSauceCapabilities());
       this.sessionId = ((RemoteWebDriver) driver).getSessionId();
     } else {
-      driver = new ChromeDriver();
+      driver = new ChromeDriver(getLocalCapabilities());
     }
   }
 
   @Test
-  public void toggleLocal() {
+  public void navigationTest() {
     if (sauceEnabled()) {
       ((JavascriptExecutor) driver).executeScript("sauce:context=Navigating to Swag Labs");
     }
@@ -62,18 +52,12 @@ public class ToggleLocalExample {
     driver.get("https://www.saucedemo.com/");
   }
 
-  private static SauceOptions getSauceOptions() {
-    ChromeOptions chromeOptions = new ChromeOptions();
-    chromeOptions.addArguments("--hide-scrollbars");
-
-    return SauceOptions.chrome(chromeOptions)
-        .setPlatformName(SaucePlatform.MAC_CATALINA)
-        .setIdleTimeout(Duration.ofSeconds(30))
-        .build();
+  private ChromeOptions getLocalCapabilities() {
+    return new ChromeOptions();
   }
 
-  private Capabilities getCapabilities() {
-    ChromeOptions options = new ChromeOptions();
+  private Capabilities getSauceCapabilities() {
+    ChromeOptions options = getLocalCapabilities();
     Map<String, Object> sauceOptions = new HashMap<>();
     sauceOptions.put("username", System.getenv("SAUCE_USERNAME"));
     sauceOptions.put("accessKey", System.getenv("SAUCE_ACCESS_KEY"));
@@ -92,53 +76,40 @@ public class ToggleLocalExample {
     }
   }
 
-  private class LocalTestWatcher implements TestWatcher {
+  private class CustomTestWatcher implements TestWatcher {
     @Override
     public void testSuccessful(ExtensionContext context) {
+      if (sauceEnabled()) {
+        printSauceResults();
+        try {
+          ((JavascriptExecutor) driver).executeScript("sauce:job-result=passed");
+        } catch (Exception e) {
+          System.out.println("problem with using driver: " + e);
+        }
+      } else {
+        System.out.println("Test Successful");
+      }
+
       driver.quit();
-      System.out.println("Test Successful");
     }
 
     @Override
     public void testFailed(ExtensionContext context, Throwable cause) {
+      if (sauceEnabled()) {
+        printSauceResults();
+        try {
+          ((JavascriptExecutor) driver).executeScript("sauce:job-result=failed");
+        } catch (Exception e) {
+          System.out.println("problem with using driver: " + e);
+        }
+      } else {
+        System.out.println("Test Failed");
+      }
+
       driver.quit();
-      System.out.println("Test Failed");
-    }
-  }
-
-  private class SauceTestWatcher implements TestWatcher {
-    @Override
-    public void testSuccessful(ExtensionContext context) {
-      if (!sauceEnabled()) {
-        return;
-      }
-
-      printResults();
-      try {
-        ((JavascriptExecutor) driver).executeScript("sauce:job-result=passed");
-        driver.quit();
-      } catch (Exception e) {
-        System.out.println("problem with using driver: " + e);
-      }
     }
 
-    @Override
-    public void testFailed(ExtensionContext context, Throwable cause) {
-      if (!sauceEnabled()) {
-        return;
-      }
-
-      printResults();
-
-      try {
-        ((JavascriptExecutor) driver).executeScript("sauce:job-result=failed");
-        driver.quit();
-      } catch (Exception e) {
-        System.out.println("problem with using driver: " + e);
-      }
-    }
-
-    private void printResults() {
+    private void printSauceResults() {
       String sauceReporter =
           String.format(
               "SauceOnDemandSessionID=%s job-name=%s", sessionId, testInfo.getDisplayName());

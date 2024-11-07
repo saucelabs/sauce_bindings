@@ -11,23 +11,34 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+// 1. Annotate class with Sauce Bindings listener
 @Listeners(SauceBindingsListener.class)
 public class DataCenterExample {
   private WebDriver driver;
   private SauceSession session;
 
+  // 2. Enable extension in static block (this can be done by running with -Dsauce.enabled=true)
+  static {
+    SauceBindingsListener.enable();
+  }
+
   @BeforeMethod
   public void startSession(Method method, ITestContext context) {
+    // 3. start the session with specific data center
     SessionContext sessionContext =
         SessionContext.build(method, context).withDataCenter(DataCenter.EU_CENTRAL).start();
 
+    // 4. Get variables from the session context
     this.driver = sessionContext.getDriver();
     this.session = sessionContext.getSession();
   }
 
   @Test
   public void dataCenterNavigate() {
+    // 5. Use the session instance to do Sauce things
     session.annotate("Navigating to Swag Labs");
+
+    // 6. Use the driver instance to do Selenium things
     driver.get("https://www.saucedemo.com/");
   }
 }

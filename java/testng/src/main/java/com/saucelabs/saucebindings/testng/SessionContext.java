@@ -22,7 +22,7 @@ public class SessionContext {
   private final ITestContext context;
   private static final String buildName = CITools.getBuildName() + "." + CITools.getBuildNumber();
 
-  public static void setEnabled(ITestResult result) {
+  public static void attachListener(ITestResult result) {
     Method method = result.getMethod().getConstructorOrMethod().getMethod();
     String className = method.getDeclaringClass().getName();
     result.getTestContext().setAttribute(className + "_listener", "true");

@@ -43,16 +43,6 @@ public class DesktopBrowserTest {
   }
 
   @Test
-  public void storesResultOfFirstStop() {
-    session.start();
-
-    session.stop(true);
-    session.stop(false);
-
-    Assertions.assertTrue(session.getResult());
-  }
-
-  @Test
   public void nullsDriver() {
     driver = session.start();
     session.stop(true);

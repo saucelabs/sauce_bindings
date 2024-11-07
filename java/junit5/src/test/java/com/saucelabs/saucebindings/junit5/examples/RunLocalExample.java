@@ -14,16 +14,10 @@ public class RunLocalExample {
   WebDriver driver;
   SauceSession session;
 
-  // Register Sauce Bindings extension with defaults
+  // 1. Register Sauce Bindings extension with defaults
   @RegisterExtension static SauceBindingsExtension sauceExtension = new SauceBindingsExtension();
   // Register additional test watcher(s) for local execution
   @RegisterExtension TestWatcher testWatcher = new LocalTestWatcher();
-
-  @BeforeEach
-  public void setUp(SauceSession session, WebDriver driver) {
-    this.session = session;
-    this.driver = SauceSession.isEnabled() ? driver : new ChromeDriver();
-  }
 
   // Sauce Labs execution is disabled by default,
   // To run tests without Sauce, do not enable the extension (`sauceExtension.enable()`)
@@ -33,6 +27,13 @@ public class RunLocalExample {
     // sauceExtension.enable();
   }
 
+  // Only start driver if Sauce extension is not registered
+  @BeforeEach
+  public void setUp(SauceSession session, WebDriver driver) {
+    this.session = session;
+    this.driver = SauceSession.isEnabled() ? driver : new ChromeDriver();
+  }
+
   @Test
   public void toggleExample() {
     // This code executes whether running locally or on Sauce
@@ -40,7 +41,7 @@ public class RunLocalExample {
     session.annotate("This gets ignored when sauce is disabled");
   }
 
-  // Make sure only local drivers are quit in the local test watcher
+  // Do not quit the driver if running on Sauce Labs
   public class LocalTestWatcher implements TestWatcher {
     @Override
     public void testSuccessful(ExtensionContext context) {

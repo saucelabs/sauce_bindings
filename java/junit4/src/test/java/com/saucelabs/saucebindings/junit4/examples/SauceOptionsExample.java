@@ -1,14 +1,14 @@
-package com.saucelabs.saucebindings.junit5.examples;
+package com.saucelabs.saucebindings.junit4.examples;
 
 import com.saucelabs.saucebindings.SaucePlatform;
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.UnhandledPromptBehavior;
-import com.saucelabs.saucebindings.junit5.SauceBindingsExtension;
+import com.saucelabs.saucebindings.junit4.SauceBindingsWatcher;
 import com.saucelabs.saucebindings.options.SauceOptions;
 import java.time.Duration;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -17,7 +17,7 @@ public class SauceOptionsExample {
   SauceSession session;
 
   // 1. Create SauceOptions instance in static method
-  public static SauceOptions getSauceOptions() {
+  public static SauceOptions createSauceOptions() {
     ChromeOptions chromeOptions = new ChromeOptions();
     chromeOptions.addArguments("--hide-scrollbars");
 
@@ -28,25 +28,25 @@ public class SauceOptionsExample {
         .build();
   }
 
-  // 2. Register Sauce Bindings extension with that SauceOptions instance
-  @RegisterExtension
-  static SauceBindingsExtension sauceExtension =
-      SauceBindingsExtension.builder().withSauceOptions(getSauceOptions()).build();
+  // 2. Create SauceBindingsWatcher rule with these options
+  @Rule
+  public SauceBindingsWatcher sauceWatcher =
+      SauceBindingsWatcher.builder().withSauceOptions(createSauceOptions()).build();
 
-  // 3. Enable extension (this also can be done by running with -Dsauce.enabled=true)
+  // 3. Enable this watcher in the static block
   static {
-    sauceExtension.enable();
+    SauceBindingsWatcher.enable();
   }
 
-  // 4. Get variables created by the Sauce Bindings extension
-  @BeforeEach
-  public void setUp(SauceSession session, WebDriver driver) {
-    this.session = session;
-    this.driver = driver;
+  // 4. Get variables created by the watcher
+  @Before
+  public void storeVariables() {
+    this.session = sauceWatcher.getSession();
+    this.driver = sauceWatcher.getDriver();
   }
 
   @Test
-  public void optionsExample() {
+  public void basicOptions() {
     // 5. Use the session instance to do Sauce Labs things
     session.annotate("Navigating to Swag Labs");
 

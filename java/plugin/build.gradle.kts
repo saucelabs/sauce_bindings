@@ -15,7 +15,7 @@ repositories {
 dependencies {
   implementation(kotlin("stdlib"))
   implementation("org.junit.jupiter:junit-jupiter:5.9.3")
-  implementation("com.saucelabs:saucebindings-junit5:2.0.0-beta.1.1-SNAPSHOT")
+  implementation("com.saucelabs:saucebindings-junit5:2.0.0-beta.1")
 }
 
 // Configure Gradle IntelliJ Plugin

@@ -23,7 +23,7 @@ import org.openqa.selenium.WebDriver;
 
 public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, ParameterResolver {
   private static final Logger LOGGER = Logger.getLogger(SauceBindingsExtension.class.getName());
-  private final String buildName;
+  private final String build;
   protected SauceOptions sauceOptions;
   protected DataCenter dataCenter;
 
@@ -34,7 +34,7 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
   private SauceBindingsExtension(SauceOptions sauceOptions, DataCenter dataCenter) {
     this.sauceOptions = sauceOptions;
     this.dataCenter = dataCenter;
-    this.buildName = CITools.getBuildName() + ": " + CITools.getBuildNumber();
+    this.build = CITools.getBuildName() + ": " + CITools.getBuildNumber();
   }
 
   public void enable() {
@@ -58,7 +58,7 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
 
   private SauceOptions updateOptions(ExtensionContext context) {
     SauceOptions options = sauceOptions.copy();
-    options.sauce().setBuild(buildName);
+    options.sauce().setBuild(build);
     updateTestName(options, context);
     updateCustomData(options);
     updateTags(options, context);
@@ -104,29 +104,25 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
 
   @Override
   public void testSuccessful(ExtensionContext context) {
-    if (SauceSession.isEnabled()) {
-      SauceSession session = (SauceSession) getStore(context).get("session");
-      try {
-        session.stop(true);
-      } catch (NoSuchSessionException e) {
-        LOGGER.severe(
-            "Driver quit prematurely; Remove calls to `driver.quit()` to allow"
-                + "  SauceBindingsExtension to stop the test");
-      }
+    SauceSession session = (SauceSession) getStore(context).get("session");
+    try {
+      session.stop(true);
+    } catch (NoSuchSessionException e) {
+      LOGGER.severe(
+          "Driver quit prematurely; Remove calls to `driver.quit()` to allow"
+              + "  SauceBindingsExtension to stop the test");
     }
   }
 
   @Override
   public void testFailed(ExtensionContext context, Throwable cause) {
-    if (SauceSession.isEnabled()) {
-      SauceSession session = (SauceSession) getStore(context).get("session");
-      try {
-        session.stop(cause);
-      } catch (NoSuchSessionException e) {
-        LOGGER.severe(
-            "Driver quit prematurely; Remove calls to `driver.quit()` to allow"
-                + "  SauceBindingsExtension to stop the test");
-      }
+    SauceSession session = (SauceSession) getStore(context).get("session");
+    try {
+      session.stop(cause);
+    } catch (NoSuchSessionException e) {
+      LOGGER.severe(
+          "Driver quit prematurely; Remove calls to `driver.quit()` to allow"
+              + "  SauceBindingsExtension to stop the test");
     }
   }
 

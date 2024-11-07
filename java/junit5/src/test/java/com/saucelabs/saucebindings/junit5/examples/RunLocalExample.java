@@ -27,7 +27,7 @@ public class RunLocalExample {
 
   // Sauce Labs execution is disabled by default,
   // To run tests without Sauce, do not enable the extension (`sauceExtension.enable()`)
-  // and do not execute with `-Dsaucelabs.enabled=true`
+  // and do not execute with `-Dsauce.enabled=true`
   static {
     System.out.println("Sauce Bindings Extension not Enabled");
     // sauceExtension.enable();
@@ -45,9 +45,15 @@ public class RunLocalExample {
     @Override
     public void testSuccessful(ExtensionContext context) {
       System.out.println("Test Succeeded");
-      if (SauceSession.isEnabled()) {
-        throw new RuntimeException("Test should not run when Extension is enabled");
-      } else {
+      if (!SauceSession.isEnabled()) {
+        driver.quit();
+      }
+    }
+
+    @Override
+    public void testFailed(ExtensionContext context, Throwable cause) {
+      System.out.println("Test Failed");
+      if (!SauceSession.isEnabled()) {
         driver.quit();
       }
     }

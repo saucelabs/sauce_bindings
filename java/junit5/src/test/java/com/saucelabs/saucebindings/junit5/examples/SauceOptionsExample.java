@@ -11,7 +11,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-public class OptionsExample {
+public class SauceOptionsExample {
   WebDriver driver;
   SauceSession session;
 
@@ -20,7 +20,7 @@ public class OptionsExample {
   static SauceBindingsExtension sauceExtension =
       SauceBindingsExtension.builder().withSauceOptions(getSauceOptions()).build();
 
-  // Enable extension (this also can be done by running with -Dsaucelabs.enable=true)
+  // Enable extension (this also can be done by running with -Dsauce.enabled=true)
   static {
     sauceExtension.enable();
   }

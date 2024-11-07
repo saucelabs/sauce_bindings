@@ -17,7 +17,7 @@ public class DataCenterExample {
   static SauceBindingsExtension sauceExtension =
       SauceBindingsExtension.builder().withDataCenter(DataCenter.EU_CENTRAL).build();
 
-  // Enable extension (this also can be done by running with -Dsaucelabs.enable=true)
+  // Enable extension (this also can be done by running with -Dsauce.enabled=true)
   static {
     sauceExtension.enable();
   }

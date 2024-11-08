@@ -279,7 +279,7 @@ public class SauceOptions extends BaseOptions {
                   capabilityManager.validateCapability(
                       "Timeouts", Timeouts.keys(), (String) oldKey);
                   String keyString = Timeouts.fromString((String) oldKey);
-                  timeoutsMap.put(Timeouts.valueOf(keyString), (Integer) val);
+                  timeoutsMap.put(Timeouts.valueOf(keyString), ((Number) val).intValue());
                 });
         setTimeouts(timeoutsMap);
         break;

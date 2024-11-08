@@ -44,7 +44,7 @@
   </developers>
 
   <properties>
-    <saucebindings.version>2.0.0-beta.1-SNAPSHOT</saucebindings.version>
+    <saucebindings.version>2.0.0-beta.2-SNAPSHOT</saucebindings.version>
     <surefire.parallel>8</surefire.parallel>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>

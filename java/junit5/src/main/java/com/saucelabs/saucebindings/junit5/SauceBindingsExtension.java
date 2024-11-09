@@ -3,14 +3,21 @@ package com.saucelabs.saucebindings.junit5;
 import com.saucelabs.saucebindings.CITools;
 import com.saucelabs.saucebindings.DataCenter;
 import com.saucelabs.saucebindings.SauceSession;
+import com.saucelabs.saucebindings.SystemManager;
 import com.saucelabs.saucebindings.options.SauceOptions;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.logging.Logger;
+
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -20,6 +27,7 @@ import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebDriver;
+import org.yaml.snakeyaml.Yaml;
 
 public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, ParameterResolver {
   private static final Logger LOGGER = Logger.getLogger(SauceBindingsExtension.class.getName());
@@ -32,9 +40,33 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
   }
 
   private SauceBindingsExtension(SauceOptions sauceOptions, DataCenter dataCenter) {
-    this.sauceOptions = sauceOptions;
+    if (Objects.equals(SystemManager.get("SAUCE_CONFIG_OVERRIDE"), "true")) {
+      File defaultLocation = new File(System.getProperty("user.dir") + "/sauce-config.yml");
+      this.sauceOptions = optionsFromConfig(defaultLocation);
+    } else {
+      this.sauceOptions = sauceOptions;
+    }
+
     this.dataCenter = dataCenter;
     this.build = CITools.getBuildName() + ": " + CITools.getBuildNumber();
+  }
+
+  @SneakyThrows
+  static SauceOptions optionsFromConfig(File location) {
+    InputStream input = new FileInputStream(location);
+    Yaml yaml = new Yaml();
+    Map<String, Object> data = yaml.load(input);
+    List<String> topLevelKeys = new ArrayList<>(data.keySet());
+
+    String configKey =
+        System.getProperty(
+            "sauce.platform.key",
+            System.getenv().getOrDefault("SAUCE_PLATFORM_KEY", topLevelKeys.get(0)));
+
+    Map<String, Object> configData = (Map<String, Object>) data.get(configKey);
+    SauceOptions options = new SauceOptions();
+    options.mergeCapabilities(configData);
+    return options;
   }
 
   public void enable() {
@@ -177,6 +209,12 @@ public class SauceBindingsExtension implements TestWatcher, BeforeEachCallback, 
 
     public Builder withDataCenter(DataCenter dataCenter) {
       this.dataCenter = dataCenter;
+      return this;
+    }
+
+    @SneakyThrows
+    public Builder withConfigFile(File file) {
+      this.sauceOptions = optionsFromConfig(file);
       return this;
     }
 

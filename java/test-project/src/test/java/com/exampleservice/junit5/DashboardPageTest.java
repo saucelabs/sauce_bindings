@@ -1,7 +1,7 @@
 package com.exampleservice.junit5;
 
-import com.exampleservice.pageobjects.admin.DashboardPage;
 import com.exampleservice.pageobjects.NavBar;
+import com.exampleservice.pageobjects.admin.DashboardPage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;

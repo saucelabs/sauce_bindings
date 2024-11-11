@@ -30,7 +30,6 @@ public class HomePage extends BasePage {
     return !driver.findElements(overview).isEmpty();
   }
 
-
   public HomePage(WebDriver driver) {
     super(driver);
   }

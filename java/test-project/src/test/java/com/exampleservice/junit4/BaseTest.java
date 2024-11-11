@@ -2,6 +2,7 @@ package com.exampleservice.junit4;
 
 import com.saucelabs.saucebindings.SauceSession;
 import com.saucelabs.saucebindings.junit4.SauceBindingsWatcher;
+import java.time.Duration;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
@@ -9,8 +10,6 @@ import org.junit.runner.Description;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-
-import java.time.Duration;
 
 public class BaseTest {
   WebDriver driver;

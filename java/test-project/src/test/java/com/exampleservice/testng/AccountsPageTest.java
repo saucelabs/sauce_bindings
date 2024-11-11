@@ -17,7 +17,8 @@ public class AccountsPageTest extends BaseTest {
   @Test(groups = {"contents"})
   public void pageCheck() {
     AccountPage accountPage = new AccountPage(driver.get());
-    Assertions.assertDoesNotThrow(() -> accountPage.validateContent("manage your profile, favorites and orders"));
+    Assertions.assertDoesNotThrow(
+        () -> accountPage.validateContent("manage your profile, favorites and orders"));
   }
 
   @Test(groups = {"contents"})

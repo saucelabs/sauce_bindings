@@ -1,10 +1,9 @@
 package com.exampleservice.pageobjects;
 
+import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
-import java.util.stream.Collectors;
 
 public class ContactPage extends BasePage {
 
@@ -24,21 +23,24 @@ public class ContactPage extends BasePage {
     super(driver);
   }
 
-  public void sendMessageSuccessfully(String firstName, String lastName, String email, String message) {
+  public void sendMessageSuccessfully(
+      String firstName, String lastName, String email, String message) {
     sendMessage(firstName, lastName, email, message);
   }
 
-  public void sendMessageUnsuccessfully(String firstName, String lastName, String email, String message) {
+  public void sendMessageUnsuccessfully(
+      String firstName, String lastName, String email, String message) {
     sendMessage(firstName, lastName, email, message);
     wait.until(d -> d.findElements(error).size() > 3);
-    String errorMessages = driver.findElements(error).stream()
-      .map(WebElement::getText)
-      .collect(Collectors.joining("\n"));
+    String errorMessages =
+        driver.findElements(error).stream()
+            .map(WebElement::getText)
+            .collect(Collectors.joining("\n"));
     throw new RuntimeException("Error messages:\n" + errorMessages);
   }
 
   // TODO - support subject dropdown
-  private void sendMessage(String firstName, String lastName , String email, String message) {
+  private void sendMessage(String firstName, String lastName, String email, String message) {
     driver.findElement(firstNameText).sendKeys(firstName);
     driver.findElement(lastNameText).sendKeys(lastName);
     driver.findElement(emailText).sendKeys(email);

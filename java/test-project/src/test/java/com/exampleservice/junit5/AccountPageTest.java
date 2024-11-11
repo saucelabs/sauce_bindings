@@ -1,7 +1,7 @@
 package com.exampleservice.junit5;
 
-import com.exampleservice.pageobjects.user.AccountPage;
 import com.exampleservice.pageobjects.NavBar;
+import com.exampleservice.pageobjects.user.AccountPage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -19,7 +19,8 @@ public class AccountPageTest extends BaseTest {
   @Test
   @Tag("content")
   void pageCheck() {
-    Assertions.assertDoesNotThrow(() -> accountPage.validateContent("manage your profile, favorites and orders"));
+    Assertions.assertDoesNotThrow(
+        () -> accountPage.validateContent("manage your profile, favorites and orders"));
   }
 
   @Test

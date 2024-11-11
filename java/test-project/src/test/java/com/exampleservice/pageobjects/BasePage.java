@@ -1,7 +1,6 @@
 package com.exampleservice.pageobjects;
 
 import java.time.Duration;
-
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -13,7 +12,7 @@ public abstract class BasePage {
   protected abstract String getUrlPath();
 
   protected void sync() {
-      wait.until((_driver) -> isDisplayed());
+    wait.until((_driver) -> isDisplayed());
   }
 
   public boolean isDisplayed() {
@@ -39,7 +38,8 @@ public abstract class BasePage {
     try {
       wait.until((driver) -> driver.getPageSource().contains(content));
     } catch (TimeoutException e) {
-      throw new RuntimeException("Timed out trying to locate " + content + " in " + this.getClass(), e);
+      throw new RuntimeException(
+          "Timed out trying to locate " + content + " in " + this.getClass(), e);
     }
   }
 }

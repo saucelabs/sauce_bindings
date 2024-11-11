@@ -66,7 +66,6 @@ public class NavBar extends BasePage {
   public void navigateToSpecialTools() {
     driver.findElement(dropDownList).click();
     driver.findElement(specialToolsLink).click();
-
   }
 
   public void navigateToRentals() {

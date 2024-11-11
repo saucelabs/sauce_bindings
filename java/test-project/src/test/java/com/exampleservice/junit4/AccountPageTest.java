@@ -21,7 +21,8 @@ public class AccountPageTest extends BaseTest {
   @Category(ContentTests.class)
   @Test
   public void pageCheck() {
-    Assertions.assertDoesNotThrow(() -> accountPage.validateContent("manage your profile, favorites and orders"));
+    Assertions.assertDoesNotThrow(
+        () -> accountPage.validateContent("manage your profile, favorites and orders"));
   }
 
   @Category(ContentTests.class)

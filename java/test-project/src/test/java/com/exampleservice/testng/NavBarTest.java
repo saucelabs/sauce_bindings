@@ -44,7 +44,9 @@ public class NavBarTest extends BaseTest {
     }
   }
 
-  @Test(enabled = false, groups = {"navigation"})
+  @Test(
+      enabled = false,
+      groups = {"navigation"})
   public void navigateToRentals() {
     try {
       new NavBar(driver.get()).navigateToRentals();
@@ -53,7 +55,9 @@ public class NavBarTest extends BaseTest {
     }
   }
 
-  @Test(enabled = false, groups = {"navigation"})
+  @Test(
+      enabled = false,
+      groups = {"navigation"})
   public void navigateToHandTools() {
     try {
       new NavBar(driver.get()).navigateToHandTools();
@@ -62,7 +66,9 @@ public class NavBarTest extends BaseTest {
     }
   }
 
-  @Test(enabled = false, groups = {"navigation"})
+  @Test(
+      enabled = false,
+      groups = {"navigation"})
   public void navigateToPowerTools() {
     try {
       new NavBar(driver.get()).navigateToPowerTools();
@@ -71,7 +77,9 @@ public class NavBarTest extends BaseTest {
     }
   }
 
-  @Test(enabled = false, groups = {"navigation"})
+  @Test(
+      enabled = false,
+      groups = {"navigation"})
   public void navigateToSpecialTools() {
     try {
       new NavBar(driver.get()).navigateToSpecialTools();
